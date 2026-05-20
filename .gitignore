@@ -21,3 +21,9 @@ yarn-error.log*
 
 # Node modules
 node_modules/
+
+# Docker specific files
+.env
+docker-compose.override.yml
+*.db-journal
+
