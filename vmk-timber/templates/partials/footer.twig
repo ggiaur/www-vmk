@@ -1,0 +1,47 @@
+<footer class="site-footer" id="kapcsolat">
+    <div class="container site-footer__top">
+        <div class="footer-brand">
+            <span class="brand__mark">VMK</span>
+            <h2>{{ branding.title }}</h2>
+            <p>{{ branding.tagline }}</p>
+            <p>{{ footer.address }}</p>
+            <a href="tel:{{ footer.phone|replace({' ': ''}) }}">{{ footer.phone }}</a>
+            <a href="mailto:{{ footer.email }}">{{ footer.email }}</a>
+            <div class="social-links social-links--footer" aria-label="Közösségi linkek">
+                {% for item in footer.socials %}
+                    <a href="{{ item.url }}" aria-label="{{ item.label }}">{{ item.label }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="footer-links">
+            <div>
+                <h3>Rólunk</h3>
+                <ul>
+                    {% for item in menus.footer_about.items|default(menus.footer_about) %}
+                        <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <h3>Szolgáltatások</h3>
+                <ul>
+                    {% for item in menus.footer_services.items|default(menus.footer_services) %}
+                        <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <h3>Támogatás</h3>
+                <ul>
+                    {% for item in menus.footer_support.items|default(menus.footer_support) %}
+                        <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container site-footer__bottom">
+        <p>{{ footer.copyright }}</p>
+    </div>
+</footer>

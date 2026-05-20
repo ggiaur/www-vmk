@@ -1,0 +1,77 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {
+      "contentSize": "820px",
+      "wideSize": "1180px"
+    },
+    "color": {
+      "palette": [
+        { "slug": "sand", "name": "Sand", "color": "#f7f1e8" },
+        { "slug": "paper", "name": "Paper", "color": "#fffaf3" },
+        { "slug": "ink", "name": "Ink", "color": "#1f1b16" },
+        { "slug": "muted", "name": "Muted", "color": "#65584a" },
+        { "slug": "brand", "name": "Brand", "color": "#8a5a2f" },
+        { "slug": "brand-dark", "name": "Brand Dark", "color": "#5a3517" },
+        { "slug": "accent", "name": "Accent", "color": "#c48a42" }
+      ]
+    },
+    "spacing": {
+      "spacingScale": {
+        "steps": 7
+      },
+      "units": ["px", "rem", "em", "%", "vw"]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "slug": "body",
+          "name": "Manrope",
+          "fontFamily": "\"Manrope\", \"Segoe UI\", sans-serif"
+        },
+        {
+          "slug": "display",
+          "name": "Fraunces",
+          "fontFamily": "\"Fraunces\", Georgia, serif"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#f7f1e8",
+      "text": "#1f1b16"
+    },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--body)",
+      "lineHeight": "1.7"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--display)"
+        },
+        "color": {
+          "text": "#1f1b16"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "#5a3517"
+        }
+      },
+      "button": {
+        "border": {
+          "radius": "999px"
+        },
+        "color": {
+          "background": "#8a5a2f",
+          "text": "#ffffff"
+        }
+      }
+    }
+  }
+}

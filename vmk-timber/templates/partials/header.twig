@@ -1,0 +1,68 @@
+<header class="site-header">
+    <div class="site-topbar">
+        <div class="container site-topbar__inner">
+            <div class="site-topbar__info">
+                <a href="tel:{{ footer.phone|replace({' ': ''}) }}">{{ footer.phone }}</a>
+                <a href="mailto:{{ footer.email }}">{{ footer.email }}</a>
+                <span>{{ footer.hours }}</span>
+            </div>
+            <a class="site-topbar__link" href="{{ footer.catalog_url }}">Katalógus</a>
+        </div>
+    </div>
+    <div class="container site-header__inner">
+        <a class="brand" href="{{ site.url }}">
+            {% if function('has_custom_logo') %}
+                <span class="brand__logo">{{ function('get_custom_logo')|raw }}</span>
+            {% else %}
+                <span class="brand__mark">VMK</span>
+            {% endif %}
+            <span class="brand__text">
+                <strong>{{ branding.title }}</strong>
+                <small>{{ branding.tagline }}</small>
+            </span>
+        </a>
+
+        <div class="site-header__actions">
+            <nav class="site-nav" aria-label="Elsődleges navigáció">
+                <ul>
+                    {% for item in menus.primary.items|default(menus.primary) %}
+                        <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <div class="header-tools">
+                <a class="header-cta" href="{{ footer.catalog_url }}">Katalógus</a>
+                <div class="social-links social-links--header" aria-label="Közösségi linkek">
+                    {% for item in footer.socials %}
+                        <a href="{{ item.url }}" aria-label="{{ item.label }}">{{ item.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-mobile-menu" data-menu-toggle>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span class="screen-reader-text">Menü megnyitása</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="site-mobile-menu" id="site-mobile-menu" hidden data-menu-panel>
+        <div class="container site-mobile-menu__inner">
+            <nav aria-label="Mobil navigáció">
+                <ul>
+                    {% for item in menus.primary.items|default(menus.primary) %}
+                        <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            <a class="header-cta header-cta--mobile" href="{{ footer.catalog_url }}">Katalógus</a>
+            <div class="site-mobile-menu__meta">
+                <a href="tel:{{ footer.phone|replace({' ': ''}) }}">{{ footer.phone }}</a>
+                <a href="mailto:{{ footer.email }}">{{ footer.email }}</a>
+            </div>
+        </div>
+    </div>
+</header>

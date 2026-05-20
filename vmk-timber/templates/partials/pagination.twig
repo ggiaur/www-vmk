@@ -1,0 +1,17 @@
+{% if pagination.pages %}
+    <nav class="pagination" aria-label="Lapozás">
+        {% if pagination.prev %}
+            <a class="pagination__item" href="{{ pagination.prev.link }}">Előző</a>
+        {% endif %}
+        {% for page in pagination.pages %}
+            {% if page.link %}
+                <a class="pagination__item{{ page.current ? ' is-current' : '' }}" href="{{ page.link }}">{{ page.title }}</a>
+            {% else %}
+                <span class="pagination__item is-current">{{ page.title }}</span>
+            {% endif %}
+        {% endfor %}
+        {% if pagination.next %}
+            <a class="pagination__item" href="{{ pagination.next.link }}">Következő</a>
+        {% endif %}
+    </nav>
+{% endif %}

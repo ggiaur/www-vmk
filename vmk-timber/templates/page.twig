@@ -1,0 +1,23 @@
+{% extends 'templates/base.twig' %}
+
+{% block content %}
+    <section class="page-hero">
+        <div class="container page-hero__inner">
+            <span class="eyebrow">Oldal</span>
+            <h1>{{ post.title }}</h1>
+            {% if post.post_excerpt %}
+                <p>{{ post.post_excerpt }}</p>
+            {% elseif post.thumbnail %}
+                <p>{{ post.thumbnail.caption ?: site.description }}</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="section content-section">
+        <div class="container content-layout">
+            <article class="content-card entry-content">
+                {{ post.content }}
+            </article>
+        </div>
+    </section>
+{% endblock %}
