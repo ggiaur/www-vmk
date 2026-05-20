@@ -46,79 +46,79 @@ function vmk_timber_get_homepage_content(): array
 {
     return [
         'hero' => [
-            'eyebrow' => vmk_timber_mod('vmk_hero_eyebrow', 'Vorosmarty Mihaly Konyvtar'),
-            'title' => vmk_timber_mod('vmk_hero_title', 'Kozossegi ter, olvasas, programok es helyismeret egy oldalon.'),
-            'text' => vmk_timber_mod('vmk_hero_text', 'Egy modern konyvtari kezdolap Timber alapon, amely kiemeli a keresest, az aktualis szolgaltatasokat, a hireket es a kozossegi esemenyeket.'),
+            'eyebrow' => vmk_timber_mod('vmk_hero_eyebrow', 'Vörösmarty Mihály Könyvtár'),
+            'title' => vmk_timber_mod('vmk_hero_title', 'Közösségi tér, olvasás, programok és helyismeret egy oldalon.'),
+            'text' => vmk_timber_mod('vmk_hero_text', 'Egy modern könyvtári kezdőlap Timber alapon, amely kiemeli a keresést, az aktuális szolgáltatásokat, a híreket és a közösségi eseményeket.'),
             'primary_cta' => [
-                'label' => vmk_timber_mod('vmk_primary_cta_label', 'Kereses a katalogusban'),
+                'label' => vmk_timber_mod('vmk_primary_cta_label', 'Keresés a katalógusban'),
                 'url' => vmk_timber_mod('vmk_primary_cta_url', '#kereses'),
             ],
             'secondary_cta' => [
-                'label' => vmk_timber_mod('vmk_secondary_cta_label', 'Programok megnyitasa'),
+                'label' => vmk_timber_mod('vmk_secondary_cta_label', 'Programok megtekintése'),
                 'url' => vmk_timber_mod('vmk_secondary_cta_url', '#programok'),
             ],
             'stats' => [
-                ['value' => '75+', 'label' => 'eves helyismereti gyujtes'],
-                ['value' => '1200+', 'label' => 'rendezveny evente'],
-                ['value' => '13', 'label' => 'varosi es fiok helyszin'],
+                ['value' => '75+', 'label' => 'éves helyismereti gyűjtés'],
+                ['value' => '1200+', 'label' => 'rendezvény évente'],
+                ['value' => '13', 'label' => 'városi és fiók helyszín'],
             ],
             'highlights' => [
                 [
-                    'title' => 'Konyvtari utmutatok',
-                    'text' => 'Beiratkozas, kolcsonzes, hosszabbitas es digitalis hozzaferesek egy helyen.',
+                    'title' => 'Könyvtári útmutatók',
+                    'text' => 'Beiratkozás, kölcsönzés, hosszabbítás és digitális hozzáférések egy helyen.',
                     'url' => '#szolgaltatasok',
                 ],
                 [
-                    'title' => 'Programnaptar',
-                    'text' => 'Gyerekfoglalkozasok, irodalmi estek, kiallitasok es workshopok.',
+                    'title' => 'Programnaptár',
+                    'text' => 'Gyerekfoglalkozások, irodalmi estek, kiállítások és workshopok.',
                     'url' => '#programok',
                 ],
                 [
-                    'title' => 'Olvasoterek',
-                    'text' => 'Csendes tanulozonak, kozossegi terek es szamitogepes munkaallomasok.',
+                    'title' => 'Olvasóterek',
+                    'text' => 'Csendes tanulónak, közösségi terek és számítógépes munkaállomások.',
                     'url' => '#terek',
                 ],
             ],
         ],
         'search' => [
-            'label' => 'Kereses',
+            'label' => 'Keresés',
             'title' => 'Mit keresel ma?',
-            'placeholder' => 'Konyvcim, szerzo, tema vagy program neve',
-            'button' => 'Kereses',
-            'meta' => vmk_timber_parse_lines(vmk_timber_mod('vmk_search_meta', "Nyitva ma: 09:00 - 19:00\nBeiratkozas online is elerheto\nWifi es szamitogephasznalat a kozponti konyvtarban")),
+            'placeholder' => 'Könyvcím, szerző, téma vagy program neve',
+            'button' => 'Keresés',
+            'meta' => vmk_timber_parse_lines(vmk_timber_mod('vmk_search_meta', "Nyitva ma: 09:00 - 19:00\nBeiratkozás online is elérhető\nWifi és számítógéphasználat a központi könyvtárban")),
         ],
         'services' => [
-            'title' => 'Nepszeru szolgaltatasok',
-            'intro' => 'A fooldal gyors belepesi pontokat ad a leggyakoribb ugyintezeshez es tajekozodashoz.',
+            'title' => 'Népszerű szolgáltatások',
+            'intro' => 'A főoldal gyors belépési pontokat ad a leggyakoribb ügyintézéshez és tájékozódáshoz.',
             'items' => [
                 [
-                    'title' => 'Kolcsonzes, elojegyzes, hosszabbitas',
-                    'text' => 'Olvasoi fiok es alapveto konyvtarhasznalati teendok gyors eleressel.',
+                    'title' => 'Kölcsönzés, előjegyzés, hosszabbítás',
+                    'text' => 'Olvasói fiók és alapvető könyvtárhasználati teendők gyors eléréssel.',
                     'url' => '#',
                 ],
                 [
-                    'title' => 'Helyismereti gyujtemeny',
-                    'text' => 'Varostorteneti dokumentumok, fotok, periodikak es digitalizalt anyagok.',
+                    'title' => 'Helyismereti gyűjtemény',
+                    'text' => 'Várostörténeti dokumentumok, fotók, periodikák és digitalizált anyagok.',
                     'url' => '#',
                 ],
                 [
-                    'title' => 'Nyomtatas es szkenneles',
-                    'text' => 'Mindennapi ugyintezeshez es kutatashoz szukseges eszkozok.',
+                    'title' => 'Nyomtatás és szkennelés',
+                    'text' => 'Mindennapi ügyintézéshez és kutatáshoz szükséges eszközök.',
                     'url' => '#',
                 ],
                 [
-                    'title' => 'Segitseg kutatashoz',
-                    'text' => 'Tematikus eligazitas, adatbazis-hasznalat es szemelyes tamogatas.',
+                    'title' => 'Segítség kutatáshoz',
+                    'text' => 'Tematikus eligazítás, adatbázis-használat és személyes támogatás.',
                     'url' => '#',
                 ],
                 [
-                    'title' => 'Digitalis tartalmak',
-                    'text' => 'E-konyvek, online forrasok es tavoli hozzaferessel hasznalhato gyujtemenyek.',
+                    'title' => 'Digitális tartalmak',
+                    'text' => 'E-könyvek, online források és távoli hozzáféréssel használható gyűjtemények.',
                     'url' => '#',
                 ],
                 [
-                    'title' => 'Terem- es helyfoglalas',
-                    'text' => 'Kozossegi es tanuloterek elerhetosege, foglalasi tajekoztatoval.',
+                    'title' => 'Terem- és helyfoglalás',
+                    'text' => 'Közösségi és tanulóterek elérhetősége, foglalási tájékoztatóval.',
                     'url' => '#',
                 ],
             ],
@@ -126,61 +126,61 @@ function vmk_timber_get_homepage_content(): array
         'featured' => [
             'title' => 'Kiemelt tartalmak',
             'lead' => [
-                'category' => 'Ujdonsag',
-                'title' => 'Tavaszi olvasasnepszerusito sorozat a konyvtar tereiben',
-                'text' => 'Interaktiv ajanlok, tematikus polcok es kozossegi programok kapcsoljak ossze az olvasokat a varosi konyvtar kulonbozo tereiben.',
+                'category' => 'Újdonság',
+                'title' => 'Tavaszi olvasásnépszerűsítő sorozat a könyvtár tereiben',
+                'text' => 'Interaktív ajánlók, tematikus polcok és közösségi programok kapcsolják össze az olvasókat a városi könyvtár különböző tereiben.',
                 'url' => '#',
             ],
             'aside' => [
-                ['title' => 'Helyismereti adatbazis frissitesek', 'category' => 'Adatbazis', 'url' => '#'],
-                ['title' => 'Uj gyerekfoglalkozasok a hetvegekre', 'category' => 'Program', 'url' => '#'],
-                ['title' => 'Olvasotermi nyitvatartas a vizsgaidoszakban', 'category' => 'Tajekoztato', 'url' => '#'],
+                ['title' => 'Helyismereti adatbázis frissítések', 'category' => 'Adatbázis', 'url' => '#'],
+                ['title' => 'Új gyerekfoglalkozások a hétvégékre', 'category' => 'Program', 'url' => '#'],
+                ['title' => 'Olvasótermi nyitvatartás a vizsgaidőszakban', 'category' => 'Tájékoztató', 'url' => '#'],
             ],
         ],
         'news' => [
-            'title' => 'Hirek es esemenyek',
+            'title' => 'Hírek és események',
             'items' => [
                 [
                     'date' => '2026.03.25.',
-                    'title' => 'Irodalmi beszelgetes kortars szerzokkel',
-                    'text' => 'Beszelgetes es felolvasas a kozponti konyvtar rendezvenytermeben.',
+                    'title' => 'Irodalmi beszélgetés kortárs szerzőkkel',
+                    'text' => 'Beszélgetés és felolvasás a központi könyvtár rendezvénytermében.',
                     'url' => '#',
                 ],
                 [
                     'date' => '2026.03.21.',
-                    'title' => 'Digitalis tudasnap kozepiskolasoknak',
-                    'text' => 'Keresesi technikak, hiteles forrasok es konyvtari adatbazisok gyakorlati bemutatoja.',
+                    'title' => 'Digitális tudásnap középiskolásoknak',
+                    'text' => 'Keresési technikák, hiteles források és könyvtári adatbázisok gyakorlati bemutatója.',
                     'url' => '#',
                 ],
                 [
                     'date' => '2026.03.18.',
-                    'title' => 'Megujult helyismereti valogatas',
-                    'text' => 'Varostorteneti anyagok uj ajanlofellettel es konnyebb bongeszhetoseggel.',
+                    'title' => 'Megújult helyismereti válogatás',
+                    'text' => 'Várostörténeti anyagok új ajánlófelülettel és könnyebb böngészhetőséggel.',
                     'url' => '#',
                 ],
             ],
         ],
         'hours' => [
-            'title' => 'Nyitvatartas',
-            'items' => vmk_timber_parse_pairs(vmk_timber_mod('vmk_hours_items', "Kozponti konyvtar|H-P 09:00 - 19:00\nGyermekkonyvtar|H-P 10:00 - 18:00\nOlvasoterem|H-Szo 09:00 - 20:00\nHelyismeret|H-P 09:00 - 17:00")),
+            'title' => 'Nyitvatartás',
+            'items' => vmk_timber_parse_pairs(vmk_timber_mod('vmk_hours_items', "Központi könyvtár|H-P 09:00 - 19:00\nGyermekkönyvtár|H-P 10:00 - 18:00\nOlvasóterem|H-Szo 09:00 - 20:00\nHelyismeret|H-P 09:00 - 17:00")),
         ],
         'resources' => [
-            'title' => 'Digitalis forrasok',
-            'items' => vmk_timber_parse_lines(vmk_timber_mod('vmk_resources_items', "e-konyvek\nhangoskonyvek\nvideos tartalmak\nzenei gyujtemeny\nfolyoiratok")),
+            'title' => 'Digitális források',
+            'items' => vmk_timber_parse_lines(vmk_timber_mod('vmk_resources_items', "e-könyvek\nhangoskönyvek\nvideós tartalmak\nzenei gyűjtemény\nfolyóiratok")),
         ],
         'spaces' => [
-            'title' => 'Terek tanulashoz es kozossegi programokhoz',
-            'text' => 'Csendes olvasohelyek, csoportszobak es rugalmas kozossegi terek tamogatjak az egyeni es kozos hasznalatot.',
+            'title' => 'Terek tanuláshoz és közösségi programokhoz',
+            'text' => 'Csendes olvasóhelyek, csoportszobák és rugalmas közösségi terek támogatják az egyéni és közös használatot.',
             'cta' => [
-                'label' => 'Helyszinek es termek',
+                'label' => 'Helyszínek és termek',
                 'url' => '#terek',
             ],
         ],
         'donation' => [
-            'title' => 'Tamogasd a konyvtarat',
-            'text' => 'Kozossegi programok, olvasasnepszerusito kezdemenyezesek es helyi kulturalis projektek megvalositasahoz.',
+            'title' => 'Támogasd a könyvtárat',
+            'text' => 'Közösségi programok, olvasásnépszerűsítő kezdeményezések és helyi kulturális projektek megvalósításához.',
             'cta' => [
-                'label' => 'Tamogatasi lehetosegek',
+                'label' => 'Támogatási lehetőségek',
                 'url' => '#',
             ],
         ],
@@ -230,8 +230,8 @@ function vmk_timber_get_footer_support_fallback(): array
 function vmk_timber_get_footer_content(): array
 {
     return [
-        'address' => vmk_timber_mod('vmk_contact_address', '8000 Szekesfehervar, Bartok Bela ter 1.'),
-        'phone' => vmk_timber_mod('vmk_contact_phone', '+36 22 000 000'),
+        'address' => vmk_timber_mod('vmk_contact_address', '8000 Székesfehérvár, Bartók Béla tér 1.'),
+        'phone' => vmk_timber_mod('vmk_contact_phone', '+36 22 312 684'),
         'email' => vmk_timber_mod('vmk_contact_email', 'info@vmk.hu'),
         'hours' => vmk_timber_mod('vmk_contact_hours', 'Ma nyitva: 09:00 - 19:00'),
         'catalog_url' => vmk_timber_mod('vmk_contact_catalog_url', '#kereses'),
@@ -241,7 +241,7 @@ function vmk_timber_get_footer_content(): array
             ['label' => 'X', 'url' => '#'],
         ],
         'copyright' => sprintf(
-            '© %s Vorosmarty Mihaly Konyvtar. Minden jog fenntartva.',
+            '© %s Vörösmarty Mihály Könyvtár. Minden jog fenntartva.',
             gmdate('Y')
         ),
     ];

@@ -105,21 +105,21 @@ class VmkTimberSite extends Site
             'post_type' => 'tagkonyvtar',
             'posts_per_page' => -1,
         ]);
-        $context['tagkonyvtarak'] = !empty($tagkonyvtar_posts->to_array()) ? $tagkonyvtar_posts : vmk_timber_get_tagkonyvtar_fallback();
+        $context['tagkonyvtarak'] = count($tagkonyvtar_posts) > 0 ? $tagkonyvtar_posts : vmk_timber_get_tagkonyvtar_fallback();
 
         // Programok CPT query / fallback
         $program_posts = Timber::get_posts([
             'post_type' => 'program',
             'posts_per_page' => 3,
         ]);
-        $context['programok'] = !empty($program_posts->to_array()) ? $program_posts : vmk_timber_get_program_fallback();
+        $context['programok'] = count($program_posts) > 0 ? $program_posts : vmk_timber_get_program_fallback();
 
         // Adatbazisok CPT query / fallback
         $adatbazis_posts = Timber::get_posts([
             'post_type' => 'adatbazis',
             'posts_per_page' => -1,
         ]);
-        $context['adatbazisok'] = !empty($adatbazis_posts->to_array()) ? $adatbazis_posts : vmk_timber_get_adatbazis_fallback();
+        $context['adatbazisok'] = count($adatbazis_posts) > 0 ? $adatbazis_posts : vmk_timber_get_adatbazis_fallback();
 
         return $context;
     }
