@@ -27,6 +27,10 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'http://' . $_SERVER['HTTP_HOST']);
+        define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST']);
+
     volumes:
       - ./vmk-timber:/var/www/html/wp-content/themes/vmk-timber
       - wp_data:/var/www/html
