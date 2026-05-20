@@ -208,7 +208,8 @@ h4 {
 .site-nav ul {
     display: flex;
     align-items: center;
-    gap: 2.1rem;
+    gap: 1.4rem;
+    flex-wrap: nowrap;
 }
 
 .site-nav a,
@@ -229,7 +230,8 @@ h4 {
     display: inline-flex;
     padding: 0.35rem 0;
     color: #8a847d;
-    font-size: 1.02rem;
+    font-size: 0.93rem;
+    white-space: nowrap;
 }
 
 .site-nav a::after,
@@ -504,7 +506,9 @@ h3 {
     position: relative;
     min-height: 39rem;
     overflow: hidden;
-    background: #d8d1ca;
+    background:
+        linear-gradient(180deg, rgba(14, 10, 8, 0.12) 0%, rgba(14, 10, 8, 0.55) 60%, rgba(14, 10, 8, 0.82) 100%),
+        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
     box-shadow: var(--shadow);
 }
 
@@ -528,8 +532,8 @@ h3 {
     gap: 1rem;
     padding: 2.7rem 2.9rem 2.6rem;
     background:
-        linear-gradient(180deg, rgba(255, 248, 242, 0.06) 0%, rgba(255, 248, 242, 0.02) 20%, rgba(21, 16, 13, 0.08) 40%, rgba(21, 16, 13, 0.42) 74%, rgba(21, 16, 13, 0.56) 100%),
-        linear-gradient(90deg, rgba(21, 16, 13, 0.18), rgba(21, 16, 13, 0.02) 45%, rgba(21, 16, 13, 0));
+        linear-gradient(180deg, transparent 0%, rgba(14, 10, 8, 0.12) 25%, rgba(14, 10, 8, 0.52) 65%, rgba(14, 10, 8, 0.78) 100%),
+        linear-gradient(90deg, rgba(14, 10, 8, 0.22), rgba(14, 10, 8, 0.02) 50%, transparent);
     color: #fff;
 }
 
@@ -537,9 +541,7 @@ h3 {
     content: "";
     position: absolute;
     inset: 0;
-    background:
-        linear-gradient(180deg, rgba(10, 8, 7, 0.04) 0%, rgba(10, 8, 7, 0.18) 34%, rgba(10, 8, 7, 0.54) 64%, rgba(10, 8, 7, 0.82) 100%),
-        radial-gradient(circle at 18% 76%, rgba(10, 8, 7, 0.34), transparent 34%);
+    background: radial-gradient(ellipse at 18% 82%, rgba(10, 8, 7, 0.28), transparent 38%);
     pointer-events: none;
 }
 
