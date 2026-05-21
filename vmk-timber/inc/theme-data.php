@@ -450,6 +450,11 @@ function vmk_timber_get_adatbazis_fallback(): array
 
 function vmk_timber_scrape_live_content(): ?array
 {
+    // Safeguard: Check if DOM extension is installed/enabled on this server
+    if (!class_exists('DOMDocument') || !class_exists('DOMXPath')) {
+        return null;
+    }
+
     $transient_key = 'vmk_live_homepage_data';
     $cached = get_transient($transient_key);
     if ($cached !== false && is_array($cached)) {
@@ -471,9 +476,14 @@ function vmk_timber_scrape_live_content(): ?array
     }
 
     $dom = new DOMDocument();
-    libxml_use_internal_errors(true);
+    $use_libxml = function_exists('libxml_use_internal_errors');
+    if ($use_libxml) {
+        libxml_use_internal_errors(true);
+    }
     @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $html);
-    libxml_clear_errors();
+    if ($use_libxml) {
+        libxml_clear_errors();
+    }
 
     $xpath = new DOMXPath($dom);
 
@@ -524,8 +534,6 @@ function vmk_timber_scrape_live_content(): ?array
         $text = '';
         $content_divs = $xpath->query('.//div[contains(@class, "content")]', $box);
         if ($content_divs->length > 0) {
-            $text = trim($content_divs->nodeValue);
-            // also get elements text to be safe
             $text = trim($content_divs->item(0)->nodeValue);
             $text = preg_replace('/\s+/', ' ', $text);
         }

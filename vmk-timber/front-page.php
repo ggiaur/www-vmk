@@ -21,7 +21,17 @@ $is_real_post = static function ($post): bool {
     if (!$post) {
         return false;
     }
-    $title = strtolower(trim($post->title() ?? ''));
+    $title_str = '';
+    if (is_object($post)) {
+        if (method_exists($post, 'title')) {
+            $title_str = $post->title();
+        } elseif (isset($post->post_title)) {
+            $title_str = $post->post_title;
+        } elseif (isset($post->title)) {
+            $title_str = $post->title;
+        }
+    }
+    $title = strtolower(trim((string)$title_str));
     return $title !== '' 
         && $title !== 'hello world!' 
         && $title !== 'hello world' 
