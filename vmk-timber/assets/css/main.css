@@ -5,34 +5,34 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* ── Design tokens (Deichman inspired premium Dark Mode) ─ */
+/* ── Design tokens (Deichman inspired premium Light Mode) ─ */
 :root {
-    --white: #121211;            /* Fő sötét háttér */
-    --black: #080807;            /* Mélyfekete */
-    --ink: #faf9f7;              /* Világos törtfehér főszöveg */
-    --ink-mid: #dcdad5;          /* Középtónusú világos szöveg */
-    --ink-soft: #b0aca5;         /* Lágyabb szürke szöveg */
-    --ink-faint: #6b6863;        /* Tompa sötétszürke */
-    --border: #242321;           /* Sötét elválasztó keret */
-    --border-strong: #3d3b38;    /* Határozottabb sötét keret */
-    --surface: #1a1917;          /* Sötét modul felület */
-    --surface-alt: #21201e;      /* Kiemelt sötét panel felület */
+    --white: #ffffff;            /* Fő világos háttér (fehér) */
+    --black: #121211;            /* Mélyfekete (gombok, lábléc, kontrasztok) */
+    --ink: #1f1b16;              /* Sötét törtfekete főszöveg */
+    --ink-mid: #3d3b38;          /* Középtónusú sötét szöveg */
+    --ink-soft: #65584a;         /* Lágyabb szürkésbarna szöveg */
+    --ink-faint: #928b81;        /* Tompa világos szürkésbarna */
+    --border: #e8e2d9;           /* Világos elválasztó keret */
+    --border-strong: #c4bbae;    /* Határozottabb világos keret */
+    --surface: #f7f1e8;          /* Világos modul felület (homokszín) */
+    --surface-alt: #fffaf3;      /* Kiemelt világos panel felület (papírszín) */
     --brand: #e8380d;            /* Hivatalos VMK piros */
-    --brand-dark: #ff5a36;       /* Kontrasztosabb piros sötét módhoz */
+    --brand-dark: #b32400;       /* Sötétebb piros */
     --brand-warm: #ff7c4d;       
-    --brand-soft: #2e140f;       /* Sötétvörös háttér */
+    --brand-soft: #fdf0ed;       /* Lágy piros háttér */
     --green: #2d7a4f;
-    --green-soft: #12281b;       /* Sötétzöld háttér */
+    --green-soft: #eaf4ee;       /* Világoszöld háttér */
     --blue: #1a5ca8;
-    --blue-soft: #0e1e30;        /* Sötétkék háttér */
+    --blue-soft: #eef4fa;        /* Világoskék háttér */
     --container: 1240px;
     --radius: 2px;
     --font-serif: 'Source Serif 4', Georgia, serif;
     --font-sans: 'Inter', system-ui, sans-serif;
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --shadow-sm: 0 1px 4px rgba(0,0,0,0.4);
-    --shadow: 0 4px 20px rgba(0,0,0,0.5);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+    --shadow: 0 4px 20px rgba(0,0,0,0.05);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
 }
 
 /* ── Reset & base ───────────────────────────────────────── */
@@ -87,7 +87,7 @@ h1,h2,h3,h4,h5,h6,p { margin: 0; }
     top: 0;
     z-index: 100;
     background: var(--white);
-    border-bottom: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--border);
 }
 
 /* Topbar */
@@ -1770,10 +1770,10 @@ h4 { font-size: 1rem; font-weight: 600; }
 
 /* ── 1. HERO SEARCH (Deichman főhős kereső) ─────────────── */
 .vmk-hero-search {
-    background: #1c1c1a;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
     padding: 0;
-}
+} 
 
 .vmk-hero-search__inner {
     padding: 3rem 0;
@@ -1802,33 +1802,33 @@ h4 { font-size: 1rem; font-weight: 600; }
     outline: none;
     background: transparent;
     font-family: var(--font-sans);
-    font-size: 1.2rem;
-    color: #faf9f7;
+    font-size: 1.25rem;
+    color: var(--ink);
     min-height: auto;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    border-bottom: 1.5px solid var(--border-strong);
     transition: border-color 200ms var(--ease);
 }
 
 .vmk-search-form__input:focus {
-    border-bottom-color: #faf9f7;
+    border-bottom-color: var(--brand);
 }
 
 .vmk-search-form__input::placeholder {
-    color: rgba(255, 255, 255, 0.45);
+    color: var(--ink-soft);
 }
 
 .vmk-search-form__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.65rem 2.4rem;
-    background: transparent;
-    color: #faf9f7;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 6px;
+    padding: 0.75rem 2.4rem;
+    background: var(--black);
+    color: var(--white);
+    border: 1px solid var(--black);
+    border-radius: 4px;
     font-family: var(--font-sans);
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
     transition: all 200ms var(--ease);
@@ -1836,8 +1836,9 @@ h4 { font-size: 1rem; font-weight: 600; }
 }
 
 .vmk-search-form__btn:hover {
-    border-color: #faf9f7;
-    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--brand);
+    background: var(--brand);
+    color: var(--white);
 }
 
 /* ── 2. BILLBOARD (Deichman billboard-mini) ─────────────── */
