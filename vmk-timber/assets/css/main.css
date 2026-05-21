@@ -5,35 +5,36 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* ── Design tokens (Deichman inspired premium Light Mode) ─ */
+/* ── Design tokens (Deichman inspired premium Dark Mode) ── */
 :root {
-    --white: #ffffff;            /* Fő világos háttér (fehér) */
-    --black: #121211;            /* Mélyfekete (gombok, lábléc, kontrasztok) */
-    --ink: #1f1b16;              /* Sötét törtfekete főszöveg */
-    --ink-mid: #3d3b38;          /* Középtónusú sötét szöveg */
-    --ink-soft: #65584a;         /* Lágyabb szürkésbarna szöveg */
-    --ink-faint: #928b81;        /* Tompa világos szürkésbarna */
-    --border: #e8e2d9;           /* Világos elválasztó keret */
-    --border-strong: #c4bbae;    /* Határozottabb világos keret */
-    --surface: #f7f1e8;          /* Világos modul felület (homokszín) */
-    --surface-alt: #fffaf3;      /* Kiemelt világos panel felület (papírszín) */
+    --white: #111111;            /* Fő mély sötét háttér (szénfekete/sötétszürke) */
+    --black: #000000;            /* Tiszta fekete kontrasztokhoz és árnyékokhoz */
+    --ink: #ffffff;              /* Világos törtfehér főszöveg (magas kontraszt) */
+    --ink-mid: #e5e5e3;          /* Középtónusú világos szöveg */
+    --ink-soft: #a6a5a0;         /* Lágyabb, elegáns szürke szöveg */
+    --ink-faint: #6c6b66;        /* Tompa sötétszürke elválasztókhoz/leírásokhoz */
+    --border: #242422;           /* Sötét elválasztó keret */
+    --border-strong: #3e3e3b;    /* Határozottabb sötét keret */
+    --surface: #1c1c1a;          /* Autentikus Deichman kereső/kártya háttér */
+    --surface-alt: #252422;      /* Kiemelt sötét panel felület */
     --brand: #e8380d;            /* Hivatalos VMK piros */
-    --brand-dark: #b32400;       /* Sötétebb piros */
+    --brand-dark: #ff5a36;       /* Világosabb, kontrasztosabb piros hoverre sötét módban */
     --brand-warm: #ff7c4d;       
-    --brand-soft: #fdf0ed;       /* Lágy piros háttér */
+    --brand-soft: #2e140f;       /* Mély sötétvörös háttér */
     --green: #2d7a4f;
-    --green-soft: #eaf4ee;       /* Világoszöld háttér */
+    --green-soft: #12281b;       /* Mélysötétzöld háttér */
     --blue: #1a5ca8;
-    --blue-soft: #eef4fa;        /* Világoskék háttér */
+    --blue-soft: #0e1e30;        /* Mélysötétkék háttér */
     --container: 1240px;
     --radius: 2px;
     --font-serif: 'Source Serif 4', Georgia, serif;
     --font-sans: 'Inter', system-ui, sans-serif;
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
-    --shadow: 0 4px 20px rgba(0,0,0,0.05);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.15);
+    --shadow: 0 4px 20px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
 }
+
 
 /* ── Reset & base ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
@@ -92,7 +93,7 @@ h1,h2,h3,h4,h5,h6,p { margin: 0; }
 
 /* Topbar */
 .site-topbar {
-    background: var(--ink);
+    background: var(--black);
     color: rgba(255,255,255,0.75);
     font-size: 0.78rem;
     letter-spacing: 0.01em;
@@ -241,13 +242,13 @@ h1,h2,h3,h4,h5,h6,p { margin: 0; }
     justify-content: center;
     padding: 0.55rem 1.25rem;
     background: var(--ink);
-    color: #fff;
+    color: var(--white);
     font-size: 0.85rem;
     font-weight: 600;
     white-space: nowrap;
-    transition: background 150ms;
+    transition: background 150ms, color 150ms;
 }
-.header-cta:hover { background: var(--brand); }
+.header-cta:hover { background: var(--brand); color: #fff; }
 
 .social-links {
     display: flex;
@@ -658,7 +659,7 @@ h4 { font-size: 1rem; font-weight: 600; }
 .hero-sidebar {
     display: grid;
     grid-template-rows: repeat(3, 1fr) auto;
-    background: #fff;
+    background: var(--surface-alt);
     border-left: 1px solid var(--border);
 }
 
@@ -1770,65 +1771,77 @@ h4 { font-size: 1rem; font-weight: 600; }
 
 /* ── 1. HERO SEARCH (Deichman főhős kereső) ─────────────── */
 .vmk-hero-search {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
+    background: var(--white);
+    border-bottom: 1.5px solid var(--border);
     padding: 0;
 } 
 
 .vmk-hero-search__inner {
-    padding: 3rem 0;
+    padding: 1.75rem 0;
 }
 
 .vmk-search-form {
-    max-width: 1200px;
+    max-width: 600px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .vmk-search-form__bar {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 0.75rem;
     background: transparent;
     border: none;
+    border-bottom: 1.5px solid var(--border-strong);
     border-radius: 0;
     box-shadow: none;
     width: 100%;
+    padding: 0.25rem 0 0.4rem 0;
+    transition: border-color 200ms var(--ease);
+}
+
+.vmk-search-form__bar:focus-within {
+    border-bottom-color: var(--brand);
+}
+
+.vmk-search-form__icon {
+    color: var(--ink-soft);
+    flex-shrink: 0;
+    transition: color 200ms var(--ease);
+}
+
+.vmk-search-form__bar:focus-within .vmk-search-form__icon {
+    color: var(--brand);
 }
 
 .vmk-search-form__input {
     flex: 1;
-    padding: 0.8rem 0;
+    padding: 0.4rem 0;
     border: none;
     outline: none;
     background: transparent;
     font-family: var(--font-sans);
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     color: var(--ink);
     min-height: auto;
-    border-bottom: 1.5px solid var(--border-strong);
-    transition: border-color 200ms var(--ease);
-}
-
-.vmk-search-form__input:focus {
-    border-bottom-color: var(--brand);
 }
 
 .vmk-search-form__input::placeholder {
-    color: var(--ink-soft);
+    color: var(--ink-faint);
 }
 
 .vmk-search-form__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 2.4rem;
-    background: var(--black);
-    color: var(--white);
-    border: 1px solid var(--black);
+    padding: 0.45rem 1.25rem;
+    background: transparent;
+    color: var(--ink-mid);
+    border: 1px solid var(--border-strong);
     border-radius: 4px;
     font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
     transition: all 200ms var(--ease);
@@ -1838,7 +1851,7 @@ h4 { font-size: 1rem; font-weight: 600; }
 .vmk-search-form__btn:hover {
     border-color: var(--brand);
     background: var(--brand);
-    color: var(--white);
+    color: #ffffff;
 }
 
 /* ── 2. BILLBOARD (Deichman billboard-mini) ─────────────── */
@@ -2006,19 +2019,32 @@ h4 { font-size: 1rem; font-weight: 600; }
 .vmk-news-card {
     display: flex;
     flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    height: 100%;
+    transition: all 250ms var(--ease);
+}
+
+.vmk-news-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
 }
 
 .vmk-news-card__image-link {
     display: block;
+    overflow: hidden;
 }
 
 .vmk-news-card__image {
-    aspect-ratio: 4/3;
+    aspect-ratio: 16/10;
     overflow: hidden;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    margin-bottom: 1.1rem;
+    margin-bottom: 0;
     position: relative;
     transition: transform 500ms var(--ease);
 }
@@ -2032,8 +2058,15 @@ h4 { font-size: 1rem; font-weight: 600; }
     transition: transform 500ms var(--ease);
 }
 
-.vmk-news-card:hover .vmk-news-card__image img {
-    transform: scale(1.04);
+.vmk-news-card:hover .vmk-news-card__image {
+    transform: scale(1.02);
+}
+
+.vmk-news-card__body-wrap {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .vmk-news-card__tags {
@@ -2079,7 +2112,6 @@ h4 { font-size: 1rem; font-weight: 600; }
     line-height: 1.65;
 }
 
-/* Featured news card specifics */
 .vmk-news-card--featured {
     height: 100%;
 }
@@ -2088,6 +2120,7 @@ h4 { font-size: 1rem; font-weight: 600; }
     aspect-ratio: 16/10;
     min-height: 280px;
 }
+
 
 .vmk-news-card--featured .vmk-news-card__title {
     font-size: clamp(1.4rem, 2.5vw, 1.85rem);
@@ -2100,39 +2133,43 @@ h4 { font-size: 1rem; font-weight: 600; }
 }
 
 /* Non-featured horizontal news cards (when in vertical column) */
-.vmk-news-grid__item .vmk-news-card {
-    flex-direction: row;
-    gap: 1.5rem;
-    align-items: flex-start;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--border);
-    height: 100%;
+.vmk-news-grid__item {
+    margin-bottom: 1.25rem;
 }
 
-.vmk-news-grid__item:last-child .vmk-news-card {
-    border-bottom: 0;
-    padding-bottom: 0;
+.vmk-news-grid__item:last-child {
+    margin-bottom: 0;
+}
+
+.vmk-news-grid__item .vmk-news-card {
+    flex-direction: row;
+    height: 100%;
 }
 
 .vmk-news-grid__item .vmk-news-card__image-link {
     flex-shrink: 0;
-    width: 140px;
+    width: 160px;
+    height: 100%;
+    align-self: stretch;
 }
 
 .vmk-news-grid__item .vmk-news-card__image {
     aspect-ratio: 1/1;
+    height: 100%;
     margin-bottom: 0;
 }
 
 .vmk-news-grid__item .vmk-news-card__body-wrap {
+    padding: 1.25rem;
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 0.4rem;
 }
 
 .vmk-news-grid__item .vmk-news-card__title {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     line-height: 1.25;
     margin-bottom: 0;
 }
@@ -2141,12 +2178,11 @@ h4 { font-size: 1rem; font-weight: 600; }
     font-size: 0.85rem;
     line-height: 1.5;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* ── 5. FEATURES GRID ───────────────────────────────────── */
 .vmk-features-section {
     padding-top: 0;
     border-top: 1px solid var(--border);
@@ -2729,10 +2765,10 @@ h4 { font-size: 1rem; font-weight: 600; }
 }
 
 @media (max-width: 640px) {
-    .vmk-hero-search__inner { padding: 2rem 0; }
-    .vmk-search-form__bar { flex-direction: row; gap: 1rem; }
+    .vmk-hero-search__inner { padding: 1.25rem 0; }
+    .vmk-search-form__bar { flex-direction: row; gap: 0.5rem; }
     .vmk-search-form__input { font-size: 1.05rem; }
-    .vmk-search-form__btn { padding: 0.55rem 1.4rem; font-size: 0.9rem; }
+    .vmk-search-form__btn { padding: 0.4rem 1rem; font-size: 0.82rem; }
     .vmk-news-grid { grid-template-columns: 1fr; }
     .vmk-event-grid { grid-template-columns: 1fr; }
     .vmk-branches-grid { grid-template-columns: 1fr; }

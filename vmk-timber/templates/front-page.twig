@@ -18,12 +18,16 @@
                 <input type="hidden" name="searchfield" value="ALL">
 
                 <div class="vmk-search-form__bar">
+                    <svg class="vmk-search-form__icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
                     <label class="screen-reader-text" for="vmk-q">Keresési kifejezés</label>
                     <input id="vmk-q"
                            class="vmk-search-form__input"
                            type="search"
                            name="searcharg"
-                           placeholder="Mit keresel?"
+                           placeholder="Keresés a katalógusban (szerző, cím, könyv...)"
                            autocomplete="off"
                            spellcheck="false">
                     <button class="vmk-search-form__btn" type="submit">Keresés</button>
@@ -38,12 +42,12 @@
        2/3 kép  +  1/3 szöveges kártya (Valódi VMK kép és hír)
    ═══════════════════════════════════════════════════════ #}
 {% set fallback_imgs = [
-    'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=1600&q=80'
+    'https://www.vmk.hu/_upload/images/banner/A városban 6 helyen_20240409_175719_0000.png',
+    'https://www.vmk.hu/_upload/news_pic/600x600/4_5660.png',
+    'https://www.vmk.hu/_upload/news_pic/600x600/4_5211.png',
+    'https://www.vmk.hu/_upload/news_pic/600x600/4_5530.png',
+    'https://www.vmk.hu/_upload/news_pic/600x600/4_5458.png',
+    'https://www.vmk.hu/_upload/news_pic/600x600/4_5693.png'
 ] %}
 
 <section class="vmk-billboard" aria-label="Kiemelt tartalom">
@@ -93,9 +97,10 @@
             {% set is_featured = loop.first %}
             <li class="{% if is_featured %}vmk-news-grid__featured-item{% else %}vmk-news-grid__item{% endif %}">
                 <article class="vmk-news-card {% if is_featured %}vmk-news-card--featured{% endif %}">
-                    <a class="vmk-news-card__image-link" href="{{ item.url|default('#') }}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+                    <a class="vmk-news-card__image-link" href="{{ item.url|default(item.link)|default('#') }}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+                        {% set img_url = item.image|default(item.thumbnail.src)|default(img_fallback) %}
                         <div class="vmk-news-card__image"
-                             style="background-image: url('{{ item.image|default(img_fallback) }}')">
+                             style="background-image: url('{{ img_url }}')">
                         </div>
                     </a>
                     <div class="vmk-news-card__body-wrap">
@@ -104,12 +109,12 @@
                             <span class="vmk-tag">{{ item.date }}</span>
                         </div>
                         <h3 class="vmk-news-card__title">
-                            <a href="{{ item.url|default('#') }}" target="_blank" rel="noopener noreferrer">
+                            <a href="{{ item.url|default(item.link)|default('#') }}" target="_blank" rel="noopener noreferrer">
                                 {{ item.title }}
                             </a>
                         </h3>
                         <p class="vmk-news-card__excerpt">
-                            {{ item.text }}
+                            {{ item.text|default(item.excerpt)|default(item.content)|striptags|slice(0, 180) }}...
                         </p>
                     </div>
                 </article>

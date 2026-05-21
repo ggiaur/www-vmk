@@ -15,6 +15,22 @@ if (! class_exists(Timber::class)) {
 $context = Timber::context();
 $context['page'] = Timber::get_post();
 $context['home'] = vmk_timber_get_homepage_content();
+
+// Helper function to check if posts are real custom content or just default WP hello-world installations
+$is_real_post = static function ($post): bool {
+    if (!$post) {
+        return false;
+    }
+    $title = strtolower(trim($post->title() ?? ''));
+    return $title !== '' 
+        && $title !== 'hello world!' 
+        && $title !== 'hello world' 
+        && $title !== 'üdvözöljük a wordpress-ben!' 
+        && $title !== 'üdvözöljük a wordpress-ben'
+        && $title !== 'próba bejegyzés'
+        && $title !== 'próbabejegyzés';
+};
+
 $featured_posts_query = Timber::get_posts(
     [
         'post_type' => 'post',
@@ -25,8 +41,27 @@ $featured_posts_query = Timber::get_posts(
     PostQuery::class
 );
 $featured_posts = array_values(iterator_to_array($featured_posts_query));
-$featured_lead = $featured_posts[0] ?? null;
-$featured_aside = array_slice($featured_posts, 1, 3);
+
+$has_real_featured = false;
+foreach ($featured_posts as $p) {
+    if ($is_real_post($p)) {
+        $has_real_featured = true;
+        break;
+    }
+}
+
+if ($has_real_featured) {
+    $featured_lead = $featured_posts[0] ?? null;
+    $featured_aside = array_slice($featured_posts, 1, 3);
+    
+    if ($featured_lead !== null) {
+        $context['home']['featured']['lead'] = $featured_lead;
+    }
+    if (count($featured_aside) > 0) {
+        $context['home']['featured']['aside'] = $featured_aside;
+    }
+}
+
 $news_posts = Timber::get_posts(
     [
         'post_type' => 'post',
@@ -36,16 +71,16 @@ $news_posts = Timber::get_posts(
     PostQuery::class
 );
 
-if (count($news_posts) > 0) {
+$has_real_news = false;
+foreach ($news_posts as $p) {
+    if ($is_real_post($p)) {
+        $has_real_news = true;
+        break;
+    }
+}
+
+if ($has_real_news) {
     $context['home']['news']['items'] = $news_posts;
-}
-
-if ($featured_lead !== null) {
-    $context['home']['featured']['lead'] = $featured_lead;
-}
-
-if (count($featured_aside) > 0) {
-    $context['home']['featured']['aside'] = $featured_aside;
 }
 
 Timber::render('templates/front-page.twig', $context);

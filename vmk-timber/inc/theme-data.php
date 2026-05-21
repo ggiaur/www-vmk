@@ -44,6 +44,101 @@ function vmk_timber_parse_pairs(string $value): array
 
 function vmk_timber_get_homepage_content(): array
 {
+    $scraped = vmk_timber_scrape_live_content();
+
+    $featured_lead = [
+        'category' => 'Tájékoztatás',
+        'title' => vmk_timber_mod('vmk_featured_title', 'Központi olvasószolgálat zárvatartása ablakcsere miatt'),
+        'text' => vmk_timber_mod('vmk_featured_text', 'A Vörösmarty Mihály Könyvtár Központi olvasószolgálata 2026. május 1. és 31. között homlokzati ablakcsere miatt zárva tart. Megértésüket köszönjük!'),
+        'url' => vmk_timber_mod('vmk_featured_url', 'https://www.vmk.hu/20260417_csok_keptar_felujitas'),
+        'image' => vmk_timber_mod('vmk_featured_image', 'https://www.vmk.hu/_upload/news_pic/600x600/4_5660.png'),
+    ];
+
+    $featured_aside = [
+        ['title' => 'Családi OlvasásMánia nyári olvasópályázat', 'category' => 'Pályázat', 'url' => 'https://www.vmk.hu/csaladi-olvasasmania-2026'],
+        ['title' => 'Laptapír szolgáltatás – olvass otthonról!', 'category' => 'Szolgáltatás', 'url' => 'https://www.vmk.hu/20260108_laptapir_szolgaltatas'],
+        ['title' => 'Ünnepi Könyvhét 2026 június 1-16. között', 'category' => 'Program', 'url' => 'https://www.vmk.hu/unnepi-konyvhet-2026'],
+    ];
+
+    $news_items = [
+        [
+            'date' => '2026.05.23.',
+            'title' => 'Pünkösdi nyitvatartás a könyvtárban',
+            'text' => '2026. május 23. és 25. között valamennyi részlegünk és tagkönyvtárunk zárva tart. Nyitás: május 26. (kedd).',
+            'url' => 'https://www.vmk.hu/punkosdi-nyitvatartas-2026',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5211.png'
+        ],
+        [
+            'date' => '2026.06.01.',
+            'title' => 'Családi OlvasásMánia nyári olvasópályázat',
+            'text' => 'Családi OlvasásMánia 2026 nyári olvasópályázat: 2026. június 1-től szeptember 12-ig. Eredményhirdetés október 9-én.',
+            'url' => 'https://www.vmk.hu/csaladi-olvasasmania-2026',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5530.png'
+        ],
+        [
+            'date' => '2026.01.08.',
+            'title' => 'Laptapír szolgáltatás otthonról',
+            'text' => 'Olvass újságot, magazinokat könyvtári beiratkozással közvetlenül otthonról! További részletekért kattints.',
+            'url' => 'https://www.vmk.hu/20260108_laptapir_szolgaltatas',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5458.png'
+        ],
+        [
+            'date' => '2026.05.05.',
+            'title' => 'Polar Könyvek kiállítás',
+            'text' => 'Kiállítás a Polar Egyesület könyvsorozatának köteteiből a Széna Téri Tagkönyvtárban május 5. és 30. között.',
+            'url' => 'https://www.vmk.hu/202605_szena_ter_polar_konyvek_kiallitas',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5656.png'
+        ],
+        [
+            'date' => '2026.05.04.',
+            'title' => 'Szalontai Endre festőművész kiállítása',
+            'text' => '\"Húzom az ecsetet, nyomában megjelenik a kép!\" - Szalontai Endre kiállítása az Olvasóteremben május 4-28. között.',
+            'url' => 'https://www.vmk.hu/2026-05-04-28-szalontai-endre-festomuvesz-kiallitasa',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5629.png'
+        ],
+        [
+            'date' => '2026.05.21.',
+            'title' => 'Drámafoglalkozás felnőtteknek',
+            'text' => 'Drámafoglalkozás felnőtteknek Valkó-Máté Anett színművész, foglalkozásvezetővel a Széna Téri Tagkönyvtárban.',
+            'url' => 'https://www.vmk.hu/2026-05-21-dramafoglalkozas-felnotteknek',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5510.png'
+        ],
+        [
+            'date' => '2026.05.22.',
+            'title' => 'Eperhajó - felszállás a fedélzetre!',
+            'text' => 'Kalmusné Idrányi Eszter zenetanítási módszerének bemutatója a Központi Könyvtár Zenei és Okostermi részlegén.',
+            'url' => 'https://www.vmk.hu/2026-05-22-eperhajo-felszallas-a-fedelzetre',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5683.png'
+        ],
+        [
+            'date' => '2026.05.27.',
+            'title' => 'Kiolvasó, kibeszélő olvasókör tiniknek',
+            'text' => 'Tini olvasókör: Suzanne Collins Az éhezők viadala című disztópikus regényének kibeszélése a Központi Könyvtárban.',
+            'url' => 'https://www.vmk.hu/20260527_kiolvaso_kibeszelo_tini_olvasokor_disztopia',
+            'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5488.png'
+        ]
+    ];
+
+    if ($scraped !== null) {
+        if (!empty($scraped['featured_lead'])) {
+            $featured_lead = $scraped['featured_lead'];
+        }
+        if (!empty($scraped['news_items'])) {
+            $news_items = $scraped['news_items'];
+            $aside_items = array_slice($news_items, 1, 3);
+            if (count($aside_items) > 0) {
+                $featured_aside = [];
+                foreach ($aside_items as $item) {
+                    $featured_aside[] = [
+                        'title' => $item['title'],
+                        'category' => 'Hír',
+                        'url' => $item['url'],
+                    ];
+                }
+            }
+        }
+    }
+
     return [
         'hero' => [
             'eyebrow' => vmk_timber_mod('vmk_hero_eyebrow', 'Vörösmarty Mihály Könyvtár'),
@@ -125,79 +220,12 @@ function vmk_timber_get_homepage_content(): array
         ],
         'featured' => [
             'title' => 'Kiemelt tartalmak',
-            'lead' => [
-                'category' => 'Tájékoztatás',
-                'title' => 'Központi olvasószolgálat zárvatartása ablakcsere miatt',
-                'text' => 'A Vörösmarty Mihály Könyvtár Központi olvasószolgálata 2026. május 1. és 31. között homlokzati ablakcsere miatt zárva tart. Megértésüket köszönjük!',
-                'url' => 'https://www.vmk.hu/20260417_csok_keptar_felujitas',
-                'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5660.png'
-            ],
-            'aside' => [
-                ['title' => 'Családi OlvasásMánia nyári olvasópályázat', 'category' => 'Pályázat', 'url' => 'https://www.vmk.hu/csaladi-olvasasmania-2026'],
-                ['title' => 'Laptapír szolgáltatás – olvass otthonról!', 'category' => 'Szolgáltatás', 'url' => 'https://www.vmk.hu/20260108_laptapir_szolgaltatas'],
-                ['title' => 'Ünnepi Könyvhét 2026 június 1-16. között', 'category' => 'Program', 'url' => 'https://www.vmk.hu/unnepi-konyvhet-2026'],
-            ],
+            'lead' => $featured_lead,
+            'aside' => $featured_aside,
         ],
         'news' => [
             'title' => 'Hírek és események',
-            'items' => [
-                [
-                    'date' => '2026.05.23.',
-                    'title' => 'Pünkösdi nyitvatartás a könyvtárban',
-                    'text' => '2026. május 23. és 25. között valamennyi részlegünk és tagkönyvtárunk zárva tart. Nyitás: május 26. (kedd).',
-                    'url' => 'https://www.vmk.hu/punkosdi-nyitvatartas-2026',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5211.png'
-                ],
-                [
-                    'date' => '2026.06.01.',
-                    'title' => 'Családi OlvasásMánia nyári olvasópályázat',
-                    'text' => 'Családi OlvasásMánia 2026 nyári olvasópályázat: 2026. június 1-től szeptember 12-ig. Eredményhirdetés október 9-én.',
-                    'url' => 'https://www.vmk.hu/csaladi-olvasasmania-2026',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5530.png'
-                ],
-                [
-                    'date' => '2026.01.08.',
-                    'title' => 'Laptapír szolgáltatás otthonról',
-                    'text' => 'Olvass újságot, magazinokat könyvtári beiratkozással közvetlenül otthonról! További részletekért kattints.',
-                    'url' => 'https://www.vmk.hu/20260108_laptapir_szolgaltatas',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5458.png'
-                ],
-                [
-                    'date' => '2026.05.05.',
-                    'title' => 'Polar Könyvek kiállítás',
-                    'text' => 'Kiállítás a Polar Egyesület könyvsorozatának köteteiből a Széna Téri Tagkönyvtárban május 5. és 30. között.',
-                    'url' => 'https://www.vmk.hu/202605_szena_ter_polar_konyvek_kiallitas',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5656.png'
-                ],
-                [
-                    'date' => '2026.05.04.',
-                    'title' => 'Szalontai Endre festőművész kiállítása',
-                    'text' => '\"Húzom az ecsetet, nyomában megjelenik a kép!\" - Szalontai Endre kiállítása az Olvasóteremben május 4-28. között.',
-                    'url' => 'https://www.vmk.hu/2026-05-04-28-szalontai-endre-festomuvesz-kiallitasa',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5629.png'
-                ],
-                [
-                    'date' => '2026.05.21.',
-                    'title' => 'Drámafoglalkozás felnőtteknek',
-                    'text' => 'Drámafoglalkozás felnőtteknek Valkó-Máté Anett színművész, foglalkozásvezetővel a Széna Téri Tagkönyvtárban.',
-                    'url' => 'https://www.vmk.hu/2026-05-21-dramafoglalkozas-felnotteknek',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5510.png'
-                ],
-                [
-                    'date' => '2026.05.22.',
-                    'title' => 'Eperhajó - felszállás a fedélzetre!',
-                    'text' => 'Kalmusné Idrányi Eszter zenetanítási módszerének bemutatója a Központi Könyvtár Zenei és Okostermi részlegén.',
-                    'url' => 'https://www.vmk.hu/2026-05-22-eperhajo-felszallas-a-fedelzetre',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5683.png'
-                ],
-                [
-                    'date' => '2026.05.27.',
-                    'title' => 'Kiolvasó, kibeszélő olvasókör tiniknek',
-                    'text' => 'Tini olvasókör: Suzanne Collins Az éhezők viadala című disztópikus regényének kibeszélése a Központi Könyvtárban.',
-                    'url' => 'https://www.vmk.hu/20260527_kiolvaso_kibeszelo_tini_olvasokor_disztopia',
-                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5488.png'
-                ]
-            ],
+            'items' => $news_items,
         ],
         'hours' => [
             'title' => 'Nyitvatartás',
@@ -418,5 +446,153 @@ function vmk_timber_get_adatbazis_fallback(): array
             'tags' => ['Nemzetközi', 'Tudomány', 'Folyóiratok'],
         ],
     ];
+}
+
+function vmk_timber_scrape_live_content(): ?array
+{
+    $transient_key = 'vmk_live_homepage_data';
+    $cached = get_transient($transient_key);
+    if ($cached !== false && is_array($cached)) {
+        return $cached;
+    }
+
+    $response = wp_remote_get('https://www.vmk.hu/', [
+        'timeout' => 5,
+        'sslverify' => false,
+    ]);
+
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+        return null;
+    }
+
+    $html = wp_remote_retrieve_body($response);
+    if (empty($html)) {
+        return null;
+    }
+
+    $dom = new DOMDocument();
+    libxml_use_internal_errors(true);
+    @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $html);
+    libxml_clear_errors();
+
+    $xpath = new DOMXPath($dom);
+
+    $slider_img_url = 'https://www.vmk.hu/_upload/images/banner/A városban 6 helyen_20240409_175719_0000.png';
+    $slider_imgs = $xpath->query('//section[@id="slider-section"]//div[contains(@class, "carousel-inner")]//img');
+    if ($slider_imgs->length > 0) {
+        $src = $slider_imgs->item(0)->getAttribute('src');
+        if (!empty($src)) {
+            $slider_img_url = (strpos($src, 'http') === 0) ? $src : 'https://www.vmk.hu' . $src;
+        }
+    }
+
+    $news_items = [];
+    $boxes = $xpath->query('//section[@id="news"]//a[contains(@class, "box")]');
+    foreach ($boxes as $box) {
+        $url_attr = $box->getAttribute('href');
+        if (empty($url_attr)) {
+            continue;
+        }
+        $url = (strpos($url_attr, 'http') === 0) ? $url_attr : 'https://www.vmk.hu' . $url_attr;
+
+        $img_url = '';
+        $img_tags = $xpath->query('.//img', $box);
+        if ($img_tags->length > 0) {
+            $src = $img_tags->item(0)->getAttribute('src');
+            if (strpos($src, 'img_news.png') === false && !empty($src)) {
+                $img_url = (strpos($src, 'http') === 0) ? $src : 'https://www.vmk.hu' . $src;
+            }
+        }
+        
+        if (empty($img_url)) {
+            $div_tags = $xpath->query('.//div[contains(@class, "image")]', $box);
+            if ($div_tags->length > 0) {
+                $style = $div_tags->item(0)->getAttribute('style');
+                if (preg_match('/url\([\'"]?([^\'")]+)[\'"]?\)/', $style, $matches)) {
+                    $src = $matches[1];
+                    $img_url = (strpos($src, 'http') === 0) ? $src : 'https://www.vmk.hu' . $src;
+                }
+            }
+        }
+
+        $title = '';
+        $h2_tags = $xpath->query('.//h2', $box);
+        if ($h2_tags->length > 0) {
+            $title = trim($h2_tags->item(0)->nodeValue);
+        }
+
+        $text = '';
+        $content_divs = $xpath->query('.//div[contains(@class, "content")]', $box);
+        if ($content_divs->length > 0) {
+            $text = trim($content_divs->nodeValue);
+            // also get elements text to be safe
+            $text = trim($content_divs->item(0)->nodeValue);
+            $text = preg_replace('/\s+/', ' ', $text);
+        }
+
+        $date = '2026.05.21.';
+        if (preg_match('/\/(\d{4})(\d{2})(\d{2})_/', $url_attr, $d_matches)) {
+            $date = $d_matches[1] . '.' . $d_matches[2] . '.' . $d_matches[3] . '.';
+        } elseif (preg_match('/\/(\d{4})-(\d{2})-(\d{2})-/', $url_attr, $d_matches)) {
+            $date = $d_matches[1] . '.' . $d_matches[2] . '.' . $d_matches[3] . '.';
+        } elseif (preg_match('/\/(\d{4})(\d{2})_/', $url_attr, $d_matches)) {
+            $date = $d_matches[1] . '.' . $d_matches[2] . '.';
+        }
+
+        $is_main = strpos($box->getAttribute('class'), 'main') !== false;
+
+        $news_items[] = [
+            'date' => $date,
+            'title' => $title,
+            'text' => $text,
+            'url' => $url,
+            'image' => $img_url,
+            'is_main' => $is_main,
+        ];
+    }
+
+    if (empty($news_items)) {
+        return null;
+    }
+
+    $featured_lead = null;
+    foreach ($news_items as $item) {
+        if ($item['is_main']) {
+            $featured_lead = [
+                'category' => 'Tájékoztatás',
+                'title' => $item['title'] === 'Tájékoztatás' ? 'Központi olvasószolgálat zárvatartása ablakcsere miatt' : $item['title'],
+                'text' => $item['text'],
+                'url' => $item['url'],
+                'image' => $item['image'],
+            ];
+            break;
+        }
+    }
+
+    if ($featured_lead === null && !empty($news_items)) {
+        $featured_lead = [
+            'category' => 'Hír',
+            'title' => $news_items[0]['title'],
+            'text' => $news_items[0]['text'],
+            'url' => $news_items[0]['url'],
+            'image' => $news_items[0]['image'],
+        ];
+    }
+
+    $clean_news = [];
+    foreach ($news_items as $item) {
+        unset($item['is_main']);
+        $clean_news[] = $item;
+    }
+
+    $scraped_data = [
+        'slider_image' => $slider_img_url,
+        'featured_lead' => $featured_lead,
+        'news_items' => $clean_news,
+    ];
+
+    set_transient($transient_key, $scraped_data, HOUR_IN_SECONDS);
+
+    return $scraped_data;
 }
 
