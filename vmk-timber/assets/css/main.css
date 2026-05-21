@@ -1486,7 +1486,7 @@ h4 { font-size: 1rem; font-weight: 600; }
    ══════════════════════════════════════════════════════════ */
 
 .site-footer {
-    background: var(--ink);
+    background: var(--black);
     color: rgba(255,255,255,0.72);
     margin-top: 6rem;
     border-top: 4px solid var(--brand);
