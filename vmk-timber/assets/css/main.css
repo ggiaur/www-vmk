@@ -1769,114 +1769,75 @@ h4 { font-size: 1rem; font-weight: 600; }
    ══════════════════════════════════════════════════════════ */
 
 /* ── 1. HERO SEARCH (Deichman főhős kereső) ─────────────── */
-/* ── 1. HERO SEARCH (Deichman főhős kereső) ─────────────── */
 .vmk-hero-search {
-    background: var(--black);
+    background: #1c1c1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding: 0;
 }
 
 .vmk-hero-search__inner {
-    padding: 5rem 0 4rem;
-}
-
-.vmk-hero-search__heading {
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
-.vmk-hero-search__heading h1 {
-    font-family: var(--font-serif);
-    font-size: clamp(2.4rem, 4.5vw, 4rem);
-    font-weight: 600;
-    color: var(--ink);
-    letter-spacing: -0.03em;
-    line-height: 1.15;
-    margin-bottom: 0.85rem;
-}
-
-.vmk-hero-search__heading p {
-    font-size: 1.05rem;
-    color: var(--ink-soft);
-    max-width: 44rem;
-    margin: 0 auto;
-    line-height: 1.65;
+    padding: 3rem 0;
 }
 
 .vmk-search-form {
-    max-width: 780px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 .vmk-search-form__bar {
     display: flex;
-    align-items: stretch;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: border-color 200ms var(--ease);
-}
-
-.vmk-search-form__bar:focus-within {
-    border-color: var(--ink-soft);
+    align-items: center;
+    gap: 2rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
 }
 
 .vmk-search-form__input {
     flex: 1;
-    padding: 1.1rem 1.6rem;
+    padding: 0.8rem 0;
     border: none;
     outline: none;
     background: transparent;
     font-family: var(--font-sans);
-    font-size: 1.05rem;
-    color: #fff;
-    min-height: 4rem;
+    font-size: 1.2rem;
+    color: #faf9f7;
+    min-height: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    transition: border-color 200ms var(--ease);
+}
+
+.vmk-search-form__input:focus {
+    border-bottom-color: #faf9f7;
 }
 
 .vmk-search-form__input::placeholder {
-    color: var(--ink-faint);
+    color: rgba(255, 255, 255, 0.45);
 }
 
 .vmk-search-form__btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0 2.2rem;
-    background: var(--brand);
-    color: #fff;
-    border: none;
+    justify-content: center;
+    padding: 0.65rem 2.4rem;
+    background: transparent;
+    color: #faf9f7;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
     font-family: var(--font-sans);
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: background 150ms var(--ease);
-    min-height: 4rem;
+    transition: all 200ms var(--ease);
+    min-height: auto;
 }
 
 .vmk-search-form__btn:hover {
-    background: var(--brand-dark);
-}
-
-.vmk-search-form__hint {
-    margin-top: 1.25rem;
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--ink-faint);
-}
-
-.vmk-search-form__hint a {
-    color: var(--ink-soft);
-    text-decoration: underline;
-    text-underline-offset: 0.12em;
-    transition: color 150ms;
-}
-
-.vmk-search-form__hint a:hover {
-    color: #fff;
+    border-color: #faf9f7;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* ── 2. BILLBOARD (Deichman billboard-mini) ─────────────── */
@@ -2767,12 +2728,10 @@ h4 { font-size: 1rem; font-weight: 600; }
 }
 
 @media (max-width: 640px) {
-    .vmk-hero-search__inner { padding: 2.5rem 0 2rem; }
-    .vmk-hero-search__heading h1 { font-size: 2rem; }
-    .vmk-search-form__tabs { overflow-x: auto; flex-wrap: nowrap; }
-    .vmk-search-form__bar { flex-direction: column; }
-    .vmk-search-form__input { min-height: 3.5rem; }
-    .vmk-search-form__btn { min-height: 3.2rem; justify-content: center; }
+    .vmk-hero-search__inner { padding: 2rem 0; }
+    .vmk-search-form__bar { flex-direction: row; gap: 1rem; }
+    .vmk-search-form__input { font-size: 1.05rem; }
+    .vmk-search-form__btn { padding: 0.55rem 1.4rem; font-size: 0.9rem; }
     .vmk-news-grid { grid-template-columns: 1fr; }
     .vmk-event-grid { grid-template-columns: 1fr; }
     .vmk-branches-grid { grid-template-columns: 1fr; }
