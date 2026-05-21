@@ -2,370 +2,370 @@
 
 {% block content %}
 
-    {# ── HERO BILLBOARD ─────────────────────────────────── #}
-    <section class="hero">
-        <div class="hero-billboard">
-            <div class="hero-billboard__image">
-                {% if home.featured.lead.preview is defined and home.featured.lead.thumbnail %}
-                    <img src="{{ home.featured.lead.thumbnail.src('large') }}"
-                         alt="{{ home.featured.lead.thumbnail.alt ?: home.featured.lead.title }}"
-                         loading="eager">
-                {% endif %}
-                <div class="hero-billboard__overlay"></div>
+{# ═══════════════════════════════════════════════════════
+   1.  HERO KERESŐSÁV  –  Deichman: a keresés a főhős
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-hero-search" id="kereses" aria-label="Katalóguskeresés">
+    <div class="vmk-hero-search__inner">
+        <div class="container">
+            <div class="vmk-hero-search__heading">
+                <h1>Mit keresel ma?</h1>
+                <p>Könyvek, folyóiratok, e-könyvek és digitális tartalmak – Székesfehérvár és Fejér megye legnagyobb könyvtárában</p>
             </div>
-            <div class="hero-billboard__content">
-                <p class="hero-billboard__eyebrow">{{ home.hero.eyebrow }}</p>
-                <h1 class="hero-billboard__title">{{ home.hero.title }}</h1>
-                <p class="hero-billboard__text">{{ home.hero.text }}</p>
-                <div class="hero-billboard__actions">
-                    <a class="button button--primary" href="{{ home.hero.primary_cta.url }}">
-                        {{ home.hero.primary_cta.label }}
-                    </a>
-                    <a class="button button--outline" href="{{ home.hero.secondary_cta.url }}">
-                        {{ home.hero.secondary_cta.label }}
-                    </a>
+            <form class="vmk-search-form"
+                  method="get"
+                  action="http://tlwww.vmk.hu/tlwww"
+                  target="_blank"
+                  role="search">
+                <div class="vmk-search-form__row">
+                    <div class="vmk-search-form__tabs">
+                        <label class="vmk-search-tab">
+                            <input type="radio" name="searchfield" value="ALL" checked>
+                            <span>Mindenhol</span>
+                        </label>
+                        <label class="vmk-search-tab">
+                            <input type="radio" name="searchfield" value="TITLE">
+                            <span>Cím</span>
+                        </label>
+                        <label class="vmk-search-tab">
+                            <input type="radio" name="searchfield" value="AUTHOR">
+                            <span>Szerző</span>
+                        </label>
+                        <label class="vmk-search-tab">
+                            <input type="radio" name="searchfield" value="SUBJECT">
+                            <span>Téma</span>
+                        </label>
+                    </div>
                 </div>
-                {% if home.hero.stats %}
-                <div class="hero-billboard__stats">
-                    {% for stat in home.hero.stats %}
-                        <div class="hero-stat">
-                            <strong>{{ stat.value }}</strong>
-                            <span>{{ stat.label }}</span>
+                <div class="vmk-search-form__bar">
+                    <label class="screen-reader-text" for="vmk-q">Keresési kifejezés</label>
+                    <input id="vmk-q"
+                           class="vmk-search-form__input"
+                           type="search"
+                           name="searcharg"
+                           placeholder="Írd be a könyv címét, szerzőjét vagy témáját…"
+                           autocomplete="off"
+                           spellcheck="false">
+                    <button class="vmk-search-form__btn" type="submit">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        Keresés
+                    </button>
+                </div>
+                <p class="vmk-search-form__hint">
+                    Keresés az online katalógusban ·
+                    <a href="http://tlwww.vmk.hu/tlwww/olvall.htm" target="_blank" rel="noopener">Olvasói bejelentkezés</a> ·
+                    <a href="{{ footer.catalog_url }}" target="_blank" rel="noopener">Beiratkozás online</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+
+{# ═══════════════════════════════════════════════════════
+   2.  KIEMELT BILLBOARD  –  Deichman: billboard-mini
+       2/3 kép  +  1/3 szöveges kártya
+   ═══════════════════════════════════════════════════════ #}
+{% set fallback_imgs = [
+    'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=1600&q=80'
+] %}
+
+<section class="vmk-billboard" aria-label="Kiemelt tartalom">
+    <div class="vmk-billboard__grid">
+        <div class="vmk-billboard__image"
+             style="background-image: url('{{ fallback_imgs[0] }}')">
+            {% if home.featured.lead.thumbnail is defined and home.featured.lead.thumbnail %}
+                <img src="{{ home.featured.lead.thumbnail.src('large') }}"
+                     alt="{{ home.featured.lead.title }}"
+                     loading="eager">
+            {% endif %}
+        </div>
+        <article class="vmk-billboard__card">
+            <p class="vmk-billboard__eyebrow">Kiemelten ajánljuk</p>
+            <h2 class="vmk-billboard__title">{{ home.featured.lead.title }}</h2>
+            <div class="vmk-billboard__text">
+                <p>{{ home.featured.lead.text }}</p>
+            </div>
+            <a class="vmk-btn vmk-btn--primary" href="{{ home.featured.lead.url|default('#esemenyek') }}">
+                Részletek megtekintése
+            </a>
+            <div class="vmk-billboard__meta">
+                <span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {{ footer.hours }}
+                </span>
+                <span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {{ footer.address }}
+                </span>
+            </div>
+        </article>
+    </div>
+</section>
+
+{# ═══════════════════════════════════════════════════════
+   3.  AKTUÁLIS HÍREK  –  Deichman: news-grid (3 kártya)
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-section" id="hirek" aria-labelledby="hirek-heading">
+    <div class="container">
+        <div class="vmk-section-header">
+            <h2 id="hirek-heading" class="vmk-section-title">Aktuális hírek</h2>
+            <a class="vmk-see-all" href="/hirek">
+                Hírek archívuma
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <ul class="vmk-news-grid">
+            {% for item in home.news.items|slice(0, 3) %}
+            {% set img_fallback = fallback_imgs[loop.index % fallback_imgs|length] %}
+            <li>
+                <article class="vmk-news-card">
+                    <a class="vmk-news-card__image-link" href="{% if item.link is defined %}{{ item.link }}{% else %}{{ item.url|default('#') }}{% endif %}" tabindex="-1" aria-hidden="true">
+                        <div class="vmk-news-card__image"
+                             style="background-image: url('{{ img_fallback }}')">
+                            {% if item.thumbnail is defined and item.thumbnail %}
+                                <img src="{{ item.thumbnail.src('large') }}"
+                                     alt="{{ item.thumbnail.alt|default(item.title) }}"
+                                     loading="lazy">
+                            {% endif %}
                         </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
+                    </a>
+                    <div class="vmk-news-card__tags">
+                        <span class="vmk-tag">Hír</span>
+                        {% if item.categories is defined %}
+                            {% for cat in item.categories|slice(0,2) %}
+                                <span class="vmk-tag">{{ cat.name }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <h3 class="vmk-news-card__title">
+                        <a href="{% if item.link is defined %}{{ item.link }}{% else %}{{ item.url|default('#') }}{% endif %}">
+                            {{ item.title }}
+                        </a>
+                    </h3>
+                    <p class="vmk-news-card__excerpt">
+                        {% if item.preview is defined %}{{ item.preview.length(18).read_more(false) }}{% else %}{{ item.text }}{% endif %}
+                    </p>
+                </article>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
 
-        {# Search bar #}
-        <div class="hero-search" id="kereses" data-dual-search>
-            <div class="container">
-                <div class="search-tabs">
-                    <button class="search-tab-btn is-active" data-search-mode="catalog" type="button">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                        Könyvtári Katalógus
-                    </button>
-                    <button class="search-tab-btn" data-search-mode="site" type="button">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        Honlap tartalma
-                    </button>
-                </div>
-                <form class="search-box search-box--editorial" id="dual-search-form" role="search" method="get" action="https://katalogus.vmk.hu/opac" target="_blank">
-                    <label class="screen-reader-text" for="vmk-search">Keresés</label>
-                    <input id="vmk-search" type="search" name="keyword" placeholder="Írd be a könyv címét, szerzőjét vagy témáját..." required>
-                    <button type="submit">Keresés</button>
-                </form>
-            </div>
+{# ═══════════════════════════════════════════════════════
+   4.  KÖNYVTÁRI SZOLGÁLTATÁSOK  –  2 kártyás feature
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-section vmk-features-section" aria-labelledby="features-heading">
+    <div class="container">
+        <div class="vmk-section-header">
+            <h2 id="features-heading" class="vmk-section-title">Szolgáltatásaink</h2>
         </div>
-
-        {# Right sidebar: highlights + hours #}
-        <aside class="hero-sidebar" style="display:none" id="hero-highlights">
-            {% for item in home.hero.highlights %}
-                <article class="hero-link-card">
+        <div class="vmk-features-grid">
+            {% for item in home.services.items|slice(0, 4) %}
+            {% set feat_colors = ['#e8380d', '#1a1917', '#2d7a4f', '#1a5ca8'] %}
+            <article class="vmk-feature-card">
+                <div class="vmk-feature-card__bar" style="background: {{ feat_colors[loop.index0 % 4] }}"></div>
+                <div class="vmk-feature-card__body">
                     <h3>{{ item.title }}</h3>
                     <p>{{ item.text }}</p>
-                    <a href="{{ item.url }}">Bővebben</a>
-                </article>
+                    <a class="vmk-feature-card__link" href="{{ item.url|default('#') }}">
+                        Bővebben
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </article>
             {% endfor %}
-            <article class="hero-hours-card">
-                <span class="eyebrow">Nyitvatartás</span>
-                <p>{{ footer.hours }}</p>
-                <strong>09:00 – 19:00</strong>
-            </article>
-        </aside>
-    </section>
+        </div>
+    </div>
+</section>
 
-    {# ── HÍREK & ESEMÉNYEK – editorial grid ─────────────── #}
-    <section class="section editorial-grid" id="szolgaltatasok">
-        <div class="container editorial-grid__layout">
-            <div class="editorial-main">
-
-                {# Section heading: Trendek / Szolgáltatások #}
-                <div class="section-heading section-heading--compact">
-                    <h2>Trendek</h2>
-                </div>
-
-                {# Service tabs #}
-                <div class="editorial-lead" data-services-tabs>
-                    <aside class="editorial-lead__menu">
-                        {% for item in home.services.items|slice(0, 6) %}
-                            <button class="service-tab-trigger {% if loop.first %}is-active{% endif %}"
-                                    data-tab-target="service-{{ loop.index }}" type="button">
-                                <span class="service-tab-trigger__num">0{{ loop.index }}</span>
-                                <span class="service-tab-trigger__title">{{ item.title }}</span>
-                            </button>
-                        {% endfor %}
-                    </aside>
-                    <div class="editorial-lead__panels">
-                        {% for item in home.services.items|slice(0, 6) %}
-                            <article class="service-tab-panel {% if loop.first %}is-active{% endif %}"
-                                     id="service-{{ loop.index }}" data-tab-panel>
-                                <div class="editorial-lead__content editorial-lead__content--dark">
-                                    <span class="pill">Könyvtári Szolgáltatás</span>
-                                    <h3>{{ item.title }}</h3>
-                                    <p>{{ item.text }}</p>
-                                    <a class="button button--ghost" href="{{ item.url|default('#') }}">Részletek és ügyintézés</a>
-                                </div>
-                            </article>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                {# News cards #}
-                <div class="editorial-cards" style="margin-top: 1.5rem;">
-                    {% for item in home.news.items|slice(0, 3) %}
-                        <article class="editorial-card">
-                            {% if item.preview is defined and item.thumbnail %}
-                                <a class="editorial-card__media" href="{{ item.link }}">
-                                    <img src="{{ item.thumbnail.src('medium_large') }}"
-                                         alt="{{ item.thumbnail.alt ?: item.title }}"
-                                         loading="lazy">
-                                </a>
-                            {% endif %}
-                            <div class="editorial-card__content">
-                                <span class="news-card__date">
-                                    {% if item.preview is defined %}{{ item.date('Y.m.d.') }}{% else %}{{ item.date }}{% endif %}
-                                </span>
-                                <h3>{{ item.title }}</h3>
-                                <p>
-                                    {% if item.preview is defined %}{{ item.preview.length(14).read_more(false) }}{% else %}{{ item.text }}{% endif %}
-                                </p>
-                                <a class="editorial-card__link" href="{% if item.preview is defined %}{{ item.link }}{% else %}{{ item.url }}{% endif %}">
-                                    Tovább →
-                                </a>
-                            </div>
-                        </article>
-                    {% endfor %}
-                </div>
+{# ═══════════════════════════════════════════════════════
+   5.  BILLBOARD MIDI  –  Deichman: kép + szövegdoboz
+       (Tagkönyvtárak / Terek banner)
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-billboard-midi" id="terek">
+    <div class="container">
+        <div class="vmk-billboard-midi__inner">
+            <div class="vmk-billboard-midi__image"
+                 style="background-image: url('{{ fallback_imgs[3] }}')">
             </div>
+            <div class="vmk-billboard-midi__box">
+                <p class="vmk-billboard-midi__eyebrow">Terek és termek</p>
+                <h2>{{ home.spaces.title }}</h2>
+                <p>{{ home.spaces.text }}</p>
+                <a class="vmk-btn vmk-btn--primary" href="{{ home.spaces.cta.url }}">
+                    {{ home.spaces.cta.label }}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
-            {# Sidebar: hírek + nyitvatartás #}
-            <aside class="editorial-sidebar" id="hirek">
-                <div class="section-heading section-heading--compact">
-                    <h2>{{ home.news.title }}</h2>
-                </div>
-                <div class="news-summary-list">
-                    {% for item in home.news.items %}
-                        <article class="news-summary">
-                            <span class="news-card__date">
-                                {% if item.preview is defined %}{{ item.date('Y.m.d.') }}{% else %}{{ item.date }}{% endif %}
+{# ═══════════════════════════════════════════════════════
+   6.  KÖZELGŐ ESEMÉNYEK  –  Deichman: event-grid
+       4 kártya, piros dátum-badge bal felső sarokban
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-section" id="esemenyek" aria-labelledby="esemenyek-heading">
+    <div class="container">
+        <div class="vmk-section-header">
+            <h2 id="esemenyek-heading" class="vmk-section-title">Közelgő eseményeink</h2>
+            <a class="vmk-see-all" href="/esemenyek">
+                Összes esemény
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <ul class="vmk-event-grid">
+            {% set event_types = ['Irodalmi est', 'Gyermekprogram', 'Kiállítás', 'Workshop', 'Közösségi', 'Előadás'] %}
+            {% for item in home.news.items|slice(0, 4) %}
+            {% set eimg = fallback_imgs[(loop.index + 1) % fallback_imgs|length] %}
+            <li>
+                <article class="vmk-event-card">
+                    <a class="vmk-event-card__image-wrap"
+                       href="{% if item.link is defined %}{{ item.link }}{% else %}{{ item.url|default('#') }}{% endif %}"
+                       tabindex="-1" aria-hidden="true">
+                        <div class="vmk-event-card__image"
+                             style="background-image: url('{{ eimg }}')">
+                            {% if item.thumbnail is defined and item.thumbnail %}
+                                <img src="{{ item.thumbnail.src('medium_large') }}"
+                                     alt="{{ item.thumbnail.alt|default(item.title) }}"
+                                     loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="vmk-date-badge" aria-hidden="true">
+                            <span class="vmk-date-badge__day">
+                                {% if item.date is defined %}{{ item.date('d') }}{% else %}{{ 'now'|date('d') }}{% endif %}
                             </span>
-                            <h3>{{ item.title }}</h3>
-                            <p>
-                                {% if item.preview is defined %}{{ item.preview.length(12).read_more(false) }}{% else %}{{ item.text }}{% endif %}
-                            </p>
-                            <a href="{% if item.preview is defined %}{{ item.link }}{% else %}{{ item.url }}{% endif %}">Tovább →</a>
-                        </article>
-                    {% endfor %}
-                </div>
-                <section class="hours-panel-dark">
-                    <h3>{{ home.hours.title }}</h3>
-                    <ul class="hours-list">
-                        {% for item in home.hours.items %}
-                            <li>
-                                <span>{{ item.label }}</span>
-                                <strong>{{ item.value }}</strong>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </section>
-            </aside>
-        </div>
-    </section>
-
-    {# ── AKTUÁLIS HÍREK – news-grid (Deichman style) ─────── #}
-    <section class="section" id="aktualis">
-        <div class="container">
-            <div class="section-heading">
-                <h2>Aktuális hírek és események</h2>
-                <a class="see-all-link" href="/hirek">
-                    Összes hír
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-            </div>
-            <div class="news-grid">
-                {% for item in home.news.items|slice(0, 3) %}
-                    <article class="news-card">
-                        <div class="news-card__image">
-                            {% if item.preview is defined and item.thumbnail %}
-                                <a href="{{ item.link }}">
-                                    <img src="{{ item.thumbnail.src('large') }}"
-                                         alt="{{ item.thumbnail.alt ?: item.title }}"
-                                         loading="lazy">
-                                </a>
-                            {% else %}
-                                <div style="width:100%;height:100%;background:var(--surface-alt);display:grid;place-items:center;">
-                                    <svg width="40" height="40" fill="none" stroke="#c8c4c0" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                                </div>
-                            {% endif %}
+                            <span class="vmk-date-badge__month">
+                                {% if item.date is defined %}{{ item.date('M') }}{% else %}{{ 'now'|date('M') }}{% endif %}
+                            </span>
                         </div>
-                        <div class="news-card__tags">
-                            <span class="news-card__tag">Hír</span>
-                        </div>
-                        <h3 class="news-card__title">
-                            <a href="{% if item.preview is defined %}{{ item.link }}{% else %}{{ item.url|default('#') }}{% endif %}">
-                                {{ item.title }}
-                            </a>
-                        </h3>
-                        <p class="news-card__excerpt">
-                            {% if item.preview is defined %}{{ item.preview.length(16).read_more(false) }}{% else %}{{ item.text }}{% endif %}
-                        </p>
-                    </article>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    {# ── KÖZELGŐ ESEMÉNYEK (Deichman event-grid) ─────────── #}
-    <section class="section" id="esemenyek">
-        <div class="container">
-            <div class="section-heading">
-                <h2>Közelgő eseményeink</h2>
-                <a class="see-all-link" href="/esemenyek">
-                    Összes esemény
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-            </div>
-            <div class="event-grid">
-                <ul class="event-grid__items">
-                    {% set event_categories = ['Irodalmi est', 'Gyermekfoglalkozás', 'Kiállítás', 'Workshop'] %}
-                    {% set event_types = ['Közösségi program', 'Gyerekprogram', 'Kulturális', 'Oktatás'] %}
-                    {% for item in home.news.items|slice(0, 4) %}
-                        <li>
-                            <article class="event-card">
-                                <div class="event-card__image-wrap">
-                                    {% if item.preview is defined and item.thumbnail %}
-                                        <img class="event-card__image"
-                                             src="{{ item.thumbnail.src('medium_large') }}"
-                                             alt="{{ item.thumbnail.alt ?: item.title }}"
-                                             loading="lazy">
-                                    {% else %}
-                                        <div style="width:100%;height:100%;background:var(--surface-alt);"></div>
-                                    {% endif %}
-                                    <div class="date-badge">
-                                        <span class="date-badge__day">
-                                            {% if item.preview is defined %}{{ item.date('d') }}{% else %}{{ 'now'|date('d') }}{% endif %}
-                                        </span>
-                                        <span class="date-badge__month">
-                                            {% if item.preview is defined %}{{ item.date('M') }}{% else %}{{ 'now'|date('M') }}{% endif %}
-                                        </span>
-                                    </div>
-                                </div>
-                                <p class="event-card__type">{{ event_types[loop.index0 % 4] }}</p>
-                                <a class="event-card__title" href="{% if item.preview is defined %}{{ item.link }}{% else %}{{ item.url|default('#') }}{% endif %}">
-                                    {{ item.title }}
-                                </a>
-                                <div class="event-card__meta">
-                                    <small>
-                                        {% if item.preview is defined %}{{ item.date('Y.m.d.') }}{% else %}{{ item.date }}{% endif %}
-                                    </small>
-                                    <a class="event-card__location" href="/tagkonyvtarak">Vörösmarty Mihály Könyvtár</a>
-                                </div>
-                            </article>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    {# ── DIGITÁLIS ADATBÁZISOK ───────────────────────────── #}
-    <section class="section resource-band" id="forrasok">
-        <div class="container">
-            <div class="resource-band__inner">
-                <div class="section-heading section-heading--centered">
-                    <span class="eyebrow" style="color:rgba(255,255,255,0.8)">Digitális Források</span>
-                    <h2>Előfizetett Adatbázisok &amp; Sajtóforrások</h2>
-                    <p class="resource-band__lead">Otthonról vagy a könyvtár épületéből is elérhető elektronikus szakirodalmi tárak.</p>
-                </div>
-                <div class="adatbazis-grid">
-                    {% for db in adatbazisok %}
-                        <article class="adatbazis-card">
-                            <div class="adatbazis-card__header">
-                                <span class="access-badge access-badge--{{ db.access_class }}">{{ db.access_type }}</span>
-                                <h3>{{ db.title }}</h3>
-                            </div>
-                            <p class="adatbazis-card__excerpt">{{ db.excerpt }}</p>
-                            <div class="adatbazis-card__tags">
-                                {% for tag in db.tags %}
-                                    <span class="db-tag">#{{ tag }}</span>
-                                {% endfor %}
-                            </div>
-                            <a class="adatbazis-card__link" href="{{ db.url }}" target="_blank" rel="noopener noreferrer">
-                                Megnyitás
-                                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                            </a>
-                        </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {# ── TAGKÖNYVTÁRAK ───────────────────────────────────── #}
-    <section class="section tagkonyvtarak-section" id="tagkonyvtarak">
-        <div class="container">
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">Helyszínek</span>
-                    <h2>Tagkönyvtáraink</h2>
-                    <p class="section-lead">Ismerje meg a városszerte elérhető fiókkönyvtárainkat!</p>
-                </div>
-                <a class="see-all-link" href="/tagkonyvtarak">
-                    Mind megtekintése
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-            </div>
-            <div class="tagkonyvtarak-grid">
-                {% for konyvtar in tagkonyvtarak %}
-                    <article class="tagkonyvtar-card" data-hours-raw="{{ konyvtar.hours_raw }}">
-                        <div class="tagkonyvtar-card__header">
-                            <h3>{{ konyvtar.title }}</h3>
-                            <div class="tagkonyvtar-status-badge" data-status-label>Betöltés...</div>
-                        </div>
-                        <div class="tagkonyvtar-card__body">
-                            <p class="tagkonyvtar-card__address">
-                                <strong>Cím:</strong> {{ konyvtar.address }}
-                            </p>
-                            <p class="tagkonyvtar-card__contact">
-                                <strong>Tel:</strong> <a href="tel:{{ konyvtar.phone|replace({' ': '', '-': ''}) }}">{{ konyvtar.phone }}</a><br>
-                                <strong>E-mail:</strong> <a href="mailto:{{ konyvtar.email }}">{{ konyvtar.email }}</a>
-                            </p>
-                            <div class="tagkonyvtar-card__services">
-                                {% for svc in konyvtar.services %}
-                                    <span class="service-chip-small">{{ svc }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="tagkonyvtar-card__footer">
-                            <a class="button--ghost-dark" href="{{ konyvtar.url }}">Részletek &amp; Térkép</a>
-                        </div>
-                    </article>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    {# ── BILLBOARD: Terek és termek ──────────────────────── #}
-    <section class="section" id="terek">
-        <div class="container">
-            <article class="study-banner__inner">
-                <div class="study-banner__content">
-                    <span class="eyebrow">Terek és termek</span>
-                    <h2>{{ home.spaces.title }}</h2>
-                    <p>{{ home.spaces.text }}</p>
-                    <a class="button button--ghost" href="{{ home.spaces.cta.url }}">{{ home.spaces.cta.label }}</a>
-                </div>
-                <div class="study-banner__cta-bar">
-                    <div>
-                        <span class="eyebrow" style="color:rgba(255,255,255,0.8)">Támogatás</span>
-                        <strong>{{ home.donation.title }}</strong>
+                    </a>
+                    <p class="vmk-event-card__type">{{ event_types[loop.index0 % 6] }}</p>
+                    <h3 class="vmk-event-card__title">
+                        <a href="{% if item.link is defined %}{{ item.link }}{% else %}{{ item.url|default('#') }}{% endif %}">
+                            {{ item.title }}
+                        </a>
+                    </h3>
+                    <div class="vmk-event-card__meta">
+                        <time>
+                            {% if item.date is defined %}{{ item.date('Y. F j.') }}{% endif %}
+                        </time>
+                        <a class="vmk-event-card__loc" href="/tagkonyvtarak">
+                            Vörösmarty Mihály Könyvtár
+                        </a>
                     </div>
-                    <a class="button--light" href="{{ home.donation.cta.url }}">{{ home.donation.cta.label }}</a>
-                </div>
-            </article>
+                </article>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+{# ═══════════════════════════════════════════════════════
+   7.  DIGITÁLIS ADATBÁZISOK  –  sötét gradient sáv
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-databases" id="forrasok" aria-labelledby="db-heading">
+    <div class="container">
+        <div class="vmk-section-header vmk-section-header--light">
+            <div>
+                <p class="vmk-databases__eyebrow">Digitális Források</p>
+                <h2 id="db-heading" class="vmk-section-title vmk-section-title--light">Előfizetett adatbázisok</h2>
+                <p class="vmk-databases__lead">Otthonról vagy a könyvtárban elérhető elektronikus gyűjtemények, szakirodalmi tárak.</p>
+            </div>
         </div>
-    </section>
+        <div class="vmk-db-grid">
+            {% for db in adatbazisok %}
+            <article class="vmk-db-card">
+                <div class="vmk-db-card__head">
+                    <span class="vmk-access-badge vmk-access-badge--{{ db.access_class }}">{{ db.access_type }}</span>
+                    <h3>{{ db.title }}</h3>
+                </div>
+                <p>{{ db.excerpt }}</p>
+                <div class="vmk-db-card__tags">
+                    {% for tag in db.tags %}<span>#{{ tag }}</span>{% endfor %}
+                </div>
+                <a class="vmk-db-card__link"
+                   href="{{ db.url }}"
+                   target="_blank" rel="noopener noreferrer">
+                    Megnyitás
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ═══════════════════════════════════════════════════════
+   8.  TAGKÖNYVTÁRAK  –  kártya grid
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-section vmk-branches" id="tagkonyvtarak" aria-labelledby="branches-heading">
+    <div class="container">
+        <div class="vmk-section-header">
+            <div>
+                <p class="vmk-eyebrow">Helyszíneink</p>
+                <h2 id="branches-heading" class="vmk-section-title">Tagkönyvtáraink</h2>
+            </div>
+            <a class="vmk-see-all" href="/tagkonyvtarak">
+                Összes helyszín
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+        <div class="vmk-branches-grid">
+            {% for k in tagkonyvtarak %}
+            <article class="vmk-branch-card">
+                <div class="vmk-branch-card__header">
+                    <h3>{{ k.title }}</h3>
+                    <span class="vmk-status-dot" data-hours-raw="{{ k.hours_raw }}" title="Nyitvatartás ellenőrzése..."></span>
+                </div>
+                <p class="vmk-branch-card__address">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {{ k.address }}
+                </p>
+                <div class="vmk-branch-card__contacts">
+                    <a href="tel:{{ k.phone|replace({' ': '', '-': ''}) }}">{{ k.phone }}</a>
+                    <a href="mailto:{{ k.email }}">{{ k.email }}</a>
+                </div>
+                <div class="vmk-branch-card__services">
+                    {% for svc in k.services %}
+                        <span>{{ svc }}</span>
+                    {% endfor %}
+                </div>
+                <a class="vmk-branch-card__link" href="{{ k.url }}">
+                    Részletek és térkép →
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ═══════════════════════════════════════════════════════
+   9.  TANULMÁNYI TERMI BANNER  –  Deichman: billboard-midi (alsó)
+   ═══════════════════════════════════════════════════════ #}
+<section class="vmk-study-banner" aria-label="Adó 1% és támogatás">
+    <div class="container">
+        <div class="vmk-study-banner__inner">
+            <div class="vmk-study-banner__image"
+                 style="background-image: url('{{ fallback_imgs[4] }}')">
+            </div>
+            <div class="vmk-study-banner__content">
+                <p class="vmk-eyebrow vmk-eyebrow--light">Támogatás</p>
+                <h2>{{ home.donation.title }}</h2>
+                <p>{{ home.donation.text }}</p>
+                <a class="vmk-btn vmk-btn--outline-light" href="{{ home.donation.cta.url }}">
+                    {{ home.donation.cta.label }}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

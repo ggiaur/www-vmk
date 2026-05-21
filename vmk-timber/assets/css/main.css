@@ -1763,3 +1763,963 @@ h4 { font-size: 1rem; font-weight: 600; }
         width: 100%; height: 3px;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   VMK DEICHMAN-FAITHFUL NEW COMPONENTS
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 1. HERO SEARCH (Deichman főhős kereső) ─────────────── */
+.vmk-hero-search {
+    background: var(--ink);
+    padding: 0;
+}
+
+.vmk-hero-search__inner {
+    padding: 4rem 0 3rem;
+}
+
+.vmk-hero-search__heading {
+    margin-bottom: 2.2rem;
+    text-align: center;
+}
+
+.vmk-hero-search__heading h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+}
+
+.vmk-hero-search__heading p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 42rem;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.vmk-search-form {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.vmk-search-form__row {
+    margin-bottom: 0;
+}
+
+.vmk-search-form__tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: -1px;
+}
+
+.vmk-search-tab {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.vmk-search-tab input { display: none; }
+
+.vmk-search-tab span {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-bottom: none;
+    background: transparent;
+    transition: color 150ms, background 150ms;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+}
+
+.vmk-search-tab:first-of-type span { border-radius: 2px 0 0 0; }
+
+.vmk-search-tab input:checked + span {
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.3);
+}
+
+.vmk-search-tab span:hover { color: #fff; }
+
+.vmk-search-form__bar {
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+    border: 2px solid rgba(255,255,255,0.9);
+}
+
+.vmk-search-form__input {
+    flex: 1;
+    padding: 1.1rem 1.5rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    color: var(--ink);
+    min-height: 4rem;
+}
+
+.vmk-search-form__input::placeholder {
+    color: var(--ink-faint);
+}
+
+.vmk-search-form__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 2rem;
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+    transition: background 150ms;
+    min-height: 4rem;
+}
+
+.vmk-search-form__btn:hover { background: var(--brand-dark); }
+
+.vmk-search-form__hint {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+}
+
+.vmk-search-form__hint a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+}
+
+.vmk-search-form__hint a:hover { color: #fff; }
+
+/* ── 2. BILLBOARD (Deichman billboard-mini) ─────────────── */
+.vmk-billboard {
+    margin-top: 0;
+}
+
+.vmk-billboard__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr);
+    min-height: 38rem;
+    max-width: var(--container);
+    margin: 0 auto;
+}
+
+.vmk-billboard__image {
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.vmk-billboard__image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vmk-billboard__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3.5rem 3rem;
+    background: var(--surface-alt);
+    border-left: 1px solid var(--border);
+}
+
+.vmk-billboard__eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand);
+}
+
+.vmk-billboard__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+}
+
+.vmk-billboard__text p {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+}
+
+.vmk-billboard__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+.vmk-billboard__meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* ── 3. SECTION KÖZÖS ────────────────────────────────────── */
+.vmk-section {
+    padding: 5rem 0;
+}
+
+.vmk-section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1.5px solid var(--ink);
+}
+
+.vmk-section-header--light {
+    border-bottom-color: rgba(255,255,255,0.2);
+    margin-bottom: 2.5rem;
+}
+
+.vmk-section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    line-height: 1.1;
+}
+
+.vmk-section-title--light { color: #fff; }
+
+.vmk-see-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color 150ms, border-color 150ms;
+}
+
+.vmk-see-all svg { transition: transform 200ms; }
+.vmk-see-all:hover { color: var(--brand); border-color: var(--brand); }
+.vmk-see-all:hover svg { transform: translateX(4px); }
+
+.vmk-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand);
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.vmk-eyebrow--light { color: rgba(255,255,255,0.7); }
+
+/* ── 4. NEWS GRID (Deichman news-grid) ──────────────────── */
+.vmk-news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vmk-news-card { display: flex; flex-direction: column; }
+
+.vmk-news-card__image-link { display: block; }
+
+.vmk-news-card__image {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 1.1rem;
+    position: relative;
+}
+
+.vmk-news-card__image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms var(--ease);
+}
+
+.vmk-news-card:hover .vmk-news-card__image img,
+.vmk-news-card:hover .vmk-news-card__image {
+    transform: scale(1.04);
+}
+
+.vmk-news-card__image {
+    transition: transform 500ms var(--ease);
+}
+
+.vmk-news-card__tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.65rem;
+}
+
+.vmk-tag {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border: 1px solid var(--border-strong);
+    padding: 0.12rem 0.55rem;
+}
+
+.vmk-news-card__title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 0.65rem;
+}
+
+.vmk-news-card__title a { color: inherit; transition: color 150ms; }
+.vmk-news-card__title a:hover { color: var(--brand); }
+
+.vmk-news-card__excerpt {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.65;
+}
+
+/* ── 5. FEATURES GRID ───────────────────────────────────── */
+.vmk-features-section {
+    padding-top: 0;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.vmk-features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+}
+
+.vmk-feature-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-right: 1px solid var(--border);
+    transition: background 150ms;
+    overflow: hidden;
+}
+
+.vmk-feature-card:last-child { border-right: 0; }
+.vmk-feature-card:hover { background: var(--surface); }
+
+.vmk-feature-card__bar {
+    height: 4px;
+    width: 100%;
+}
+
+.vmk-feature-card__body {
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+}
+
+.vmk-feature-card__body h3 {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.25;
+}
+
+.vmk-feature-card__body p {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+}
+
+.vmk-feature-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--brand);
+    margin-top: auto;
+    padding-top: 0.75rem;
+    transition: gap 150ms;
+}
+
+.vmk-feature-card__link:hover { gap: 0.6rem; }
+
+/* ── 6. BILLBOARD MIDI ──────────────────────────────────── */
+.vmk-billboard-midi {
+    padding: 4rem 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.vmk-billboard-midi__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 28rem;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.vmk-billboard-midi__image {
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-size 500ms;
+}
+
+.vmk-billboard-midi:hover .vmk-billboard-midi__image {
+    background-size: 104%;
+}
+
+.vmk-billboard-midi__box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 3.5rem;
+    background: #fff;
+    border-left: 1px solid var(--border);
+}
+
+.vmk-billboard-midi__eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand);
+}
+
+.vmk-billboard-midi__box h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+}
+
+.vmk-billboard-midi__box p {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+}
+
+/* ── 7. EVENT GRID (Deichman event-grid) ────────────────── */
+.vmk-event-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vmk-event-card { display: flex; flex-direction: column; }
+
+.vmk-event-card__image-wrap {
+    position: relative;
+    display: block;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.vmk-event-card__image {
+    aspect-ratio: 4/3;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+    transition: transform 500ms var(--ease);
+}
+
+.vmk-event-card:hover .vmk-event-card__image {
+    transform: scale(1.04);
+}
+
+.vmk-event-card__image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms var(--ease);
+}
+
+/* Deichman signature: piros dátum-badge bal felső sarokban */
+.vmk-date-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--brand);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.75rem 0.45rem;
+    min-width: 3.2rem;
+    text-align: center;
+    z-index: 2;
+}
+
+.vmk-date-badge__day {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.65rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.vmk-date-badge__month {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.1rem;
+}
+
+.vmk-event-card__type {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+}
+
+.vmk-event-card__title {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+}
+
+.vmk-event-card__title a { color: inherit; transition: color 150ms; }
+.vmk-event-card__title a:hover { color: var(--brand); }
+
+.vmk-event-card__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+.vmk-event-card__loc {
+    color: var(--brand);
+    font-weight: 500;
+    transition: text-decoration 150ms;
+}
+
+.vmk-event-card__loc:hover { text-decoration: underline; }
+
+/* ── 8. BUTTONS ──────────────────────────────────────────── */
+.vmk-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    border: none;
+    transition: background 150ms, color 150ms, transform 200ms;
+    align-self: flex-start;
+}
+
+.vmk-btn:hover { transform: translateY(-1px); }
+
+.vmk-btn--primary { background: var(--ink); color: #fff; }
+.vmk-btn--primary:hover { background: var(--brand); }
+
+.vmk-btn--outline {
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+}
+.vmk-btn--outline:hover { background: var(--ink); color: #fff; }
+
+.vmk-btn--outline-light {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.6);
+    color: #fff;
+}
+.vmk-btn--outline-light:hover { background: rgba(255,255,255,0.15); }
+
+/* ── 9. DATABASES SECTION ───────────────────────────────── */
+.vmk-databases {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #1a1917 0%, #2a1f1a 50%, #1a1917 100%);
+    border-top: 4px solid var(--brand);
+}
+
+.vmk-databases__eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.vmk-databases__lead {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    max-width: 42rem;
+    margin-top: 0.5rem;
+    line-height: 1.65;
+}
+
+.vmk-db-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.vmk-db-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 1.75rem;
+    transition: background 200ms, transform 200ms;
+    gap: 0.75rem;
+}
+
+.vmk-db-card:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-2px);
+}
+
+.vmk-db-card__head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.vmk-db-card__head h3 {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.25;
+}
+
+.vmk-access-badge {
+    align-self: flex-start;
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.6rem;
+}
+
+.vmk-access-badge--remote { background: var(--green); color: #fff; }
+.vmk-access-badge--library-only { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.88); }
+
+.vmk-db-card p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+    flex: 1;
+}
+
+.vmk-db-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.vmk-db-card__tags span {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+}
+
+.vmk-db-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+    padding-bottom: 1px;
+    align-self: flex-start;
+    margin-top: auto;
+    transition: border-color 150ms;
+}
+
+.vmk-db-card__link:hover { border-color: #fff; }
+
+/* ── 10. BRANCHES (tagkönyvtárak) ───────────────────────── */
+.vmk-branches {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.vmk-branches-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.vmk-branch-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: border-color 200ms, transform 200ms;
+}
+
+.vmk-branch-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+}
+
+.vmk-branch-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.vmk-branch-card__header h3 {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.25;
+}
+
+.vmk-status-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--border-strong);
+    flex-shrink: 0;
+    margin-top: 0.35rem;
+    transition: background 300ms;
+}
+
+.vmk-status-dot.is-open { background: var(--green); }
+.vmk-status-dot.is-closed { background: #d93025; }
+
+.vmk-branch-card__address {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    line-height: 1.5;
+}
+
+.vmk-branch-card__address svg { flex-shrink: 0; margin-top: 0.1rem; }
+
+.vmk-branch-card__contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+}
+
+.vmk-branch-card__contacts a {
+    color: var(--ink-soft);
+    transition: color 150ms;
+}
+
+.vmk-branch-card__contacts a:hover { color: var(--brand); }
+
+.vmk-branch-card__services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.vmk-branch-card__services span {
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--ink-soft);
+}
+
+.vmk-branch-card__link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--brand);
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    transition: gap 150ms;
+}
+
+.vmk-branch-card__link:hover { text-decoration: underline; }
+
+/* ── 11. STUDY BANNER (alsó billboard) ──────────────────── */
+.vmk-study-banner {
+    padding: 4rem 0;
+}
+
+.vmk-study-banner__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 26rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.vmk-study-banner__image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+}
+
+.vmk-study-banner__image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(15,14,13,0.4), rgba(15,14,13,0.15));
+}
+
+.vmk-study-banner__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3.5rem 3rem;
+    background: var(--ink);
+    color: #fff;
+}
+
+.vmk-study-banner__content h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 2.5vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+
+.vmk-study-banner__content p {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.7;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE – VMK new components
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+    .vmk-billboard__grid { grid-template-columns: 1fr; }
+    .vmk-billboard__image { min-height: 26rem; }
+    .vmk-billboard__card { border-left: 0; border-top: 4px solid var(--brand); padding: 2.5rem 2rem; }
+    .vmk-event-grid { grid-template-columns: repeat(2, 1fr); }
+    .vmk-features-grid { grid-template-columns: repeat(2, 1fr); }
+    .vmk-features-grid .vmk-feature-card:nth-child(2) { border-right: 0; }
+    .vmk-features-grid .vmk-feature-card:nth-child(3) { border-top: 1px solid var(--border); }
+    .vmk-db-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+    .vmk-news-grid { grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+    .vmk-branches-grid { grid-template-columns: 1fr 1fr; }
+    .vmk-billboard-midi__inner { grid-template-columns: 1fr; min-height: auto; }
+    .vmk-billboard-midi__image { min-height: 22rem; border-left: 0; border-top: 0; }
+    .vmk-study-banner__inner { grid-template-columns: 1fr; }
+    .vmk-study-banner__image { min-height: 18rem; }
+    .vmk-features-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+    .vmk-hero-search__inner { padding: 2.5rem 0 2rem; }
+    .vmk-hero-search__heading h1 { font-size: 2rem; }
+    .vmk-search-form__tabs { overflow-x: auto; flex-wrap: nowrap; }
+    .vmk-search-form__bar { flex-direction: column; }
+    .vmk-search-form__input { min-height: 3.5rem; }
+    .vmk-search-form__btn { min-height: 3.2rem; justify-content: center; }
+    .vmk-news-grid { grid-template-columns: 1fr; }
+    .vmk-event-grid { grid-template-columns: 1fr; }
+    .vmk-branches-grid { grid-template-columns: 1fr; }
+    .vmk-features-grid { grid-template-columns: 1fr; }
+    .vmk-features-grid .vmk-feature-card { border-right: 0; border-bottom: 1px solid var(--border); }
+    .vmk-section { padding: 3rem 0; }
+    .vmk-section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .vmk-billboard__card { padding: 2rem 1.5rem; }
+    .vmk-study-banner__content { padding: 2.5rem 1.5rem; }
+}
