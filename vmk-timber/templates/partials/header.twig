@@ -24,11 +24,7 @@
 
     <div class="container site-header__inner">
         <a class="brand" href="{{ site.url }}">
-            {% if function('has_custom_logo') %}
-                <span class="brand__logo">{{ function('get_custom_logo')|raw }}</span>
-            {% else %}
-                <span class="brand__mark">VMK</span>
-            {% endif %}
+            <img class="brand__logo-img" src="https://www.vmk.hu/assets/images/logo/logo.png" alt="VMK Logo" style="height: 42px; width: auto; object-fit: contain;">
             <span class="brand__text">
                 <strong>{{ branding.title }}</strong>
                 <small>{{ branding.tagline }}</small>

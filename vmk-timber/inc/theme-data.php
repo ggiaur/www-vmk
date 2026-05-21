@@ -126,38 +126,77 @@ function vmk_timber_get_homepage_content(): array
         'featured' => [
             'title' => 'Kiemelt tartalmak',
             'lead' => [
-                'category' => 'Újdonság',
-                'title' => 'Tavaszi olvasásnépszerűsítő sorozat a könyvtár tereiben',
-                'text' => 'Interaktív ajánlók, tematikus polcok és közösségi programok kapcsolják össze az olvasókat a városi könyvtár különböző tereiben.',
-                'url' => '#',
+                'category' => 'Tájékoztatás',
+                'title' => 'Központi olvasószolgálat zárvatartása ablakcsere miatt',
+                'text' => 'A Vörösmarty Mihály Könyvtár Központi olvasószolgálata 2026. május 1. és 31. között homlokzati ablakcsere miatt zárva tart. Megértésüket köszönjük!',
+                'url' => 'https://www.vmk.hu/20260417_csok_keptar_felujitas',
+                'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5660.png'
             ],
             'aside' => [
-                ['title' => 'Helyismereti adatbázis frissítések', 'category' => 'Adatbázis', 'url' => '#'],
-                ['title' => 'Új gyerekfoglalkozások a hétvégékre', 'category' => 'Program', 'url' => '#'],
-                ['title' => 'Olvasótermi nyitvatartás a vizsgaidőszakban', 'category' => 'Tájékoztató', 'url' => '#'],
+                ['title' => 'Családi OlvasásMánia nyári olvasópályázat', 'category' => 'Pályázat', 'url' => 'https://www.vmk.hu/csaladi-olvasasmania-2026'],
+                ['title' => 'Laptapír szolgáltatás – olvass otthonról!', 'category' => 'Szolgáltatás', 'url' => 'https://www.vmk.hu/20260108_laptapir_szolgaltatas'],
+                ['title' => 'Ünnepi Könyvhét 2026 június 1-16. között', 'category' => 'Program', 'url' => 'https://www.vmk.hu/unnepi-konyvhet-2026'],
             ],
         ],
         'news' => [
             'title' => 'Hírek és események',
             'items' => [
                 [
-                    'date' => '2026.03.25.',
-                    'title' => 'Irodalmi beszélgetés kortárs szerzőkkel',
-                    'text' => 'Beszélgetés és felolvasás a központi könyvtár rendezvénytermében.',
-                    'url' => '#',
+                    'date' => '2026.05.23.',
+                    'title' => 'Pünkösdi nyitvatartás a könyvtárban',
+                    'text' => '2026. május 23. és 25. között valamennyi részlegünk és tagkönyvtárunk zárva tart. Nyitás: május 26. (kedd).',
+                    'url' => 'https://www.vmk.hu/punkosdi-nyitvatartas-2026',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5211.png'
                 ],
                 [
-                    'date' => '2026.03.21.',
-                    'title' => 'Digitális tudásnap középiskolásoknak',
-                    'text' => 'Keresési technikák, hiteles források és könyvtári adatbázisok gyakorlati bemutatója.',
-                    'url' => '#',
+                    'date' => '2026.06.01.',
+                    'title' => 'Családi OlvasásMánia nyári olvasópályázat',
+                    'text' => 'Családi OlvasásMánia 2026 nyári olvasópályázat: 2026. június 1-től szeptember 12-ig. Eredményhirdetés október 9-én.',
+                    'url' => 'https://www.vmk.hu/csaladi-olvasasmania-2026',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5530.png'
                 ],
                 [
-                    'date' => '2026.03.18.',
-                    'title' => 'Megújult helyismereti válogatás',
-                    'text' => 'Várostörténeti anyagok új ajánlófelülettel és könnyebb böngészhetőséggel.',
-                    'url' => '#',
+                    'date' => '2026.01.08.',
+                    'title' => 'Laptapír szolgáltatás otthonról',
+                    'text' => 'Olvass újságot, magazinokat könyvtári beiratkozással közvetlenül otthonról! További részletekért kattints.',
+                    'url' => 'https://www.vmk.hu/20260108_laptapir_szolgaltatas',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5458.png'
                 ],
+                [
+                    'date' => '2026.05.05.',
+                    'title' => 'Polar Könyvek kiállítás',
+                    'text' => 'Kiállítás a Polar Egyesület könyvsorozatának köteteiből a Széna Téri Tagkönyvtárban május 5. és 30. között.',
+                    'url' => 'https://www.vmk.hu/202605_szena_ter_polar_konyvek_kiallitas',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5656.png'
+                ],
+                [
+                    'date' => '2026.05.04.',
+                    'title' => 'Szalontai Endre festőművész kiállítása',
+                    'text' => '\"Húzom az ecsetet, nyomában megjelenik a kép!\" - Szalontai Endre kiállítása az Olvasóteremben május 4-28. között.',
+                    'url' => 'https://www.vmk.hu/2026-05-04-28-szalontai-endre-festomuvesz-kiallitasa',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5629.png'
+                ],
+                [
+                    'date' => '2026.05.21.',
+                    'title' => 'Drámafoglalkozás felnőtteknek',
+                    'text' => 'Drámafoglalkozás felnőtteknek Valkó-Máté Anett színművész, foglalkozásvezetővel a Széna Téri Tagkönyvtárban.',
+                    'url' => 'https://www.vmk.hu/2026-05-21-dramafoglalkozas-felnotteknek',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5510.png'
+                ],
+                [
+                    'date' => '2026.05.22.',
+                    'title' => 'Eperhajó - felszállás a fedélzetre!',
+                    'text' => 'Kalmusné Idrányi Eszter zenetanítási módszerének bemutatója a Központi Könyvtár Zenei és Okostermi részlegén.',
+                    'url' => 'https://www.vmk.hu/2026-05-22-eperhajo-felszallas-a-fedelzetre',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5683.png'
+                ],
+                [
+                    'date' => '2026.05.27.',
+                    'title' => 'Kiolvasó, kibeszélő olvasókör tiniknek',
+                    'text' => 'Tini olvasókör: Suzanne Collins Az éhezők viadala című disztópikus regényének kibeszélése a Központi Könyvtárban.',
+                    'url' => 'https://www.vmk.hu/20260527_kiolvaso_kibeszelo_tini_olvasokor_disztopia',
+                    'image' => 'https://www.vmk.hu/_upload/news_pic/600x600/4_5488.png'
+                ]
             ],
         ],
         'hours' => [
