@@ -1,29 +1,55 @@
-# OS generated files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-.DS_Store
+# Dependencies
+node_modules
+/.pnpm-store
 
-# IDE / Editor configurations
-.vscode/
-.idea/
+# Next.js build outputs
+/.next/
+/out/
+/build
+/dist
+
+# Environment variables & secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# Data & Docker persistence volumes
+/postgres_data
+/minio_data
+/meili_data
+/data
+*.sqlite
+*.sqlite-journal
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+logs
+*.log
+
+# Testing & Coverage
+/coverage
+/playwright-report
+/test-results
+
+# IDEs & System files
+.DS_Store
+*.pem
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# Log files
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Node modules
-node_modules/
-
-# Docker specific files
-.env
-docker-compose.override.yml
-*.db-journal
-
