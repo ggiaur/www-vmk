@@ -1,0 +1,55 @@
+import type { CollectionConfig } from 'payload'
+
+export const Documents: CollectionConfig = {
+  slug: 'documents',
+  admin: {
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'category', 'year', 'downloadCount'],
+  },
+  fields: [
+    {
+      name: 'title',
+      type: 'text',
+      required: true,
+      label: 'Dokumentum Címe',
+    },
+    {
+      name: 'file',
+      type: 'relationship',
+      relationTo: 'media',
+      required: true,
+      label: 'Csatolt Fájl',
+    },
+    {
+      name: 'category',
+      type: 'select',
+      required: true,
+      options: [
+        { label: 'SZMSZ & Szabályzatok', value: 'szmsz' },
+        { label: 'Éves Beszámolók', value: 'report' },
+        { label: 'Pályázati Kiírások', value: 'grant' },
+        { label: 'Letölthető Űrlapok', value: 'form' },
+        { label: 'Egyéb Hivatalos Iratok', value: 'other' },
+      ],
+      defaultValue: 'other',
+      label: 'Kategória',
+    },
+    {
+      name: 'year',
+      type: 'number',
+      label: 'Vonatkozó Év',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'downloadCount',
+      type: 'number',
+      defaultValue: 0,
+      label: 'Letöltések Száma',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+  ],
+}

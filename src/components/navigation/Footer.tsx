@@ -1,0 +1,101 @@
+import React from 'react'
+import Link from 'next/link'
+import { BookOpen, MapPin, Phone, Mail, Facebook, ExternalLink } from 'lucide-react'
+
+export const Footer: React.FC = () => {
+  return (
+    <footer className="bg-[#1E293B] text-slate-300 pt-12 pb-6 mt-auto">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-slate-800">
+        {/* Column 1: Info */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-md bg-[#8C1D11] flex items-center justify-center text-white">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <span className="font-bold text-white text-lg">VMK Székesfehérvár</span>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            Vörösmarty Mihály Könyvtár – Székesfehérvár Megyei Jogú Város nyilvános könyvtári hálózata.
+          </p>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-start gap-2">
+              <MapPin className="w-4 h-4 text-[#C85A32] mt-0.5 shrink-0" />
+              <span>8000 Székesfehérvár, Bartók Béla tér 1.</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4 text-[#C85A32] shrink-0" />
+              <a href="tel:+3622312845" className="hover:text-white transition">+36 22 312 845</a>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-[#C85A32] shrink-0" />
+              <a href="mailto:info@vmk.hu" className="hover:text-white transition">info@vmk.hu</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Column 2: Quick Links */}
+        <div className="space-y-3">
+          <h3 className="font-semibold text-white text-sm uppercase tracking-wider">Hasznos Hivatkozások</h3>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <a
+                href="https://katalogus.vmk.hu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition inline-flex items-center gap-1"
+              >
+                <span>Online Katalógus (OPAC)</span>
+                <ExternalLink className="w-3 h-3 text-slate-400" />
+              </a>
+            </li>
+            <li>
+              <Link href="/nyitvatartas" className="hover:text-white transition">
+                Tagkönyvtárak & Nyitvatartás
+              </Link>
+            </li>
+            <li>
+              <Link href="/#szolgaltatasok" className="hover:text-white transition">
+                Beiratkozás & Díjszabás
+              </Link>
+            </li>
+            <li>
+              <Link href="/#doksi" className="hover:text-white transition">
+                Hivatalos Dokumentumok & SZMSZ
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 3: Social & Legal */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-white text-sm uppercase tracking-wider">Közösség & Jog</h3>
+          <p className="text-xs text-slate-400">
+            Kövessen minket Facebookon a legfrissebb hírekért, rendezvényekért és könyvajánlókért!
+          </p>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://facebook.com/vmkszekesfehervar"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#8C1D11] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+              aria-label="VMK Facebook oldal"
+            >
+              <Facebook className="w-5 h-5" />
+            </a>
+          </div>
+          <div className="text-xs text-slate-500 space-y-1">
+            <p>Adatvédelmi tájékoztató | Akadálymentesítési nyilatkozat</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="max-w-7xl mx-auto px-4 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+        <p>© {new Date().getFullYear()} Vörösmarty Mihály Könyvtár. Minden jog fenntartva.</p>
+        <p className="flex items-center gap-1">
+          <span>Powered by Next.js 15 & Payload CMS v3</span>
+        </p>
+      </div>
+    </footer>
+  )
+}

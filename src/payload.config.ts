@@ -5,12 +5,15 @@ import { buildConfig } from 'payload'
 import { hu } from 'payload/i18n/hu'
 import { fileURLToPath } from 'url'
 
+import { Documents } from './collections/Documents'
 import { Events } from './collections/Events'
 import { Libraries } from './collections/Libraries'
 import { Media } from './collections/Media'
 import { News } from './collections/News'
 import { OpeningHours } from './collections/OpeningHours'
 import { Pages } from './collections/Pages'
+import { Services } from './collections/Services'
+import { Staff } from './collections/Staff'
 import { Users } from './collections/Users'
 
 const filename = fileURLToPath(import.meta.url)
@@ -49,7 +52,7 @@ export default buildConfig({
     supportedLanguages: { hu },
     defaultLanguage: 'hu',
   },
-  collections: [Users, Media, Libraries, News, Events, OpeningHours, Pages],
+  collections: [Users, Media, Libraries, News, Events, OpeningHours, Pages, Staff, Documents, Services],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'vmk_super_secret_payload_key_2026_dev',
   typescript: {

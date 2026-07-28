@@ -6,9 +6,9 @@ A VMK Website Modernization projekt pillanatnyi stádiumának, elvégzett mérf�
 
 ## 🚦 Aktuális Fázis & Státusz
 
-* **Aktuális Fázis:** Implementation — Milestone 2A Core CMS Prototype (Technically Validated)
-* **Aktuális Verzió:** `v0.2.0-core-cms`
-* **Célverzió (Éjszakai Autonóm Futás):** `v0.3.0-autonomous-core`
+* **Aktuális Fázis:** Implementation — Milestone 2B Extended CMS & Next.js 15 Frontend Shell (Completed)
+* **Aktuális Verzió:** `v0.3.0-autonomous-core`
+* **Célverzió:** `v0.4.0-migration`
 * **Blokkoló tényezők (Blockers):** Nincsenek.
 
 ---
@@ -17,7 +17,7 @@ A VMK Website Modernization projekt pillanatnyi stádiumának, elvégzett mérf�
 
 * **`v0.1.0-foundation`** — Dokumentáció, architektúra, Docker Compose, Next.js 15 init, CI/CD.
 * **`v0.2.0-core-cms`** — Payload CMS v3 collections (`Users`, `Media`, `Libraries`, `News`, `Events`, `OpeningHours`, `Pages`), RBAC, i18n, Live Preview, `scripts/seed.ts` & `PRE_RELEASE_CHECK.md`.
-* **`v0.3.0-autonomous-core`** — Extended CMS (`Staff`, `Documents`, `Services`), Meilisearch integráció & Frontend Shell.
+* **`v0.3.0-autonomous-core`** — Extended CMS (`Staff`, `Documents`, `Services`), Meilisearch integráció (`src/lib/meilisearch.ts`) & Next.js 15 Frontend Shell (Header, Footer, Breadcrumb, NewsCard, EventCard, LibraryCard, OpeningHoursWidget, Főoldal és Nyitvatartás mátrix).
 * **`v0.4.0-migration`** — Meglévő vmk.hu tartalom átmigrálása, 301-es átirányítások & SEO tesztelés.
 * **`v1.0.0-production`** — Élesítés és átadás.
 
@@ -35,15 +35,9 @@ A VMK Website Modernization projekt pillanatnyi stádiumának, elvégzett mérf�
   - Seed tesztelési eszköz (`scripts/seed.ts`)
   - Szerkesztői szabályzat és jóváhagyási mátrix (`docs/EDITORIAL_WORKFLOW.md`)
   - CMS Audit jelentés (`CMS_VALIDATION_REPORT.md`: `TECHNICALLY VALIDATED - HUMAN ACCEPTANCE PENDING`)
-- [x] **Autonomous Handover Setup:** `README_AI.md`, `NEXT_TASK.md` és `.ai/context/` naprakészre frissítve.
-
----
-
-## 🎯 Következő Mérföldkövek (Next Up - Overnight Run)
-
-1. **Git Commit & Push -> GitHub Actions CI Validation -> Git Tag `v0.2.0-core-cms`**
-2. **Autonomous Development (NEXT_TASK.md):**
-   - Extended CMS Collections (`Staff`, `Documents`, `Services`)
-   - Meilisearch integráció & Payload CMS hooks
-   - Frontend Shell (`Header`, `Footer`, `Breadcrumb`, `NewsCard`, `EventCard`, `LibraryCard`, `OpeningHoursWidget`)
-   - Főoldal (`/`) és Nyitvatartási mátrix (`/nyitvatartas`) megvalósítás
+- [x] **Extended CMS & Next.js 15 Frontend Shell (Milestone 2B - v0.3.0-autonomous-core):**
+  - `Staff`, `Documents`, `Services` CMS kollekciók elkészítve és regisztrálva a Payload-ban.
+  - Header, Footer, Breadcrumb navigációs komponensek (SEO & ARIA akadálymentesítés).
+  - NewsCard, EventCard, LibraryCard, OpeningHoursWidget UI komponensek.
+  - Főoldal (`/`) és Nyitvatartási Mátrix (`/nyitvatartas`) elrendezés megvalósítva.
+  - Meilisearch kliens integráció (`src/lib/meilisearch.ts`).
