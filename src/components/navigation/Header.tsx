@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
     <header className="sticky top-0 z-50 glass-header">
       {/* Top Utility Bar */}
       <div className="bg-[#1E293B] text-white text-xs py-1.5 px-4">
-        <div className="max-w-7xl mx-mx-auto flex flex-wrap justify-between items-center gap-2 max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1 text-amber-300 font-medium">
               <Clock className="w-3.5 h-3.5" />

@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Calendar, ArrowRight } from 'lucide-react'
 
 export interface NewsCardProps {
@@ -36,11 +37,12 @@ export const NewsCard: React.FC<NewsCardProps> = ({
     <article className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm card-hover-effect flex flex-col h-full">
       {imageUrl && (
         <div className="h-48 w-full overflow-hidden bg-slate-100 relative">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+            fill
+            className="object-cover transition-transform duration-300 hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>
       )}

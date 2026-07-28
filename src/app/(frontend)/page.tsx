@@ -5,78 +5,39 @@ import { OpeningHoursWidget } from '@/components/ui/OpeningHoursWidget'
 import { NewsCard } from '@/components/ui/NewsCard'
 import { EventCard } from '@/components/ui/EventCard'
 import { LibraryCard } from '@/components/ui/LibraryCard'
+import {
+  getLatestNews,
+  getUpcomingEvents,
+  getAllLibraries,
+  getOpeningHoursForLibrary,
+  formatOpeningHours,
+} from '@/lib/payload'
 
-export default function HomePage() {
-  const sampleNews = [
-    {
-      title: 'Nyári olvasójáték és könyvajánló fiataloknak',
-      summary:
-        'Csatlakozz nyári olvasási kihívásunkhoz! Értékes könyvcsomagok és ajándékutalványok várnak a legszorgalmasabb olvasókra.',
-      category: 'grant',
-      publishedAt: '2026-07-20T10:00:00.000Z',
-      slug: 'nyari-olvasojatek-2026',
-    },
-    {
-      title: 'Megújult a Központi Könyvtár Helyismereti Részlege',
-      summary:
-        'Digitális archívumunk bővült és kényelmes kutatóboxok várják a helytörténet iránt érdeklődő látogatókat.',
-      category: 'announcement',
-      publishedAt: '2026-07-15T09:00:00.000Z',
-      slug: 'helyismeret-megujulas',
-    },
-    {
-      title: 'Író-olvasó találkozó a Gyermekkönyvtárban',
-      summary:
-        'Vendégünk lesz a népszerű ifjúsági regénysorozat szerzője. Dedikálás és beszélgetés a gyerekkönyvtári teremben.',
-      category: 'general',
-      publishedAt: '2026-07-10T14:00:00.000Z',
-      slug: 'iro-olvaso-talalkozo',
-    },
-  ]
+export default async function HomePage() {
+  // Adatok lekérése a Payload CMS-ből (graceful fallback üres DB esetén)
+  let news: Awaited<ReturnType<typeof getLatestNews>> = []
+  let events: Awaited<ReturnType<typeof getUpcomingEvents>> = []
+  let libraries: Awaited<ReturnType<typeof getAllLibraries>> = []
+  let heroSchedule: ReturnType<typeof formatOpeningHours> = []
 
-  const sampleEvents = [
-    {
-      title: 'Kortárs Könyvklub: Nyári Könyvmustra',
-      startDate: '2026-08-05T17:00:00.000Z',
-      locationName: 'Központi Könyvtár – Olvasóterem',
-      targetAudience: 'adults',
-      slug: 'kortars-konyvklub-augusztus',
-    },
-    {
-      title: 'Mesedélután és Kézműves Foglalkozás',
-      startDate: '2026-08-12T15:30:00.000Z',
-      locationName: 'Gyermekkönyvtár (Bartók B. tér 1.)',
-      targetAudience: 'children',
-      slug: 'mesedelutan-gyermekkonyvtar',
-    },
-  ]
+  try {
+    ;[news, events, libraries] = await Promise.all([
+      getLatestNews(3),
+      getUpcomingEvents(2),
+      getAllLibraries(),
+    ])
 
-  const sampleLibraries = [
-    {
-      name: 'Központi Könyvtár',
-      slug: 'kozponti-konyvtar',
-      address: '8000 Székesfehérvár, Bartók Béla tér 1.',
-      phone: '+36 22 312 845',
-      email: 'info@vmk.hu',
-      type: 'central',
-    },
-    {
-      name: 'Budai Úti Tagkönyvtár',
-      slug: 'budai-uti-tagkonyvtar',
-      address: '8000 Székesfehérvár, Budai út 44-46.',
-      phone: '+36 22 315 253',
-      email: 'budai@vmk.hu',
-      type: 'branch',
-    },
-    {
-      name: 'Mészöly Géza Úti Tagkönyvtár',
-      slug: 'meszoly-geza-uti-tagkonyvtar',
-      address: '8000 Székesfehérvár, Mészöly G. u. 7.',
-      phone: '+36 22 329 401',
-      email: 'meszoly@vmk.hu',
-      type: 'branch',
-    },
-  ]
+    // Nyitvatartás: az első (központi) könyvtár adatai a Hero widget-hez
+    if (libraries.length > 0) {
+      const centralLib = libraries.find((l) => l.type === 'central') ?? libraries[0]
+      const ohDocs = await getOpeningHoursForLibrary(centralLib.id)
+      heroSchedule = formatOpeningHours(ohDocs)
+    }
+  } catch {
+    // Ha a DB még nincs inicializálva, az OpeningHoursWidget saját fallback-et mutat
+  }
+
+  const centralLibrary = libraries.find((l) => l.type === 'central') ?? libraries[0]
 
   return (
     <div className="space-y-16 pb-16">
@@ -99,7 +60,8 @@ export default function HomePage() {
             </h1>
 
             <p className="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
-              Böngésszen több mint 300 000 kötetből álló katalógusunkban, fizessen elő e-könyvekre, vagy vegyen részt színes kulturális rendezvényeinken!
+              Böngésszen több mint 300 000 kötetből álló katalógusunkban, fizessen elő e-könyvekre,
+              vagy vegyen részt színes kulturális rendezvényeinken!
             </p>
 
             {/* Catalog Search Bar */}
@@ -130,7 +92,10 @@ export default function HomePage() {
           </div>
 
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <OpeningHoursWidget />
+            <OpeningHoursWidget
+              libraryName={centralLibrary?.name ?? 'Központi Könyvtár'}
+              schedule={heroSchedule}
+            />
           </div>
         </div>
       </section>
@@ -139,11 +104,15 @@ export default function HomePage() {
       <section id="hirek" className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
           <div>
-            <span className="text-xs font-bold text-[#8C1D11] uppercase tracking-wider">Hírek & Tájékoztatók</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">Legfrissebb Könyvtári Hírek</h2>
+            <span className="text-xs font-bold text-[#8C1D11] uppercase tracking-wider">
+              Hírek & Tájékoztatók
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+              Legfrissebb Könyvtári Hírek
+            </h2>
           </div>
           <Link
-            href="/#hirek"
+            href="/hirek"
             className="text-sm font-semibold text-[#8C1D11] hover:underline flex items-center gap-1"
           >
             <span>Összes hír megtekintése</span>
@@ -151,11 +120,33 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {sampleNews.map((news, idx) => (
-            <NewsCard key={idx} {...news} />
-          ))}
-        </div>
+        {news.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {news.map((item) => {
+              const img = item.featuredImage
+              const imgUrl =
+                img && typeof img === 'object' && 'url' in img ? (img.url as string) : undefined
+              return (
+                <NewsCard
+                  key={item.id}
+                  title={item.title}
+                  summary={item.summary}
+                  category={item.category}
+                  publishedAt={
+                    typeof item.publishedAt === 'string' ? item.publishedAt : new Date().toISOString()
+                  }
+                  slug={item.slug}
+                  imageUrl={imgUrl}
+                />
+              )
+            })}
+          </div>
+        ) : (
+          <div className="bg-slate-50 rounded-xl p-10 text-center text-slate-400">
+            <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" />
+            <p className="text-sm">Hamarosan érkeznek az első hírek!</p>
+          </div>
+        )}
       </section>
 
       {/* Rendezvények Section */}
@@ -167,34 +158,83 @@ export default function HomePage() {
                 <Calendar className="w-3.5 h-3.5" />
                 Programajánló
               </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">Közelgő Rendezvényeink</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+                Közelgő Rendezvényeink
+              </h2>
             </div>
+            <Link
+              href="/esemenyek"
+              className="text-sm font-semibold text-[#8C1D11] hover:underline flex items-center gap-1"
+            >
+              <span>Összes rendezvény</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {sampleEvents.map((event, idx) => (
-              <EventCard key={idx} {...event} />
-            ))}
-          </div>
+          {events.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {events.map((event) => {
+                const loc = event.location
+                const locationName =
+                  loc && typeof loc === 'object' && 'name' in loc
+                    ? (loc.name as string)
+                    : 'VMK Székesfehérvár'
+                return (
+                  <EventCard
+                    key={event.id}
+                    title={event.title}
+                    startDate={
+                      typeof event.startDate === 'string'
+                        ? event.startDate
+                        : new Date().toISOString()
+                    }
+                    locationName={locationName}
+                    targetAudience={event.targetAudience}
+                    slug={event.slug}
+                    registrationUrl={event.registrationUrl ?? undefined}
+                  />
+                )
+              })}
+            </div>
+          ) : (
+            <div className="bg-white/60 rounded-xl p-10 text-center text-slate-400">
+              <Calendar className="w-10 h-10 mx-auto mb-3 opacity-40" />
+              <p className="text-sm">Hamarosan érkeznek az első rendezvények!</p>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Tagkönyvtárak Grid */}
-      <section id="tagkonyvtarakt" className="max-w-7xl mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold text-[#8C1D11] uppercase tracking-wider">Hálózatunk</span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Tagkönyvtárak & Részlegek</h2>
-          <p className="text-slate-600 text-sm mt-2">
-            Találja meg az Önhöz legközelebbi tagkönyvtárunkat Székesfehérváron!
-          </p>
-        </div>
+      {libraries.length > 0 && (
+        <section id="tagkonyvtarak" className="max-w-7xl mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-bold text-[#8C1D11] uppercase tracking-wider">
+              Hálózatunk
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+              Tagkönyvtárak & Részlegek
+            </h2>
+            <p className="text-slate-600 text-sm mt-2">
+              Találja meg az Önhöz legközelebbi tagkönyvtárunkat Székesfehérváron!
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {sampleLibraries.map((lib, idx) => (
-            <LibraryCard key={idx} {...lib} />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {libraries.slice(0, 3).map((lib) => (
+              <LibraryCard
+                key={lib.id}
+                name={lib.name}
+                slug={lib.slug}
+                address={lib.address}
+                phone={lib.phone ?? undefined}
+                email={lib.email ?? undefined}
+                type={lib.type}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Szolgáltatások Highlights */}
       <section id="szolgaltatasok" className="max-w-7xl mx-auto px-4">
@@ -207,29 +247,18 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-              <BookOpen className="w-8 h-8 text-amber-300 mb-3" />
-              <h3 className="font-bold text-base mb-1">Könyv & Folyóirat</h3>
-              <p className="text-xs text-slate-300">Több százezer nyomtatott dokumentum, folyóirat és dokumentumkölcsönzés.</p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-              <FileText className="w-8 h-8 text-amber-300 mb-3" />
-              <h3 className="font-bold text-base mb-1">E-Könyvek & NAVA</h3>
-              <p className="text-xs text-slate-300">Digitális adatbázisok, NAVA pont és e-könyv kölcsönzési lehetőség.</p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-              <Bookmark className="w-8 h-8 text-amber-300 mb-3" />
-              <h3 className="font-bold text-base mb-1">Helyismereti Kutatás</h3>
-              <p className="text-xs text-slate-300">Székesfehérvár és Fejér vármegye helytörténeti ritkaságai és kutatószolgálat.</p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-              <Users className="w-8 h-8 text-amber-300 mb-3" />
-              <h3 className="font-bold text-base mb-1">Közösségi Terek</h3>
-              <p className="text-xs text-slate-300">Rendezvénytermek, wifi, tanulóboxok és kézműves műhelyek.</p>
-            </div>
+            {[
+              { icon: <BookOpen className="w-8 h-8" />, title: 'Könyv & Folyóirat', desc: 'Több százezer nyomtatott dokumentum, folyóirat és dokumentumkölcsönzés.' },
+              { icon: <FileText className="w-8 h-8" />, title: 'E-Könyvek & NAVA', desc: 'Digitális adatbázisok, NAVA pont és e-könyv kölcsönzési lehetőség.' },
+              { icon: <Bookmark className="w-8 h-8" />, title: 'Helyismereti Kutatás', desc: 'Székesfehérvár és Fejér vármegye helytörténeti ritkaságai és kutatószolgálat.' },
+              { icon: <Users className="w-8 h-8" />, title: 'Közösségi Terek', desc: 'Rendezvénytermek, wifi, tanulóboxok és kézműves műhelyek.' },
+            ].map((s, i) => (
+              <div key={i} className="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+                <div className="text-amber-300 mb-3">{s.icon}</div>
+                <h3 className="font-bold text-base mb-1">{s.title}</h3>
+                <p className="text-xs text-slate-300">{s.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

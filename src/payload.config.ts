@@ -50,7 +50,6 @@ export default buildConfig({
   },
   i18n: {
     supportedLanguages: { hu },
-    defaultLanguage: 'hu',
   },
   collections: [Users, Media, Libraries, News, Events, OpeningHours, Pages, Staff, Documents, Services],
   editor: lexicalEditor(),
