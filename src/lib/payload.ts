@@ -39,6 +39,42 @@ export async function getLatestNews(limit = 3) {
   }
 }
 
+export async function getPaginatedNews({
+  page = 1,
+  limit = 12,
+  category,
+}: {
+  page?: number
+  limit?: number
+  category?: string
+}) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return { docs: [], totalPages: 1, page: 1, hasNextPage: false, hasPrevPage: false }
+    const where: Record<string, unknown> = { _status: { equals: 'published' } }
+    if (category && category !== 'all') {
+      where.category = { equals: category }
+    }
+    const result = await payload.find({
+      collection: 'news',
+      where: where as Parameters<typeof payload.find>[0]['where'],
+      sort: '-publishedAt',
+      page,
+      limit,
+      depth: 1,
+    })
+    return {
+      docs: result.docs,
+      totalPages: result.totalPages,
+      page: result.page ?? 1,
+      hasNextPage: result.hasNextPage,
+      hasPrevPage: result.hasPrevPage,
+    }
+  } catch {
+    return { docs: [], totalPages: 1, page: 1, hasNextPage: false, hasPrevPage: false }
+  }
+}
+
 export async function getNewsBySlug(slug: string) {
   try {
     const payload = await getPayloadClient()

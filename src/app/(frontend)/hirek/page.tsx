@@ -3,27 +3,30 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { NewsCard } from '@/components/ui/NewsCard'
-import { getLatestNews } from '@/lib/payload'
+import { getPaginatedNews } from '@/lib/payload'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Hírek & Közlemények – Vörösmarty Mihály Könyvtár',
   description: 'A Vörösmarty Mihály Könyvtár legfrissebb hírei, tájékoztatói és pályázati kiírásai.',
 }
 
+const PAGE_SIZE = 12
+
 export default async function HirekPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>
+  searchParams: Promise<{ category?: string; page?: string }>
 }) {
   const params = await searchParams
   const activeCategory = params.category ?? 'all'
+  const currentPage = Math.max(1, Number(params.page) || 1)
 
-  let allNews = await getLatestNews(20).catch(() => [])
-
-  // Szűrés kategória szerint
-  if (activeCategory !== 'all') {
-    allNews = allNews.filter((item) => item.category === activeCategory)
-  }
+  const { docs: allNews, totalPages } = await getPaginatedNews({
+    page: currentPage,
+    limit: PAGE_SIZE,
+    category: activeCategory,
+  })
 
   // Fallback adatok ha a DB üres
   const sampleNews = [
@@ -54,6 +57,13 @@ export default async function HirekPage({
   ]
 
   const displayNews = allNews.length > 0 ? allNews : sampleNews
+  const buildPageHref = (page: number) => {
+    const qs = new URLSearchParams()
+    if (activeCategory !== 'all') qs.set('category', activeCategory)
+    if (page > 1) qs.set('page', String(page))
+    const query = qs.toString()
+    return query ? `/hirek?${query}` : '/hirek'
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
@@ -72,6 +82,7 @@ export default async function HirekPage({
             { label: 'Friss Hírek', value: 'general' },
             { label: 'Közlemények', value: 'announcement' },
             { label: 'Pályázatok', value: 'grant' },
+            { label: 'Archívum', value: 'archive' },
           ].map((cat) => (
             <Link
               key={cat.value}
@@ -109,6 +120,38 @@ export default async function HirekPage({
           )
         })}
       </div>
+
+      {totalPages > 1 && (
+        <nav aria-label="Lapozás" className="flex items-center justify-center gap-2 pt-4">
+          <Link
+            href={buildPageHref(Math.max(1, currentPage - 1))}
+            aria-disabled={currentPage <= 1}
+            className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold border ${
+              currentPage <= 1
+                ? 'pointer-events-none opacity-40 border-slate-200 text-slate-400'
+                : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>Előző</span>
+          </Link>
+          <span className="text-sm text-slate-500 px-2">
+            {currentPage}. oldal / {totalPages}
+          </span>
+          <Link
+            href={buildPageHref(Math.min(totalPages, currentPage + 1))}
+            aria-disabled={currentPage >= totalPages}
+            className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold border ${
+              currentPage >= totalPages
+                ? 'pointer-events-none opacity-40 border-slate-200 text-slate-400'
+                : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <span>Következő</span>
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        </nav>
+      )}
     </div>
   )
 }

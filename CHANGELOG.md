@@ -6,6 +6,9 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Hozzáadva (hetedik kör — /hirek lapozás)
+* `getPaginatedNews()` a `src/lib/payload.ts`-ben (Payload `find()` beépített `page`/`limit`/`totalPages` mezőire építve) + `/hirek` oldal átírva valódi lapozásra (`?page=N`) és kategória-szűrésre (`?category=...&page=N` együtt is működik). Archívum kategória szűrő is hozzáadva a gombsorhoz.
+
 ### Hozzáadva (hatodik kör — teljes hír-migráció)
 * A scraper végigfutott mind a ~43 valós `vmk.hu/news` lista-oldalon. **335 valódi hírcikk** importálva a `news` kollekcióba, valós címmel, dátummal (slug-ból becsülve, ahol a régi oldal nem adott mást), szöveggel és képpel (MinIO-ban tárolva). Csak 7 hiba maradt, mind a régi oldal saját törött képei/linkjei (404-ek egy 2020–2024 közötti régi feltöltésekben) — nem a migrációs kód hibája.
 * Javítva: a `htmlToLexical.ts` link-konvertere elszállt, ha a forrás `<a>` tag érvénytelen URL-t tartalmazott (`href="#"` és hasonlók, amik gyakoriak a régi oldalon) — most sima szövegre esik vissza link-node helyett ilyen esetben, ahelyett hogy elbuktatná a teljes cikk importját.
