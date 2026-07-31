@@ -6,6 +6,10 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Javítva — súlyos dátum-becslési hiba a hír-migrációban
+* Adatminőségi átvizsgálás során kiderült: **a hírcikkek jelentős része a scrape *futtatási idejét* kapta publikációs dátumként** a valós dátum helyett, mert a `guessDateFromSlug` csak szűk, konkrét minta-prefixumokat ismert fel (pl. egy 2013-as cikk 2026-07-31-et kapott). Négy új mintát adtam hozzá: puszta `YYYY-` év-előtag, év bárhol a slugben (`...-2017`, `...-2016-1`), `YYYY_MM_` aláhúzásos prefix, záró `-YYYYMMDD` szuffix. Minden új mintához előbb regressziós tesztet írtam, ami igazoltan elbukott a régi kóddal, majd zölddé vált a javítás után.
+* A híreket törölve és a javított logikával újraimportálva (334 cikk). A megmaradó, valóban dátumtalan slugek (pl. facebook-poszt-azonosítók, hónapnév-only szövegek, évfordulós események évszám nélkül) továbbra is a `sourceNote` mezőn keresztül vannak jelezve szerkesztői ellenőrzésre — ez már a slug-alapú megközelítés valós, becsületesen dokumentált határa, nem hiba.
+
 ### Hozzáadva — scraper unit tesztek + valódi bugfix
 * `tests/scraper.test.ts`: 24 új unit teszt a scraper-logikára (`parseNewsListingPage`, `parseArticleDetail`, `guessDateFromSlug`, `htmlFragmentToLexical`, `parseStaffListing`, `parseDocumentsListing`, `guessCategory`/`guessYear`) — eddig ez a kód csak élesben, kézzel lett ellenőrizve, automatizált lefedettség nélkül.
 * **A tesztírás valódi hibát talált:** a `parseStaffListing` telefonszám-kinyerő regex-e (`/Telefonszám:\s*([^\n]+?)(?:E-mail|$)/`) soha nem illeszkedett, mert a `.news-lead` blokkban minden mező külön sorban van (valódi DOM whitespace a testvér `<div>`-ek között) — a "Telefonszám" és "E-mail" tehát sosem esik egy sorba, de a regex ezt feltételezte. Emiatt **mind a 80 korábban importált munkatárs telefonszám mezője üresen maradt** — ezt a korábbi manuális ellenőrzésnél nem vettem észre (csak a beosztás-címkéket néztem). Javítva egyszerűbb, helyes regexre; a 80 rekord törölve és újraimportálva: **mind a 80 munkatársnak most már van telefonszáma.**

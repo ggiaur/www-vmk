@@ -79,6 +79,32 @@ export function guessDateFromSlug(slug: string): { date: Date; guessed: boolean 
   if (monthMatch) {
     return { date: new Date(`${monthMatch[1]}-${monthMatch[2]}-01T10:00:00Z`), guessed: true }
   }
+  const underscoreMonthMatch = slug.match(/^(\d{4})_(\d{2})_/)
+  if (underscoreMonthMatch) {
+    return {
+      date: new Date(`${underscoreMonthMatch[1]}-${underscoreMonthMatch[2]}-01T10:00:00Z`),
+      guessed: true,
+    }
+  }
+  const trailingCompactMatch = slug.match(/-((?:19|20)\d{2})(\d{2})(\d{2})(?:-|$)/)
+  if (trailingCompactMatch) {
+    return {
+      date: new Date(`${trailingCompactMatch[1]}-${trailingCompactMatch[2]}-${trailingCompactMatch[3]}T10:00:00Z`),
+      guessed: true,
+    }
+  }
+  const yearPrefixMatch = slug.match(/^(\d{4})-/)
+  if (yearPrefixMatch) {
+    return { date: new Date(`${yearPrefixMatch[1]}-01-01T10:00:00Z`), guessed: true }
+  }
+  // Last resort: a plausible (19xx/20xx) year anywhere in the slug, e.g.
+  // "kortars-muveszeti-fesztival-2017" or "orszagos-konyvtari-napok-2016-1"
+  // — real, common patterns on this site. Without this, these silently
+  // defaulted to the scrape date instead of anything resembling reality.
+  const yearAnywhereMatch = slug.match(/(?:^|-)((?:19|20)\d{2})(?:-|$)/)
+  if (yearAnywhereMatch) {
+    return { date: new Date(`${yearAnywhereMatch[1]}-01-01T10:00:00Z`), guessed: true }
+  }
   return { date: new Date(), guessed: true }
 }
 

@@ -72,6 +72,45 @@ describe('vmkScraper: guessDateFromSlug', () => {
     const { guessed } = guessDateFromSlug('valami-cim-datum-nelkul')
     expect(guessed).toBe(true)
   })
+
+  it('extracts a bare YYYY- year prefix (regression: was silently defaulting to scrape time)', () => {
+    const { date, guessed } = guessDateFromSlug('2013-szent-istvan-emlekev')
+    expect(guessed).toBe(true)
+    expect(date.getUTCFullYear()).toBe(2013)
+  })
+
+  it('extracts a year embedded anywhere in the slug, e.g. at the end (regression)', () => {
+    const { date, guessed } = guessDateFromSlug('kortars-muveszeti-fesztival-2017')
+    expect(guessed).toBe(true)
+    expect(date.getUTCFullYear()).toBe(2017)
+  })
+
+  it('extracts a year embedded in the middle of the slug (regression)', () => {
+    const { date, guessed } = guessDateFromSlug('orszagos-konyvtari-napok-2016-1')
+    expect(guessed).toBe(true)
+    expect(date.getUTCFullYear()).toBe(2016)
+  })
+
+  it('parses an underscore-separated YYYY_MM_ prefix (regression)', () => {
+    const { date, guessed } = guessDateFromSlug('2025_12_karacsonyi_varazslat_tolnai')
+    expect(guessed).toBe(true)
+    expect(date.getUTCFullYear()).toBe(2025)
+    expect(date.getUTCMonth()).toBe(11) // December
+  })
+
+  it('parses a trailing compact YYYYMMDD suffix (regression)', () => {
+    const { date, guessed } = guessDateFromSlug('kulcsert-dij-20250822')
+    expect(guessed).toBe(true)
+    expect(date.getUTCFullYear()).toBe(2025)
+    expect(date.getUTCMonth()).toBe(7) // August
+    expect(date.getUTCDate()).toBe(22)
+  })
+
+  it('does not misfire on a slug with no plausible 19xx/20xx year anywhere', () => {
+    const { date } = guessDateFromSlug('konyvtarunk-rovid-tortenete')
+    // No extractable year at all -> the only honest fallback left is "now".
+    expect(date.getUTCFullYear()).toBe(new Date().getUTCFullYear())
+  })
 })
 
 describe('htmlToLexical: htmlFragmentToLexical', () => {
