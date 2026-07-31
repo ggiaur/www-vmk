@@ -51,7 +51,7 @@ export function parseDocumentsListing(html: string): ScrapedDocument[] {
   return docs
 }
 
-function guessCategory(title: string): string {
+export function guessCategory(title: string): string {
   const t = title.toLowerCase()
   if (t.includes('szmsz') || t.includes('szervezeti és működési')) return 'szmsz'
   if (t.includes('beszámoló')) return 'report'
@@ -60,7 +60,7 @@ function guessCategory(title: string): string {
   return 'other'
 }
 
-function guessYear(title: string, url: string): number | undefined {
+export function guessYear(title: string, url: string): number | undefined {
   const match = (title + ' ' + url).match(/20\d{2}/)
   return match ? Number(match[0]) : undefined
 }

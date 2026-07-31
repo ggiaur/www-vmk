@@ -30,7 +30,10 @@ export function parseStaffListing(html: string): ScrapedStaffMember[] {
     if (!name) return
     const position = $(el).find('.title .date').first().text().trim()
     const leadText = $(el).find('.news-lead').first()
-    const phoneMatch = leadText.text().match(/Telefonszám:\s*([^\n]+?)(?:E-mail|$)/)
+    // Each field sits on its own line inside .news-lead (real DOM whitespace
+    // between sibling <div>s), so "Telefonszám: ..." never shares a line
+    // with "E-mail cím: ..." — capture up to the next newline, full stop.
+    const phoneMatch = leadText.text().match(/Telefonszám:\s*([^\n]+)/)
     const email = leadText.find('a.mailto').first().text().trim() || undefined
     const phone = phoneMatch ? phoneMatch[1].trim() : undefined
 
