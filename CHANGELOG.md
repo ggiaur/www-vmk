@@ -6,6 +6,10 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Hozzáadva (kilencedik kör — dokumentum-migráció)
+* `src/lib/scraper/vmkDocumentsScraper.ts` + dev-only `POST /api/dev-scrape-documents`: az `/alapdokumentumok` szabadformátumú (nem egységes markupú) PDF-listáját dolgozza fel `a[href$=".pdf"]` szelektorral, letölti a PDF-eket, feltölti a MinIO-ba, és `documents` rekordot hoz létre kategória- és év-becsléssel a cím szövegéből. **48/53 dokumentum sikeresen importálva, 0 hiba.**
+* **Ismert korlát:** a duplikátum-szűrés cím alapján történik, nem URL alapján — mivel néhány dokumentum ("Adatkezelési tájékoztató", "Beszámoló") több különböző dátumú verzióban szerepel azonos címmel, 5 valódi (eltérő) dokumentum tévesen duplikátumnak lett jelölve és kimaradt. Javításhoz a `Documents` kollekcióba egy `sourceUrl` mező kellene a valódi egyediséghez.
+
 ### Hozzáadva (nyolcadik kör — munkatárs-migráció)
 * `src/lib/scraper/vmkStaffScraper.ts` + dev-only `POST /api/dev-scrape-staff`: a `/munkatarsak` valós, egyoldalas könyvtári munkatárs-adatbázisát importálja a `staff` kollekcióba (ugyanazt a `.news-index`/`.title`/`.news-lead` markupot használja, mint a hírlista). **80/80 munkatárs sikeresen importálva, 0 hiba** — valós név, beosztás, telefonszám, e-mail cím, ami már eleve nyilvánosan közzé van téve az intézmény saját oldalán. A `department` (tagkönyvtár/részleg) mező szándékosan üresen marad — a régi oldal 7-utas szűrője nincs egyértelműen megfeleltetve a jelenleg seedelt könyvtáraknak, ezt szerkesztő tudja pótolni az adminban.
 
