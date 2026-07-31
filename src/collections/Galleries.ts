@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Galleries: CollectionConfig = {
   slug: 'galleries',
+  access: {
+    read: () => true,
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'eventDate'],

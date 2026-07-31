@@ -5,6 +5,9 @@ import type { CollectionConfig } from 'payload'
 // Visitors are directed to contact/visit the library to purchase.
 export const Products: CollectionConfig = {
   slug: 'products',
+  access: {
+    read: () => true,
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'price', 'stockStatus'],

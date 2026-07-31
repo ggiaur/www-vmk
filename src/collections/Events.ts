@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Events: CollectionConfig = {
   slug: 'events',
+  access: {
+    read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'startDate', 'location', 'targetAudience', '_status'],

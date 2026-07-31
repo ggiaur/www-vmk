@@ -3,6 +3,9 @@ import { PageBlocks } from '../blocks/PageBlocks'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  access: {
+    read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],

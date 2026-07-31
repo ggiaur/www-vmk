@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const OpeningHours: CollectionConfig = {
   slug: 'opening-hours',
+  access: {
+    read: () => true,
+  },
   admin: {
     useAsTitle: 'specialNote',
     defaultColumns: ['library', 'dayOfWeek', 'openTime', 'closeTime', 'isClosed'],

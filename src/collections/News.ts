@@ -2,6 +2,11 @@ import type { CollectionConfig } from 'payload'
 
 export const News: CollectionConfig = {
   slug: 'news',
+  access: {
+    // Public REST API only sees published articles; logged-in editors see
+    // drafts too (matches the admin panel's own preview behaviour).
+    read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],

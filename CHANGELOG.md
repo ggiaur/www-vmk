@@ -6,6 +6,10 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Biztonsági átvizsgálás — REST API hozzáférés-vezérlés
+* Ellenőriztem, hogy a személyes adatot tartalmazó kollekciók (`Bookings`, `DonationPledges`, `Registrations`, `Users`) **nem** érhetők-e el publikusan a REST API-n — nem, a Payload alapértelmezett hozzáférés-vezérlése helyesen 403-at ad rájuk auth nélkül. Ez rendben volt már eddig is, csak megerősítettem.
+* Viszont kiderült, hogy **ugyanez az alapértelmezés a nyilvánosnak szánt tartalomtípusokra is vonatkozott** (`News`, `Events`, `Staff`, `Documents`, `Products`, `Galleries`, `Partners`, `Rooms`, `Libraries`, `Services`, `OpeningHours`, `Pages`) — a weboldal ezidáig csak azért működött, mert a szerver-oldali renderelés a Payload Local API-t használja (ami megkerüli a REST hozzáférés-vezérlést), nem a publikus `/api/*` végpontokat. Egy jövőbeli kliens-oldali fetch, mobilalkalmazás vagy harmadik féltől származó integráció viszont 403-at kapott volna. Pótoltam a `access: { read: () => true }` (verziózott kollekcióknál: `read: ({req:{user}}) => user ? true : {_status:{equals:'published'}}`) szabályt mindegyikhez.
+
 ### Javítva — dokumentum-scraper duplikátum-szűrés
 * `Documents` kollekció kiegészítve `sourceUrl` (egyedi) mezővel, a scraper cím-alapú szűrés helyett erre vált — az 5 korábban tévesen kihagyott, azonos című de eltérő dátumú dokumentum most is bekerül. Meglévő 48 rekord törölve és újraimportálva a javított logikával: **53/53 dokumentum, 0 hiba, 0 hamis duplikátum.**
 

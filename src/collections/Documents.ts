@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Documents: CollectionConfig = {
   slug: 'documents',
+  access: {
+    read: () => true,
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'year', 'downloadCount'],
