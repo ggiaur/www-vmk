@@ -6,6 +6,9 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Hozzáadva (nyolcadik kör — munkatárs-migráció)
+* `src/lib/scraper/vmkStaffScraper.ts` + dev-only `POST /api/dev-scrape-staff`: a `/munkatarsak` valós, egyoldalas könyvtári munkatárs-adatbázisát importálja a `staff` kollekcióba (ugyanazt a `.news-index`/`.title`/`.news-lead` markupot használja, mint a hírlista). **80/80 munkatárs sikeresen importálva, 0 hiba** — valós név, beosztás, telefonszám, e-mail cím, ami már eleve nyilvánosan közzé van téve az intézmény saját oldalán. A `department` (tagkönyvtár/részleg) mező szándékosan üresen marad — a régi oldal 7-utas szűrője nincs egyértelműen megfeleltetve a jelenleg seedelt könyvtáraknak, ezt szerkesztő tudja pótolni az adminban.
+
 ### Hozzáadva (hetedik kör — /hirek lapozás)
 * `getPaginatedNews()` a `src/lib/payload.ts`-ben (Payload `find()` beépített `page`/`limit`/`totalPages` mezőire építve) + `/hirek` oldal átírva valódi lapozásra (`?page=N`) és kategória-szűrésre (`?category=...&page=N` együtt is működik). Archívum kategória szűrő is hozzáadva a gombsorhoz.
 
