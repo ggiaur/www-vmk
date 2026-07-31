@@ -28,7 +28,7 @@ export default function KapcsolatPage() {
 
             <div className="space-y-4 text-sm text-slate-700">
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#8C1D11] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#F3701D] flex items-center justify-center shrink-0 mt-0.5">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
@@ -38,7 +38,7 @@ export default function KapcsolatPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#C85A32] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#DDB837] flex items-center justify-center shrink-0 mt-0.5">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
@@ -48,7 +48,7 @@ export default function KapcsolatPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#8C1D11] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#F3701D] flex items-center justify-center shrink-0 mt-0.5">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
@@ -84,7 +84,7 @@ export default function KapcsolatPage() {
                     type="text"
                     required
                     placeholder="Minta János"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#8C1D11]"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F3701D]"
                   />
                 </div>
                 <div>
@@ -93,14 +93,14 @@ export default function KapcsolatPage() {
                     type="email"
                     required
                     placeholder="janos@example.com"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#8C1D11]"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F3701D]"
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Tárgy / Téma</label>
-                <select className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#8C1D11]">
+                <select className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F3701D]">
                   <option>Általános érdeklődés</option>
                   <option>Könyvhosszabbítás / Kölcsönzés</option>
                   <option>Rendezvény regisztráció</option>
@@ -115,7 +115,7 @@ export default function KapcsolatPage() {
                   rows={5}
                   required
                   placeholder="Írja le kérdését vagy észrevételét..."
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#8C1D11]"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#F3701D]"
                 />
               </div>
 

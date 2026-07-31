@@ -36,7 +36,7 @@ export default async function SzolgaltatasokPage() {
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-          <BookOpen className="w-8 h-8 text-[#8C1D11]" />
+          <BookOpen className="w-8 h-8 text-[#F3701D]" />
           <h2 className="text-xl font-bold text-slate-900">Dokumentumkölcsönzés & Olvasóterem</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Könyvek, folyóiratok, kotta- és hanganyagok kölcsönzése, valamint a helyben használható olvasótermi állomány böngészése.
@@ -54,7 +54,7 @@ export default async function SzolgaltatasokPage() {
         </div>
 
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-          <FileText className="w-8 h-8 text-[#C85A32]" />
+          <FileText className="w-8 h-8 text-[#DDB837]" />
           <h2 className="text-xl font-bold text-slate-900">E-Könyvek & NAVA Pont</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Hozzáférés a Nemzeti Audiovizuális Archívum (NAVA) tartalmához, adatbázis-használat és e-könyv kölcsönzés olvasójeggyel.
@@ -72,7 +72,7 @@ export default async function SzolgaltatasokPage() {
         </div>
 
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-          <Bookmark className="w-8 h-8 text-[#8C1D11]" />
+          <Bookmark className="w-8 h-8 text-[#F3701D]" />
           <h2 className="text-xl font-bold text-slate-900">Helyismereti Kutatószolgálat</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Székesfehérvár és Fejér vármegye helytörténeti dokumentumainak, régi fotóinak és sajtóanyagának kutatási lehetősége szakértői segítséggel.
@@ -80,7 +80,7 @@ export default async function SzolgaltatasokPage() {
         </div>
 
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-          <Users className="w-8 h-8 text-[#C85A32]" />
+          <Users className="w-8 h-8 text-[#DDB837]" />
           <h2 className="text-xl font-bold text-slate-900">Terembérlet & Rendezvényszervezés</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Modern előadótermeink és közösségi tereink bérlése előadásokhoz, céges képzésekhez és kulturális programokhoz.
@@ -105,14 +105,14 @@ export default async function SzolgaltatasokPage() {
                     ((s.pricingTable as Array<{ serviceItem: string; price: string }>) ?? []).map((p, idx) => (
                       <tr key={idx} className="hover:bg-slate-50">
                         <td className="py-3 px-4 font-medium">{p.serviceItem}</td>
-                        <td className="py-3 px-4 text-right font-bold text-[#8C1D11]">{p.price}</td>
+                        <td className="py-3 px-4 text-right font-bold text-[#F3701D]">{p.price}</td>
                       </tr>
                     ))
                   )
                 : defaultPricing.map((item, idx) => (
                     <tr key={idx} className="hover:bg-slate-50">
                       <td className="py-3 px-4 font-medium">{item.item}</td>
-                      <td className="py-3 px-4 text-right font-bold text-[#8C1D11]">{item.price}</td>
+                      <td className="py-3 px-4 text-right font-bold text-[#F3701D]">{item.price}</td>
                     </tr>
                   ))}
             </tbody>

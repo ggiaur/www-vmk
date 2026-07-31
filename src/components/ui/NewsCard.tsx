@@ -59,7 +59,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
           </span>
         </div>
 
-        <h3 className="font-bold text-slate-900 text-lg leading-snug mb-2 line-clamp-2 hover:text-[#8C1D11] transition-colors">
+        <h3 className="font-bold text-slate-900 text-lg leading-snug mb-2 line-clamp-2 hover:text-[#F3701D] transition-colors">
           <Link href={`/hirek/${slug}`}>{title}</Link>
         </h3>
 
@@ -68,7 +68,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
         <div className="pt-3 border-t border-slate-100 mt-auto">
           <Link
             href={`/hirek/${slug}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#8C1D11] hover:text-[#70160C] transition-colors group"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#F3701D] hover:text-[#D4590F] transition-colors group"
           >
             <span>Tovább a cikkhez</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

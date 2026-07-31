@@ -110,8 +110,8 @@ export default async function HomePage() {
   return (
     <div className="space-y-16 pb-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#1E293B] via-[#2A1619] to-[#8C1D11] text-white py-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px]" />
+      <section className="relative bg-gradient-to-br from-[#1E293B] via-[#2A1619] to-[#F3701D] text-white py-16 px-4 overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DDB837_1px,transparent_1px)] [background-size:16px_16px]" />
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
           <div className="lg:col-span-7 space-y-6">
@@ -151,7 +151,7 @@ export default async function HomePage() {
                 </div>
                 <button
                   type="submit"
-                  className="bg-[#C85A32] hover:bg-[#b04b26] text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors shrink-0 flex items-center gap-1.5"
+                  className="bg-[#DDB837] hover:bg-[#b04b26] text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors shrink-0 flex items-center gap-1.5"
                 >
                   <span>Keresés</span>
                 </button>
@@ -172,7 +172,7 @@ export default async function HomePage() {
       <section id="hirek" className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
           <div>
-            <span className="text-xs font-bold text-[#8C1D11] uppercase tracking-wider">
+            <span className="text-xs font-bold text-[#F3701D] uppercase tracking-wider">
               Hírek & Tájékoztatók
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
@@ -181,7 +181,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/hirek"
-            className="text-sm font-semibold text-[#8C1D11] hover:underline flex items-center gap-1"
+            className="text-sm font-semibold text-[#F3701D] hover:underline flex items-center gap-1"
           >
             <span>Összes hír megtekintése</span>
             <ArrowRight className="w-4 h-4" />
@@ -215,7 +215,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
             <div>
-              <span className="text-xs font-bold text-[#C85A32] uppercase tracking-wider flex items-center gap-1">
+              <span className="text-xs font-bold text-[#DDB837] uppercase tracking-wider flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5" />
                 Programajánló
               </span>
@@ -225,7 +225,7 @@ export default async function HomePage() {
             </div>
             <Link
               href="/esemenyek"
-              className="text-sm font-semibold text-[#8C1D11] hover:underline flex items-center gap-1"
+              className="text-sm font-semibold text-[#F3701D] hover:underline flex items-center gap-1"
             >
               <span>Összes rendezvény</span>
               <ArrowRight className="w-4 h-4" />
@@ -264,7 +264,7 @@ export default async function HomePage() {
       {/* Tagkönyvtárak Grid */}
       <section id="tagkonyvtarak" className="max-w-7xl mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold text-[#8C1D11] uppercase tracking-wider">
+          <span className="text-xs font-bold text-[#F3701D] uppercase tracking-wider">
             Hálózatunk
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">

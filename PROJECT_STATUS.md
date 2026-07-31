@@ -11,6 +11,7 @@ A VMK Website Modernization projekt pillanatnyi stádiumának, elvégzett mérf�
 * **Célverzió:** `v0.4.0-migration`
 * **Blokkoló tényezők (Blockers):** Fizetési kapu (Stripe/Barion/SimplePay) hitelesítő adatok hiányoznak — a Shop/Adomány funkciók csak struktúra/UI szinten készülnek el éles fizetés nélkül, amíg nincs valós kulcs.
 * **Ismert technikai korlát:** `payload generate:types` Node 24 alatt hibázik (upstream interop bug), ld. `.ai/context/current_state.md`.
+* **WCAG 2.2 AA audit még nem futott le ténylegesen** — az infrastruktúra (`playwright.config.ts`, `tests/e2e/accessibility.spec.ts`) kész, de a Chromium indítása ebben a sandbox-környezetben hiányzó rendszerkönyvtár (`libatk-1.0.so.0`) és root-jogosultság hiánya miatt nem lehetséges. CI-ban (`.github/workflows/ci-cd.yml`, root alatt fut) vagy nem-sandboxolt gépen kell lefuttatni.
 
 ---
 

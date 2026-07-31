@@ -85,7 +85,7 @@ export default async function DokumentumokPage({
               href={cat.value ? `/dokumentumok?category=${cat.value}` : '/dokumentumok'}
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                 activeCategory === cat.value
-                  ? 'bg-[#8C1D11] text-white shadow-sm'
+                  ? 'bg-[#F3701D] text-white shadow-sm'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >
@@ -105,7 +105,7 @@ export default async function DokumentumokPage({
               className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-amber-50 text-[#8C1D11] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-10 h-10 rounded-lg bg-amber-50 text-[#F3701D] flex items-center justify-center shrink-0 mt-0.5">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>

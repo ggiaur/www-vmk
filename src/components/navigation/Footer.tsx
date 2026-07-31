@@ -9,7 +9,7 @@ export const Footer: React.FC = () => {
         {/* Column 1: Info */}
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-md bg-[#8C1D11] flex items-center justify-center text-white">
+            <div className="w-8 h-8 rounded-md bg-[#F3701D] flex items-center justify-center text-white">
               <BookOpen className="w-5 h-5" />
             </div>
             <span className="font-bold text-white text-lg">VMK Székesfehérvár</span>
@@ -19,15 +19,15 @@ export const Footer: React.FC = () => {
           </p>
           <div className="space-y-2 text-sm">
             <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-[#C85A32] mt-0.5 shrink-0" />
+              <MapPin className="w-4 h-4 text-[#DDB837] mt-0.5 shrink-0" />
               <span>8000 Székesfehérvár, Bartók Béla tér 1.</span>
             </div>
             <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-[#C85A32] shrink-0" />
+              <Phone className="w-4 h-4 text-[#DDB837] shrink-0" />
               <a href="tel:+3622312845" className="hover:text-white transition">+36 22 312 845</a>
             </div>
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-[#C85A32] shrink-0" />
+              <Mail className="w-4 h-4 text-[#DDB837] shrink-0" />
               <a href="mailto:info@vmk.hu" className="hover:text-white transition">info@vmk.hu</a>
             </div>
           </div>
@@ -77,7 +77,7 @@ export const Footer: React.FC = () => {
               href="https://facebook.com/vmkszekesfehervar"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#8C1D11] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+              className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#F3701D] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
               aria-label="VMK Facebook oldal"
             >
               <Facebook className="w-5 h-5" />

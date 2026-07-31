@@ -6,6 +6,12 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Hozzáadva (ötödik kör — WCAG audit infrastruktúra)
+* `playwright.config.ts` + `tests/e2e/accessibility.spec.ts`: `@axe-core/playwright`-alapú WCAG 2.2 AA audit mind a 15 fő nyilvános oldalra + fókusz/skip-link teszt.
+* `vitest.config.ts` hozzáadva — enélkül a Vitest véletlenül megpróbálta futtatni a Playwright specfájlokat is (`tests/e2e/**` most explicit kizárva).
+* **Kritikus, őszinte korlát:** a Playwright böngésző futtatása ebben a sandbox-környezetben **nem sikerült** — a Chromium indításához szükséges `libatk-1.0.so.0` rendszerkönyvtár hiányzik, a telepítéshez root/sudo jogosultság kellene, ami nincs elérhető (`sudo: I'm sorry dockeruser...`). Az audit infrastruktúra készen áll és helyes, de **ténylegesen még nem futott le** — ezt a `.github/workflows/ci-cd.yml` CI-ban kell lefuttatni (ahol a `npx playwright install --with-deps` root alatt fut), vagy egy nem-sandboxolt fejlesztői gépen.
+* Emiatt **manuális, kód-alapú** átvizsgálást végeztem helyette: hiányzó `alt` attribútumokat kerestem (nem találtam), és feltártam, hogy a #11-es design-token frissítés (Scientia narancs paletta) **csak a `globals.css`-ben és a layoutban** történt meg — kb. 30 komponens/oldal fájl továbbra is a régi, kézzel beégetett bordó (`#8C1D11`) és égettnarancs (`#C85A32`) hexértékeket használta. Ez javítva: minden előfordulás lecserélve az új tokenekre (`#8C1D11`→`#F3701D`, `#70160C`→`#D4590F`, `#C85A32`/`#D4AF37`→`#DDB837`), típusellenőrzés és teljes route-smoke-teszt zöld utána.
+
 ### Javítva
 * npm dependency-konfliktus: `next` és `@payloadcms/*` verziók inkompatibilisek voltak — rögzítve `next@15.4.11` / `payload@3.87.0`-ra, `package-lock.json` újragenerálva.
 * Payload admin panel (`/admin`) 500-as hibát dobott — hiányzott a kötelező `src/app/(payload)/layout.tsx` root layout, ezért a Next.js egy üres helyettesítőt generált, ami nem csomagolta be a Payload React contextjét. Pótolva a hivatalos `RootLayout`/`handleServerFunctions` boilerplate-tel.

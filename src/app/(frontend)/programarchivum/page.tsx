@@ -23,13 +23,13 @@ export default async function ProgramarchivumPage() {
 
       <div className="border-b border-slate-200 pb-6">
         <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
-          <Archive className="w-8 h-8 text-[#8C1D11]" />
+          <Archive className="w-8 h-8 text-[#F3701D]" />
           <span>Programarchívum</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">
           Korábbi évek lezárult programjai, rendezvényei és híranyagai — történeti gyűjtemény, nem
           aktuális esemény. Aktuális, közelgő programokért lásd az{' '}
-          <a href="/esemenyek" className="text-[#8C1D11] font-semibold hover:underline">
+          <a href="/esemenyek" className="text-[#F3701D] font-semibold hover:underline">
             Eseménykalendáriumot
           </a>
           .
