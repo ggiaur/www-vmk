@@ -5,7 +5,9 @@ import { buildConfig } from 'payload'
 import { hu } from 'payload/i18n/hu'
 import { fileURLToPath } from 'url'
 
+import { Bookings } from './collections/Bookings'
 import { Documents } from './collections/Documents'
+import { DonationPledges } from './collections/DonationPledges'
 import { Events } from './collections/Events'
 import { Galleries } from './collections/Galleries'
 import { Libraries } from './collections/Libraries'
@@ -14,6 +16,9 @@ import { News } from './collections/News'
 import { OpeningHours } from './collections/OpeningHours'
 import { Pages } from './collections/Pages'
 import { Partners } from './collections/Partners'
+import { Products } from './collections/Products'
+import { Registrations } from './collections/Registrations'
+import { Rooms } from './collections/Rooms'
 import { Services } from './collections/Services'
 import { Staff } from './collections/Staff'
 import { Users } from './collections/Users'
@@ -66,6 +71,11 @@ export default buildConfig({
     Services,
     Partners,
     Galleries,
+    Registrations,
+    Rooms,
+    Bookings,
+    DonationPledges,
+    Products,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'vmk_super_secret_payload_key_2026_dev',

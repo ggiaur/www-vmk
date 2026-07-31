@@ -77,7 +77,16 @@ export const Events: CollectionConfig = {
     {
       name: 'registrationUrl',
       type: 'text',
-      label: 'Regisztrációs Link (opcionális)',
+      label: 'Külső Regisztrációs Link (opcionális)',
+    },
+    {
+      name: 'capacity',
+      type: 'number',
+      label: 'Létszámkorlát (üresen hagyva: nincs korlát, nincs beépített RSVP)',
+      admin: {
+        position: 'sidebar',
+        description: 'Ha ki van töltve, a látogatók a beépített RSVP-vel jelentkezhetnek a rendezvényre a betelésig.',
+      },
     },
     {
       name: 'featuredImage',

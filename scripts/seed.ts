@@ -196,6 +196,35 @@ export async function seedRuntimeData() {
   })
   console.log('✅ Created Partner:', partner.name)
 
+  // 10. Create a bookable Room
+  const room = await payload.create({
+    collection: 'rooms',
+    data: {
+      name: 'Tanulószoba A',
+      slug: 'tanuloszoba-a',
+      library: centralLibrary.id,
+      capacity: 6,
+      description: 'Csendes, projektorral felszerelt csoportos tanulószoba.',
+      openFrom: '09:00',
+      openTo: '18:00',
+    },
+  })
+  console.log('✅ Created Room:', room.name)
+
+  // 11. Create a shop Product
+  const product = await payload.create({
+    collection: 'products',
+    data: {
+      title: 'Selejtezett Regénygyűjtemény (5 db)',
+      slug: 'selejtezett-regenygyujtemeny',
+      category: 'used_book',
+      price: 1500,
+      description: 'Válogatás korábbi állományból kivont szépirodalmi kötetekből.',
+      stockStatus: 'available',
+    },
+  })
+  console.log('✅ Created Product:', product.title)
+
   console.log('🎉 VMK Payload CMS Runtime Seed Completed Successfully!')
 }
 

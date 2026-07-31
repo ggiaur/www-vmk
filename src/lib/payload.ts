@@ -55,6 +55,23 @@ export async function getNewsBySlug(slug: string) {
   }
 }
 
+export async function getArchivedNews(limit = 100) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'news',
+      limit,
+      sort: '-publishedAt',
+      where: { and: [{ _status: { equals: 'published' } }, { category: { equals: 'archive' } }] },
+      depth: 1,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
 // ─── Events ───────────────────────────────────────────────────────────────────
 
 export async function getUpcomingEvents(limit = 4) {
@@ -214,6 +231,109 @@ export async function getAllDocuments(category?: string) {
     return result.docs
   } catch {
     return []
+  }
+}
+
+// ─── Event Registrations (RSVP) ────────────────────────────────────────────────
+
+export async function getRegistrationCountForEvent(eventId: string | number) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return 0
+    const result = await payload.find({
+      collection: 'registrations',
+      where: { and: [{ event: { equals: eventId } }, { status: { equals: 'confirmed' } }] },
+      limit: 1000,
+      depth: 0,
+    })
+    return result.docs.reduce((sum, doc) => sum + (doc.guestCount ?? 1), 0)
+  } catch {
+    return 0
+  }
+}
+
+// ─── Rooms & Bookings (teremfoglalás) ───────────────────────────────────────────
+
+export async function getAllRooms() {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({ collection: 'rooms', limit: 50, depth: 1 })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
+export async function getRoomBySlug(slug: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return null
+    const result = await payload.find({
+      collection: 'rooms',
+      where: { slug: { equals: slug } },
+      depth: 1,
+      limit: 1,
+    })
+    return result.docs[0] ?? null
+  } catch {
+    return null
+  }
+}
+
+export async function getBookingsForRoomOnDate(roomId: string | number, date: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'bookings',
+      where: {
+        and: [
+          { room: { equals: roomId } },
+          { date: { equals: date } },
+          { status: { not_equals: 'rejected' } },
+        ],
+      },
+      limit: 100,
+      depth: 0,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
+// ─── Products (bolt) ────────────────────────────────────────────────────────────
+
+export async function getAllProducts() {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'products',
+      where: { stockStatus: { equals: 'available' } },
+      limit: 100,
+      depth: 1,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
+export async function getProductBySlug(slug: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return null
+    const result = await payload.find({
+      collection: 'products',
+      where: { slug: { equals: slug } },
+      depth: 1,
+      limit: 1,
+    })
+    return result.docs[0] ?? null
+  } catch {
+    return null
   }
 }
 

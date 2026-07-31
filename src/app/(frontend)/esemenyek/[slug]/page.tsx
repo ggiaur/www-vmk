@@ -3,7 +3,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
-import { getEventBySlug } from '@/lib/payload'
+import { RsvpForm } from '@/components/forms/RsvpForm'
+import { getEventBySlug, getRegistrationCountForEvent } from '@/lib/payload'
 import { Calendar, MapPin, Users, ArrowLeft, ExternalLink } from 'lucide-react'
 
 export async function generateMetadata({
@@ -43,6 +44,11 @@ export default async function EventDetailPage({
     loc && typeof loc === 'object' && 'name' in loc
       ? (loc.name as string)
       : 'Központi Könyvtár – Olvasóterem (Bartók Béla tér 1.)'
+
+  const remainingSpots =
+    event?.capacity != null
+      ? event.capacity - (await getRegistrationCountForEvent(event.id))
+      : null
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-6 space-y-8">
@@ -104,6 +110,10 @@ export default async function EventDetailPage({
             A belépés ingyenes, de az olvasóterem befogadóképessége miatt előzetes regisztráció ajánlott!
           </p>
         </div>
+      )}
+
+      {event?.capacity != null && event.id && (
+        <RsvpForm eventId={String(event.id)} eventSlug={slug} remainingSpots={remainingSpots} />
       )}
 
       {event?.registrationUrl && (

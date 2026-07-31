@@ -18,8 +18,15 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 * Vizuális rendszer frissítve a valódi `uj.vmk.hu` (WordPress "Scientia" téma) ellenőrzött tokenjeire (`docs/DESIGN_SYSTEM.md` 3–4. fejezet).
 * `CLAUDE.md` munkafegyelem hozzáadva az `ai-sd-os` motor sablonjából.
 
+* Teremfoglalás (`Rooms`, `Bookings` kollekciók + `/teremfoglalas` oldal, Server Action-alapú foglalási űrlap ütközés-ellenőrzéssel) — a WordPress "Booked" plugin funkciójának megfelelője.
+* Támogatás/adománygyűjtés (`DonationPledges` kollekció + `/tamogatas` oldal) — a "Give" plugin megfelelője, **élő fizetés nélkül**: az űrlap csak felajánlási szándékot rögzít, a könyvtár munkatársa veszi fel manuálisan a kapcsolatot.
+* Bolt (`Products` kollekció + `/bolt` és `/bolt/[slug]` oldalak) — a WooCommerce megfelelője, **csak böngészésre**, élő pénztár nélkül.
+* Esemény RSVP/létszámkorlát (`Registrations` kollekció, `Events.capacity` mező, `RsvpForm`) — a "The Events Calendar" / "Event Tickets" pluginok megfelelője.
+* `src/app/actions.ts`: Next.js Server Actions a fenti űrlapokhoz (`submitRsvp`, `submitBooking`, `submitDonationPledge`).
+
 ### Ismert Korlátok
 * `payload generate:types` és önálló `tsx` szkriptek Node 24 alatt `ERR_REQUIRE_ASYNC_MODULE` hibába futnak (upstream Payload/Next.js interop bug) — a `payload-types.ts` nincs generálva, a fejlesztői seedelés a `src/app/api/dev-seed/route.ts` végponton át történik.
+* Shop és Támogatás oldalak **nem tudnak élő fizetést fogadni** — valós Stripe/Barion/SimplePay hitelesítő adatok nélkül ez a projekt ezen a ponton nem lép túl.
 
 ---
 

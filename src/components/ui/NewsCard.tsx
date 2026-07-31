@@ -16,6 +16,7 @@ const categoryLabels: Record<string, { label: string; color: string }> = {
   general: { label: 'Friss Hír', color: 'bg-amber-100 text-amber-800' },
   announcement: { label: 'Közlemény', color: 'bg-red-100 text-red-800' },
   grant: { label: 'Pályázat', color: 'bg-emerald-100 text-emerald-800' },
+  archive: { label: 'Archívum', color: 'bg-slate-200 text-slate-700' },
 }
 
 export const NewsCard: React.FC<NewsCardProps> = ({

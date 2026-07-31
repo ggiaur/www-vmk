@@ -44,6 +44,7 @@ export const News: CollectionConfig = {
         { label: 'Friss Hír', value: 'general' },
         { label: 'Közlemény / Hirdetmény', value: 'announcement' },
         { label: 'Pályázat / Olvasópályázat', value: 'grant' },
+        { label: 'Programarchívum (korábbi évek)', value: 'archive' },
       ],
       defaultValue: 'general',
       label: 'Kategória',
