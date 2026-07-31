@@ -6,6 +6,9 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Vizsgálat — esemény-migráció (még nincs implementálva)
+* A `https://www.vmk.hu/events` oldal statikus HTML-je nem tartalmaz felismerhető esemény/naptár markupot (nincs `.event`/`.calendar`/`.fc-event` osztály) — valószínűleg JS-alapú naptár widget (pl. FullCalendar), ami AJAX-hívással tölti be az adatokat futásidőben. A news/staff/documents mintájú egyszerű HTML-parse itt nem működik; API-végpont felderítés vagy böngésző-alapú renderelés (Playwright, ami viszont ebben a sandboxban nem fut, ld. WCAG audit korlát) kellene hozzá. Nem próbáltam meg elhamarkodottan implementálni — a `Registrations`/`Events.capacity` funkció addig is a már seedelt minta-eseményekkel működik.
+
 ### Hozzáadva (kilencedik kör — dokumentum-migráció)
 * `src/lib/scraper/vmkDocumentsScraper.ts` + dev-only `POST /api/dev-scrape-documents`: az `/alapdokumentumok` szabadformátumú (nem egységes markupú) PDF-listáját dolgozza fel `a[href$=".pdf"]` szelektorral, letölti a PDF-eket, feltölti a MinIO-ba, és `documents` rekordot hoz létre kategória- és év-becsléssel a cím szövegéből. **48/53 dokumentum sikeresen importálva, 0 hiba.**
 * **Ismert korlát:** a duplikátum-szűrés cím alapján történik, nem URL alapján — mivel néhány dokumentum ("Adatkezelési tájékoztató", "Beszámoló") több különböző dátumú verzióban szerepel azonos címmel, 5 valódi (eltérő) dokumentum tévesen duplikátumnak lett jelölve és kimaradt. Javításhoz a `Documents` kollekcióba egy `sourceUrl` mező kellene a valódi egyediséghez.
