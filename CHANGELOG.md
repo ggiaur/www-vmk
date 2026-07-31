@@ -34,6 +34,14 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 * `src/middleware.ts` + `src/app/api/news-slug-lookup/route.ts`: dinamikus 301 átirányítás a régi gyökér-szintű hír-URL-ekről (`/<slug>`) az újakra (`/hirek/<slug>`) — nem kell kézzel felvenni mind az 500+ cikket a redirects tömbbe. A middleware Edge runtime-on fut (Next.js alapértelmezés), ezért nem importálja közvetlenül a Payloadot (Postgres driver nem Edge-kompatibilis), hanem a saját (Node.js runtime alatt futó) `/api/news-slug-lookup` route-ot hívja fetch-csel.
 * `src/app/sitemap.ts`: dinamikus `sitemap.xml`, amely a statikus oldalak mellett az összes publikált Hírt, Eseményt, Page-et, Tagkönyvtárat/Részleget és elérhető Terméket felsorolja.
 
+### Hozzáadva (negyedik kör — MinIO tárolás)
+* Media kollekció bekötve a MinIO S3-kompatibilis tárolóba (`@payloadcms/storage-s3`) — eddig a `docker-compose.yml`-ben futó MinIO konténer valójában soha nem volt ténylegesen használva, minden feltöltés a helyi lemezre (`media/`) került.
+* `sharp` telepítve és bekötve a `payload.config.ts`-be (`sharp` kulcs) — a képméretezés (thumbnail/card/hero variánsok) korábban figyelmeztetést dobott, de nem működött.
+
+### Javítva — két mélyen rejtett, a projekt legelejétől fennálló hiba
+* **A Payload REST API catch-all route mappája rosszul volt elnevezve** (`src/app/(payload)/api/[[...segments]]/`) — a Payload hivatalos Next.js integrációja (`@payloadcms/next/routes`) explicit a `params.slug`-ot olvassa ki, nem `params.segments`-et (az admin catch-all route helyesen `[[...segments]]`-et vár, de az API route-nak `[[...slug]]`-nak kellett volna lennie — a két konvenció Payloadon belül is eltér egymástól). Emiatt **minden** kérés, ami ezen a REST route-on ment át (pl. `/api/media/file/...`), `TypeError: Cannot read properties of undefined (reading 'map')` 500-as hibával elszállt. Ez korábban rejtve maradt, mert helyi lemezes tárolásnál a fájlkiszolgálás más útvonalon történt — csak az S3/MinIO bekötése (ami kikényszeríti a `disableLocalStorage: true`-t) buktatta le. Javítva a mappa átnevezésével `[[...slug]]`-ra.
+* A `Media` kollekciónak nem volt explicit `access.read` szabálya, ezért a fenti route-javítás után is 403-at adott vissza nyilvános kéréseknél — pótolva `read: () => true`-val (indokolt, hiszen egy nyilvános könyvtári honlap képei/dokumentumai nem igényelnek authot megtekintéshez).
+
 ### Ismert Korlátok
 * `payload generate:types` és önálló `tsx` szkriptek Node 24 alatt `ERR_REQUIRE_ASYNC_MODULE` hibába futnak (upstream Payload/Next.js interop bug) — a `payload-types.ts` nincs generálva, a fejlesztői seedelés a `src/app/api/dev-seed/route.ts` végponton át történik.
 * Shop és Támogatás oldalak **nem tudnak élő fizetést fogadni** — valós Stripe/Barion/SimplePay hitelesítő adatok nélkül ez a projekt ezen a ponton nem lép túl.

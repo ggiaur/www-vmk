@@ -1,8 +1,10 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { hu } from 'payload/i18n/hu'
+import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { Bookings } from './collections/Bookings'
@@ -58,6 +60,7 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { hu },
   },
+  sharp,
   collections: [
     Users,
     Media,
@@ -87,4 +90,22 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || 'postgres://vmk_user:vmk_password@localhost:5432/vmk_db',
     },
   }),
+  plugins: [
+    s3Storage({
+      collections: {
+        media: true,
+      },
+      bucket: process.env.MINIO_BUCKET || 'vmk-media',
+      config: {
+        credentials: {
+          accessKeyId: process.env.MINIO_ROOT_USER || 'minio_admin',
+          secretAccessKey: process.env.MINIO_ROOT_PASSWORD || 'minio_password',
+        },
+        region: 'us-east-1',
+        endpoint: `${process.env.MINIO_USE_SSL === 'true' ? 'https' : 'http'}://${process.env.MINIO_ENDPOINT || 'localhost'}:${process.env.MINIO_PORT || '9000'}`,
+        forcePathStyle: true,
+      },
+    }),
+  ],
 })
+
