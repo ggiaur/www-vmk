@@ -29,6 +29,11 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 * A Payload elutasítja az üres `content` mezőt kötelező richText esetén — sok vmk.hu hír csak plakátkép, külön szöveg nélkül; a scraper most a lead/összefoglaló szövegből épít fallback bekezdést.
 * `/hirek/[slug]` egyáltalán nem renderelte a `featuredImage`-et — pótolva.
 
+### Hozzáadva (harmadik kör — SEO & redirectek)
+* `next.config.ts` redirects bővítve a `docs/SCRAPE_URL_INVENTORY.md` régi→új megfeleltetési táblájával (tagkönyvtárak, részlegek, rólunk-aloldalak, galéria, nyitvatartás).
+* `src/middleware.ts` + `src/app/api/news-slug-lookup/route.ts`: dinamikus 301 átirányítás a régi gyökér-szintű hír-URL-ekről (`/<slug>`) az újakra (`/hirek/<slug>`) — nem kell kézzel felvenni mind az 500+ cikket a redirects tömbbe. A middleware Edge runtime-on fut (Next.js alapértelmezés), ezért nem importálja közvetlenül a Payloadot (Postgres driver nem Edge-kompatibilis), hanem a saját (Node.js runtime alatt futó) `/api/news-slug-lookup` route-ot hívja fetch-csel.
+* `src/app/sitemap.ts`: dinamikus `sitemap.xml`, amely a statikus oldalak mellett az összes publikált Hírt, Eseményt, Page-et, Tagkönyvtárat/Részleget és elérhető Terméket felsorolja.
+
 ### Ismert Korlátok
 * `payload generate:types` és önálló `tsx` szkriptek Node 24 alatt `ERR_REQUIRE_ASYNC_MODULE` hibába futnak (upstream Payload/Next.js interop bug) — a `payload-types.ts` nincs generálva, a fejlesztői seedelés a `src/app/api/dev-seed/route.ts` végponton át történik.
 * Shop és Támogatás oldalak **nem tudnak élő fizetést fogadni** — valós Stripe/Barion/SimplePay hitelesítő adatok nélkül ez a projekt ezen a ponton nem lép túl.
