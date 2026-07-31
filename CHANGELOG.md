@@ -23,10 +23,16 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 * Bolt (`Products` kollekció + `/bolt` és `/bolt/[slug]` oldalak) — a WooCommerce megfelelője, **csak böngészésre**, élő pénztár nélkül.
 * Esemény RSVP/létszámkorlát (`Registrations` kollekció, `Events.capacity` mező, `RsvpForm`) — a "The Events Calendar" / "Event Tickets" pluginok megfelelője.
 * `src/app/actions.ts`: Next.js Server Actions a fenti űrlapokhoz (`submitRsvp`, `submitBooking`, `submitDonationPledge`).
+* **Valódi tartalom-migrációs scraper** (`src/lib/scraper/vmkScraper.ts`, `src/lib/scraper/htmlToLexical.ts`): bejárja a `https://www.vmk.hu/news?&page=N` lapozást, feldolgozza a cikk-részletoldalakat, letölti és a MinIO-ba tölti a kiemelt képeket, kézzel írt HTML→Lexical konverterrel alakítja a törzsszöveget (a Payload 3.87.0 nem exportál nyilvános HTML→Lexical konvertert). Dev-only route: `POST /api/dev-scrape-news?pages=N&limit=M`. Idempotens (slug alapján kihagyja a már importáltakat). 16/16 tesztelt cikk hibamentesen importálva, valós szöveggel és képpel.
+
+### Javítva (második kör)
+* A Payload elutasítja az üres `content` mezőt kötelező richText esetén — sok vmk.hu hír csak plakátkép, külön szöveg nélkül; a scraper most a lead/összefoglaló szövegből épít fallback bekezdést.
+* `/hirek/[slug]` egyáltalán nem renderelte a `featuredImage`-et — pótolva.
 
 ### Ismert Korlátok
 * `payload generate:types` és önálló `tsx` szkriptek Node 24 alatt `ERR_REQUIRE_ASYNC_MODULE` hibába futnak (upstream Payload/Next.js interop bug) — a `payload-types.ts` nincs generálva, a fejlesztői seedelés a `src/app/api/dev-seed/route.ts` végponton át történik.
 * Shop és Támogatás oldalak **nem tudnak élő fizetést fogadni** — valós Stripe/Barion/SimplePay hitelesítő adatok nélkül ez a projekt ezen a ponton nem lép túl.
+* A scraper eddig csak a `news` kollekcióra készült el (nem eseményekre/dokumentumokra/stábra), és csak minta-méretben lett futtatva (16 cikk, 2 lista-oldal a ~43-ból) — a teljes 500+ cikkes migráció még hátravan.
 
 ---
 

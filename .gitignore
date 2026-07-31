@@ -25,6 +25,10 @@ node_modules
 *.sqlite
 *.sqlite-journal
 
+# Uploaded media (Payload local disk storage — should be MinIO/S3 in production,
+# see .ai/context/current_state.md "known gap")
+/media
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

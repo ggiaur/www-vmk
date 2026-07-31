@@ -85,5 +85,14 @@ export const News: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'sourceNote',
+      type: 'text',
+      label: 'Migrációs Megjegyzés (pl. becsült dátum)',
+      admin: {
+        position: 'sidebar',
+        description: 'Csak a vmk.hu-ról migrált tartalmaknál kitöltve — szerkesztői ellenőrzésre vár.',
+      },
+    },
   ],
 }

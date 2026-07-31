@@ -39,6 +39,12 @@ export default async function NewsDetailPage({
     day: 'numeric',
   })
 
+  const featuredImage = article?.featuredImage
+  const featuredImageUrl =
+    featuredImage && typeof featuredImage === 'object' ? featuredImage.url : undefined
+  const featuredImageAlt =
+    (featuredImage && typeof featuredImage === 'object' ? featuredImage.alt : undefined) ?? title
+
   return (
     <article className="max-w-4xl mx-auto px-4 py-6 space-y-8">
       <Breadcrumb
@@ -72,6 +78,13 @@ export default async function NewsDetailPage({
           </span>
         </div>
       </div>
+
+      {featuredImageUrl && (
+        <div className="rounded-xl overflow-hidden bg-slate-100">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={featuredImageUrl} alt={featuredImageAlt} className="w-full h-auto object-cover" />
+        </div>
+      )}
 
       <div className="bg-amber-50/60 border-l-4 border-[#8C1D11] p-4 rounded-r-lg text-slate-800 text-base leading-relaxed font-medium">
         {summary}
