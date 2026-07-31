@@ -92,7 +92,7 @@ export async function scrapeDocumentsIntoPayload(payload: Payload): Promise<Docu
     try {
       const existing = await payload.find({
         collection: 'documents',
-        where: { title: { equals: doc.title } },
+        where: { sourceUrl: { equals: doc.url } },
         limit: 1,
       })
       if (existing.docs.length > 0) {
@@ -127,6 +127,7 @@ export async function scrapeDocumentsIntoPayload(payload: Payload): Promise<Docu
           file: media.id,
           category: guessCategory(doc.title),
           year: guessYear(doc.title, doc.url),
+          sourceUrl: doc.url,
         },
       })
       result.created++

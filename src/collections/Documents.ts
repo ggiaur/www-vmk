@@ -51,5 +51,15 @@ export const Documents: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'sourceUrl',
+      type: 'text',
+      unique: true,
+      label: 'Forrás URL (migráció)',
+      admin: {
+        position: 'sidebar',
+        description: 'A régi vmk.hu-n lévő eredeti PDF URL-je — a migrációs duplikátum-szűrés ez alapján dolgozik, mivel több dokumentum azonos címmel, eltérő dátumú verzióban létezik.',
+      },
+    },
   ],
 }

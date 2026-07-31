@@ -6,6 +6,9 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Javítva — dokumentum-scraper duplikátum-szűrés
+* `Documents` kollekció kiegészítve `sourceUrl` (egyedi) mezővel, a scraper cím-alapú szűrés helyett erre vált — az 5 korábban tévesen kihagyott, azonos című de eltérő dátumú dokumentum most is bekerül. Meglévő 48 rekord törölve és újraimportálva a javított logikával: **53/53 dokumentum, 0 hiba, 0 hamis duplikátum.**
+
 ### Vizsgálat — esemény-migráció (még nincs implementálva)
 * A `https://www.vmk.hu/events` oldal statikus HTML-je nem tartalmaz felismerhető esemény/naptár markupot (nincs `.event`/`.calendar`/`.fc-event` osztály) — valószínűleg JS-alapú naptár widget (pl. FullCalendar), ami AJAX-hívással tölti be az adatokat futásidőben. A news/staff/documents mintájú egyszerű HTML-parse itt nem működik; API-végpont felderítés vagy böngésző-alapú renderelés (Playwright, ami viszont ebben a sandboxban nem fut, ld. WCAG audit korlát) kellene hozzá. Nem próbáltam meg elhamarkodottan implementálni — a `Registrations`/`Events.capacity` funkció addig is a már seedelt minta-eseményekkel működik.
 
