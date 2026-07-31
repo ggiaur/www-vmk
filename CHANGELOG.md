@@ -6,6 +6,11 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Hozzáadva (hatodik kör — teljes hír-migráció)
+* A scraper végigfutott mind a ~43 valós `vmk.hu/news` lista-oldalon. **335 valódi hírcikk** importálva a `news` kollekcióba, valós címmel, dátummal (slug-ból becsülve, ahol a régi oldal nem adott mást), szöveggel és képpel (MinIO-ban tárolva). Csak 7 hiba maradt, mind a régi oldal saját törött képei/linkjei (404-ek egy 2020–2024 közötti régi feltöltésekben) — nem a migrációs kód hibája.
+* Javítva: a `htmlToLexical.ts` link-konvertere elszállt, ha a forrás `<a>` tag érvénytelen URL-t tartalmazott (`href="#"` és hasonlók, amik gyakoriak a régi oldalon) — most sima szövegre esik vissza link-node helyett ilyen esetben, ahelyett hogy elbuktatná a teljes cikk importját.
+* **Ismert korlát:** a `/hirek` lista oldal jelenleg csak a 20 legfrissebb cikket mutatja lapozás nélkül (`getLatestNews(20)`) — 335 cikkel ez már szűk keresztmetszet, valódi lapozás/szűrés hátravan.
+
 ### Hozzáadva (ötödik kör — WCAG audit infrastruktúra)
 * `playwright.config.ts` + `tests/e2e/accessibility.spec.ts`: `@axe-core/playwright`-alapú WCAG 2.2 AA audit mind a 15 fő nyilvános oldalra + fókusz/skip-link teszt.
 * `vitest.config.ts` hozzáadva — enélkül a Vitest véletlenül megpróbálta futtatni a Playwright specfájlokat is (`tests/e2e/**` most explicit kizárva).

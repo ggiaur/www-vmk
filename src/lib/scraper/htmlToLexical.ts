@@ -72,15 +72,24 @@ function inlineChildren($: cheerio.CheerioAPI, node: AnyNode, format = 0): (Text
         break
       case 'a': {
         const href = $(child).attr('href') ?? ''
-        out.push({
-          type: 'link',
-          children: inlineChildren($, child, format),
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          version: 1,
-          fields: { url: href, newTab: true, linkType: 'custom' },
-        })
+        // Payload's link node validator rejects anything that isn't a
+        // well-formed URL (real vmk.hu content has plenty of `href="#"` /
+        // empty/javascript: anchors) — fall back to plain text for those
+        // instead of failing the whole article import.
+        const isValidUrl = /^(https?:\/\/|mailto:|tel:|\/)[^\s]+$/.test(href)
+        if (isValidUrl) {
+          out.push({
+            type: 'link',
+            children: inlineChildren($, child, format),
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+            fields: { url: href, newTab: true, linkType: 'custom' },
+          })
+        } else {
+          out.push(...inlineChildren($, child, format))
+        }
         break
       }
       default:
