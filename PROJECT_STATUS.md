@@ -6,10 +6,11 @@ A VMK Website Modernization projekt pillanatnyi stádiumának, elvégzett mérf�
 
 ## 🚦 Aktuális Fázis & Státusz
 
-* **Aktuális Fázis:** Implementation — Milestone 2B Extended CMS & Next.js 15 Frontend Shell (Completed)
-* **Aktuális Verzió:** `v0.3.0-autonomous-core`
+* **Aktuális Fázis:** Implementation — Milestone 3: Sitemap Completion, Scientia Vizuális Frissítés & Funkcióbővítés (folyamatban, 2026-07-31-től többnapos autonóm munkamenet)
+* **Aktuális Verzió:** `v0.3.0-autonomous-core` → készül `v0.4.0`
 * **Célverzió:** `v0.4.0-migration`
-* **Blokkoló tényezők (Blockers):** Nincsenek.
+* **Blokkoló tényezők (Blockers):** Fizetési kapu (Stripe/Barion/SimplePay) hitelesítő adatok hiányoznak — a Shop/Adomány funkciók csak struktúra/UI szinten készülnek el éles fizetés nélkül, amíg nincs valós kulcs.
+* **Ismert technikai korlát:** `payload generate:types` Node 24 alatt hibázik (upstream interop bug), ld. `.ai/context/current_state.md`.
 
 ---
 

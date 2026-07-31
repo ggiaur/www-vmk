@@ -138,6 +138,64 @@ export async function seedRuntimeData() {
   })
   console.log('✅ Created Event Record:', eventRecord.title)
 
+  // 6. Create a Department (Részleg)
+  const department = await payload.create({
+    collection: 'libraries',
+    data: {
+      name: 'Felnőtt Kölcsönző',
+      slug: 'felnott-kolcsonzo',
+      type: 'department',
+      address: '8000 Székesfehérvár, Bartók Béla tér 1., földszint',
+    },
+  })
+  console.log('✅ Created Department:', department.name)
+
+  // 7. Create a Branch Library (Tagkönyvtár)
+  const branch = await payload.create({
+    collection: 'libraries',
+    data: {
+      name: 'Budai Úti Tagkönyvtár',
+      slug: 'budai-ut',
+      type: 'branch',
+      address: '8000 Székesfehérvár, Budai út 44-46.',
+      phone: '+36 22 315 253',
+      email: 'budai@vmk.hu',
+    },
+  })
+  console.log('✅ Created Branch Library:', branch.name)
+
+  // 8. Create a generic content Page (Elérhetőségeink)
+  const contactPage = await payload.create({
+    collection: 'pages',
+    data: {
+      title: 'Elérhetőségeink',
+      slug: 'elerhetosegeink',
+      metaDescription: 'A Vörösmarty Mihály Könyvtár központi elérhetőségei és megközelíthetősége.',
+      layout: [
+        {
+          blockType: 'contactInfo',
+          title: 'Központi Könyvtár',
+          address: '8000 Székesfehérvár, Bartók Béla tér 1.',
+          phone: '+36 22 312 845',
+          email: 'info@vmk.hu',
+        },
+      ],
+      _status: 'published',
+    },
+  })
+  console.log('✅ Created Page:', contactPage.title)
+
+  // 9. Create a Partner/Supporter
+  const partner = await payload.create({
+    collection: 'partners',
+    data: {
+      name: 'Emberi Erőforrások Minisztériuma',
+      type: 'supporter',
+      order: 1,
+    },
+  })
+  console.log('✅ Created Partner:', partner.name)
+
   console.log('🎉 VMK Payload CMS Runtime Seed Completed Successfully!')
 }
 

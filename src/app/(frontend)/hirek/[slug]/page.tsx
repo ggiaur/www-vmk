@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import { getNewsBySlug } from '@/lib/payload'
 import { Calendar, User, ArrowLeft, Share2 } from 'lucide-react'
 
@@ -76,14 +77,18 @@ export default async function NewsDetailPage({
         {summary}
       </div>
 
-      <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-4">
-        <p>
-          Kedves Olvasóink! Örömmel értesítjük Önöket, hogy a Vörösmarty Mihály Könyvtár minden tagkönyvtárában elindult az idei nyári könyvajánló és olvasóprogram.
-        </p>
-        <p>
-          A részvételhez elegendő érvényes olvasójeggyel rendelkezni és kikölcsönözni legalább 3 kiemelt könyvet a nyári ajánlólistánkról. A részletes szabályzat és a könyvlista beszerezhető a könyvtárak kölcsönző pultjainál.
-        </p>
-      </div>
+      {article?.content ? (
+        <RichTextRenderer content={article.content} />
+      ) : (
+        <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-4">
+          <p>
+            Kedves Olvasóink! Örömmel értesítjük Önöket, hogy a Vörösmarty Mihály Könyvtár minden tagkönyvtárában elindult az idei nyári könyvajánló és olvasóprogram.
+          </p>
+          <p>
+            A részvételhez elegendő érvényes olvasójeggyel rendelkezni és kikölcsönözni legalább 3 kiemelt könyvet a nyári ajánlólistánkról. A részletes szabályzat és a könyvlista beszerezhető a könyvtárak kölcsönző pultjainál.
+          </p>
+        </div>
+      )}
 
       <div className="pt-6 border-t border-slate-200 flex items-center justify-between">
         <Link

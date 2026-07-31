@@ -2,31 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design tokens verified against uj.vmk.hu (WordPress "Scientia" theme) —
+   see docs/DESIGN_SYSTEM.md for the source values and rationale. */
 :root {
-  --primary: #8C1D11;
-  --primary-hover: #70160C;
-  --secondary: #C85A32;
-  --accent: #D4AF37;
-  --bg-page: #FDFBF7;
+  --primary: #F3701D;
+  --primary-hover: #D4590F;
+  --secondary: #80D572;
+  --accent: #DDB837;
+  --bg-page: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-subtle: #F5EFEE;
-  --text-main: #1E293B;
-  --text-muted: #64748B;
-  --border-light: #E2E8F0;
+  --bg-subtle: #F5F5F4;
+  --header-bg: #212121;
+  --header-text: #9F9F9F;
+  --text-main: #1B1B1B;
+  --text-muted: #5E5E5E;
+  --border-light: #E5E5E4;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
-  --shadow-soft: 0 4px 20px -2px rgba(140, 29, 17, 0.06);
-  --shadow-hover: 0 10px 30px -4px rgba(140, 29, 17, 0.12);
+  --shadow-soft: 0 4px 20px -2px rgba(27, 27, 27, 0.06);
+  --shadow-hover: 0 10px 30px -4px rgba(27, 27, 27, 0.12);
 }
 
 body {
   background-color: var(--bg-page);
   color: var(--text-main);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+h1, h2, h3, h4, .font-serif-heading {
+  font-family: var(--font-cardo), Georgia, 'Times New Roman', serif;
 }
 
 /* Glassmorphism & Micro-animations */

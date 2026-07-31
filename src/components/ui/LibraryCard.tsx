@@ -9,6 +9,7 @@ export interface LibraryCardProps {
   phone?: string
   email?: string
   type: 'central' | 'branch' | 'department' | string
+  href?: string
 }
 
 const typeLabels: Record<string, string> = {
@@ -24,7 +25,9 @@ export const LibraryCard: React.FC<LibraryCardProps> = ({
   phone,
   email,
   type,
+  href,
 }) => {
+  const linkHref = href ?? `/nyitvatartas#${slug}`
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm card-hover-effect flex flex-col justify-between">
       <div>
@@ -33,7 +36,7 @@ export const LibraryCard: React.FC<LibraryCardProps> = ({
         </span>
 
         <h3 className="font-bold text-slate-900 text-lg mb-3 hover:text-[#8C1D11] transition-colors">
-          <Link href={`/nyitvatartas#${slug}`}>{name}</Link>
+          <Link href={linkHref}>{name}</Link>
         </h3>
 
         <div className="space-y-2 text-xs text-slate-600 mb-4">

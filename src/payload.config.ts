@@ -7,11 +7,13 @@ import { fileURLToPath } from 'url'
 
 import { Documents } from './collections/Documents'
 import { Events } from './collections/Events'
+import { Galleries } from './collections/Galleries'
 import { Libraries } from './collections/Libraries'
 import { Media } from './collections/Media'
 import { News } from './collections/News'
 import { OpeningHours } from './collections/OpeningHours'
 import { Pages } from './collections/Pages'
+import { Partners } from './collections/Partners'
 import { Services } from './collections/Services'
 import { Staff } from './collections/Staff'
 import { Users } from './collections/Users'
@@ -51,7 +53,20 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { hu },
   },
-  collections: [Users, Media, Libraries, News, Events, OpeningHours, Pages, Staff, Documents, Services],
+  collections: [
+    Users,
+    Media,
+    Libraries,
+    News,
+    Events,
+    OpeningHours,
+    Pages,
+    Staff,
+    Documents,
+    Services,
+    Partners,
+    Galleries,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'vmk_super_secret_payload_key_2026_dev',
   typescript: {

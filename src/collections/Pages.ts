@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { PageBlocks } from '../blocks/PageBlocks'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -21,7 +22,16 @@ export const Pages: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
-      label: 'URL Slug',
+      label: 'URL Slug (pl. hasznalat/beiratkozas)',
+      admin: {
+        position: 'sidebar',
+        description: 'Perjellel tagolt útvonal / a domain után, kezdő perjel nélkül.',
+      },
+    },
+    {
+      name: 'metaDescription',
+      type: 'textarea',
+      label: 'SEO Meta Leírás',
       admin: {
         position: 'sidebar',
       },
@@ -29,7 +39,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [],
+      blocks: PageBlocks,
       label: 'Oldal Blokk-Építő (Dynamic Blocks)',
     },
   ],

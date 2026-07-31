@@ -113,6 +113,39 @@ export async function getAllLibraries() {
   }
 }
 
+export async function getLibrariesByType(type: 'central' | 'branch' | 'department') {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'libraries',
+      where: { type: { equals: type } },
+      limit: 50,
+      sort: 'name',
+      depth: 1,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
+export async function getLibraryBySlug(slug: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return null
+    const result = await payload.find({
+      collection: 'libraries',
+      where: { slug: { equals: slug } },
+      depth: 2,
+      limit: 1,
+    })
+    return result.docs[0] ?? null
+  } catch {
+    return null
+  }
+}
+
 // ─── Opening Hours ────────────────────────────────────────────────────────────
 
 export async function getOpeningHoursForLibrary(libraryId: string | number) {
@@ -184,6 +217,40 @@ export async function getAllDocuments(category?: string) {
   }
 }
 
+// ─── Pages (generic block-based content) ───────────────────────────────────────
+
+export async function getPageBySlug(slug: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return null
+    const result = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      depth: 2,
+      limit: 1,
+    })
+    return result.docs[0] ?? null
+  } catch {
+    return null
+  }
+}
+
+export async function getAllPageSlugs() {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'pages',
+      where: { _status: { equals: 'published' } },
+      limit: 500,
+      depth: 0,
+    })
+    return result.docs.map((doc) => doc.slug)
+  } catch {
+    return []
+  }
+}
+
 // ─── Services ─────────────────────────────────────────────────────────────────
 
 export async function getAllServices() {
@@ -193,6 +260,60 @@ export async function getAllServices() {
     const result = await payload.find({
       collection: 'services',
       limit: 50,
+      depth: 1,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
+// ─── Galleries ────────────────────────────────────────────────────────────────
+
+export async function getAllGalleries(limit = 50) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'galleries',
+      limit,
+      sort: '-eventDate',
+      depth: 1,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
+export async function getGalleryBySlug(slug: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return null
+    const result = await payload.find({
+      collection: 'galleries',
+      where: { slug: { equals: slug } },
+      depth: 2,
+      limit: 1,
+    })
+    return result.docs[0] ?? null
+  } catch {
+    return null
+  }
+}
+
+// ─── Partners ─────────────────────────────────────────────────────────────────
+
+export async function getAllPartners(type?: 'partner' | 'supporter') {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const where = type ? { type: { equals: type } } : undefined
+    const result = await payload.find({
+      collection: 'partners',
+      limit: 100,
+      sort: 'order',
+      where,
       depth: 1,
     })
     return result.docs

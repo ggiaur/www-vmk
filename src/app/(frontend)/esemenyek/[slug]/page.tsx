@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import { getEventBySlug } from '@/lib/payload'
 import { Calendar, MapPin, Users, ArrowLeft, ExternalLink } from 'lucide-react'
 
@@ -92,14 +93,18 @@ export default async function EventDetailPage({
         </div>
       </div>
 
-      <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-4">
-        <p>
-          Szeretettel várunk minden könyvbarátot havi rendszerességű könyvklubunk következő alkalmára! A találkozó során a legújabb kortárs magyar és külföldi regényeket beszéljük át egy kellemes tea/kávé mellett.
-        </p>
-        <p>
-          A belépés ingyenes, de az olvasóterem befogadóképessége miatt előzetes regisztráció ajánlott!
-        </p>
-      </div>
+      {event?.description ? (
+        <RichTextRenderer content={event.description} />
+      ) : (
+        <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-4">
+          <p>
+            Szeretettel várunk minden könyvbarátot havi rendszerességű könyvklubunk következő alkalmára! A találkozó során a legújabb kortárs magyar és külföldi regényeket beszéljük át egy kellemes tea/kávé mellett.
+          </p>
+          <p>
+            A belépés ingyenes, de az olvasóterem befogadóképessége miatt előzetes regisztráció ajánlott!
+          </p>
+        </div>
+      )}
 
       {event?.registrationUrl && (
         <div className="p-6 bg-slate-900 text-white rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">

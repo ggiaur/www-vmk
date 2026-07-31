@@ -25,25 +25,36 @@ A Vörösmarty Mihály Könyvtár (VMK) digitális platformjának hivatalos vizu
 
 ## 3. Color System (Színrendszer & WCAG 2.2 AA Kontraszt)
 
+> **2026-07 frissítés:** a paletta az intézmény saját `uj.vmk.hu` (WordPress "Scientia" téma)
+> oldaláról kinyert, ellenőrzött valódi tokenekre lett igazítva — ez váltja fel az eredeti
+> kék `#0F4C81` tervet. Forrás: `wp-content/themes/scientia/css/__colors-default.css` és
+> `__colors-dark.css`.
+
 | Színkategória | Változó Neve | HEX Érték | Használati Szabály | WCAG AA Kontraszt (Háttérhez) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Primary** | `--color-primary` | `#0F4C81` | Fő intézményi kék (Header, fő gombok, aktív elemek). | 7.2:1 (Fehéren - PASS AAA) |
-| **Primary Hover**| `--color-primary-hover` | `#0A355C` | Interaktív állapotokhoz. | 10.4:1 (Fehéren - PASS AAA) |
-| **Secondary** | `--color-secondary` | `#E8F1F5` | Kiemelt kártyahátterek, gomb háttér. | 1.15:1 (Szövegként sötéten) |
-| **Accent** | `--color-accent` | `#D97706` | Figyelemfelkeltő jelvények, esemény státuszok. | 4.6:1 (Fehéren - PASS AA) |
-| **Neutral Dark** | `--color-text-main` | `#1E293B` | Törzsszövegek, címsorok. | 12.8:1 (Fehéren - PASS AAA) |
-| **Neutral Muted**| `--color-text-muted` | `#64748B` | Metaadatok, dátumok, másodlagos infók. | 4.8:1 (Fehéren - PASS AA) |
-| **Background** | `--color-bg` | `#F8FAFC` | Alapértelmezett oldalháttér (Warm white/slate). | N/A |
-| **Surface** | `--color-surface` | `#FFFFFF` | Kártyák, modálok és felületek háttérszíne. | N/A |
+| **Primary** | `--primary` | `#F3701D` | Élénk narancs — linkek, CTA gombok, aktív elemek. | 3.0:1 (Fehéren - nagy szövegre/UI-ra PASS AA, kis szövegre kontraszt-védő sötétebb variáns kell) |
+| **Primary Hover**| `--primary-hover` | `#D4590F` | Interaktív állapotokhoz. | 3.9:1 (Fehéren) |
+| **Secondary** | `--secondary` | `#80D572` | "Nyitva" állapotjelvények, másodlagos kiemelés. | Csak ikonnal/nagy elemmel, sosem önmagában szövegszínként |
+| **Accent** | `--accent` | `#DDB837` | Figyelemfelkeltő jelvények, esemény státuszok. | Csak ikonnal/nagy elemmel |
+| **Header/Nav Sötét Sáv** | `--header-bg` / `--header-text` | `#212121` / `#9F9F9F` | Fejléc és navigáció sötét inverz sávja (Scientia mintára). | Fehér címsor a sötét sávon 15.8:1 (PASS AAA) |
+| **Neutral Dark** | `--text-main` | `#1B1B1B` | Törzsszövegek, címsorok. | 16.1:1 (Fehéren - PASS AAA) |
+| **Neutral Muted**| `--text-muted` | `#5E5E5E` | Metaadatok, dátumok, másodlagos infók. | 6.8:1 (Fehéren - PASS AA) |
+| **Background** | `--bg-page` | `#FFFFFF` | Alapértelmezett oldalháttér. | N/A |
+| **Surface** | `--bg-card` | `#FFFFFF` | Kártyák, modálok és felületek háttérszíne. | N/A |
 | **Success** | `--color-success` | `#166534` | Sikeres üzenetek, nyitva tartó gombok. | 5.2:1 (Fehéren - PASS AA) |
 | **Warning** | `--color-warning` | `#B45309` | Ünnepi / megváltozott nyitvatartás jelzés. | 4.7:1 (Fehéren - PASS AA) |
 | **Error** | `--color-error` | `#991B1B` | Hibaüzenetek, zárva tartó jelzés. | 7.1:1 (Fehéren - PASS AAA) |
+
+> **Kontraszt-figyelmeztetés:** a `--primary` narancs (`#F3701D`) önmagában, kis testű
+> szövegként fehér háttéren **nem** éri el a WCAG AA 4.5:1 küszöböt — ezért kizárólag
+> gombháttérként (fehér szöveggel), ikonszínként, vagy vastag/nagy UI-elemként használható.
+> Testszövegben mindig `--text-main` vagy `--text-muted` viszi a szöveget.
 
 ---
 
 ## 4. Typography (Tipográfia & Betűskála)
 
-* **Font Család:** `Inter`, `Roboto`, system-ui, sans-serif.
+* **Font Család:** Címsorok: `Cardo` (szerif) — a `uj.vmk.hu` valódi betűtípusa. Törzsszöveg: `Inter`, system-ui, sans-serif.
 * **Betűméret & Sorköz Skála:**
 
 ```css
