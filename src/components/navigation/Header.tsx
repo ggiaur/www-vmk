@@ -82,6 +82,14 @@ export const Header: React.FC = () => {
 
         {/* Catalog CTA Button */}
         <div className="hidden sm:flex items-center gap-3">
+          <Link
+            href="/kereses"
+            aria-label="Keresés a honlapon (hírek, események)"
+            title="Keresés a honlapon"
+            className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-[#F3701D] transition-colors"
+          >
+            <Search className="w-4 h-4" />
+          </Link>
           <a
             href="https://katalogus.vmk.hu"
             target="_blank"
@@ -148,6 +156,14 @@ export const Header: React.FC = () => {
               className="px-3 py-2 rounded-md hover:bg-slate-100"
             >
               Kapcsolat
+            </Link>
+            <Link
+              href="/kereses"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-md hover:bg-slate-100 flex items-center gap-2"
+            >
+              <Search className="w-4 h-4" />
+              <span>Keresés</span>
             </Link>
           </nav>
           <div className="pt-2">
