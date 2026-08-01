@@ -6,9 +6,9 @@ A VMK Website Modernization projekt pillanatnyi stádiumának, elvégzett mérf�
 
 ## 🚦 Aktuális Fázis & Státusz
 
-* **Aktuális Fázis:** Implementation — Milestone 3: Sitemap Completion, Scientia Vizuális Frissítés & Funkcióbővítés (folyamatban, 2026-07-31-től többnapos autonóm munkamenet)
-* **Aktuális Verzió:** `v0.3.0-autonomous-core` → készül `v0.4.0`
-* **Célverzió:** `v0.4.0-migration`
+* **Aktuális Fázis:** Implementation — Milestone 3: Sitemap Completion, Scientia Vizuális Frissítés, Funkcióbővítés & Valódi Tartalom-migráció (nagyrészt lezárva, 2026-07-31-i többnapos autonóm munkamenetben)
+* **Aktuális Verzió:** `v0.3.0-autonomous-core` → `v0.4.0-migration` gyakorlatilag kész (ld. lent)
+* **Célverzió:** `v0.4.0-migration` → `v1.0.0-production`
 * **Blokkoló tényezők (Blockers):** Fizetési kapu (Stripe/Barion/SimplePay) hitelesítő adatok hiányoznak — a Shop/Adomány funkciók csak struktúra/UI szinten készülnek el éles fizetés nélkül, amíg nincs valós kulcs.
 * **Ismert technikai korlát:** `payload generate:types` Node 24 alatt hibázik (upstream interop bug), ld. `.ai/context/current_state.md`.
 * **WCAG 2.2 AA audit még nem futott le ténylegesen** — az infrastruktúra (`playwright.config.ts`, `tests/e2e/accessibility.spec.ts`) kész, de a Chromium indítása ebben a sandbox-környezetben hiányzó rendszerkönyvtár (`libatk-1.0.so.0`) és root-jogosultság hiánya miatt nem lehetséges. CI-ban (`.github/workflows/ci-cd.yml`, root alatt fut) vagy nem-sandboxolt gépen kell lefuttatni.
@@ -43,3 +43,16 @@ A VMK Website Modernization projekt pillanatnyi stádiumának, elvégzett mérf�
   - NewsCard, EventCard, LibraryCard, OpeningHoursWidget UI komponensek.
   - Főoldal (`/`) és Nyitvatartási Mátrix (`/nyitvatartas`) elrendezés megvalósítva.
   - Meilisearch kliens integráció (`src/lib/meilisearch.ts`).
+- [x] **Sitemap Completion & Scientia Vizuális Frissítés (Milestone 3, 2026-07-31):**
+  - Blokk-alapú `Pages` oldalépítő + generikus `[...slug]` catch-all route.
+  - `/reszlegek`, `/tagkonyvtarak`, `/galeria`, `/programarchivum` oldalak + `Partners`, `Galleries` kollekciók.
+  - Teremfoglalás (`Rooms`/`Bookings`), Támogatás (`DonationPledges`, élő fizetés nélkül), Bolt (`Products`, csak böngészés), Esemény RSVP (`Registrations`) — a `uj.vmk.hu` (Scientia WP téma) plugin-készletének megfelelője.
+  - Vizuális rendszer a valódi `uj.vmk.hu` tokenjeire igazítva (narancs `#F3701D`, `Cardo`+`Inter` betűtípus), site-wide propagálva ~30 komponensben.
+  - `next.config.ts` 301 redirect-térkép + `src/middleware.ts` dinamikus régi-hír-URL átirányítás + `src/app/sitemap.ts`.
+  - `Media` kollekció bekötve MinIO-ba (`@payloadcms/storage-s3`), `sharp` telepítve.
+- [x] **Valódi Tartalom-migráció (v0.4.0-migration lényegi tartalma, 2026-07-31):**
+  - **334 valós hírcikk** a `vmk.hu` mind a ~43 lista-oldaláról, valós szöveggel, dátummal és képpel.
+  - **80 valós munkatárs** (név, beosztás, telefon, e-mail) a `/munkatarsak`-ról.
+  - **53 valós dokumentum (PDF)** az `/alapdokumentumok`-ról, MinIO-ban tárolva.
+  - 33 unit teszt a scraper-logikára (`tests/scraper.test.ts`) — két valódi, súlyos hibát talált és javított menet közben (munkatárs telefonszámok, hírek dátum-becslése).
+  - **Nem migrált, dokumentáltan blokkolt:** Események és Galéria-fotók — a forrás JS-alapú (statikus HTML-ből nem kinyerhető), böngésző-alapú scrapinget igényelne, ami ebben a sandbox-környezetben (root nélkül) nem lehetséges.
