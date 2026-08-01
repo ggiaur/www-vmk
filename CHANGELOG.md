@@ -6,6 +6,13 @@ A projekt a [Semantic Versioning](https://semver.org/spec/v2.0.0.html) szabvány
 
 ## [Unreleased] - 2026-07-31 (folyamatban)
 
+### Hozzáadva (tizedik kör — hiányzó keresés funkció megépítve)
+* **Talált hiba:** a `src/lib/meilisearch.ts` a `MEILI_HOST`/`MEILI_MASTER_KEY` env változókat olvasta, de a `.env`/`.env.example`/`docker-compose.yml` mindenhol `MEILISEARCH_HOST`/`MEILISEARCH_KEY`-t definiál — a kód sosem olvasta be a valós konfigurációt, és a hardcode-olt fallback master key sem egyezett a docker-compose-ban ténylegesen beállítottal. Javítva.
+* **Talált hiányosság:** a `meiliClient`/`setupMeiliSearchIndexes` sehol nem volt ténylegesen bekötve — a `DESIGN_SYSTEM.md`/`UX_PROTOTYPE.md` dokumentálta a keresési oldalt, a `PROJECT_STATUS.md` "kész"-nek jelölte a Meilisearch integrációt, de valójában nem létezett se keresőoldal, se indexelés.
+* Megépítve: `News`/`Events` kollekciók `afterChange`/`afterDelete` hook-jai (automatikus szinkron publikáláskor/törléskor), `src/app/api/search/route.ts` (szerver-oldali keresés, a master key nem kerül a kliensre), `/kereses` oldal élő, debounce-olt kereséssel. Dev-only `POST /api/dev-search-backfill` a meglévő 334 hír + esemény egyszeri visszatöltésére.
+* Ellenőrizve élesben: a backfill 334 hírt indexelt, a `/api/search?q=konyvtar` valós, releváns találatokat ad vissza a migrált tartalomból.
+
+
 ### Javítva — súlyos dátum-becslési hiba a hír-migrációban
 * Adatminőségi átvizsgálás során kiderült: **a hírcikkek jelentős része a scrape *futtatási idejét* kapta publikációs dátumként** a valós dátum helyett, mert a `guessDateFromSlug` csak szűk, konkrét minta-prefixumokat ismert fel (pl. egy 2013-as cikk 2026-07-31-et kapott). Négy új mintát adtam hozzá: puszta `YYYY-` év-előtag, év bárhol a slugben (`...-2017`, `...-2016-1`), `YYYY_MM_` aláhúzásos prefix, záró `-YYYYMMDD` szuffix. Minden új mintához előbb regressziós tesztet írtam, ami igazoltan elbukott a régi kóddal, majd zölddé vált a javítás után.
 * A híreket törölve és a javított logikával újraimportálva (334 cikk). A megmaradó, valóban dátumtalan slugek (pl. facebook-poszt-azonosítók, hónapnév-only szövegek, évfordulós események évszám nélkül) továbbra is a `sourceNote` mezőn keresztül vannak jelezve szerkesztői ellenőrzésre — ez már a slug-alapú megközelítés valós, becsületesen dokumentált határa, nem hiba.

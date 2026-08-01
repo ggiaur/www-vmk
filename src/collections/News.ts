@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisearch'
 
 export const News: CollectionConfig = {
   slug: 'news',
@@ -13,6 +14,29 @@ export const News: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc }) => {
+        if (doc._status === 'published') {
+          await syncToMeiliIndex(INDEXES.NEWS, {
+            id: doc.id,
+            title: doc.title,
+            summary: doc.summary,
+            category: doc.category,
+            slug: doc.slug,
+            publishedAt: doc.publishedAt,
+          })
+        } else {
+          await removeFromMeiliIndex(INDEXES.NEWS, doc.id)
+        }
+      },
+    ],
+    afterDelete: [
+      async ({ doc }) => {
+        await removeFromMeiliIndex(INDEXES.NEWS, doc.id)
+      },
+    ],
   },
   fields: [
     {
