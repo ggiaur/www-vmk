@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio'
 import type { AnyNode } from 'domhandler'
+import { isTag } from 'domhandler'
 
 // Minimal HTML -> Lexical JSON converter, hand-rolled because
 // @payloadcms/richtext-lexical 3.87.0 does not publicly export an
@@ -40,7 +41,7 @@ function textNode(text: string, format = 0): TextNode {
 
 function inlineChildren($: cheerio.CheerioAPI, node: AnyNode, format = 0): (TextNode | ElementNode)[] {
   const out: (TextNode | ElementNode)[] = []
-  const children = ($(node) as any).contents().toArray() as AnyNode[]
+  const children = $(node).contents().toArray()
 
   for (const child of children) {
     if (child.type === 'text') {
@@ -48,8 +49,8 @@ function inlineChildren($: cheerio.CheerioAPI, node: AnyNode, format = 0): (Text
       if (text) out.push(textNode(text, format))
       continue
     }
-    if (child.type !== 'tag') continue
-    const tagName = (child as any).tagName?.toLowerCase()
+    if (!isTag(child)) continue
+    const tagName = child.tagName?.toLowerCase()
 
     switch (tagName) {
       case 'strong':
@@ -134,8 +135,8 @@ export function htmlFragmentToLexical(html: string): { root: ElementNode } {
       if (text) blocks.push(paragraphNode([textNode(text)]))
       continue
     }
-    if (node.type !== 'tag') continue
-    const tagName = (node as any).tagName?.toLowerCase()
+    if (!isTag(node)) continue
+    const tagName = node.tagName?.toLowerCase()
 
     if (tagName === 'p') {
       const children = inlineChildren($, node)

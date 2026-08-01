@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { FileText, Download, MapPin, Phone, Mail } from 'lucide-react'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
 type MediaDoc = { url?: string | null; alt?: string | null } | string | null | undefined
 type DocumentDoc = {
@@ -10,7 +11,7 @@ type DocumentDoc = {
   file?: MediaDoc
 } | string | number
 
-type PageBlock =
+export type PageBlock =
   | {
       blockType: 'hero'
       id: string
@@ -23,7 +24,7 @@ type PageBlock =
   | {
       blockType: 'richText'
       id: string
-      content: any
+      content: SerializedEditorState | null | undefined
     }
   | {
       blockType: 'contactInfo'
@@ -44,7 +45,7 @@ type PageBlock =
       blockType: 'accordion'
       id: string
       title?: string | null
-      items?: { question: string; answer: any }[] | null
+      items?: { question: string; answer: SerializedEditorState | null | undefined }[] | null
     }
   | {
       blockType: 'partnersGrid'

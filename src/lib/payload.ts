@@ -10,6 +10,19 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
+// Payload's generated types (payload-types.ts) can't be produced in this
+// environment (`payload generate:types` fails on Node 24 with
+// ERR_REQUIRE_ASYNC_MODULE, an upstream ESM/CJS interop bug), so
+// collection docs come back as the generic JsonObject fallback type.
+// This mirrors the OpeningHours collection schema (src/collections/OpeningHours.ts)
+// exactly, so it's safe to assert onto payload.find()'s result there.
+type OpeningHoursDoc = {
+  dayOfWeek: string
+  isClosed?: boolean | null
+  openTime?: string | null
+  closeTime?: string | null
+}
+
 export async function getPayloadClient() {
   try {
     const config = await configPromise
@@ -211,7 +224,7 @@ export async function getOpeningHoursForLibrary(libraryId: string | number) {
       limit: 7,
       depth: 0,
     })
-    return result.docs
+    return result.docs as unknown as OpeningHoursDoc[]
   } catch {
     return []
   }
@@ -226,7 +239,9 @@ export async function getAllOpeningHours() {
       limit: 100,
       depth: 1,
     })
-    return result.docs
+    return result.docs as unknown as (OpeningHoursDoc & {
+      library: string | number | { id: string | number }
+    })[]
   } catch {
     return []
   }
@@ -504,7 +519,7 @@ const DAY_LABELS: Record<string, string> = {
  * Rendezi a nyitvatartási rekordokat hétfőtől vasárnapig,
  * és visszaadja az emberi olvasható formátumot.
  */
-export function formatOpeningHours(docs: Array<Record<string, any>>) {
+export function formatOpeningHours(docs: OpeningHoursDoc[]) {
   if (!docs || docs.length === 0) return []
   return [...docs]
     .sort((a, b) => (DAY_ORDER[a.dayOfWeek] ?? 9) - (DAY_ORDER[b.dayOfWeek] ?? 9))

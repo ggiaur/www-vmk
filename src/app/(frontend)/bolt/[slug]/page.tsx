@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { getProductBySlug } from '@/lib/payload'
@@ -44,13 +45,13 @@ export default async function ProductDetailPage({ params }: Args) {
           <h1 className="text-2xl font-black text-slate-900">{product.title}</h1>
           <p className="text-xl font-bold text-[#F3701D]">{product.price.toLocaleString('hu-HU')} Ft</p>
           {product.description && <p className="text-sm text-slate-600 leading-relaxed">{product.description}</p>}
-          <a
+          <Link
             href="/kapcsolat"
             className="btn-primary inline-flex text-sm"
           >
             <Mail className="w-4 h-4" />
             <span>Érdeklődöm ezen a terméken</span>
-          </a>
+          </Link>
           <p className="text-[11px] text-slate-400">
             A vásárláshoz keresse fel személyesen a Központi Könyvtárat, vagy vegye fel velünk a
             kapcsolatot.

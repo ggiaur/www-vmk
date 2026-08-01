@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { NewsCard } from '@/components/ui/NewsCard'
 import { getArchivedNews } from '@/lib/payload'
@@ -29,9 +30,9 @@ export default async function ProgramarchivumPage() {
         <p className="text-slate-600 mt-2 max-w-3xl">
           Korábbi évek lezárult programjai, rendezvényei és híranyagai — történeti gyűjtemény, nem
           aktuális esemény. Aktuális, közelgő programokért lásd az{' '}
-          <a href="/esemenyek" className="text-[#F3701D] font-semibold hover:underline">
+          <Link href="/esemenyek" className="text-[#F3701D] font-semibold hover:underline">
             Eseménykalendáriumot
-          </a>
+          </Link>
           .
         </p>
       </div>

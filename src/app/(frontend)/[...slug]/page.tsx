@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
-import { PageBlockRenderer } from '@/components/blocks/PageBlockRenderer'
+import { PageBlockRenderer, type PageBlock } from '@/components/blocks/PageBlockRenderer'
 import { getPageBySlug } from '@/lib/payload'
 
 type Args = {
@@ -31,7 +31,7 @@ export default async function GenericPage({ params }: Args) {
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
       <Breadcrumb items={[{ label: page.title }]} />
       <h1 className="text-3xl font-black text-slate-900">{page.title}</h1>
-      <PageBlockRenderer blocks={page.layout as any} />
+      <PageBlockRenderer blocks={page.layout as unknown as PageBlock[]} />
     </div>
   )
 }

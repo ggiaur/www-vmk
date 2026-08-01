@@ -14,9 +14,9 @@ import {
 } from '@/lib/payload'
 
 export default async function HomePage() {
-  let cmsNews = await getLatestNews(3)
-  let cmsEvents = await getUpcomingEvents(2)
-  let cmsLibraries = await getAllLibraries()
+  const cmsNews = await getLatestNews(3)
+  const cmsEvents = await getUpcomingEvents(2)
+  const cmsLibraries = await getAllLibraries()
   let heroSchedule: ReturnType<typeof formatOpeningHours> = []
 
   if (cmsLibraries.length > 0) {

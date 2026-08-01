@@ -35,6 +35,7 @@ export async function submitRsvp(formData: FormData): Promise<ActionResult> {
     revalidatePath(`/esemenyek/${eventSlug}`)
     return { ok: true }
   } catch (error) {
+    console.error('[submitRsvp] Failed to save registration:', error)
     return { ok: false, error: 'Hiba történt a jelentkezés rögzítésekor.' }
   }
 }
@@ -71,6 +72,7 @@ export async function submitBooking(formData: FormData): Promise<ActionResult> {
     revalidatePath('/teremfoglalas')
     return { ok: true }
   } catch (error) {
+    console.error('[submitBooking] Failed to save booking:', error)
     return { ok: false, error: 'Hiba történt a foglalás rögzítésekor.' }
   }
 }
@@ -96,6 +98,7 @@ export async function submitDonationPledge(formData: FormData): Promise<ActionRe
     })
     return { ok: true }
   } catch (error) {
+    console.error('[submitDonationPledge] Failed to save donation pledge:', error)
     return { ok: false, error: 'Hiba történt a felajánlás rögzítésekor.' }
   }
 }
