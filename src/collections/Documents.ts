@@ -6,6 +6,7 @@ export const Documents: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'year', 'downloadCount'],
   },

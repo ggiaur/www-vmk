@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 export const Bookings: CollectionConfig = {
   slug: 'bookings',
   admin: {
+    group: 'Foglalások és tranzakciók',
     useAsTitle: 'requesterName',
     defaultColumns: ['room', 'date', 'startTime', 'endTime', 'status'],
   },

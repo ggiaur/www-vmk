@@ -9,6 +9,7 @@ export const News: CollectionConfig = {
     read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
   },
   admin: {
+    group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],
   },

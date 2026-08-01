@@ -7,6 +7,7 @@ export const Events: CollectionConfig = {
     read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
   },
   admin: {
+    group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'startDate', 'location', 'targetAudience', '_status'],
   },

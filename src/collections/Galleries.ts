@@ -6,6 +6,7 @@ export const Galleries: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'eventDate'],
   },

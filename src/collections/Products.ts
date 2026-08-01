@@ -9,6 +9,7 @@ export const Products: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Foglalások és tranzakciók',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'price', 'stockStatus'],
   },

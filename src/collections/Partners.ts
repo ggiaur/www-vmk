@@ -6,6 +6,7 @@ export const Partners: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Könyvtárak',
     useAsTitle: 'name',
     defaultColumns: ['name', 'type', 'order'],
   },

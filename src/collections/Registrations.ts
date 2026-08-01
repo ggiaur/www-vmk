@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 export const Registrations: CollectionConfig = {
   slug: 'registrations',
   admin: {
+    group: 'Foglalások és tranzakciók',
     useAsTitle: 'name',
     defaultColumns: ['event', 'name', 'email', 'guestCount', 'status', 'createdAt'],
   },

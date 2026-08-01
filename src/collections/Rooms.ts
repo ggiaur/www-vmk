@@ -6,6 +6,7 @@ export const Rooms: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Könyvtárak',
     useAsTitle: 'name',
     defaultColumns: ['name', 'library', 'capacity'],
   },

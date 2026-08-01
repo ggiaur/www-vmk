@@ -6,6 +6,7 @@ export const OpeningHours: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Könyvtárak',
     useAsTitle: 'specialNote',
     defaultColumns: ['library', 'dayOfWeek', 'openTime', 'closeTime', 'isClosed'],
   },

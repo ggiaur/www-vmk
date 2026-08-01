@@ -6,6 +6,7 @@ import type { CollectionConfig } from 'payload'
 export const DonationPledges: CollectionConfig = {
   slug: 'donation-pledges',
   admin: {
+    group: 'Foglalások és tranzakciók',
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'amount', 'status', 'createdAt'],
   },

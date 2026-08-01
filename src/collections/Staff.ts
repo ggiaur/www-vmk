@@ -6,6 +6,7 @@ export const Staff: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Könyvtárak',
     useAsTitle: 'name',
     defaultColumns: ['name', 'position', 'department', 'email', 'order'],
   },
