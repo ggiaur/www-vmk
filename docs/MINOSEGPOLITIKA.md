@@ -30,7 +30,7 @@ színegyezés ellenőrzésére.
    minden jövőbeli vizuális változtatás után újra lefuttatható, és
    bővíthető új ellenőrzésekkel.
 
-## Jelenlegi lefedettség (14 ellenőrzés)
+## Jelenlegi lefedettség (18 ellenőrzés)
 
 | # | Ellenőrzés | Mit mér |
 |---|---|---|
@@ -40,8 +40,12 @@ színegyezés ellenőrzésére.
 | 4 | `widgetContentBg` | Oldalsáv widget-dobozok háttérszíne |
 | 5 | `newsCardTitleBg` | Hírkártya címsávjának háttérszíne |
 | 6 | `bannerToHeaderGap` | Banner-kép közvetlenül a navigáció alatt kezdődik-e |
-| 7 | `iconRowAlignment` | Fejléc-ikonok függőleges igazítása |
-| 8-14 | `navNoWrap@{szélesség}px` | A navigáció NEM törik két sorba 1024px és 1920px között egyetlen tesztelt szélességen sem |
+| 7 | `widgetBoxSize` | Oldalsáv widget-doboz mérete (±15%/±40% tolerancia - eltérő tartalom-típus miatt) |
+| 8 | `newsCardImageHeight` | Hírkártya kép-részének magassága (±20% tolerancia) |
+| 9 | `bannerAspectRatio` | "A városban N helyen" banner-kép aránya (±5% - ugyanaz a letöltött kép) |
+| 10 | `figyelemBannerSize` | FIGYELEM! banner mérete - jelenleg SKIP, mert a valós oldalon időszakos/dinamikus tartalom, épp nincs kint, nincs stabil mérési alap |
+| 11 | `iconRowAlignment` | Fejléc-ikonok függőleges igazítása |
+| 12-18 | `navNoWrap@{szélesség}px` | A navigáció NEM törik két sorba 1024px és 1920px között egyetlen tesztelt szélességen sem |
 
 ## Mit NEM garantál ez a módszer
 

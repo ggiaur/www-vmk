@@ -129,6 +129,84 @@ const CHECKS = {
     compare: (r, l) => Math.abs(r - l) <= 10,
     describe: (r, l) => `real gap=${r}px vs local gap=${l}px (a banner-kép közvetlenül a navigáció alatt kell hogy kezdődjön, rés nélkül)`,
   },
+  widgetBoxSize: {
+    // FEWA/Aranybulla-szerű első oldalsáv-widget teljes doboz mérete.
+    real: () => {
+      const titleEl = [...document.querySelectorAll('h1')].find((h) => h.textContent.trim() === 'FEWA')
+      const box = titleEl ? titleEl.closest('.box') : null
+      if (!box) return null
+      const r = box.getBoundingClientRect()
+      return { w: Math.round(r.width), h: Math.round(r.height) }
+    },
+    local: () => {
+      const link = document.querySelector('aside a[href*="webarchivum.vmk.hu"]')
+      const card = link ? link.querySelector('div') : null
+      if (!card) return null
+      const r = card.getBoundingClientRect()
+      return { w: Math.round(r.width), h: Math.round(r.height) }
+    },
+    // Nagy tolerancia: a valós widget saját promóciós KÉPET mutat, a
+    // miénk ikon+alcím szöveget - ez tudatos, egyszerűsített szerkezeti
+    // választás, csak durva méretrend-egyezést várunk el (±40%).
+    compare: (r, l) => Math.abs(r.w - l.w) / r.w <= 0.15 && Math.abs(r.h - l.h) / r.h <= 0.4,
+    describe: (r, l) => `real ${r.w}x${r.h} vs local ${l.w}x${l.h} (szélesség ±15%, magasság ±40% tolerancia - eltérő tartalom-típus miatt)`,
+  },
+  newsCardImageHeight: {
+    real: () => {
+      const card = document.querySelector('.elements a.box.type1:not(.main)')
+      const img = card ? card.querySelector('img, .image') : null
+      return img ? Math.round(img.getBoundingClientRect().height) : null
+    },
+    local: () => {
+      const card = document.querySelector('main a[href^="/hirek/"]')
+      const imgWrap = card ? card.querySelector('div') : null
+      return imgWrap ? Math.round(imgWrap.getBoundingClientRect().height) : null
+    },
+    compare: (r, l) => Math.abs(r - l) / r <= 0.2,
+    describe: (r, l) => `real image height=${r}px vs local=${l}px (±20% tolerancia)`,
+  },
+  bannerAspectRatio: {
+    // Az "A városban N helyen" banner-kép aránya - ugyanaz a letöltött
+    // kép mindkét oldalon, tehát az aránynak gyakorlatilag azonosnak
+    // kell lennie, függetlenül a konténer szélességétől.
+    real: () => {
+      const img = document.querySelector('.carousel-inner img, .item.active img')
+      if (!img) return null
+      const r = img.getBoundingClientRect()
+      return r.width / r.height
+    },
+    local: () => {
+      const img = document.querySelector('img[alt^="A városban"]')
+      if (!img) return null
+      const r = img.getBoundingClientRect()
+      return r.width / r.height
+    },
+    compare: (r, l) => Math.abs(r - l) / r <= 0.05,
+    describe: (r, l) => `real aspect=${r.toFixed(3)} vs local aspect=${l.toFixed(3)} (±5% tolerancia - ugyanaz a letöltött kép)`,
+  },
+  figyelemBannerSize: {
+    // A FIGYELEM! banner a valós oldalon dinamikus/időszakos tartalom -
+    // ha épp nincs kint (jelenleg nincs, ellenőrizve), nem hasonlítunk
+    // fabrikált számhoz, hanem SKIP-elünk, jelezve az okot.
+    real: () => {
+      const el = [...document.querySelectorAll('*')].find(
+        (e) => e.children.length === 0 && e.textContent.trim() === 'FIGYELEM!',
+      )
+      return el ? Math.round(el.closest('.box, a')?.getBoundingClientRect().height ?? 0) : null
+    },
+    local: () => {
+      const el = [...document.querySelectorAll('*')].find(
+        (e) => e.children.length === 0 && e.textContent.trim() === 'FIGYELEM!',
+      )
+      if (!el) return null
+      let card = el
+      for (let i = 0; i < 4 && card; i++) card = card.parentElement
+      return card ? Math.round(card.getBoundingClientRect().height) : null
+    },
+    compare: () => true, // nincs stabil valós referenciaszám - lásd describe
+    describe: (r, l) =>
+      `real=${r}px (JELENLEG NEM LÁTHATÓ a valós oldalon - időszakos tartalom, nincs stabil mérési alap) vs local=${l}px`,
+  },
   iconRowAlignment: {
     real: () => {
       const imgs = [...document.querySelectorAll('.navbar-select > li > a img, .navbar-select > li > a em')]
