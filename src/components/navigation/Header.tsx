@@ -105,18 +105,25 @@ export const Header: React.FC = () => {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-2.5 shrink-0">
+          <div className="hidden md:flex items-center gap-2 shrink-0">
             <a
               href="mailto:kolcsonzo@vmk.hu"
               aria-label="E-mail"
-              className="text-[#159097] hover:opacity-70 transition-opacity"
+              className="w-7 h-7 rounded bg-[#159097] flex items-center justify-center hover:opacity-80 transition-opacity"
             >
-              <Mail className="w-[22px] h-[22px]" strokeWidth={1.75} />
+              <Mail className="w-4 h-4 text-white" strokeWidth={2} />
             </a>
             {ICON_LINKS.map((icon) => (
-              <a key={icon.label} href={icon.href} target="_blank" rel="noopener noreferrer" aria-label={icon.label}>
+              <a
+                key={icon.label}
+                href={icon.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={icon.label}
+                className="w-7 h-7 flex items-center justify-center"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={icon.img} alt={icon.label} width={icon.w} height={icon.h} className="object-contain" />
+                <img src={icon.img} alt={icon.label} className="max-w-full max-h-full object-contain" />
               </a>
             ))}
             <span className="w-px h-6 bg-slate-200 mx-1" aria-hidden="true" />
@@ -130,7 +137,7 @@ export const Header: React.FC = () => {
                 className={flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={flag.img} alt={flag.label} width={22} height={16} className="object-contain rounded-sm" />
+                <img src={flag.img} alt={flag.label} width={26} height={19} className="object-contain rounded-sm" />
               </a>
             ))}
             <a
@@ -140,7 +147,7 @@ export const Header: React.FC = () => {
               aria-label="Akadálymentes (vakok és gyengénlátók) nézet"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={22} height={16} className="object-contain rounded-sm" />
+              <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={26} height={19} className="object-contain rounded-sm" />
             </a>
 
             <div className="relative ml-2">
@@ -148,7 +155,7 @@ export const Header: React.FC = () => {
                 type="button"
                 onClick={() => setCatalogOpen((v) => !v)}
                 onBlur={() => setTimeout(() => setCatalogOpen(false), 150)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#8B1E2D] hover:bg-[#6f1724] text-white text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#159097] hover:bg-[#0f656a] text-white text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
                 aria-haspopup="true"
                 aria-expanded={catalogOpen}
               >
