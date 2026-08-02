@@ -13,10 +13,10 @@ export interface HomeNewsTileProps {
   index: number
 }
 
-// A valós vmk.hu főoldali hír/esemény rácsa színes hátterű kártyákból áll
-// (teal/barna/kék váltakozva), a kép felül, alatta színes sáv a címmel.
-// Ez a komponens ezt a stílust követi, a jelenlegi (fehér kártyás,
-// kategória-badge-es) NewsCard helyett a főoldalon.
+// A valós vmk.hu főoldali hír-rácsa HÁROMRÉSZES kártyákból áll (Playwright
+// screenshottal ellenőrizve): kép felül, alatta egy tömör színű címsáv
+// (fehér, félkövér cím), majd egy VILÁGOSABB leírás-terület sötét szöveggel
+// - nem egységesen színezett, sötét-szövegű blokk, ahogy korábban itt volt.
 export function HomeNewsTile({ title, summary, publishedAt, slug, imageUrl, index }: HomeNewsTileProps) {
   const color = TILE_COLORS[index % TILE_COLORS.length]
   const formattedDate = new Date(publishedAt).toLocaleDateString('hu-HU', {
@@ -45,12 +45,14 @@ export function HomeNewsTile({ title, summary, publishedAt, slug, imageUrl, inde
           </div>
         )}
       </div>
-      <div className="p-4 text-white" style={{ backgroundColor: color }}>
-        <div className="text-[11px] font-semibold uppercase tracking-wide opacity-80 mb-1">
+      <div className="px-4 py-2.5 text-white" style={{ backgroundColor: color }}>
+        <div className="text-[10px] font-semibold uppercase tracking-wide opacity-80 mb-0.5">
           {formattedDate}
         </div>
         <h3 className="font-bold text-sm leading-snug line-clamp-2">{title}</h3>
-        <p className="text-xs opacity-85 mt-1 line-clamp-2">{summary}</p>
+      </div>
+      <div className="px-4 py-3 bg-slate-50 border border-t-0 border-slate-100 rounded-b-lg">
+        <p className="text-xs text-slate-600 line-clamp-3">{summary}</p>
       </div>
     </Link>
   )
