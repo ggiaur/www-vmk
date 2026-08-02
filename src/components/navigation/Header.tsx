@@ -91,9 +91,15 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 shadow-md">
-      {/* 1. sor: fehér, logó + közösségi ikonok + CTA gomb */}
+      {/* 1. sor: fehér, logó + közösségi ikonok (felül) + katalógus gomb (alul,
+          külön sorban az ikonok alatt - Playwright getBoundingClientRect-tel
+          mérve: a valós oldalon a gomb kb. 35-40px-szel LEJJEBB kezdődik, mint
+          az ikonsor, nem egy vonalban van vele). A konténer max-szélessége és
+          vízszintes belső margója (px-6 lg:px-10, max-w-[1200px]) a valós
+          Bootstrap .container (1170px) méretéhez igazítva, hogy keskenyebb
+          böngészőablakban se tapadjon a tartalom a képernyő szélére. */}
       <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 h-28 flex items-center justify-between gap-4">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/brand/vmk-logo.png"
@@ -105,52 +111,55 @@ export const Header: React.FC = () => {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-2 shrink-0">
-            <a
-              href="mailto:kolcsonzo@vmk.hu"
-              aria-label="E-mail"
-              className="w-7 h-7 rounded bg-[#159097] flex items-center justify-center hover:opacity-80 transition-opacity"
-            >
-              <Mail className="w-4 h-4 text-white" strokeWidth={2} />
-            </a>
-            {ICON_LINKS.map((icon) => (
+          <div className="hidden md:flex flex-col items-end gap-2 shrink-0">
+            <div className="flex items-center gap-2">
               <a
-                key={icon.label}
-                href={icon.href}
+                href="mailto:kolcsonzo@vmk.hu"
+                aria-label="E-mail"
+                className="w-7 h-7 rounded bg-[#159097] flex items-center justify-center hover:opacity-80 transition-opacity"
+              >
+                <Mail className="w-4 h-4 text-white" strokeWidth={2} />
+              </a>
+              {ICON_LINKS.map((icon) => (
+                <a
+                  key={icon.label}
+                  href={icon.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={icon.label}
+                  className="w-7 h-7 flex items-center justify-center shrink-0"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={icon.img} alt={icon.label} className="max-w-full max-h-full object-contain" />
+                </a>
+              ))}
+              <span className="w-px h-6 bg-slate-200 mx-1" aria-hidden="true" />
+              {LANG_FLAGS.map((flag) => (
+                <a
+                  key={flag.label}
+                  href={flag.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={flag.label}
+                  className={`w-7 h-7 flex items-center justify-center shrink-0 ${flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={flag.img} alt={flag.label} width={26} height={19} className="object-contain rounded-sm" />
+                </a>
+              ))}
+              <a
+                href="https://www.vmk.hu/page/blind"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={icon.label}
-                className="w-7 h-7 flex items-center justify-center"
+                aria-label="Akadálymentes (vakok és gyengénlátók) nézet"
+                className="w-7 h-7 flex items-center justify-center shrink-0"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={icon.img} alt={icon.label} className="max-w-full max-h-full object-contain" />
+                <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={26} height={19} className="object-contain rounded-sm" />
               </a>
-            ))}
-            <span className="w-px h-6 bg-slate-200 mx-1" aria-hidden="true" />
-            {LANG_FLAGS.map((flag) => (
-              <a
-                key={flag.label}
-                href={flag.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={flag.label}
-                className={flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={flag.img} alt={flag.label} width={26} height={19} className="object-contain rounded-sm" />
-              </a>
-            ))}
-            <a
-              href="https://www.vmk.hu/page/blind"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Akadálymentes (vakok és gyengénlátók) nézet"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={26} height={19} className="object-contain rounded-sm" />
-            </a>
+            </div>
 
-            <div className="relative ml-2">
+            <div className="relative">
               <button
                 type="button"
                 onClick={() => setCatalogOpen((v) => !v)}
@@ -196,7 +205,7 @@ export const Header: React.FC = () => {
           (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
           elválasztó csík színét vetítette rá az egész sorra). */}
       <div className="hidden lg:block bg-white border-b-2 border-[#00909B]">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
           <nav className="flex items-center gap-1 h-12 text-sm font-semibold text-[#333333] uppercase tracking-wide">
             {NAV_ITEMS.map((item) =>
               item.children ? (

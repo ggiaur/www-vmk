@@ -1,6 +1,8 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { Archive, Film, Headphones, Heart, MapPin, BookOpen, User, Database } from 'lucide-react'
+import { Archive, Film, Headphones, Heart, MapPin, BookOpen, User, Database, ChevronDown } from 'lucide-react'
 
 // A valós vmk.hu főoldalán a bal oldali sáv egy függőleges, színes
 // "widget-torony" - számos külső integrációra/rendszerre mutató doboz
@@ -71,17 +73,53 @@ const WIDGETS: Array<{
   },
 ]
 
+interface MenuChild {
+  label: string
+  href: string
+}
+
+interface MenuItem {
+  label: string
+  href: string
+  external?: boolean
+  children?: MenuChild[]
+}
+
 // A valós oldalon ezek a menüpontok saját, tartalmi oldalakra mutatnak,
 // amiket ITT (a klónban) nem építettünk ki - ezekhez a valós, élő vmk.hu
 // megfelelő aloldalára mutatunk (ugyanaz a minta, mint a fejléc
 // "Megyei Ellátás" / "Gyermekrészleg" külső linkjeinél), nem fabrikálunk
 // üres/hamis belső oldalt. A hreflistát a valós oldal HTML-jéből kérdeztük
-// le, nem találtuk ki.
-const MENU_ITEMS: Array<{ label: string; href: string; external?: boolean }> = [
-  { label: 'Könyvtárunkról', href: 'https://www.vmk.hu/konyvtarunkrol', external: true },
-  { label: 'A könyvtár használata', href: '/reszlegek' },
-  { label: 'Elérhetőségeink', href: '/kapcsolat' },
-  { label: 'Szolgáltatásaink', href: '/szolgaltatasok' },
+// le, nem találtuk ki. A "Könyvtárunkról" és "A könyvtár használata"
+// valós legördülő almenük - a valós al-linkek is a nyers HTML-ből.
+const MENU_ITEMS: MenuItem[] = [
+  {
+    label: 'Könyvtárunkról',
+    href: 'https://www.vmk.hu/konyvtarunkrol',
+    external: true,
+    children: [
+      { label: 'Munkatársaink', href: '/munkatarsak' },
+      { label: 'Alapdokumentumok', href: 'https://www.vmk.hu/alapdokumentumok' },
+      { label: 'Számlaszámunk', href: 'https://www.vmk.hu/szamlaszamunk' },
+      { label: 'Könyvtárunk rövid története', href: 'https://www.vmk.hu/konyvtarunk-rovid-tortenete' },
+      { label: 'Projektek', href: 'https://www.vmk.hu/projektek' },
+    ],
+  },
+  {
+    label: 'A könyvtár használata',
+    href: '/reszlegek',
+    children: [
+      {
+        label: 'Kölcsönzési politika',
+        href: 'https://www.vmk.hu/_upload/editor/Alapdokumentumok/Kolcsonzesi_politika_260601.pdf',
+      },
+      {
+        label: 'Számítógép-használati szabályzat',
+        href: 'https://www.vmk.hu/_upload/editor/Alapdokumentumok/Informatikai_es_biztonsagi_szabalyzat_VMK_20180801.pdf',
+      },
+      { label: 'Könyvtárközi kölcsönzés', href: 'https://www.vmk.hu/konyvtarkozi-kolcsonzes' },
+    ],
+  },
   { label: 'Közérdekű adatok', href: 'https://www.vmk.hu/kozerdeku-adatok', external: true },
   { label: 'Álláspályázatok', href: 'https://www.vmk.hu/allaspalyazatok', external: true },
   { label: 'Iskolai Közösségi Szolgálat', href: 'https://www.vmk.hu/iskolai-kozossegi-szolgalat', external: true },
@@ -99,31 +137,66 @@ const MENU_ITEMS: Array<{ label: string; href: string; external?: boolean }> = [
 ]
 
 export function SiteSidebar() {
+  const [openItem, setOpenItem] = useState<string | null>(null)
+
   return (
     <aside className="space-y-3">
-      <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider px-1 mb-2">Menü</h2>
-      <nav className="bg-white border border-slate-200 rounded-lg overflow-hidden mb-4 text-sm">
-        {MENU_ITEMS.map((item, i) =>
-          item.external ? (
-            <a
-              key={item.href}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`block px-4 py-2.5 hover:bg-slate-50 text-slate-700 ${i < MENU_ITEMS.length - 1 ? 'border-b border-slate-100' : ''}`}
-            >
-              {item.label}
-            </a>
-          ) : (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`block px-4 py-2.5 hover:bg-slate-50 text-slate-700 ${i < MENU_ITEMS.length - 1 ? 'border-b border-slate-100' : ''}`}
-            >
-              {item.label}
-            </Link>
-          ),
-        )}
+      {/* A valós "MENÜ" fejléc fehér szövegű, teal hátterű doboz - Playwright
+          screenshot pixelmintavétellel ellenőrizve (0,144,155 háttér),
+          NEM egyszerű szürke felirat, ahogy korábban itt volt. Az
+          alatta lévő linklista a valós oldalon lapos, keret és
+          háttérdoboz nélküli, sötét (kb. #161616) szövegű lista. */}
+      <div className="bg-[#00909B] px-4 py-2.5 rounded-t-lg">
+        <h2 className="text-sm font-bold text-white uppercase tracking-wide">Menü</h2>
+      </div>
+      <nav className="text-[15px] -mt-3 pb-2 mb-4">
+        {MENU_ITEMS.map((item) => (
+          <div key={item.href}>
+            {item.children ? (
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setOpenItem(openItem === item.label ? null : item.label)}
+                  className="w-full flex items-center justify-between gap-2 py-2.5 text-left text-[#161616] hover:text-[#159097] transition-colors"
+                  aria-expanded={openItem === item.label}
+                >
+                  <span>{item.label}</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 shrink-0 transition-transform ${openItem === item.label ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {openItem === item.label && (
+                  <div className="pl-3 border-l-2 border-slate-100 ml-0.5 mb-1 space-y-0.5">
+                    {item.children.map((child) => (
+                      <a
+                        key={child.href}
+                        href={child.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block py-1.5 text-sm text-slate-600 hover:text-[#159097]"
+                      >
+                        {child.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : item.external ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block py-2.5 text-[#161616] hover:text-[#159097] transition-colors"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link href={item.href} className="block py-2.5 text-[#161616] hover:text-[#159097] transition-colors">
+                {item.label}
+              </Link>
+            )}
+          </div>
+        ))}
       </nav>
 
       {/* A valós widgetek kétrészesek: színes fejléc-sáv a névvel, alatta
