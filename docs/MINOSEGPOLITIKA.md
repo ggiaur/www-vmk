@@ -51,6 +51,25 @@ a valóságban a képpontok **54,6%-a eltért**. Ennek négy oka volt:
 csak kiegészítő regresszió-figyelő. Egy állítás csak akkor hangozhat el,
 hogy "egyezik", ha a pixel-diff száma is alátámasztja.
 
+## A pixel-diff korlátja: pozíció vs. tartalom (2026-08-02)
+
+A felhasználó kérésére lecloneoztuk a valós hírképeket (6 cikk, valós
+fotó, valós dátum-sorrend, pontosan a valós oldal aktuális állapotát
+követve). Az eredmény: a pixel-diff szám **alig mozdult** (50.0% →
+50.1%), pedig a tartalom immár pixelre ugyanaz.
+
+Ok, megmérve: a kártya pozíciója/mérete eltér a két oldalon
+(valós: x=443, y=1123, 262×450px; helyi: x=388, y=1193, 308×273px).
+A `pixel-diff.py` koordinátánként hasonlít - egy helyes tartalom,
+ami 55px-szel arrébb van, 100%-ban eltérőnek számít, még ha a kép
+maga pixelre azonos is.
+
+**Tanulság:** a nyers pixel-diff % csak akkor közelít 0-hoz, ha
+MINDKÉT feltétel teljesül - helyes tartalom ÉS pontos rács-pozíció
+minden szekcióban (nem csak a fejlécben, ahol ezt már elvégeztük).
+Ez utóbbi a teljes oldal Bootstrap-rács-matematikájának
+lereprodukálását igényelné minden szekcióban, nem csak a fejlécen.
+
 ## Mi változott, és miért
 
 Korábban a vizuális ellenőrzés screenshot-ok szemrevételezéséből állt. Ez
