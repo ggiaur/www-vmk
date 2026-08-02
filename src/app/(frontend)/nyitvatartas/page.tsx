@@ -19,7 +19,7 @@ const FALLBACK_LIBRARIES = [
     slug: 'kozponti-konyvtar',
     address: '8000 Székesfehérvár, Bartók Béla tér 1.',
     phone: '+36 22 312 845',
-    email: 'info@vmk.hu',
+    email: 'kolcsonzo@vmk.hu',
     type: 'central',
     schedule: [
       { day: 'Hétfő', hours: '12:00 - 18:00', isToday: false },

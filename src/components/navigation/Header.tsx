@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Search, Menu, X, Mail, Facebook, Youtube, ChevronDown } from 'lucide-react'
+import { Search, Menu, X, Mail, Facebook, Youtube, Instagram, ChevronDown } from 'lucide-react'
 
 // A valós www.vmk.hu fejléce KÉT sorból áll (ellenőrizve valós
 // képernyőkép-összevetéssel, Playwright screenshottal):
@@ -80,14 +80,14 @@ export const Header: React.FC = () => {
 
           <div className="hidden md:flex items-center gap-1 shrink-0">
             <a
-              href="mailto:info@vmk.hu"
+              href="mailto:kolcsonzo@vmk.hu"
               aria-label="E-mail"
               className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
             >
               <Mail className="w-4 h-4" />
             </a>
             <a
-              href="https://www.youtube.com"
+              href="https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="YouTube"
@@ -96,7 +96,16 @@ export const Header: React.FC = () => {
               <Youtube className="w-4 h-4" />
             </a>
             <a
-              href="https://www.facebook.com"
+              href="https://www.instagram.com/vmkszekesfehervar/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.facebook.com/vmk13"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"

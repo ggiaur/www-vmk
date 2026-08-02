@@ -68,7 +68,7 @@ export default async function KapcsolatPage() {
                 </div>
                 <div>
                   <strong className="block text-slate-900">E-mail cím</strong>
-                  <a href="mailto:info@vmk.hu" className="hover:underline">info@vmk.hu</a>
+                  <a href="mailto:kolcsonzo@vmk.hu" className="hover:underline">kolcsonzo@vmk.hu</a>
                 </div>
               </div>
 

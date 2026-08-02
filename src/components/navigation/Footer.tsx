@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { BookOpen, MapPin, Phone, Mail, Facebook, ExternalLink, ShieldCheck } from 'lucide-react'
+import { BookOpen, MapPin, Phone, Mail, Facebook, Instagram, Youtube, ExternalLink, ShieldCheck } from 'lucide-react'
 import { NewsletterForm } from '@/components/forms/NewsletterForm'
 
 export const Footer: React.FC = () => {
@@ -35,11 +35,11 @@ export const Footer: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-[#e4b02c] shrink-0" />
-              <a href="tel:+3622312845" className="hover:text-white transition">+36 22 312 845</a>
+              <a href="tel:+3622340699" className="hover:text-white transition">+36 22 340 699</a>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[#e4b02c] shrink-0" />
-              <a href="mailto:info@vmk.hu" className="hover:text-white transition">info@vmk.hu</a>
+              <a href="mailto:kolcsonzo@vmk.hu" className="hover:text-white transition">kolcsonzo@vmk.hu</a>
             </div>
           </div>
         </div>
@@ -65,12 +65,12 @@ export const Footer: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link href="/#szolgaltatasok" className="hover:text-white transition">
+              <Link href="/szolgaltatasok" className="hover:text-white transition">
                 Beiratkozás & Díjszabás
               </Link>
             </li>
             <li>
-              <Link href="/#doksi" className="hover:text-white transition">
+              <Link href="/dokumentumok" className="hover:text-white transition">
                 Hivatalos Dokumentumok & SZMSZ
               </Link>
             </li>
@@ -85,7 +85,7 @@ export const Footer: React.FC = () => {
           </p>
           <div className="flex items-center gap-3">
             <a
-              href="https://facebook.com/vmkszekesfehervar"
+              href="https://www.facebook.com/vmk13"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-lg bg-black/20 hover:bg-[#159097] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
@@ -93,9 +93,34 @@ export const Footer: React.FC = () => {
             >
               <Facebook className="w-5 h-5" />
             </a>
+            <a
+              href="https://www.instagram.com/vmkszekesfehervar/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-lg bg-black/20 hover:bg-[#159097] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+              aria-label="VMK Instagram oldal"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-lg bg-black/20 hover:bg-[#159097] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+              aria-label="VMK YouTube csatorna"
+            >
+              <Youtube className="w-5 h-5" />
+            </a>
           </div>
           <div className="text-xs text-teal-100/60 space-y-1">
-            <p>Adatvédelmi tájékoztató | Akadálymentesítési nyilatkozat</p>
+            <a
+              href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition"
+            >
+              Adatvédelmi tájékoztató
+            </a>
           </div>
         </div>
       </div>
@@ -109,7 +134,7 @@ export const Footer: React.FC = () => {
           <span>Minősített Könyvtár</span>
         </div>
         <a
-          href="https://outlook.office.com"
+          href="https://outlook.office365.com"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 text-xs text-teal-100/80 hover:text-white transition-colors"
