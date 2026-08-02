@@ -122,13 +122,18 @@ export function HomeSidebar() {
         )}
       </nav>
 
+      {/* A valós widgetek kétrészesek: színes fejléc-sáv a névvel, alatta
+          világos tartalom-terület a jellemző ikonnal/logóval - nem
+          egységesen színezett dobozok, ahogy korábban itt volt. */}
       {WIDGETS.map((w) => {
         const content = (
-          <div className={`${w.bg} rounded-lg p-4 text-white flex items-center gap-3 shadow-sm hover:brightness-110 transition-all`}>
-            <div className="shrink-0 opacity-90">{w.icon}</div>
-            <div className="min-w-0">
-              <div className="font-bold text-sm leading-tight">{w.label}</div>
-              {w.sublabel && <div className="text-[11px] opacity-80 leading-tight mt-0.5">{w.sublabel}</div>}
+          <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-100">
+            <div className={`${w.bg} px-3 py-2`}>
+              <div className="font-bold text-xs uppercase tracking-wide leading-tight">{w.label}</div>
+            </div>
+            <div className="bg-white px-3 py-4 flex flex-col items-center text-center gap-1.5">
+              <div className="text-slate-400">{w.icon}</div>
+              {w.sublabel && <div className="text-[11px] text-slate-500 leading-tight">{w.sublabel}</div>}
             </div>
           </div>
         )
