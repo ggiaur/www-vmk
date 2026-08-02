@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Search, Menu, X, Mail, Facebook, Youtube, Instagram, ChevronDown } from 'lucide-react'
+import { Search, Menu, X, Mail, ChevronDown } from 'lucide-react'
 
 // A valós www.vmk.hu fejléce KÉT sorból áll (ellenőrizve valós
 // képernyőkép-összevetéssel, Playwright screenshottal):
@@ -57,70 +57,120 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Galéria', href: '/galeria' },
 ]
 
+// A valós fejléc jobb oldali ikonsora (nyers HTML-ből, 1:1 letöltött
+// képekkel): e-mail, YouTube, Facebook, Instagram, Wifi, nyelvi zászlók
+// (HU/EN/DE), akadálymentes ("vakok és gyengénlátók") ikon - ebből a
+// nyelvi/akadálymentes linkek a valós, élő vmk.hu megfelelő aloldalára
+// mutatnak, mert ezeket a funkciókat (nyelvváltás, vakbarát mód) itt nem
+// építettük ki.
+const ICON_LINKS: Array<{ href: string; label: string; img: string; w: number; h: number }> = [
+  { href: 'https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos', label: 'YouTube', img: '/brand/icons/vmk_youtube.jpg', w: 33, h: 23 },
+  { href: 'https://www.facebook.com/vmk13', label: 'Facebook', img: '/brand/icons/vmk_facebook.png', w: 24, h: 24 },
+  { href: 'https://www.instagram.com/vmkszekesfehervar/', label: 'Instagram', img: '/brand/icons/instagram_vmk.png', w: 24, h: 24 },
+  { href: 'https://www.vmk.hu/page/menu/156/preview/1', label: 'Wifi elérhetőség', img: '/brand/icons/icon_wifi.png', w: 22, h: 20 },
+]
+
+const LANG_FLAGS: Array<{ href: string; label: string; img: string; active?: boolean }> = [
+  { href: 'https://www.vmk.hu/start/index/lang/hu', label: 'Magyar', img: '/brand/icons/flag_hu.png', active: true },
+  { href: 'https://www.vmk.hu/start/index/lang/en', label: 'English', img: '/brand/icons/flag_en.png' },
+  { href: 'https://www.vmk.hu/start/index/lang/de', label: 'Deutsch', img: '/brand/icons/flag_de.png' },
+]
+
+const CATALOG_MENU: Array<{ href: string; label: string }> = [
+  { href: 'http://tlwww.vmk.hu/tlwww', label: 'Belépés a katalógusba' },
+  { href: 'http://tlwww.vmk.hu/tlwww/olvall.htm', label: 'Bejelentkezés olvasóknak' },
+  { href: 'http://tlwww.vmk.hu/tlwww/partner.htm', label: 'Bejelentkezés partner könyvtáraknak' },
+  { href: 'https://www.vmk.hu/regiszracios-lap', label: 'Beiratkozás' },
+]
+
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [catalogOpen, setCatalogOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 shadow-md">
       {/* 1. sor: fehér, logó + közösségi ikonok + CTA gomb */}
       <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/brand/vmk-logo.png"
               alt="Vörösmarty Mihály Könyvtár"
               width={200}
               height={80}
-              className="h-10 w-auto"
+              className="h-14 w-auto"
               priority
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-1 shrink-0">
+          <div className="hidden md:flex items-center gap-2.5 shrink-0">
             <a
               href="mailto:kolcsonzo@vmk.hu"
               aria-label="E-mail"
-              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+              className="text-[#159097] hover:opacity-70 transition-opacity"
             >
-              <Mail className="w-4 h-4" />
+              <Mail className="w-[22px] h-[22px]" strokeWidth={1.75} />
             </a>
+            {ICON_LINKS.map((icon) => (
+              <a key={icon.label} href={icon.href} target="_blank" rel="noopener noreferrer" aria-label={icon.label}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={icon.img} alt={icon.label} width={icon.w} height={icon.h} className="object-contain" />
+              </a>
+            ))}
+            <span className="w-px h-6 bg-slate-200 mx-1" aria-hidden="true" />
+            {LANG_FLAGS.map((flag) => (
+              <a
+                key={flag.label}
+                href={flag.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={flag.label}
+                className={flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={flag.img} alt={flag.label} width={22} height={16} className="object-contain rounded-sm" />
+              </a>
+            ))}
             <a
-              href="https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos"
+              href="https://www.vmk.hu/page/blind"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="YouTube"
-              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+              aria-label="Akadálymentes (vakok és gyengénlátók) nézet"
             >
-              <Youtube className="w-4 h-4" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={22} height={16} className="object-contain rounded-sm" />
             </a>
-            <a
-              href="https://www.instagram.com/vmkszekesfehervar/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.facebook.com/vmk13"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
-            >
-              <Facebook className="w-4 h-4" />
-            </a>
-            <a
-              href="http://tlwww.vmk.hu/tlwww"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 px-3 py-1.5 rounded bg-[#8B1E2D] hover:bg-[#6f1724] text-white text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
-            >
-              Online Katalógus / Beiratkozás
-            </a>
+
+            <div className="relative ml-2">
+              <button
+                type="button"
+                onClick={() => setCatalogOpen((v) => !v)}
+                onBlur={() => setTimeout(() => setCatalogOpen(false), 150)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#8B1E2D] hover:bg-[#6f1724] text-white text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
+                aria-haspopup="true"
+                aria-expanded={catalogOpen}
+              >
+                <span>Online Katalógus / Beiratkozás</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+              {catalogOpen && (
+                <div className="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-2 z-50 normal-case">
+                  {CATALOG_MENU.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#159097]"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobil menü gomb */}
