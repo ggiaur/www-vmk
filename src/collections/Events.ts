@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisearch'
+import { scopedToOwnLibrary } from '../lib/access'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -9,6 +10,11 @@ export const Events: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
+    create: ({ req: { user } }) => !!user,
+    // "Könyvtáros Szerkesztő" (author) csak a saját tagkönyvtárához
+    // (location) kötött eseményeket szerkesztheti/törölheti.
+    update: scopedToOwnLibrary('location'),
+    delete: scopedToOwnLibrary('location'),
   },
   admin: {
     group: 'Tartalom',

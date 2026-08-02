@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { scopedToOwnLibraryRecord, adminOrEditorOnly } from '../lib/access'
 
 export const Libraries: CollectionConfig = {
   slug: 'libraries',
@@ -8,6 +9,12 @@ export const Libraries: CollectionConfig = {
   },
   access: {
     read: () => true,
+    // "Könyvtáros Szerkesztő" (author) csak a saját tagkönyvtárát
+    // szerkesztheti (pl. nyitvatartás, telefonszám frissítése), új
+    // könyvtár/részleg felvétele és mások törlése admin/editor jog.
+    create: adminOrEditorOnly,
+    update: scopedToOwnLibraryRecord,
+    delete: adminOrEditorOnly,
   },
   admin: {
     group: 'Könyvtárak',

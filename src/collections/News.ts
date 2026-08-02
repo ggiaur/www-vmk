@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisearch'
+import { scopedToOwnLibrary } from '../lib/access'
 
 export const News: CollectionConfig = {
   slug: 'news',
@@ -11,6 +12,13 @@ export const News: CollectionConfig = {
     // Public REST API only sees published articles; logged-in editors see
     // drafts too (matches the admin panel's own preview behaviour).
     read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
+    create: ({ req: { user } }) => !!user,
+    // "Könyvtáros Szerkesztő" (author) csak a saját tagkönyvtárához
+    // (relatedLibrary) kötött híreket szerkesztheti/törölheti - korábban
+    // ez a Users.ts-ben deklarált szerepkör-leírás ("Saját tagkönyvtár
+    // tartalmai") sehol nem lett ténylegesen érvényesítve.
+    update: scopedToOwnLibrary('relatedLibrary'),
+    delete: scopedToOwnLibrary('relatedLibrary'),
   },
   admin: {
     group: 'Tartalom',
