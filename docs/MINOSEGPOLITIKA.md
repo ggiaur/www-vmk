@@ -30,7 +30,16 @@ színegyezés ellenőrzésére.
    minden jövőbeli vizuális változtatás után újra lefuttatható, és
    bővíthető új ellenőrzésekkel.
 
-## Jelenlegi lefedettség (18 ellenőrzés)
+## Jelenlegi lefedettség (33 ellenőrzés)
+
+Négy új hibaosztály került be 2026-08-02-én, miután a felhasználó
+konkrét, pixelre mutatott eltéréseket talált, amiket a korábbi
+ellenőrzések nem fogtak meg: a fejléc-margó törésponti (nem
+folyamatos) skálázása, egy ikon aránytalanul kicsi mérete (a
+korábbi ellenőrzés csak a középre-igazítást nézte, a méretet nem),
+a navigáció betűmérete/súlya, és a lábléc oszlopcímeinek stílusa.
+Lásd `navFontMetrics`, `navBottomStripeWidth`, `wifiToFlagGap`,
+`footerColumnHeaderStyle`, `iconSizeOutlier`, `logoMargin@*px`.
 
 | # | Ellenőrzés | Mit mér |
 |---|---|---|

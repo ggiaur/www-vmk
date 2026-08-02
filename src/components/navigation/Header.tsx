@@ -133,7 +133,7 @@ export const Header: React.FC = () => {
                   <img src={icon.img} alt={icon.label} className="max-w-full max-h-full object-contain" />
                 </a>
               ))}
-              <span className="w-px h-6 bg-slate-200 mx-1" aria-hidden="true" />
+              <span className="w-px h-6 bg-slate-200" aria-hidden="true" />
               {LANG_FLAGS.map((flag) => (
                 <a
                   key={flag.label}
@@ -204,9 +204,9 @@ export const Header: React.FC = () => {
           pixelmintavétellel ellenőrizve a valós oldalon (255,255,255 háttér,
           (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
           elválasztó csík színét vetítette rá az egész sorra). */}
-      <div className="hidden lg:block bg-white border-b-2 border-[#00909B]">
+      <div className="hidden lg:block bg-white border-b-[5px] border-[#00909B]">
         <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px]">
-          <nav className="flex items-center gap-1 h-12 text-sm font-semibold text-[#333333] uppercase tracking-wide">
+          <nav className="flex items-center gap-1 h-12 text-[19px] font-normal tracking-normal text-[#333333] uppercase">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div

@@ -16,19 +16,18 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#00909B] text-teal-50 pt-10 pb-0 mt-auto">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-10">
-        {/* Column 1: Hírlevél */}
-        <div className="space-y-3">
-          <h3 className="font-semibold text-white text-sm uppercase tracking-wider border-b border-white/30 inline-block pb-1">
-            Hírlevél
-          </h3>
+        {/* Column 1: Hírlevél - a valós oldalon a cím H2, 24px, félkövér
+            (700), NEM nagybetűs, és a vonal a doboz TETEJÉN van (2px
+            solid fehér border-top a wrapper divjén), nem a szöveg alatt -
+            Playwright-tal getComputedStyle-lal mérve. */}
+        <div className="space-y-3 pt-4 border-t-2 border-white">
+          <h2 className="font-bold text-white text-2xl">Hírlevél</h2>
           <NewsletterForm />
         </div>
 
         {/* Column 2: Kapcsolat */}
-        <div className="space-y-3">
-          <h3 className="font-semibold text-white text-sm uppercase tracking-wider border-b border-white/30 inline-block pb-1">
-            Kapcsolat
-          </h3>
+        <div className="space-y-3 pt-4 border-t-2 border-white">
+          <h2 className="font-bold text-white text-2xl">Kapcsolat</h2>
           <div className="space-y-1.5 text-sm text-teal-50">
             <p className="font-semibold text-white">Vörösmarty Mihály Könyvtár</p>
             <p className="flex items-start gap-2">

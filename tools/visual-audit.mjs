@@ -262,6 +262,67 @@ const CHECKS = {
       return `real méretek=[${r.join(',')}] arány=${minRatio(r)} | local méretek=[${l.join(',')}] arány=${minRatio(l)} (want local >=0.55)`
     },
   },
+  navFontMetrics: {
+    real: () => {
+      const link = document.querySelector('.top-menu > li > a')
+      if (!link) return null
+      const cs = getComputedStyle(link)
+      return { fontSize: parseFloat(cs.fontSize), fontWeight: cs.fontWeight }
+    },
+    local: () => {
+      const link = document.querySelector('header nav a')
+      if (!link) return null
+      const cs = getComputedStyle(link)
+      return { fontSize: parseFloat(cs.fontSize), fontWeight: cs.fontWeight }
+    },
+    compare: (r, l) => Math.abs(r.fontSize - l.fontSize) <= 2 && r.fontWeight === l.fontWeight,
+    describe: (r, l) => `real ${r.fontSize}px/${r.fontWeight} vs local ${l.fontSize}px/${l.fontWeight} (±2px, súly egyezzen)`,
+  },
+  navBottomStripeWidth: {
+    real: () => {
+      const nav = document.querySelector('nav.navbar.navbar-default')
+      return nav ? getComputedStyle(nav).borderBottomWidth : null
+    },
+    local: () => {
+      const row = document.querySelector('header > div:nth-child(2)')
+      return row ? getComputedStyle(row).borderBottomWidth : null
+    },
+    compare: (r, l) => r === l,
+    describe: (r, l) => `real=${r} vs local=${l} (a banner feletti teal csík vastagsága)`,
+  },
+  wifiToFlagGap: {
+    real: () => {
+      const wifi = document.querySelector('.navbar-select a[href*="menu/156"]')
+      const flag = document.querySelector('.navbar-select a.flag')
+      if (!wifi || !flag) return null
+      return Math.round(flag.getBoundingClientRect().x - wifi.getBoundingClientRect().right)
+    },
+    local: () => {
+      const wifi = document.querySelector('header a[aria-label="Wifi elérhetőség"]')
+      const flag = document.querySelector('header a[aria-label="Magyar"]')
+      if (!wifi || !flag) return null
+      return Math.round(flag.getBoundingClientRect().x - wifi.getBoundingClientRect().right)
+    },
+    compare: (r, l) => Math.abs(r - l) <= 6,
+    describe: (r, l) => `real gap=${r}px vs local gap=${l}px (±6px)`,
+  },
+  footerColumnHeaderStyle: {
+    real: () => {
+      const el = [...document.querySelectorAll('*')].find((e) => e.children.length === 0 && e.textContent.trim() === 'Hírlevél')
+      if (!el) return null
+      const cs = getComputedStyle(el)
+      return { fontSize: parseFloat(cs.fontSize), fontWeight: cs.fontWeight, textTransform: cs.textTransform }
+    },
+    local: () => {
+      const el = [...document.querySelectorAll('footer *')].find((e) => e.children.length === 0 && e.textContent.trim() === 'Hírlevél')
+      if (!el) return null
+      const cs = getComputedStyle(el)
+      return { fontSize: parseFloat(cs.fontSize), fontWeight: cs.fontWeight, textTransform: cs.textTransform }
+    },
+    compare: (r, l) => Math.abs(r.fontSize - l.fontSize) <= 2 && r.fontWeight === l.fontWeight && r.textTransform === l.textTransform,
+    describe: (r, l) =>
+      `real ${r.fontSize}px/${r.fontWeight}/${r.textTransform} vs local ${l.fontSize}px/${l.fontWeight}/${l.textTransform}`,
+  },
 }
 
 // Self-consistency regressions: things that must hold at EVERY common
