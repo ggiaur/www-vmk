@@ -25,36 +25,39 @@ A Vörösmarty Mihály Könyvtár (VMK) digitális platformjának hivatalos vizu
 
 ## 3. Color System (Színrendszer & WCAG 2.2 AA Kontraszt)
 
-> **2026-07 frissítés:** a paletta az intézmény saját `uj.vmk.hu` (WordPress "Scientia" téma)
-> oldaláról kinyert, ellenőrzött valódi tokenekre lett igazítva — ez váltja fel az eredeti
-> kék `#0F4C81` tervet. Forrás: `wp-content/themes/scientia/css/__colors-default.css` és
-> `__colors-dark.css`.
+> **2026-08 frissítés:** a felhasználó kifejezetten úgy döntött, hogy a www-vmk vizuális
+> megjelenése a **jelenlegi, élő `www.vmk.hu`** oldalt kövesse pontosan (nem a korábban
+> tervezett `uj.vmk.hu` "Scientia" témát) — a motor és az admin felület modern marad, csak
+> a látogatói felszín legyen a mostani oldallal egyező. A paletta a valódi, éles
+> `assets/dist/style.min.*.css` fájl közvetlen letöltésével és ellenőrzésével készült
+> (nem becsléssel): `.btn-primary{background-color:#159097}`, `.navbar{border-bottom:5px
+> solid #00909b}`, `a{color:#159097}`.
 
 | Színkategória | Változó Neve | HEX Érték | Használati Szabály | WCAG AA Kontraszt (Háttérhez) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Primary** | `--primary` | `#F3701D` | Élénk narancs — linkek, CTA gombok, aktív elemek. | 3.0:1 (Fehéren - nagy szövegre/UI-ra PASS AA, kis szövegre kontraszt-védő sötétebb variáns kell) |
-| **Primary Hover**| `--primary-hover` | `#D4590F` | Interaktív állapotokhoz. | 3.9:1 (Fehéren) |
-| **Secondary** | `--secondary` | `#80D572` | "Nyitva" állapotjelvények, másodlagos kiemelés. | Csak ikonnal/nagy elemmel, sosem önmagában szövegszínként |
-| **Accent** | `--accent` | `#DDB837` | Figyelemfelkeltő jelvények, esemény státuszok. | Csak ikonnal/nagy elemmel |
-| **Header/Nav Sötét Sáv** | `--header-bg` / `--header-text` | `#212121` / `#9F9F9F` | Fejléc és navigáció sötét inverz sávja (Scientia mintára). | Fehér címsor a sötét sávon 15.8:1 (PASS AAA) |
-| **Neutral Dark** | `--text-main` | `#1B1B1B` | Törzsszövegek, címsorok. | 16.1:1 (Fehéren - PASS AAA) |
-| **Neutral Muted**| `--text-muted` | `#5E5E5E` | Metaadatok, dátumok, másodlagos infók. | 6.8:1 (Fehéren - PASS AA) |
+| **Primary** | `--primary` | `#159097` | Valódi vmk.hu teal — linkek, CTA gombok, aktív elemek. | 3.84:1 (Fehéren - nagy szövegre/UI-ra PASS AA, kis szövegre a sötétebb `--primary-hover` kell) |
+| **Primary Hover**| `--primary-hover` | `#0f656a` | Interaktív állapotokhoz, és kis testű szövegre is biztonságos. | 6.79:1 (Fehéren - PASS AA kis szövegre is) |
+| **Secondary** | `--secondary` | `#e4b02c` | A valódi oldal arany/sárga akcentszíne, jelvényekhez. | Csak ikonnal/nagy elemmel, sosem önmagában szövegszínként |
+| **Accent** | `--accent` | `#f16f30` | A valódi oldal narancs akcentszíne, figyelemfelkeltő elemekhez. | Csak ikonnal/nagy elemmel |
+| **Header/Nav Sötét Sáv** | `--header-bg` / `--header-text` | `#212121` / `#9F9F9F` | Fejléc és navigáció sötét inverz sávja. | Fehér címsor a sötét sávon 15.8:1 (PASS AAA) |
+| **Neutral Dark** | `--text-main` | `#333333` | Törzsszövegek, címsorok (a valódi oldal `body{color:#333}` szabálya). | 12.6:1 (Fehéren - PASS AAA) |
+| **Neutral Muted**| `--text-muted` | `#777777` | Metaadatok, dátumok, másodlagos infók. | 4.5:1 (Fehéren - PASS AA, határon — ne használd kisebb mint 14px szövegre) |
 | **Background** | `--bg-page` | `#FFFFFF` | Alapértelmezett oldalháttér. | N/A |
 | **Surface** | `--bg-card` | `#FFFFFF` | Kártyák, modálok és felületek háttérszíne. | N/A |
 | **Success** | `--color-success` | `#166534` | Sikeres üzenetek, nyitva tartó gombok. | 5.2:1 (Fehéren - PASS AA) |
 | **Warning** | `--color-warning` | `#B45309` | Ünnepi / megváltozott nyitvatartás jelzés. | 4.7:1 (Fehéren - PASS AA) |
 | **Error** | `--color-error` | `#991B1B` | Hibaüzenetek, zárva tartó jelzés. | 7.1:1 (Fehéren - PASS AAA) |
 
-> **Kontraszt-figyelmeztetés:** a `--primary` narancs (`#F3701D`) önmagában, kis testű
+> **Kontraszt-figyelmeztetés:** a `--primary` teal (`#159097`) önmagában, kis testű
 > szövegként fehér háttéren **nem** éri el a WCAG AA 4.5:1 küszöböt — ezért kizárólag
 > gombháttérként (fehér szöveggel), ikonszínként, vagy vastag/nagy UI-elemként használható.
-> Testszövegben mindig `--text-main` vagy `--text-muted` viszi a szöveget.
+> Testszövegben mindig `--text-main` vagy a sötétebb `--primary-hover` viszi a szöveget.
 
 ---
 
 ## 4. Typography (Tipográfia & Betűskála)
 
-* **Font Család:** Címsorok: `Cardo` (szerif) — a `uj.vmk.hu` valódi betűtípusa. Törzsszöveg: `Inter`, system-ui, sans-serif.
+* **Font Család:** Címsorok: `Cinzel` (szerif) — a valódi `www.vmk.hu` betűtípusa (`h1-h6{font-family:Cinzel,serif}`). Törzsszöveg: `Roboto` (a valódi oldal `body{font-family:Roboto,...}` szabálya).
 * **Betűméret & Sorköz Skála:**
 
 ```css
