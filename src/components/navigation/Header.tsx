@@ -2,161 +2,126 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { BookOpen, Search, Menu, X, Clock, Phone, MapPin } from 'lucide-react'
+import { BookOpen, Search, Menu, X, Mail, Facebook, Youtube, ChevronDown } from 'lucide-react'
 
+// A valós www.vmk.hu fejléce EGY vékony, teal színű navigációs sávból áll
+// (nincs külön "nagy márka-sor" alatta - a cím a hero szalagban jelenik meg).
+// Korábban itt egy kétsoros, modern SaaS-stílusú fejléc volt (sötét
+// utility-sáv + nagy logó/cím sor) - ez vizuálisan messze állt az
+// eredetitől. Ez a szerkezet a valós oldal fő navigációs elemeit követi:
+// NYITVATARTÁS / ELÉRHETŐSÉGEINK / KÖZPONTI KÖNYVTÁR / TAGKÖNYVTÁRAK /
+// MEGYEI ELLÁTÁS / GALÉRIA, jobb oldalon közösségi ikonokkal és az
+// "Online Katalógus / Beiratkozás" gombbal.
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  const navItems = [
+    { label: 'Nyitvatartás', href: '/nyitvatartas' },
+    { label: 'Elérhetőségeink', href: '/kapcsolat' },
+    { label: 'Központi Könyvtár', href: '/reszlegek', hasDropdown: true },
+    { label: 'Tagkönyvtárak', href: '/tagkonyvtarak', hasDropdown: true },
+    { label: 'Megyei Ellátás', href: '/szolgaltatasok' },
+    { label: 'Galéria', href: '/galeria' },
+  ]
+
   return (
-    <header className="sticky top-0 z-50 glass-header">
-      {/* Top Utility Bar */}
-      <div className="bg-[#1E293B] text-white text-xs py-1.5 px-4">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1 text-amber-300 font-medium">
-              <Clock className="w-3.5 h-3.5" />
-              <span>Központi Könyvtár ma: <strong className="text-white">09:00 - 19:00</strong></span>
-            </span>
-            <span className="hidden md:flex items-center gap-1 text-slate-300">
-              <MapPin className="w-3.5 h-3.5" />
-              <span>Székesfehérvár, Bartók Béla tér 1.</span>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4 text-slate-300">
-            <a href="tel:+3622312845" className="hover:text-white transition flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">+36 22 312 845</span>
-            </a>
-            <div className="flex items-center gap-2 border-l border-slate-700 pl-3">
-              <button 
-                title="Kontrasztos mód"
-                aria-label="Kontrasztos nézet"
-                className="px-1.5 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold border border-slate-600"
-              >
-                A+
-              </button>
+    <header className="sticky top-0 z-50 bg-[#159097] shadow-md">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-14 gap-4">
+          {/* Kis embléma + rövid név (a nagy márka-sor helyett) */}
+          <Link href="/" className="flex items-center gap-2 shrink-0 group">
+            <div className="w-8 h-8 rounded bg-white/15 flex items-center justify-center text-white group-hover:bg-white/25 transition-colors">
+              <BookOpen className="w-5 h-5" />
             </div>
+            <span className="hidden sm:inline text-white font-bold text-sm tracking-wide">
+              VMK
+            </span>
+          </Link>
+
+          {/* Fő navigáció */}
+          <nav className="hidden lg:flex items-center gap-1 text-xs font-semibold text-white/90 uppercase tracking-wide">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-white/10 hover:text-white transition-colors"
+              >
+                {item.label}
+                {item.hasDropdown && <ChevronDown className="w-3 h-3" />}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Jobb oldal: közösségi ikonok + CTA gomb */}
+          <div className="hidden md:flex items-center gap-1 shrink-0">
+            <a
+              href="mailto:info@vmk.hu"
+              aria-label="E-mail"
+              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <Youtube className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+            <Link
+              href="/kereses"
+              aria-label="Keresés a honlapon"
+              title="Keresés a honlapon"
+              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <Search className="w-4 h-4" />
+            </Link>
+            <a
+              href="https://katalogus.vmk.hu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 px-3 py-1.5 rounded bg-[#e4b02c] hover:bg-[#c99a1f] text-[#1B1B1B] text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
+            >
+              Online Katalógus / Beiratkozás
+            </a>
           </div>
+
+          {/* Mobil menü gomb */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 rounded text-white hover:bg-white/10 focus:outline-none"
+            aria-label="Menü megnyitása"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
 
-      {/* Main Header */}
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        {/* Brand / Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#159097] to-[#e4b02c] flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
-            <BookOpen className="w-6 h-6" />
-          </div>
-          <div>
-            <h1 className="font-bold text-lg leading-tight text-[#159097]">
-              Vörösmarty Mihály Könyvtár
-            </h1>
-            <p className="text-xs text-slate-500 font-medium tracking-wide">
-              Székesfehérvár Megyei Jogú Város Városi Könyvtára
-            </p>
-          </div>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-slate-700">
-          <Link href="/" className="hover:text-[#159097] transition-colors">
-            Főoldal
-          </Link>
-          <Link href="/nyitvatartas" className="hover:text-[#159097] transition-colors">
-            Nyitvatartás
-          </Link>
-          <Link href="/#hirek" className="hover:text-[#159097] transition-colors">
-            Hírek
-          </Link>
-          <Link href="/#esemenyek" className="hover:text-[#159097] transition-colors">
-            Események
-          </Link>
-          <Link href="/#szolgaltatasok" className="hover:text-[#159097] transition-colors">
-            Szolgáltatások
-          </Link>
-          <Link href="/#kapcsolat" className="hover:text-[#159097] transition-colors">
-            Kapcsolat
-          </Link>
-        </nav>
-
-        {/* Catalog CTA Button */}
-        <div className="hidden sm:flex items-center gap-3">
-          <Link
-            href="/kereses"
-            aria-label="Keresés a honlapon (hírek, események)"
-            title="Keresés a honlapon"
-            className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-[#159097] transition-colors"
-          >
-            <Search className="w-4 h-4" />
-          </Link>
-          <a
-            href="https://katalogus.vmk.hu"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-catalog text-xs sm:text-sm"
-          >
-            <Search className="w-4 h-4" />
-            <span>Online Katalógus</span>
-          </a>
-        </div>
-
-        {/* Mobile menu trigger */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none"
-          aria-label="Menü megnyitása"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {/* Mobile Drawer */}
+      {/* Mobil legördülő menü */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-3">
-          <nav className="flex flex-col space-y-2 text-sm font-medium text-slate-800">
-            <Link
-              href="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg-slate-100"
-            >
-              Főoldal
-            </Link>
-            <Link
-              href="/nyitvatartas"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg-slate-100"
-            >
-              Nyitvatartás
-            </Link>
-            <Link
-              href="/#hirek"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg-slate-100"
-            >
-              Hírek
-            </Link>
-            <Link
-              href="/#esemenyek"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg-slate-100"
-            >
-              Események
-            </Link>
-            <Link
-              href="/#szolgaltatasok"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg-slate-100"
-            >
-              Szolgáltatások
-            </Link>
-            <Link
-              href="/#kapcsolat"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg-slate-100"
-            >
-              Kapcsolat
-            </Link>
+        <div className="lg:hidden bg-white border-t border-[#0f656a] px-4 py-4 space-y-1">
+          <nav className="flex flex-col text-sm font-medium text-slate-800">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-md hover:bg-slate-100"
+              >
+                {item.label}
+              </Link>
+            ))}
             <Link
               href="/kereses"
               onClick={() => setMobileMenuOpen(false)}
@@ -174,7 +139,7 @@ export const Header: React.FC = () => {
               className="btn-catalog w-full justify-center text-sm"
             >
               <Search className="w-4 h-4" />
-              <span>Online Katalógus kereső</span>
+              <span>Online Katalógus / Beiratkozás</span>
             </a>
           </div>
         </div>

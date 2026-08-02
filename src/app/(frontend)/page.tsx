@@ -1,37 +1,39 @@
 import React from 'react'
 import Link from 'next/link'
-import { Search, BookOpen, Calendar, ArrowRight, Sparkles, FileText, Bookmark, Users } from 'lucide-react'
-import { OpeningHoursWidget } from '@/components/ui/OpeningHoursWidget'
-import { NewsCard } from '@/components/ui/NewsCard'
+import Image from 'next/image'
+import { ArrowRight, Calendar } from 'lucide-react'
+import { HomeSidebar } from '@/components/home/HomeSidebar'
+import { LocationBanner } from '@/components/home/LocationBanner'
+import { HomeNewsTile } from '@/components/home/HomeNewsTile'
+import { FigyelemBanner } from '@/components/home/FigyelemBanner'
+import { EventCalendarWidget } from '@/components/home/EventCalendarWidget'
 import { EventCard } from '@/components/ui/EventCard'
-import { LibraryCard } from '@/components/ui/LibraryCard'
 import {
   getLatestNews,
   getUpcomingEvents,
   getAllLibraries,
-  getOpeningHoursForLibrary,
-  formatOpeningHours,
+  getAllGalleries,
 } from '@/lib/payload'
 
+// A valós www.vmk.hu főoldala egy klasszikus, kétoszlopos, widget-sávos
+// portál-elrendezést követ (bal oldali "widget-torony" + jobb oldali
+// hír/esemény-rács + jobb szélen naptár), NEM a korábbi, egyoszlopos,
+// nagy hero-bannerős "modern SaaS" elrendezést. Ez az átírás a valós
+// oldal képernyőképei alapján, szerkezetileg közelíti azt - a tényleges
+// tartalom (hírek, események, könyvtárak) továbbra is a Payload CMS-ből
+// jön, csak a megjelenítés stílusa és az oldal információs architektúrája
+// változott.
 export default async function HomePage() {
-  const cmsNews = await getLatestNews(3)
+  const cmsNews = await getLatestNews(6)
   const cmsEvents = await getUpcomingEvents(2)
   const cmsLibraries = await getAllLibraries()
-  let heroSchedule: ReturnType<typeof formatOpeningHours> = []
+  const cmsGalleries = await getAllGalleries(6)
 
-  if (cmsLibraries.length > 0) {
-    const centralLib = cmsLibraries.find((l) => l.type === 'central') ?? cmsLibraries[0]
-    const ohDocs = await getOpeningHoursForLibrary(centralLib.id)
-    heroSchedule = formatOpeningHours(ohDocs)
-  }
-
-  // Fallback adatok beállítása
   const sampleNews = [
     {
       id: 'f1',
       title: 'Nyári olvasójáték és könyvajánló fiataloknak',
-      summary: 'Csatlakozz nyári olvasási kihívásunkhoz! Értékes könyvcsomagok és ajándékutalványok várnak a legszorgalmasabb olvasókra.',
-      category: 'grant',
+      summary: 'Csatlakozz nyári olvasási kihívásunkhoz! Értékes könyvcsomagok várnak a legszorgalmasabb olvasókra.',
       publishedAt: '2026-07-20T10:00:00.000Z',
       slug: 'nyari-olvasojatek-2026',
     },
@@ -39,15 +41,13 @@ export default async function HomePage() {
       id: 'f2',
       title: 'Megújult a Központi Könyvtár Helyismereti Részlege',
       summary: 'Digitális archívumunk bővült és kényelmes kutatóboxok várják a helytörténet iránt érdeklődő látogatókat.',
-      category: 'announcement',
       publishedAt: '2026-07-15T09:00:00.000Z',
       slug: 'helyismeret-megujulas',
     },
     {
       id: 'f3',
       title: 'Író-olvasó találkozó a Gyermekkönyvtárban',
-      summary: 'Vendégünk lesz a népszerű ifjúsági regénysorozat szerzője. Dedikálás és beszélgetés a gyerekkönyvtári teremben.',
-      category: 'general',
+      summary: 'Vendégünk lesz a népszerű ifjúsági regénysorozat szerzője. Dedikálás és beszélgetés.',
       publishedAt: '2026-07-10T14:00:00.000Z',
       slug: 'iro-olvaso-talalkozo',
     },
@@ -72,250 +72,168 @@ export default async function HomePage() {
     },
   ]
 
-  const sampleLibraries = [
-    {
-      id: 'fl1',
-      name: 'Központi Könyvtár',
-      slug: 'kozponti-konyvtar',
-      address: '8000 Székesfehérvár, Bartók Béla tér 1.',
-      phone: '+36 22 312 845',
-      email: 'info@vmk.hu',
-      type: 'central',
-    },
-    {
-      id: 'fl2',
-      name: 'Budai Úti Tagkönyvtár',
-      slug: 'budai-uti-tagkonyvtar',
-      address: '8000 Székesfehérvár, Budai út 44-46.',
-      phone: '+36 22 315 253',
-      email: 'budai@vmk.hu',
-      type: 'branch',
-    },
-    {
-      id: 'fl3',
-      name: 'Mészöly Géza Úti Tagkönyvtár',
-      slug: 'meszoly-geza-uti-tagkonyvtar',
-      address: '8000 Székesfehérvár, Mészöly G. u. 7.',
-      phone: '+36 22 329 401',
-      email: 'meszoly@vmk.hu',
-      type: 'branch',
-    },
-  ]
-
   const displayNews = cmsNews.length > 0 ? cmsNews : sampleNews
   const displayEvents = cmsEvents.length > 0 ? cmsEvents : sampleEvents
-  const displayLibraries = cmsLibraries.length > 0 ? cmsLibraries : sampleLibraries
-  const centralLibrary = displayLibraries.find((l) => l.type === 'central') ?? displayLibraries[0]
+
+  const locations = cmsLibraries.map((l) => ({ name: l.name, slug: l.slug }))
+
+  const now = new Date()
+  const highlightedDays = displayEvents
+    .map((e) => new Date(typeof e.startDate === 'string' ? e.startDate : now))
+    .filter((d) => d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth())
+    .map((d) => d.getDate())
 
   return (
-    <div className="space-y-16 pb-16">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#1E293B] via-[#2A1619] to-[#159097] text-white py-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#e4b02c_1px,transparent_1px)] [background-size:16px_16px]" />
+    <div>
+      <LocationBanner locations={locations} />
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Vörösmarty Mihály Könyvtár</span>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
+        <HomeSidebar />
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight">
-              Tudás, Élménypont és Közösség <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-orange-300">
-                Székesfehérvár Szívében
-              </span>
-            </h1>
+        <main className="min-w-0">
+          <h1 className="text-xl font-bold text-slate-900 mb-4">Hírek, Események</h1>
 
-            <p className="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
-              Böngésszen több mint 300 000 kötetből álló katalógusunkban, fizessen elő e-könyvekre,
-              vagy vegyen részt színes kulturális rendezvényeinken!
-            </p>
+          <FigyelemBanner />
 
-            {/* Catalog Search Bar */}
-            <div className="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/20 shadow-2xl max-w-xl">
-              <form
-                action="https://katalogus.vmk.hu"
-                method="GET"
-                target="_blank"
-                className="flex items-center gap-2"
-              >
-                <div className="relative flex-1">
-                  <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    name="q"
-                    placeholder="Szerző, cím, témakör keresése a katalógusban..."
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-[#e4b02c] hover:bg-[#b04b26] text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors shrink-0 flex items-center gap-1.5"
-                >
-                  <span>Keresés</span>
-                </button>
-              </form>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <OpeningHoursWidget
-              libraryName={centralLibrary?.name ?? 'Központi Könyvtár'}
-              schedule={heroSchedule}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Hírek Section */}
-      <section id="hirek" className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
-          <div>
-            <span className="text-xs font-bold text-[#159097] uppercase tracking-wider">
-              Hírek & Tájékoztatók
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Legfrissebb Könyvtári Hírek
-            </h2>
-          </div>
-          <Link
-            href="/hirek"
-            className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
-          >
-            <span>Összes hír megtekintése</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {displayNews.map((item) => {
-            const img = 'featuredImage' in item ? item.featuredImage : undefined
-            const imgUrl =
-              img && typeof img === 'object' && 'url' in img ? (img.url as string) : undefined
-            return (
-              <NewsCard
-                key={item.id}
-                title={item.title}
-                summary={item.summary}
-                category={item.category}
-                publishedAt={
-                  typeof item.publishedAt === 'string' ? item.publishedAt : new Date().toISOString()
-                }
-                slug={item.slug}
-                imageUrl={imgUrl}
-              />
-            )
-          })}
-        </div>
-      </section>
-
-      {/* Rendezvények Section */}
-      <section id="esemenyek" className="bg-[#F5EFEE] py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#e4b02c] uppercase tracking-wider flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" />
-                Programajánló
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
-                Közelgő Rendezvényeink
-              </h2>
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <span className="sr-only">Legfrissebb híreink</span>
             <Link
-              href="/esemenyek"
-              className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+              href="/hirek"
+              className="ml-auto text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
             >
-              <span>Összes rendezvény</span>
+              <span>Összes hírünk</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {displayEvents.map((event) => {
-              const loc = 'location' in event ? event.location : undefined
-              const locationName =
-                loc && typeof loc === 'object' && 'name' in loc
-                  ? (loc.name as string)
-                  : 'locationName' in event
-                    ? (event.locationName as string)
-                    : 'VMK Székesfehérvár'
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+            {displayNews.map((item, i) => {
+              const img = 'featuredImage' in item ? item.featuredImage : undefined
+              const imgUrl =
+                img && typeof img === 'object' && 'url' in img ? (img.url as string) : undefined
               return (
-                <EventCard
-                  key={event.id}
-                  title={event.title}
-                  startDate={
-                    typeof event.startDate === 'string'
-                      ? event.startDate
-                      : new Date().toISOString()
+                <HomeNewsTile
+                  key={item.id}
+                  title={item.title}
+                  summary={item.summary}
+                  publishedAt={
+                    typeof item.publishedAt === 'string' ? item.publishedAt : new Date().toISOString()
                   }
-                  locationName={locationName}
-                  targetAudience={event.targetAudience}
-                  slug={event.slug}
-                  registrationUrl={'registrationUrl' in event ? event.registrationUrl ?? undefined : undefined}
+                  slug={item.slug}
+                  imageUrl={imgUrl}
+                  index={i}
                 />
               )
             })}
           </div>
-        </div>
-      </section>
 
-      {/* Tagkönyvtárak Grid */}
-      <section id="tagkonyvtarak" className="max-w-7xl mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold text-[#159097] uppercase tracking-wider">
-            Hálózatunk
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
-            Tagkönyvtárak & Részlegek
-          </h2>
-          <p className="text-slate-600 text-sm mt-2">
-            Találja meg az Önhöz legközelebbi tagkönyvtárunkat Székesfehérváron!
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {displayLibraries.slice(0, 3).map((lib) => (
-            <LibraryCard
-              key={lib.id}
-              name={lib.name}
-              slug={lib.slug}
-              address={lib.address}
-              phone={lib.phone ?? undefined}
-              email={lib.email ?? undefined}
-              type={lib.type}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Szolgáltatások Highlights */}
-      <section id="szolgaltatasok" className="max-w-7xl mx-auto px-4">
-        <div className="bg-gradient-to-r from-[#1E293B] to-[#2A1619] text-white rounded-2xl p-8 sm:p-12 shadow-xl">
-          <div className="max-w-3xl mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3">Könyvtári Szolgáltatásaink</h2>
-            <p className="text-slate-300 text-sm sm:text-base">
-              A könyvkölcsönzésen túl számos kényelmi és digitális szolgáltatással várjuk olvasóinkat.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: <BookOpen className="w-8 h-8" />, title: 'Könyv & Folyóirat', desc: 'Több százezer nyomtatott dokumentum, folyóirat és dokumentumkölcsönzés.' },
-              { icon: <FileText className="w-8 h-8" />, title: 'E-Könyvek & NAVA', desc: 'Digitális adatbázisok, NAVA pont és e-könyv kölcsönzési lehetőség.' },
-              { icon: <Bookmark className="w-8 h-8" />, title: 'Helyismereti Kutatás', desc: 'Székesfehérvár és Fejér vármegye helytörténeti ritkaságai és kutatószolgálat.' },
-              { icon: <Users className="w-8 h-8" />, title: 'Közösségi Terek', desc: 'Rendezvénytermek, wifi, tanulóboxok és kézműves műhelyek.' },
-            ].map((s, i) => (
-              <div key={i} className="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-                <div className="text-amber-300 mb-3">{s.icon}</div>
-                <h3 className="font-bold text-base mb-1">{s.title}</h3>
-                <p className="text-xs text-slate-300">{s.desc}</p>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_260px] gap-8">
+            <section>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-[#e4b02c]" />
+                  Eseménynaptár
+                </h2>
+                <Link
+                  href="/esemenyek"
+                  className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+                >
+                  <span>További eseményeink</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
-            ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {displayEvents.map((event) => {
+                  const loc = 'location' in event ? event.location : undefined
+                  const locationName =
+                    loc && typeof loc === 'object' && 'name' in loc
+                      ? (loc.name as string)
+                      : 'locationName' in event
+                        ? (event.locationName as string)
+                        : 'VMK Székesfehérvár'
+                  return (
+                    <EventCard
+                      key={event.id}
+                      title={event.title}
+                      startDate={
+                        typeof event.startDate === 'string' ? event.startDate : new Date().toISOString()
+                      }
+                      locationName={locationName}
+                      targetAudience={event.targetAudience}
+                      slug={event.slug}
+                      registrationUrl={'registrationUrl' in event ? event.registrationUrl ?? undefined : undefined}
+                    />
+                  )
+                })}
+              </div>
+            </section>
+
+            <aside className="space-y-4">
+              <EventCalendarWidget
+                highlightedDays={highlightedDays}
+                year={now.getFullYear()}
+                month={now.getMonth()}
+              />
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <h3 className="font-bold text-sm text-slate-800 mb-2">Folyóiratok könyvtárunkban</h3>
+                <p className="text-xs text-slate-500 mb-3">
+                  Kurrens folyóiratok a Központi Könyvtár Olvasótermében, valamint a Tagkönyvtárakban.
+                </p>
+                <Link href="/reszlegek" className="text-xs font-semibold text-[#159097] hover:underline">
+                  Kurrens folyóiratok listája →
+                </Link>
+              </div>
+            </aside>
           </div>
-        </div>
-      </section>
+
+          {cmsGalleries.length > 0 && (
+            <section className="mt-10">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold text-slate-900">Galéria</h2>
+                <Link
+                  href="/galeria"
+                  className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+                >
+                  <span>További Galériák</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {cmsGalleries.map((g) => {
+                  const cover =
+                    g.coverImage && typeof g.coverImage === 'object' && 'url' in g.coverImage
+                      ? (g.coverImage.url as string)
+                      : undefined
+                  return (
+                    <Link
+                      key={g.id}
+                      href={`/galeria/${g.slug}`}
+                      className="relative aspect-video rounded-lg overflow-hidden bg-slate-100 group"
+                    >
+                      {cover ? (
+                        <Image
+                          src={cover}
+                          alt={g.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 768px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-[#159097] text-white/50 text-xs font-bold">
+                          VMK
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[11px] px-2 py-1 truncate">
+                        {g.title}
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </section>
+          )}
+        </main>
+      </div>
     </div>
   )
 }

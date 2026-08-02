@@ -1,11 +1,20 @@
 import React from 'react'
 import Link from 'next/link'
-import { BookOpen, MapPin, Phone, Mail, Facebook, ExternalLink } from 'lucide-react'
+import { BookOpen, MapPin, Phone, Mail, Facebook, ExternalLink, ShieldCheck } from 'lucide-react'
+import { NewsletterForm } from '@/components/forms/NewsletterForm'
 
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#1E293B] text-slate-300 pt-12 pb-6 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-slate-800">
+        {/* Column 0: Hírlevél (a valós vmk.hu lábléce ezzel kezdődik) */}
+        <div className="space-y-3 md:order-first order-last">
+          <h3 className="font-semibold text-white text-sm uppercase tracking-wider">Hírlevél</h3>
+          <p className="text-xs text-slate-400">
+            Iratkozzon fel, és elsőként értesüljön a könyvtár híreiről és programjairól!
+          </p>
+          <NewsletterForm />
+        </div>
         {/* Column 1: Info */}
         <div className="space-y-4">
           <div className="flex items-center gap-3">
@@ -87,6 +96,25 @@ export const Footer: React.FC = () => {
             <p>Adatvédelmi tájékoztató | Akadálymentesítési nyilatkozat</p>
           </div>
         </div>
+      </div>
+
+      {/* Akkreditációs jelvények (a valós vmk.hu lábléce is tartalmaz
+          ilyen apró minőségtanúsító jelvényeket - itt szöveges/ikonos
+          formában, mert nincs valós grafikai anyagunk hozzájuk) */}
+      <div className="max-w-7xl mx-auto px-4 pt-6 pb-4 flex flex-wrap items-center gap-4 border-b border-slate-800">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 text-xs text-slate-400">
+          <ShieldCheck className="w-4 h-4 text-[#e4b02c]" />
+          <span>Minősített Könyvtár</span>
+        </div>
+        <a
+          href="https://outlook.office.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 text-xs text-slate-400 hover:text-white transition-colors"
+        >
+          <Mail className="w-4 h-4 text-[#159097]" />
+          <span>Outlook Web App</span>
+        </a>
       </div>
 
       {/* Bottom Bar */}

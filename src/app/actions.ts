@@ -120,3 +120,38 @@ export async function submitDonationPledge(formData: FormData): Promise<ActionRe
     return { ok: false, error: 'Hiba történt a felajánlás rögzítésekor.' }
   }
 }
+
+export async function submitNewsletterSignup(formData: FormData): Promise<ActionResult> {
+  const email = String(formData.get('email') ?? '').trim()
+  const name = String(formData.get('name') ?? '').trim()
+
+  if (!email) {
+    return { ok: false, error: 'Kérjük, adja meg az e-mail címét.' }
+  }
+
+  const payload = await getPayloadClient()
+  if (!payload) return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
+
+  try {
+    await payload.create({
+      collection: 'newsletter-subscribers',
+      data: { email, name },
+    })
+    return { ok: true }
+  } catch (error) {
+    // A unique constraint (már feliratkozott e-mail) NE hibaként jelenjen
+    // meg a felhasználónak - a végeredmény ugyanaz (fel van iratkozva).
+    //
+    // Payload ezt magyarul lokalizált ValidationError-ként dobja ("A
+    // következő mező érvénytelen: email"), tehát angol "unique"/"duplicate"
+    // szóra illesztés SOHA nem talált volna - a strukturált error.data.errors
+    // tömböt kell ellenőrizni, ami a hibás mező path-ját tartalmazza.
+    const validationErrors = (error as { data?: { errors?: Array<{ path?: string }> } })?.data?.errors
+    const isEmailFieldError = Array.isArray(validationErrors) && validationErrors.some((e) => e.path === 'email')
+    if (isEmailFieldError) {
+      return { ok: true }
+    }
+    console.error('[submitNewsletterSignup] Failed to save subscriber:', error)
+    return { ok: false, error: 'Hiba történt a feliratkozás során.' }
+  }
+}
