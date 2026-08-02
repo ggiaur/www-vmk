@@ -16,8 +16,13 @@
   --bg-page: #FFFFFF;
   --bg-card: #FFFFFF;
   --bg-subtle: #F5F5F4;
-  --header-bg: #212121;
-  --header-text: #9F9F9F;
+  /* Korábban #212121/#9F9F9F (egy sötét fejléc-változatból maradt, sosem
+     használt tokenek). A felhasználó által küldött, valós élő oldal
+     képernyőképe egyértelműen teal fejlécet mutat, nem sötétet - ez
+     javítva, hogy a dokumentáció és a tényleges fejléc (Header.tsx)
+     összhangban legyen. */
+  --header-bg: #159097;
+  --header-text: #FFFFFF;
   --text-main: #333333;
   --text-muted: #777777;
   --border-light: #dddddd;

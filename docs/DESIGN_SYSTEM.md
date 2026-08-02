@@ -39,7 +39,7 @@ A Vörösmarty Mihály Könyvtár (VMK) digitális platformjának hivatalos vizu
 | **Primary Hover**| `--primary-hover` | `#0f656a` | Interaktív állapotokhoz, és kis testű szövegre is biztonságos. | 6.79:1 (Fehéren - PASS AA kis szövegre is) |
 | **Secondary** | `--secondary` | `#e4b02c` | A valódi oldal arany/sárga akcentszíne, jelvényekhez. | Csak ikonnal/nagy elemmel, sosem önmagában szövegszínként |
 | **Accent** | `--accent` | `#f16f30` | A valódi oldal narancs akcentszíne, figyelemfelkeltő elemekhez. | Csak ikonnal/nagy elemmel |
-| **Header/Nav Sötét Sáv** | `--header-bg` / `--header-text` | `#212121` / `#9F9F9F` | Fejléc és navigáció sötét inverz sávja. | Fehér címsor a sötét sávon 15.8:1 (PASS AAA) |
+| **Fejléc/Nav Sáv** | `--header-bg` / `--header-text` | `#159097` / `#FFFFFF` | Fejléc navigációs sáv - a felhasználó által küldött élő oldal-képernyőkép alapján teal, NEM sötét (a korábbi `#212121`/`#9F9F9F` egy sosem használt, elavult token volt). | Fehér szöveg tealon 3.84:1 (PASS AA nagy/UI szövegre) |
 | **Neutral Dark** | `--text-main` | `#333333` | Törzsszövegek, címsorok (a valódi oldal `body{color:#333}` szabálya). | 12.6:1 (Fehéren - PASS AAA) |
 | **Neutral Muted**| `--text-muted` | `#777777` | Metaadatok, dátumok, másodlagos infók. | 4.5:1 (Fehéren - PASS AA, határon — ne használd kisebb mint 14px szövegre) |
 | **Background** | `--bg-page` | `#FFFFFF` | Alapértelmezett oldalháttér. | N/A |
