@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
           <ul className="space-y-2 text-sm">
             <li>
               <a
-                href="https://katalogus.vmk.hu"
+                href="http://tlwww.vmk.hu/tlwww"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition inline-flex items-center gap-1"

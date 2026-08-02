@@ -114,7 +114,7 @@ export const Header: React.FC = () => {
               <Facebook className="w-4 h-4" />
             </a>
             <a
-              href="https://katalogus.vmk.hu"
+              href="http://tlwww.vmk.hu/tlwww"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-2 px-3 py-1.5 rounded bg-[#8B1E2D] hover:bg-[#6f1724] text-white text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
@@ -292,7 +292,7 @@ export const Header: React.FC = () => {
           </nav>
           <div className="pt-2">
             <a
-              href="https://katalogus.vmk.hu"
+              href="http://tlwww.vmk.hu/tlwww"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-catalog w-full justify-center text-sm"
