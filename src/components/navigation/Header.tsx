@@ -99,7 +99,7 @@ export const Header: React.FC = () => {
           Bootstrap .container (1170px) méretéhez igazítva, hogy keskenyebb
           böngészőablakban se tapadjon a tartalom a képernyő szélére. */}
       <div className="bg-white border-b border-slate-100">
-        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px] py-3 flex items-center justify-between gap-4">
+        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px] py-[7px] flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/brand/vmk-logo.png"
@@ -206,7 +206,7 @@ export const Header: React.FC = () => {
           elválasztó csík színét vetítette rá az egész sorra). */}
       <div className="hidden lg:block bg-white border-b-[5px] border-[#00909B]">
         <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px]">
-          <nav className="flex items-center gap-1 h-12 text-[19px] font-normal tracking-normal text-[#333333] uppercase">
+          <nav className="flex items-center gap-1 h-[45px] text-[19px] font-normal tracking-normal text-[#333333] uppercase">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div

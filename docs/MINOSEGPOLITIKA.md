@@ -5,6 +5,52 @@ hogy a www-vmk klón megegyezik-e a valós www.vmk.hu oldallal — nem
 ígéretként, hanem a `tools/visual-audit.mjs` szkript tényleges működésének
 leírásaként.
 
+## A KÉT ESZKÖZ, ÉS MIÉRT KELL MINDKETTŐ
+
+**1. `tools/pixel-diff.mjs` — TELJES OLDALAS KÉPPONT-DIFF (ez a fő eszköz)**
+
+```bash
+node tools/pixel-diff.mjs
+```
+
+Screenshotot készít a valós vmk.hu-ról és a klónról ugyanazon a
+szélességen, majd **minden képpontot** összehasonlít. Kimenet:
+összesített eltérés %-ban, 100px-es sávonkénti bontás (hol a
+legrosszabb), és egy **hőtérkép** (piros = eltérés).
+
+Ez azért fontos, mert **megtalálja azt is, amire senki nem gondolt
+előre**. Az első futtatás azonnal kimutatott egy olyan hibát, amit
+16 kézi ellenőrzés együtt sem vett észre: a fejlécem 14px-szel
+magasabb volt, és ez az eltolódás **lefelé kaszkádosodott** az egész
+oldalon — emiatt minden szöveg elcsúszva renderelődött.
+
+**2. `tools/visual-audit.mjs` — célzott ellenőrzések (kiegészítő)**
+
+Konkrét, névvel nevezett tulajdonságokat mér (logó mérete, gomb
+színe stb.). Hasznos regresszió-figyelésre, DE önmagában
+**megtévesztő**: csak azt találja meg, amit előre beleírtam.
+
+### A korábbi rendszer hibája (őszintén)
+
+A `visual-audit.mjs` "33 passed, 0 failed" eredményt adott, miközben
+a valóságban a képpontok **54,6%-a eltért**. Ennek négy oka volt:
+
+1. **Whitelist, nem összehasonlítás.** ~16 tulajdonságot néztem több
+   ezerből. A "passed" csak annyit jelentett: *"az általam kiválasztott
+   16 dolog rendben van"* — a többiről semmit.
+2. **Mindig utólag futott.** Csak azután került be egy ellenőrzés,
+   hogy a hibát valaki más megtalálta. Sosem talált meg semmit elsőként.
+3. **A toleranciák önigazolóak voltak.** ±40% magasság-tolerancia,
+   ±20% képmagasság — ezek nem elvi alapon választott számok voltak,
+   hanem olyanok, amikkel az akkori állapot átment. Egy 170px vs 144px
+   eltérés (amit szemmel azonnal látni) "PASS"-t kapott.
+4. **A PASS-t erősebb bizonyítékként adtam elő, mint amilyen.** Ez volt
+   a tényleges hiba: a gyenge jelzést biztos egyezésként kommunikáltam.
+
+**Ezért mostantól a `pixel-diff.mjs` a mérvadó**, a `visual-audit.mjs`
+csak kiegészítő regresszió-figyelő. Egy állítás csak akkor hangozhat el,
+hogy "egyezik", ha a pixel-diff száma is alátámasztja.
+
 ## Mi változott, és miért
 
 Korábban a vizuális ellenőrzés screenshot-ok szemrevételezéséből állt. Ez
