@@ -2,74 +2,88 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Archive, Film, Headphones, Heart, MapPin, BookOpen, User, Database, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
-// A valós vmk.hu főoldalán a bal oldali sáv egy függőleges, színes
-// "widget-torony" - számos külső integrációra/rendszerre mutató doboz
-// (webarchívum, filmtéka, hangos widget, kívánságkosár stb.). A sorrend és
-// a nav-lista Playwright screenshottal ellenőrizve a valós oldalhoz képest.
+// A valós vmk.hu főoldalán a bal oldali sáv egy függőleges widget-torony,
+// VALÓS PROMÓCIÓS KÉPEKKEL (nem ikon+alcím szöveggel, ahogy korábban itt
+// volt) - a képek és linkek a valós oldal DOM-jából lekérdezve (nem
+// kitalálva), letöltve a public/brand/widgets/ mappába. A sorrend is a
+// valós oldalt követi: Menü, FEWA, Aranybulla-Webarchívum, Filmes-téka,
+// TOP-7.1.1 EU-pályázat, Hallgasson ránk!, Smartlibrary, EFOP-3.7.3
+// EU-pályázat, Kívánságkosár, Helyismeret, Online könyvtár, Az én
+// könyvtáram, Közadat - 12 widget, nem 8, ahogy korábban.
 const WIDGETS: Array<{
   label: string
-  sublabel?: string
-  href?: string
-  icon: React.ReactNode
-  bg: string
+  href: string
+  img: string
+  imgAlt: string
 }> = [
+  { label: 'FEWA', href: 'https://fewa.vmk.hu/', img: '/brand/widgets/fewa.jpg', imgAlt: 'FEWA' },
   {
-    label: 'Webarchívum',
-    sublabel: 'Aranybulla – Fejér vármegyei honlapok archívuma',
+    label: 'Aranybulla-Webarchívum',
     href: 'https://webarchivum.vmk.hu/',
-    icon: <Archive className="w-5 h-5" />,
-    bg: 'bg-[#0f656a]',
+    img: '/brand/widgets/aranybulla.png',
+    imgAlt: 'Aranybulla Webarchívum',
   },
   {
-    label: 'Filmtéka',
-    sublabel: 'Ajánló videók',
+    label: 'Filmes-téka',
     href: 'https://www.fehervartv.hu/video/index/44695',
-    icon: <Film className="w-5 h-5" />,
-    bg: 'bg-[#e4b02c] text-[#1B1B1B]',
+    img: '/brand/widgets/filmes-teka.png',
+    imgAlt: 'Filmes-téka',
   },
   {
-    label: 'Hallgasson ránk',
-    sublabel: 'Könyvajánlók hangban',
+    label: 'TOP-7.1.1-16-H-ERFA-2019-00463',
+    href: 'https://www.vmk.hu/_upload/editor/2021/TOP-BudaiUtiKvtPalyazat.pdf',
+    img: '/brand/widgets/top-erfa.png',
+    imgAlt: 'TOP-7.1.1 pályázat',
+  },
+  {
+    label: 'Hallgasson ránk!',
     href: 'https://www.vmk.hu/uj-konyvajanlo',
-    icon: <Headphones className="w-5 h-5" />,
-    bg: 'bg-[#f16f30]',
+    img: '/brand/widgets/hallgasson-rank.png',
+    imgAlt: 'Hallgasson ránk',
+  },
+  {
+    label: 'Smartlibrary - Okoskönyvtár',
+    href: 'https://www.vmk.hu/okos-konyvtar-avagy-nyitott-ter-program-a-vorosmarty-mihaly-konyvtarban',
+    img: '/brand/widgets/smartlibrary.png',
+    imgAlt: 'Smartlibrary Okoskönyvtár',
+  },
+  {
+    label: 'EFOP-3.7.3-16-2017-00106',
+    href: 'http://konyvtar.vmk.hu/efop/',
+    img: '/brand/widgets/efop.png',
+    imgAlt: 'EFOP-3.7.3 pályázat',
   },
   {
     label: 'Kívánságkosár',
-    sublabel: 'Javasoljon beszerzést',
     href: 'http://www.vmk.hu/wishbasket',
-    icon: <Heart className="w-5 h-5" />,
-    bg: 'bg-[#159097]',
+    img: '/brand/widgets/kivansagkosar.jpg',
+    imgAlt: 'Kívánságkosár',
   },
   {
     label: 'Helyismeret',
-    sublabel: 'Fejér vármegyei lexikon',
     href: 'https://konyvtar.vmk.hu/fejerlex/uj2019/index.php',
-    icon: <MapPin className="w-5 h-5" />,
-    bg: 'bg-[#159097]',
+    img: '/brand/widgets/helyismeret.jpg',
+    imgAlt: 'Fejér vármegyei lexikon',
   },
   {
-    label: 'Online Könyvtár',
-    sublabel: 'Digitális adatbázisok',
+    label: 'Online könyvtár',
     href: 'https://www.vmk.hu/adatbazisok-1',
-    icon: <BookOpen className="w-5 h-5" />,
-    bg: 'bg-[#1E293B]',
+    img: '/brand/widgets/online-konyvtar.jpg',
+    imgAlt: 'Online könyvtár',
   },
   {
     label: 'Az én könyvtáram',
-    sublabel: 'Olvasói fiók',
     href: 'http://www.azenkonyvtaram.hu/',
-    icon: <User className="w-5 h-5" />,
-    bg: 'bg-[#1E293B]',
+    img: '/brand/widgets/az-en-konyvtaram.png',
+    imgAlt: 'Az én könyvtáram',
   },
   {
     label: 'Közadat',
-    sublabel: 'Közérdekű adatok keresése',
     href: 'https://kozadat.hu/kereso/kozfeladatot-ellato-szervek/adatlap/8159',
-    icon: <Database className="w-5 h-5" />,
-    bg: 'bg-[#0f656a]',
+    img: '/brand/widgets/kozadat.png',
+    imgAlt: 'Közadatkereső',
   },
 ]
 
@@ -206,26 +220,23 @@ export function SiteSidebar() {
       {/* A valós widgetek kétrészesek: színes fejléc-sáv a névvel, alatta
           világos tartalom-terület a jellemző ikonnal/logóval - nem
           egységesen színezett dobozok, ahogy korábban itt volt. */}
-      {WIDGETS.map((w) => {
-        const content = (
-          <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-100">
-            <div className={`${w.bg} px-3 py-2`}>
-              <div className="font-bold text-xs uppercase tracking-wide leading-tight">{w.label}</div>
-            </div>
-            <div className="bg-[#CCE9EB] px-3 py-4 flex flex-col items-center text-center gap-1.5">
-              <div className="text-slate-400">{w.icon}</div>
-              {w.sublabel && <div className="text-[11px] text-slate-500 leading-tight">{w.sublabel}</div>}
-            </div>
+      {WIDGETS.map((w) => (
+        <a
+          key={w.label}
+          href={w.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-100"
+        >
+          <div className="bg-[#00909B] px-3 py-2">
+            <div className="font-bold text-xs uppercase tracking-wide leading-tight text-white">{w.label}</div>
           </div>
-        )
-        return w.href ? (
-          <Link key={w.label} href={w.href} target={w.href.startsWith('http') ? '_blank' : undefined}>
-            {content}
-          </Link>
-        ) : (
-          <div key={w.label}>{content}</div>
-        )
-      })}
+          <div className="bg-[#CCE9EB] p-3 flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={w.img} alt={w.imgAlt} className="w-full h-auto object-contain" />
+          </div>
+        </a>
+      ))}
     </aside>
   )
 }
