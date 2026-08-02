@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import { getNewsBySlug } from '@/lib/payload'
 import { Calendar, User, ArrowLeft, Share2 } from 'lucide-react'
@@ -46,7 +47,8 @@ export default async function NewsDetailPage({
     (featuredImage && typeof featuredImage === 'object' ? featuredImage.alt : undefined) ?? title
 
   return (
-    <article className="max-w-4xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <article className="max-w-4xl space-y-8">
       <Breadcrumb
         items={[
           { label: 'Hírek', href: '/hirek' },
@@ -120,6 +122,7 @@ export default async function NewsDetailPage({
           <span>Megosztás</span>
         </button>
       </div>
-    </article>
+      </article>
+    </PageWithSidebar>
   )
 }

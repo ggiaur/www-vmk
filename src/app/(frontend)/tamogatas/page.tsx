@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { DonationForm } from '@/components/forms/DonationForm'
 import { getAllPartners } from '@/lib/payload'
 import { Heart } from 'lucide-react'
@@ -18,7 +19,8 @@ export default async function TamogatasPage() {
   const supporters = await getAllPartners('supporter').catch(() => [])
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <div className="max-w-4xl space-y-8">
       <Breadcrumb items={[{ label: 'Támogatás' }]} />
 
       <div className="border-b border-slate-200 pb-6">
@@ -58,6 +60,7 @@ export default async function TamogatasPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </PageWithSidebar>
   )
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { BookingForm } from '@/components/forms/BookingForm'
 import { getAllRooms } from '@/lib/payload'
 import { DoorOpen, Users } from 'lucide-react'
@@ -14,7 +15,8 @@ export default async function TeremfoglalasPage() {
   const rooms = await getAllRooms().catch(() => [])
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <div className="max-w-5xl space-y-8">
       <Breadcrumb items={[{ label: 'Teremfoglalás' }]} />
 
       <div className="border-b border-slate-200 pb-6">
@@ -53,6 +55,7 @@ export default async function TeremfoglalasPage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </PageWithSidebar>
   )
 }

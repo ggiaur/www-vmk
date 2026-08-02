@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import { RsvpForm } from '@/components/forms/RsvpForm'
 import { getEventBySlug, getRegistrationCountForEvent } from '@/lib/payload'
@@ -51,7 +52,8 @@ export default async function EventDetailPage({
       : null
 
   return (
-    <article className="max-w-4xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <article className="max-w-4xl space-y-8">
       <Breadcrumb
         items={[
           { label: 'Rendezvények', href: '/esemenyek' },
@@ -133,6 +135,7 @@ export default async function EventDetailPage({
           </a>
         </div>
       )}
-    </article>
+      </article>
+    </PageWithSidebar>
   )
 }
