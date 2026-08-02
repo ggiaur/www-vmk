@@ -2,15 +2,16 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { BookOpen, Search, Menu, X, Mail, Facebook, Youtube, ChevronDown } from 'lucide-react'
+import Image from 'next/image'
+import { Search, Menu, X, Mail, Facebook, Youtube, ChevronDown } from 'lucide-react'
 
-// A valós www.vmk.hu fejléce EGY vékony, teal színű navigációs sávból áll
-// (nincs külön "nagy márka-sor" alatta - a cím a hero szalagban jelenik meg).
-// A "Központi Könyvtár" és "Tagkönyvtárak" menüpontok almenüi a valós oldal
-// tényleges (lekérdezett, nem kitalált) menüszerkezetét követik. A belső
-// aldomaineken élő részlegek (Gyermekrészleg, Helyismeret, Zenei és
-// számítógépes részleg) külső linkek maradnak, mert ezek a valós oldalon is
-// önálló aldomainek, nem a fő www-vmk projekt része.
+// A valós www.vmk.hu fejléce KÉT sorból áll (ellenőrizve valós
+// képernyőkép-összevetéssel, Playwright screenshottal):
+//   1. Fehér sor: logó (valódi VMK címer + felirat kép) + közösségi ikonok +
+//      "Online Katalógus / Beiratkozás" gomb.
+//   2. Teal sor: fő navigáció (Nyitvatartás / Elérhetőségeink / Központi
+//      Könyvtár / Tagkönyvtárak / Megyei Ellátás / Galéria) + keresés ikon.
+// Korábban ez egyetlen teal sorba volt összevonva - ez javítva.
 interface NavChild {
   label: string
   href: string
@@ -50,7 +51,9 @@ const NAV_ITEMS: NavItem[] = [
       { label: 'Zsolt Utcai Tagkönyvtár', href: '/tagkonyvtarak/zsolt-ut' },
     ],
   },
-  { label: 'Megyei Ellátás', href: '/szolgaltatasok' },
+  // Valós, élő oldalról lekérdezve: külső link a KSZR (Könyvtárellátási
+  // Szolgáltató Rendszer) saját oldalára, NEM belső aloldal.
+  { label: 'Megyei Ellátás', href: 'http://www.fejerkszr.hu/' },
   { label: 'Galéria', href: '/galeria' },
 ]
 
@@ -60,26 +63,77 @@ export const Header: React.FC = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
   return (
-    <header className="sticky top-0 z-50 bg-[#159097] shadow-md">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-14 gap-4">
-          {/* Kis embléma + rövid név (a nagy márka-sor helyett) */}
-          <Link href="/" className="flex items-center gap-2 shrink-0 group">
-            <div className="w-8 h-8 rounded bg-white/15 flex items-center justify-center text-white group-hover:bg-white/25 transition-colors">
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <span className="hidden sm:inline text-white font-bold text-sm tracking-wide">
-              VMK
-            </span>
+    <header className="sticky top-0 z-50 shadow-md">
+      {/* 1. sor: fehér, logó + közösségi ikonok + CTA gomb */}
+      <div className="bg-white border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center shrink-0">
+            <Image
+              src="/brand/vmk-logo.png"
+              alt="Vörösmarty Mihály Könyvtár"
+              width={200}
+              height={80}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
 
-          {/* Fő navigáció */}
-          <nav className="hidden lg:flex items-center gap-1 text-xs font-semibold text-white/90 uppercase tracking-wide">
+          <div className="hidden md:flex items-center gap-1 shrink-0">
+            <a
+              href="mailto:info@vmk.hu"
+              aria-label="E-mail"
+              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+            >
+              <Youtube className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+            <a
+              href="https://katalogus.vmk.hu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 px-3 py-1.5 rounded bg-[#8B1E2D] hover:bg-[#6f1724] text-white text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
+            >
+              Online Katalógus / Beiratkozás
+            </a>
+          </div>
+
+          {/* Mobil menü gomb */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 rounded text-slate-700 hover:bg-slate-100 focus:outline-none"
+            aria-label="Menü megnyitása"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* 2. sor: teal, fő navigáció */}
+      <div className="hidden lg:block bg-[#159097]">
+        <div className="max-w-7xl mx-auto px-4">
+          <nav className="flex items-center gap-1 h-11 text-xs font-semibold text-white/90 uppercase tracking-wide">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div
                   key={item.href}
-                  className="relative"
+                  className="relative h-full flex items-center"
                   onMouseEnter={() => setOpenDropdown(item.label)}
                   onMouseLeave={() => setOpenDropdown(null)}
                 >
@@ -93,8 +147,8 @@ export const Header: React.FC = () => {
                     <ChevronDown className="w-3 h-3" />
                   </Link>
                   {openDropdown === item.label && (
-                    <div className="absolute left-0 top-full pt-1 w-64 z-50">
-                      <div className="bg-white rounded-lg shadow-xl border border-slate-200 py-2 normal-case">
+                    <div className="absolute left-0 top-full w-64 z-50">
+                      <div className="bg-white rounded-b-lg shadow-xl border border-slate-200 py-2 normal-case">
                         {item.children.map((child) =>
                           child.external ? (
                             <a
@@ -120,6 +174,16 @@ export const Header: React.FC = () => {
                     </div>
                   )}
                 </div>
+              ) : item.href.startsWith('http') ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-white/10 hover:text-white transition-colors"
+                >
+                  {item.label}
+                </a>
               ) : (
                 <Link
                   key={item.href}
@@ -130,78 +194,44 @@ export const Header: React.FC = () => {
                 </Link>
               ),
             )}
-          </nav>
 
-          {/* Jobb oldal: közösségi ikonok + CTA gomb */}
-          <div className="hidden md:flex items-center gap-1 shrink-0">
-            <a
-              href="mailto:info@vmk.hu"
-              aria-label="E-mail"
-              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube"
-              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <Youtube className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <Facebook className="w-4 h-4" />
-            </a>
             <Link
               href="/kereses"
               aria-label="Keresés a honlapon"
               title="Keresés a honlapon"
-              className="p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+              className="ml-auto p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
             >
               <Search className="w-4 h-4" />
             </Link>
-            <a
-              href="https://katalogus.vmk.hu"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 px-3 py-1.5 rounded bg-[#e4b02c] hover:bg-[#c99a1f] text-[#1B1B1B] text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
-            >
-              Online Katalógus / Beiratkozás
-            </a>
-          </div>
-
-          {/* Mobil menü gomb */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded text-white hover:bg-white/10 focus:outline-none"
-            aria-label="Menü megnyitása"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          </nav>
         </div>
       </div>
 
       {/* Mobil legördülő menü */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-[#0f656a] px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
+        <div className="lg:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
           <nav className="flex flex-col text-sm font-medium text-slate-800">
             {NAV_ITEMS.map((item) => (
               <div key={item.href}>
                 <div className="flex items-center">
-                  <Link
-                    href={item.href}
-                    onClick={() => !item.children && setMobileMenuOpen(false)}
-                    className="flex-1 px-3 py-2 rounded-md hover:bg-slate-100"
-                  >
-                    {item.label}
-                  </Link>
+                  {item.href.startsWith('http') ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 px-3 py-2 rounded-md hover:bg-slate-100"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={() => !item.children && setMobileMenuOpen(false)}
+                      className="flex-1 px-3 py-2 rounded-md hover:bg-slate-100"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                   {item.children && (
                     <button
                       onClick={() => setMobileSubmenu(mobileSubmenu === item.label ? null : item.label)}

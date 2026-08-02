@@ -80,9 +80,15 @@ export default async function HomePage() {
   // Kölcsönző, ami a Központi épületén belül van) nem önálló helyszínek,
   // ezért kimaradnak, hogy a szám ("A városban N helyen") a valós oldalhoz
   // hasonlóan a ténylegesen különálló épületeket számolja.
+  // A valós oldal a Központi Könyvtárat listázza ELŐSZÖR, utána a
+  // tagkönyvtárakat - a getAllLibraries() név szerinti (ábécésorrendes)
+  // rendezése ezt felborítaná ("Budai..." előbb jönne, mint "Vörösmarty..."),
+  // ezért itt explicit elöre soroljuk a központit. Playwright screenshottal
+  // ellenőrizve a valós sorrendhez képest.
   const locations = cmsLibraries
     .filter((l) => l.type === 'central' || l.type === 'branch')
-    .map((l) => ({ name: l.name, slug: l.slug }))
+    .sort((a, b) => (a.type === 'central' ? -1 : b.type === 'central' ? 1 : 0))
+    .map((l) => ({ name: l.name, slug: l.slug, type: l.type as 'central' | 'branch' }))
 
   const now = new Date()
   const highlightedDays = displayEvents

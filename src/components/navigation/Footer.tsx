@@ -5,12 +5,14 @@ import { NewsletterForm } from '@/components/forms/NewsletterForm'
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#1E293B] text-slate-300 pt-12 pb-6 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-slate-800">
+    // A valós vmk.hu lábléce teal (nem sötétkék) - Playwright screenshottal
+    // ellenőrizve a valós oldalhoz képest.
+    <footer className="bg-[#0f656a] text-teal-50 pt-12 pb-6 mt-auto">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-white/10">
         {/* Column 0: Hírlevél (a valós vmk.hu lábléce ezzel kezdődik) */}
         <div className="space-y-3 md:order-first order-last">
           <h3 className="font-semibold text-white text-sm uppercase tracking-wider">Hírlevél</h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-teal-100/80">
             Iratkozzon fel, és elsőként értesüljön a könyvtár híreiről és programjairól!
           </p>
           <NewsletterForm />
@@ -23,7 +25,7 @@ export const Footer: React.FC = () => {
             </div>
             <span className="font-bold text-white text-lg">VMK Székesfehérvár</span>
           </div>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <p className="text-sm text-teal-100/80 leading-relaxed">
             Vörösmarty Mihály Könyvtár – Székesfehérvár Megyei Jogú Város nyilvános könyvtári hálózata.
           </p>
           <div className="space-y-2 text-sm">
@@ -54,7 +56,7 @@ export const Footer: React.FC = () => {
                 className="hover:text-white transition inline-flex items-center gap-1"
               >
                 <span>Online Katalógus (OPAC)</span>
-                <ExternalLink className="w-3 h-3 text-slate-400" />
+                <ExternalLink className="w-3 h-3 text-teal-100/80" />
               </a>
             </li>
             <li>
@@ -78,7 +80,7 @@ export const Footer: React.FC = () => {
         {/* Column 3: Social & Legal */}
         <div className="space-y-4">
           <h3 className="font-semibold text-white text-sm uppercase tracking-wider">Közösség & Jog</h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-teal-100/80">
             Kövessen minket Facebookon a legfrissebb hírekért, rendezvényekért és könyvajánlókért!
           </p>
           <div className="flex items-center gap-3">
@@ -86,13 +88,13 @@ export const Footer: React.FC = () => {
               href="https://facebook.com/vmkszekesfehervar"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#159097] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+              className="w-9 h-9 rounded-lg bg-black/20 hover:bg-[#159097] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
               aria-label="VMK Facebook oldal"
             >
               <Facebook className="w-5 h-5" />
             </a>
           </div>
-          <div className="text-xs text-slate-500 space-y-1">
+          <div className="text-xs text-teal-100/60 space-y-1">
             <p>Adatvédelmi tájékoztató | Akadálymentesítési nyilatkozat</p>
           </div>
         </div>
@@ -101,8 +103,8 @@ export const Footer: React.FC = () => {
       {/* Akkreditációs jelvények (a valós vmk.hu lábléce is tartalmaz
           ilyen apró minőségtanúsító jelvényeket - itt szöveges/ikonos
           formában, mert nincs valós grafikai anyagunk hozzájuk) */}
-      <div className="max-w-7xl mx-auto px-4 pt-6 pb-4 flex flex-wrap items-center gap-4 border-b border-slate-800">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 text-xs text-slate-400">
+      <div className="max-w-7xl mx-auto px-4 pt-6 pb-4 flex flex-wrap items-center gap-4 border-b border-white/10">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 text-xs text-teal-100/80">
           <ShieldCheck className="w-4 h-4 text-[#e4b02c]" />
           <span>Minősített Könyvtár</span>
         </div>
@@ -110,7 +112,7 @@ export const Footer: React.FC = () => {
           href="https://outlook.office.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 text-xs text-slate-400 hover:text-white transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 text-xs text-teal-100/80 hover:text-white transition-colors"
         >
           <Mail className="w-4 h-4 text-[#159097]" />
           <span>Outlook Web App</span>
@@ -118,7 +120,7 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="max-w-7xl mx-auto px-4 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+      <div className="max-w-7xl mx-auto px-4 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-teal-100/60">
         <p>© {new Date().getFullYear()} Vörösmarty Mihály Könyvtár. Minden jog fenntartva.</p>
         <p className="flex items-center gap-1">
           <span>Powered by Next.js 15 & Payload CMS v3</span>
