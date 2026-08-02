@@ -75,7 +75,14 @@ export default async function HomePage() {
   const displayNews = cmsNews.length > 0 ? cmsNews : sampleNews
   const displayEvents = cmsEvents.length > 0 ? cmsEvents : sampleEvents
 
-  const locations = cmsLibraries.map((l) => ({ name: l.name, slug: l.slug }))
+  // A "hely" szalak csak a fizikai könyvtár-helyszíneket mutatja (központi +
+  // tagkönyvtárak) - a "department" típusú belső részlegek (pl. Felnőtt
+  // Kölcsönző, ami a Központi épületén belül van) nem önálló helyszínek,
+  // ezért kimaradnak, hogy a szám ("A városban N helyen") a valós oldalhoz
+  // hasonlóan a ténylegesen különálló épületeket számolja.
+  const locations = cmsLibraries
+    .filter((l) => l.type === 'central' || l.type === 'branch')
+    .map((l) => ({ name: l.name, slug: l.slug }))
 
   const now = new Date()
   const highlightedDays = displayEvents
