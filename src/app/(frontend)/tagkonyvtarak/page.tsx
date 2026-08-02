@@ -28,7 +28,7 @@ export default async function TagkonyvtarakPage() {
 
       <div className="border-b border-slate-200 pb-6">
         <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
-          <Building2 className="w-8 h-8 text-[#F3701D]" />
+          <Building2 className="w-8 h-8 text-[#159097]" />
           <span>Tagkönyvtárak</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">

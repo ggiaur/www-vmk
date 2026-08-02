@@ -35,18 +35,18 @@ export default async function ReszlegDetailPage({ params }: Args) {
         <h1 className="text-3xl font-black text-slate-900">{dept.name}</h1>
         <div className="flex flex-wrap gap-4 mt-3 text-sm text-slate-600">
           <span className="flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 text-[#DDB837]" />
+            <MapPin className="w-4 h-4 text-[#e4b02c]" />
             {dept.address}
           </span>
           {dept.phone && (
             <a href={`tel:${dept.phone}`} className="flex items-center gap-1.5 hover:underline">
-              <Phone className="w-4 h-4 text-[#DDB837]" />
+              <Phone className="w-4 h-4 text-[#e4b02c]" />
               {dept.phone}
             </a>
           )}
           {dept.email && (
             <a href={`mailto:${dept.email}`} className="flex items-center gap-1.5 hover:underline">
-              <Mail className="w-4 h-4 text-[#DDB837]" />
+              <Mail className="w-4 h-4 text-[#e4b02c]" />
               {dept.email}
             </a>
           )}
@@ -58,7 +58,7 @@ export default async function ReszlegDetailPage({ params }: Args) {
       {schedule.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-[#F3701D]" />
+            <Clock className="w-5 h-5 text-[#159097]" />
             Nyitvatartás
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center text-xs">

@@ -101,7 +101,7 @@ export default async function NyitvatartasPage() {
 
       <div className="border-b border-slate-200 pb-6">
         <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
-          <Clock className="w-8 h-8 text-[#F3701D]" />
+          <Clock className="w-8 h-8 text-[#159097]" />
           <span>Tagkönyvtárak & Nyitvatartási Mátrix</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">
@@ -133,25 +133,25 @@ export default async function NyitvatartasPage() {
             {/* Fejléc */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-100 pb-4">
               <div>
-                <span className="text-xs px-2.5 py-0.5 rounded font-semibold bg-amber-100 text-[#F3701D]">
+                <span className="text-xs px-2.5 py-0.5 rounded font-semibold bg-amber-100 text-[#159097]">
                   {TYPE_LABELS[lib.type] ?? lib.type}
                 </span>
                 <h2 className="text-xl font-bold text-slate-900 mt-1">{lib.name}</h2>
               </div>
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600">
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4 text-[#DDB837]" />
+                  <MapPin className="w-4 h-4 text-[#e4b02c]" />
                   {lib.address}
                 </span>
                 {lib.phone && (
                   <a href={`tel:${lib.phone}`} className="flex items-center gap-1 hover:underline">
-                    <Phone className="w-4 h-4 text-[#DDB837]" />
+                    <Phone className="w-4 h-4 text-[#e4b02c]" />
                     {lib.phone}
                   </a>
                 )}
                 {lib.email && (
                   <a href={`mailto:${lib.email}`} className="flex items-center gap-1 hover:underline">
-                    <Mail className="w-4 h-4 text-[#DDB837]" />
+                    <Mail className="w-4 h-4 text-[#e4b02c]" />
                     {lib.email}
                   </a>
                 )}
@@ -173,7 +173,7 @@ export default async function NyitvatartasPage() {
                     }`}
                   >
                     <span
-                      className={`block font-semibold mb-1 ${item.isToday ? 'text-[#F3701D]' : 'text-slate-600'}`}
+                      className={`block font-semibold mb-1 ${item.isToday ? 'text-[#159097]' : 'text-slate-600'}`}
                     >
                       {item.day}
                       {item.isToday && (
@@ -185,7 +185,7 @@ export default async function NyitvatartasPage() {
                         item.hours === 'Zárva'
                           ? 'text-slate-400'
                           : item.isToday
-                            ? 'text-[#F3701D]'
+                            ? 'text-[#159097]'
                             : 'text-slate-800'
                       }`}
                     >

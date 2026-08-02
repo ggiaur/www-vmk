@@ -77,7 +77,7 @@ export default async function EsemenyekPage({
               href={aud.value === 'all' ? '/esemenyek' : `/esemenyek?audience=${aud.value}`}
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors ${
                 activeAudience === aud.value
-                  ? 'bg-[#DDB837] text-white shadow-sm'
+                  ? 'bg-[#e4b02c] text-white shadow-sm'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >

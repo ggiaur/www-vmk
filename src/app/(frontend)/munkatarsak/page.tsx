@@ -46,12 +46,12 @@ export default async function MunkatarsakPage() {
               key={person.id}
               className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow"
             >
-              <div className="w-12 h-12 rounded-full bg-[#F3701D] text-white flex items-center justify-center font-bold shrink-0">
+              <div className="w-12 h-12 rounded-full bg-[#159097] text-white flex items-center justify-center font-bold shrink-0">
                 <User className="w-6 h-6" />
               </div>
 
               <div className="space-y-1.5 min-w-0">
-                <span className="text-[11px] font-semibold text-[#DDB837] flex items-center gap-1">
+                <span className="text-[11px] font-semibold text-[#e4b02c] flex items-center gap-1">
                   <Building className="w-3 h-3" />
                   {deptName}
                 </span>
@@ -61,13 +61,13 @@ export default async function MunkatarsakPage() {
                 <div className="pt-2 space-y-1 text-xs text-slate-500">
                   {person.phone && (
                     <div className="flex items-center gap-1.5">
-                      <Phone className="w-3.5 h-3.5 text-[#DDB837] shrink-0" />
+                      <Phone className="w-3.5 h-3.5 text-[#e4b02c] shrink-0" />
                       <a href={`tel:${person.phone}`} className="hover:underline">{person.phone}</a>
                     </div>
                   )}
                   {person.email && (
                     <div className="flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-[#DDB837] shrink-0" />
+                      <Mail className="w-3.5 h-3.5 text-[#e4b02c] shrink-0" />
                       <a href={`mailto:${person.email}`} className="hover:underline truncate">{person.email}</a>
                     </div>
                   )}

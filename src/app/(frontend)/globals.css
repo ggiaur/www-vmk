@@ -2,21 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design tokens verified against uj.vmk.hu (WordPress "Scientia" theme) —
-   see docs/DESIGN_SYSTEM.md for the source values and rationale. */
+/* Design tokens verified directly against the real, live www.vmk.hu
+   (fetched assets/dist/style.min.*.css, checked actual selectors:
+   .btn-primary{background-color:#159097}, .navbar{border-bottom:5px
+   solid #00909b}, a{color:#159097}) — user explicitly asked for a
+   clone of the current live site (2026-08-02), not the uj.vmk.hu
+   reference used earlier. See docs/DESIGN_SYSTEM.md. */
 :root {
-  --primary: #F3701D;
-  --primary-hover: #D4590F;
-  --secondary: #80D572;
-  --accent: #DDB837;
+  --primary: #159097;
+  --primary-hover: #0f656a;
+  --secondary: #e4b02c;
+  --accent: #f16f30;
   --bg-page: #FFFFFF;
   --bg-card: #FFFFFF;
   --bg-subtle: #F5F5F4;
   --header-bg: #212121;
   --header-text: #9F9F9F;
-  --text-main: #1B1B1B;
-  --text-muted: #5E5E5E;
-  --border-light: #E5E5E4;
+  --text-main: #333333;
+  --text-muted: #777777;
+  --border-light: #dddddd;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;

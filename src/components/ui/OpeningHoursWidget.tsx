@@ -68,7 +68,7 @@ export const OpeningHoursWidget: React.FC<OpeningHoursWidgetProps> = ({
             </div>
             <p className="text-sm font-bold text-slate-900">
               Ma:{' '}
-              <span className={isOpenToday ? 'text-[#F3701D]' : 'text-red-500'}>
+              <span className={isOpenToday ? 'text-[#159097]' : 'text-red-500'}>
                 {todayEntry?.hours ?? 'Zárva'}
               </span>
             </p>
@@ -91,7 +91,7 @@ export const OpeningHoursWidget: React.FC<OpeningHoursWidgetProps> = ({
             <div
               key={idx}
               className={`flex justify-between py-1 px-2 rounded ${
-                item.isToday ? 'bg-amber-50 font-bold text-[#F3701D]' : 'hover:bg-slate-50'
+                item.isToday ? 'bg-amber-50 font-bold text-[#159097]' : 'hover:bg-slate-50'
               }`}
             >
               <span>{item.day}</span>

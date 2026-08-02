@@ -45,11 +45,11 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         {/* Brand / Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#F3701D] to-[#DDB837] flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#159097] to-[#e4b02c] flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
             <BookOpen className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-tight text-[#F3701D]">
+            <h1 className="font-bold text-lg leading-tight text-[#159097]">
               Vörösmarty Mihály Könyvtár
             </h1>
             <p className="text-xs text-slate-500 font-medium tracking-wide">
@@ -60,22 +60,22 @@ export const Header: React.FC = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-slate-700">
-          <Link href="/" className="hover:text-[#F3701D] transition-colors">
+          <Link href="/" className="hover:text-[#159097] transition-colors">
             Főoldal
           </Link>
-          <Link href="/nyitvatartas" className="hover:text-[#F3701D] transition-colors">
+          <Link href="/nyitvatartas" className="hover:text-[#159097] transition-colors">
             Nyitvatartás
           </Link>
-          <Link href="/#hirek" className="hover:text-[#F3701D] transition-colors">
+          <Link href="/#hirek" className="hover:text-[#159097] transition-colors">
             Hírek
           </Link>
-          <Link href="/#esemenyek" className="hover:text-[#F3701D] transition-colors">
+          <Link href="/#esemenyek" className="hover:text-[#159097] transition-colors">
             Események
           </Link>
-          <Link href="/#szolgaltatasok" className="hover:text-[#F3701D] transition-colors">
+          <Link href="/#szolgaltatasok" className="hover:text-[#159097] transition-colors">
             Szolgáltatások
           </Link>
-          <Link href="/#kapcsolat" className="hover:text-[#F3701D] transition-colors">
+          <Link href="/#kapcsolat" className="hover:text-[#159097] transition-colors">
             Kapcsolat
           </Link>
         </nav>
@@ -86,7 +86,7 @@ export const Header: React.FC = () => {
             href="/kereses"
             aria-label="Keresés a honlapon (hírek, események)"
             title="Keresés a honlapon"
-            className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-[#F3701D] transition-colors"
+            className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-[#159097] transition-colors"
           >
             <Search className="w-4 h-4" />
           </Link>

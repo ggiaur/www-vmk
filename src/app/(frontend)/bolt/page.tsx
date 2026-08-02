@@ -29,7 +29,7 @@ export default async function BoltPage() {
 
       <div className="border-b border-slate-200 pb-6">
         <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
-          <ShoppingBag className="w-8 h-8 text-[#F3701D]" />
+          <ShoppingBag className="w-8 h-8 text-[#159097]" />
           <span>Bolt</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">
@@ -61,7 +61,7 @@ export default async function BoltPage() {
                   )}
                 </div>
                 <div className="p-4">
-                  <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-[#F3701D] font-semibold">
+                  <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-[#159097] font-semibold">
                     {categoryLabels[product.category] ?? product.category}
                   </span>
                   <h3 className="font-bold text-slate-900 mt-1.5">{product.title}</h3>

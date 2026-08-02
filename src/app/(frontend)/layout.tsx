@@ -1,12 +1,20 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Inter, Cardo } from 'next/font/google'
+import { Roboto, Cinzel } from 'next/font/google'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-inter' })
-const cardo = Cardo({
+// Matches the real, live www.vmk.hu exactly (Roboto body text, Cinzel
+// serif headings) — verified directly against its compiled CSS
+// (assets/dist/style.min.*.css: body{font-family:Roboto,...},
+// h1-h6{font-family:Cinzel,serif}). See docs/DESIGN_SYSTEM.md.
+const roboto = Roboto({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '700'],
+  variable: '--font-inter',
+})
+const cinzel = Cinzel({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '700'],
   variable: '--font-cardo',
@@ -26,7 +34,7 @@ export default function FrontendLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="hu" className={`h-full ${inter.variable} ${cardo.variable}`}>
+    <html lang="hu" className={`h-full ${roboto.variable} ${cinzel.variable}`}>
       <body className="flex flex-col min-h-screen bg-white text-[#1B1B1B] antialiased">
         <Header />
         <main className="flex-1">{children}</main>
