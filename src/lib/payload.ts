@@ -9,6 +9,7 @@
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import type { Pool } from 'pg'
 
 // Payload's generated types (payload-types.ts) can't be produced in this
 // environment (`payload generate:types` fails on Node 24 with
@@ -303,6 +304,73 @@ export async function getRegistrationCountForEvent(eventId: string | number) {
   }
 }
 
+export type CreateRegistrationResult =
+  | { ok: true }
+  | { ok: false; error: 'full' | 'not_found' | 'db_error' }
+
+/**
+ * Atomically checks capacity and inserts a registration inside a single
+ * Postgres transaction, row-locking the event first (`SELECT ... FOR
+ * UPDATE`). Without this, submitRsvp()'s previous check-then-create
+ * (getRegistrationCountForEvent, then payload.create separately) had a
+ * genuine TOCTOU race: two concurrent submissions for the last spot could
+ * both pass the capacity check before either had committed, silently
+ * overbooking a capacity-limited event with no human review step to catch
+ * it (registrations default straight to status: 'confirmed').
+ *
+ * Uses payload.db.pool directly (the raw `pg.Pool` the Postgres adapter is
+ * built on) rather than the Local API for the locked section, since
+ * payload.create() has no way to run inside an explicit FOR UPDATE lock.
+ */
+export async function createRegistrationAtomically(
+  eventId: string | number,
+  name: string,
+  email: string,
+  guestCount: number,
+): Promise<CreateRegistrationResult> {
+  const payload = await getPayloadClient()
+  if (!payload) return { ok: false, error: 'db_error' }
+
+  const pool = (payload.db as unknown as { pool: Pool }).pool
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+
+    const eventRes = await client.query('SELECT id, capacity FROM events WHERE id = $1 FOR UPDATE', [eventId])
+    if (eventRes.rowCount === 0) {
+      await client.query('ROLLBACK')
+      return { ok: false, error: 'not_found' }
+    }
+
+    const capacity = eventRes.rows[0].capacity as string | null
+    if (capacity !== null) {
+      const countRes = await client.query(
+        "SELECT COALESCE(SUM(guest_count), 0) AS total FROM registrations WHERE event_id = $1 AND status = 'confirmed'",
+        [eventId],
+      )
+      const currentCount = Number(countRes.rows[0].total)
+      if (currentCount + guestCount > Number(capacity)) {
+        await client.query('ROLLBACK')
+        return { ok: false, error: 'full' }
+      }
+    }
+
+    await client.query(
+      `INSERT INTO registrations (event_id, name, email, guest_count, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, 'confirmed', now(), now())`,
+      [eventId, name, email, guestCount],
+    )
+    await client.query('COMMIT')
+    return { ok: true }
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {})
+    console.error('[createRegistrationAtomically] transaction failed:', err)
+    return { ok: false, error: 'db_error' }
+  } finally {
+    client.release()
+  }
+}
+
 // ─── Rooms & Bookings (teremfoglalás) ───────────────────────────────────────────
 
 export async function getAllRooms() {
@@ -351,6 +419,71 @@ export async function getBookingsForRoomOnDate(roomId: string | number, date: st
     return result.docs
   } catch {
     return []
+  }
+}
+
+export type CreateBookingResult =
+  | { ok: true }
+  | { ok: false; error: 'overlap' | 'not_found' | 'db_error' }
+
+/**
+ * Atomically checks for an overlapping booking and inserts the new one
+ * inside a single Postgres transaction, row-locking the room first
+ * (`SELECT ... FOR UPDATE`). Same TOCTOU race as
+ * createRegistrationAtomically() (see its comment) - submitBooking()'s
+ * previous check-then-create had a window where two concurrent requests
+ * for the same overlapping slot could both pass the overlap check. Lower
+ * real-world severity here since bookings default to status: 'pending'
+ * (a human reviews before confirming), but worth closing for real, not
+ * just relying on that review step to catch it.
+ */
+export async function createBookingAtomically(
+  roomId: string | number,
+  date: string,
+  startTime: string,
+  endTime: string,
+  requesterName: string,
+  requesterEmail: string,
+  purpose: string,
+): Promise<CreateBookingResult> {
+  const payload = await getPayloadClient()
+  if (!payload) return { ok: false, error: 'db_error' }
+
+  const pool = (payload.db as unknown as { pool: Pool }).pool
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+
+    const roomRes = await client.query('SELECT id FROM rooms WHERE id = $1 FOR UPDATE', [roomId])
+    if (roomRes.rowCount === 0) {
+      await client.query('ROLLBACK')
+      return { ok: false, error: 'not_found' }
+    }
+
+    const overlapRes = await client.query(
+      `SELECT id FROM bookings
+       WHERE room_id = $1 AND date = $2 AND status != 'rejected'
+         AND start_time < $4 AND end_time > $3`,
+      [roomId, date, startTime, endTime],
+    )
+    if ((overlapRes.rowCount ?? 0) > 0) {
+      await client.query('ROLLBACK')
+      return { ok: false, error: 'overlap' }
+    }
+
+    await client.query(
+      `INSERT INTO bookings (room_id, date, start_time, end_time, requester_name, requester_email, purpose, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', now(), now())`,
+      [roomId, date, startTime, endTime, requesterName, requesterEmail, purpose || null],
+    )
+    await client.query('COMMIT')
+    return { ok: true }
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {})
+    console.error('[createBookingAtomically] transaction failed:', err)
+    return { ok: false, error: 'db_error' }
+  } finally {
+    client.release()
   }
 }
 

@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { getPayloadClient, getRegistrationCountForEvent, getBookingsForRoomOnDate } from '@/lib/payload'
+import { getPayloadClient, createRegistrationAtomically, createBookingAtomically } from '@/lib/payload'
 
 export type ActionResult = { ok: true } | { ok: false; error: string }
 
@@ -16,22 +16,13 @@ export async function submitRsvp(formData: FormData): Promise<ActionResult> {
     return { ok: false, error: 'Kérjük, töltse ki a nevet és az e-mail címet.' }
   }
 
-  const payload = await getPayloadClient()
-  if (!payload) return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
-
   try {
-    const event = await payload.findByID({ collection: 'events', id: eventId })
-    if (event.capacity) {
-      const currentCount = await getRegistrationCountForEvent(eventId)
-      if (currentCount + guestCount > event.capacity) {
-        return { ok: false, error: 'Sajnáljuk, a rendezvény betelt.' }
-      }
+    const result = await createRegistrationAtomically(eventId, name, email, guestCount)
+    if (!result.ok) {
+      if (result.error === 'full') return { ok: false, error: 'Sajnáljuk, a rendezvény betelt.' }
+      if (result.error === 'not_found') return { ok: false, error: 'A rendezvény nem található.' }
+      return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
     }
-
-    await payload.create({
-      collection: 'registrations',
-      data: { event: eventId, name, email, guestCount, status: 'confirmed' },
-    })
     revalidatePath(`/esemenyek/${eventSlug}`)
     return { ok: true }
   } catch (error) {
@@ -53,22 +44,13 @@ export async function submitBooking(formData: FormData): Promise<ActionResult> {
     return { ok: false, error: 'Kérjük, töltsön ki minden kötelező mezőt.' }
   }
 
-  const payload = await getPayloadClient()
-  if (!payload) return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
-
   try {
-    const existing = await getBookingsForRoomOnDate(roomId, date)
-    const overlaps = existing.some(
-      (b) => startTime < (b.endTime as string) && endTime > (b.startTime as string),
-    )
-    if (overlaps) {
-      return { ok: false, error: 'A kiválasztott időpont már foglalt, kérjük válasszon másikat.' }
+    const result = await createBookingAtomically(roomId, date, startTime, endTime, requesterName, requesterEmail, purpose)
+    if (!result.ok) {
+      if (result.error === 'overlap') return { ok: false, error: 'A kiválasztott időpont már foglalt, kérjük válasszon másikat.' }
+      if (result.error === 'not_found') return { ok: false, error: 'A terem nem található.' }
+      return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
     }
-
-    await payload.create({
-      collection: 'bookings',
-      data: { room: roomId, date, startTime, endTime, requesterName, requesterEmail, purpose, status: 'pending' },
-    })
     revalidatePath('/teremfoglalas')
     return { ok: true }
   } catch (error) {
