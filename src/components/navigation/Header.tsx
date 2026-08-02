@@ -93,14 +93,14 @@ export const Header: React.FC = () => {
     <header className="sticky top-0 z-50 shadow-md">
       {/* 1. sor: fehér, logó + közösségi ikonok + CTA gomb */}
       <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 h-28 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/brand/vmk-logo.png"
               alt="Vörösmarty Mihály Könyvtár"
               width={200}
               height={80}
-              className="h-14 w-auto"
+              className="h-24 w-auto"
               priority
             />
           </Link>
@@ -155,7 +155,7 @@ export const Header: React.FC = () => {
                 type="button"
                 onClick={() => setCatalogOpen((v) => !v)}
                 onBlur={() => setTimeout(() => setCatalogOpen(false), 150)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#159097] hover:bg-[#0f656a] text-white text-xs font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
+                className="flex items-center gap-1.5 px-3 py-2 rounded bg-[#159097] hover:bg-[#0f656a] text-white text-sm font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
                 aria-haspopup="true"
                 aria-expanded={catalogOpen}
               >
@@ -191,10 +191,13 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. sor: teal, fő navigáció */}
-      <div className="hidden lg:block bg-[#159097]">
+      {/* 2. sor: FEHÉR háttér, sötétszürke szöveg - Playwright screenshot
+          pixelmintavétellel ellenőrizve a valós oldalon (255,255,255 háttér,
+          (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
+          elválasztó csík színét vetítette rá az egész sorra). */}
+      <div className="hidden lg:block bg-white border-b-2 border-[#00909B]">
         <div className="max-w-7xl mx-auto px-4">
-          <nav className="flex items-center gap-1 h-11 text-xs font-semibold text-white/90 uppercase tracking-wide">
+          <nav className="flex items-center gap-1 h-12 text-sm font-semibold text-[#333333] uppercase tracking-wide">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div
@@ -205,7 +208,7 @@ export const Header: React.FC = () => {
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-white/10 hover:text-white transition-colors"
+                    className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors"
                     aria-expanded={openDropdown === item.label}
                     aria-haspopup="true"
                   >
@@ -246,7 +249,7 @@ export const Header: React.FC = () => {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-white/10 hover:text-white transition-colors"
+                  className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors"
                 >
                   {item.label}
                 </a>
@@ -254,7 +257,7 @@ export const Header: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-white/10 hover:text-white transition-colors"
+                  className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -265,7 +268,7 @@ export const Header: React.FC = () => {
               href="/kereses"
               aria-label="Keresés a honlapon"
               title="Keresés a honlapon"
-              className="ml-auto p-2 rounded text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+              className="ml-auto p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
             >
               <Search className="w-4 h-4" />
             </Link>
