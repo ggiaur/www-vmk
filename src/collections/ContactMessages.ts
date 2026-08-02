@@ -13,6 +13,10 @@ import type { CollectionConfig } from 'payload'
 // vagy tranzakciós e-mail szolgáltató), a feldolgozás emberi munkafolyamat.
 export const ContactMessages: CollectionConfig = {
   slug: 'contact-messages',
+  labels: {
+    singular: 'Kapcsolatfelvételi üzenet',
+    plural: 'Kapcsolatfelvételi üzenetek',
+  },
   admin: {
     group: 'Foglalások és tranzakciók',
     useAsTitle: 'name',

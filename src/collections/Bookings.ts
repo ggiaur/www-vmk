@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Bookings: CollectionConfig = {
   slug: 'bookings',
+  labels: {
+    singular: 'Foglalás',
+    plural: 'Foglalások',
+  },
   admin: {
     group: 'Foglalások és tranzakciók',
     useAsTitle: 'requesterName',

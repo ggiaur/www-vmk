@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'Médiafájl',
+    plural: 'Médiafájlok',
+  },
   access: {
     // Media (images/PDFs on a public library site) should be viewable by
     // anyone — only the admin panel write operations stay behind auth.

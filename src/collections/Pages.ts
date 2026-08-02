@@ -3,6 +3,10 @@ import { PageBlocks } from '../blocks/PageBlocks'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: {
+    singular: 'Oldal',
+    plural: 'Oldalak',
+  },
   access: {
     read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
   },

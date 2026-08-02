@@ -5,6 +5,10 @@ import type { CollectionConfig } from 'payload'
 // so a staff member can follow up manually — it does not process payments.
 export const DonationPledges: CollectionConfig = {
   slug: 'donation-pledges',
+  labels: {
+    singular: 'Adományfelajánlás',
+    plural: 'Adományfelajánlások',
+  },
   admin: {
     group: 'Foglalások és tranzakciók',
     useAsTitle: 'name',

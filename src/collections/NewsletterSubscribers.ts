@@ -6,6 +6,10 @@ import type { CollectionConfig } from 'payload'
 // action nélkül, hanem valódi, ellenőrzött beküldést.
 export const NewsletterSubscribers: CollectionConfig = {
   slug: 'newsletter-subscribers',
+  labels: {
+    singular: 'Hírlevél-feliratkozó',
+    plural: 'Hírlevél-feliratkozók',
+  },
   admin: {
     group: 'Foglalások és tranzakciók',
     useAsTitle: 'email',

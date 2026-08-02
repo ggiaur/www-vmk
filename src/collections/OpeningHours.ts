@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const OpeningHours: CollectionConfig = {
   slug: 'opening-hours',
+  labels: {
+    singular: 'Nyitvatartási időszak',
+    plural: 'Nyitvatartások',
+  },
   access: {
     read: () => true,
   },

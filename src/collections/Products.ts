@@ -5,6 +5,10 @@ import type { CollectionConfig } from 'payload'
 // Visitors are directed to contact/visit the library to purchase.
 export const Products: CollectionConfig = {
   slug: 'products',
+  labels: {
+    singular: 'Termék',
+    plural: 'Termékek',
+  },
   access: {
     read: () => true,
   },

@@ -3,6 +3,10 @@ import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisea
 
 export const News: CollectionConfig = {
   slug: 'news',
+  labels: {
+    singular: 'Hír',
+    plural: 'Hírek',
+  },
   access: {
     // Public REST API only sees published articles; logged-in editors see
     // drafts too (matches the admin panel's own preview behaviour).

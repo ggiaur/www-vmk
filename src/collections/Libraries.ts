@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Libraries: CollectionConfig = {
   slug: 'libraries',
+  labels: {
+    singular: 'Könyvtár',
+    plural: 'Könyvtárak',
+  },
   access: {
     read: () => true,
   },

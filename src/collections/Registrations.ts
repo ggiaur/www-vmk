@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Registrations: CollectionConfig = {
   slug: 'registrations',
+  labels: {
+    singular: 'Jelentkezés',
+    plural: 'Jelentkezések',
+  },
   admin: {
     group: 'Foglalások és tranzakciók',
     useAsTitle: 'name',

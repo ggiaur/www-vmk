@@ -3,6 +3,10 @@ import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisea
 
 export const Events: CollectionConfig = {
   slug: 'events',
+  labels: {
+    singular: 'Esemény',
+    plural: 'Események',
+  },
   access: {
     read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
   },
