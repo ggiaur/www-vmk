@@ -59,6 +59,42 @@ export async function submitBooking(formData: FormData): Promise<ActionResult> {
   }
 }
 
+// A /kapcsolat űrlapja korábban egy action és onSubmit nélküli <form> volt,
+// name attribútumok nélküli mezőkkel — minden beküldött üzenet nyomtalanul
+// elveszett, miközben a látogató sikeresnek hitte a küldést.
+const CONTACT_SUBJECTS = ['general', 'lending', 'event', 'room', 'local-history'] as const
+
+export async function submitContactMessage(formData: FormData): Promise<ActionResult> {
+  const name = String(formData.get('name') ?? '').trim()
+  const email = String(formData.get('email') ?? '').trim()
+  const subjectRaw = String(formData.get('subject') ?? '').trim()
+  const message = String(formData.get('message') ?? '').trim()
+
+  if (!name || !email || !message) {
+    return { ok: false, error: 'Kérjük, töltse ki a nevet, az e-mail címet és az üzenetet.' }
+  }
+
+  // A tárgy a kliensről érkezik, tehát nem megbízható: ha nem a várt
+  // értékkészletből való, a Payload select mezője elutasítaná a mentést, és
+  // az üzenet — megint csak — elveszne. Ismeretlen érték esetén inkább a
+  // biztonságos alapértelmezésre esünk vissza, mint hogy eldobjuk a levelet.
+  const subject = (CONTACT_SUBJECTS as readonly string[]).includes(subjectRaw) ? subjectRaw : 'general'
+
+  const payload = await getPayloadClient()
+  if (!payload) return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
+
+  try {
+    await payload.create({
+      collection: 'contact-messages',
+      data: { name, email, subject, message, status: 'new' },
+    })
+    return { ok: true }
+  } catch (error) {
+    console.error('[submitContactMessage] Failed to save contact message:', error)
+    return { ok: false, error: 'Hiba történt az üzenet elküldésekor.' }
+  }
+}
+
 export async function submitDonationPledge(formData: FormData): Promise<ActionResult> {
   const name = String(formData.get('name') ?? '').trim()
   const email = String(formData.get('email') ?? '').trim()

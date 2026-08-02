@@ -1,7 +1,8 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock } from 'lucide-react'
+import { ContactForm } from '@/components/forms/ContactForm'
 
 export const metadata: Metadata = {
   title: 'Kapcsolat – Vörösmarty Mihály Könyvtár',
@@ -76,57 +77,7 @@ export default function KapcsolatPage() {
           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">Írjon nekünk üzenetet!</h2>
 
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Teljes Név *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Minta János"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">E-mail cím *</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="janos@example.com"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Tárgy / Téma</label>
-                <select className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]">
-                  <option>Általános érdeklődés</option>
-                  <option>Könyvhosszabbítás / Kölcsönzés</option>
-                  <option>Rendezvény regisztráció</option>
-                  <option>Terembérlés</option>
-                  <option>Helyismereti kutatás</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Üzenet szövege *</label>
-                <textarea
-                  rows={5}
-                  required
-                  placeholder="Írja le kérdését vagy észrevételét..."
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn-primary w-full sm:w-auto justify-center text-sm"
-              >
-                <Send className="w-4 h-4" />
-                <span>Üzenet Elküldése</span>
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </div>

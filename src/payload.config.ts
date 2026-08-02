@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 
 import { Bookings } from './collections/Bookings'
 import { Documents } from './collections/Documents'
+import { ContactMessages } from './collections/ContactMessages'
 import { DonationPledges } from './collections/DonationPledges'
 import { Events } from './collections/Events'
 import { Galleries } from './collections/Galleries'
@@ -78,6 +79,7 @@ export default buildConfig({
     Rooms,
     Bookings,
     DonationPledges,
+    ContactMessages,
     Products,
   ],
   editor: lexicalEditor(),
