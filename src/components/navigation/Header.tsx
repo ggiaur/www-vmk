@@ -144,7 +144,7 @@ export const Header: React.FC = () => {
                   className={`w-7 h-7 flex items-center justify-center shrink-0 ${flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={flag.img} alt={flag.label} width={26} height={19} className="object-contain rounded-sm" />
+                  <img src={flag.img} alt={flag.label} width={31} height={22} className="object-contain rounded-sm" />
                 </a>
               ))}
               <a
@@ -155,7 +155,7 @@ export const Header: React.FC = () => {
                 className="w-7 h-7 flex items-center justify-center shrink-0"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={26} height={19} className="object-contain rounded-sm" />
+                <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={31} height={22} className="object-contain rounded-sm" />
               </a>
             </div>
 
@@ -217,7 +217,7 @@ export const Header: React.FC = () => {
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors"
+                    className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
                     aria-expanded={openDropdown === item.label}
                     aria-haspopup="true"
                   >
@@ -258,7 +258,7 @@ export const Header: React.FC = () => {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors"
+                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </a>
@@ -266,7 +266,7 @@ export const Header: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-0.5 px-3 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors"
+                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </Link>

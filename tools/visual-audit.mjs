@@ -77,6 +77,58 @@ const CHECKS = {
         l.btnY > l.iconY ? 'BELOW' : 'beside'
       } icons (Δ${l.btnY - l.iconY}px)`,
   },
+  widgetContentBg: {
+    real: () => {
+      const titleEl = [...document.querySelectorAll('h1')].find((h) => h.textContent.trim() === 'FEWA')
+      const box = titleEl ? titleEl.closest('.box') : null
+      return box ? getComputedStyle(box).backgroundColor : null
+    },
+    local: () => {
+      const titleEl = [...document.querySelectorAll('aside div.font-bold')].find((h) =>
+        /webarch[ií]vum/i.test(h.textContent || ''),
+      )
+      // titleEl -> colored header div -> outer card div -> 2nd child (content area)
+      const card = titleEl ? titleEl.parentElement?.parentElement : null
+      const contentDiv = card ? card.children[1] : null
+      return contentDiv ? getComputedStyle(contentDiv).backgroundColor : null
+    },
+    compare: (r, l) => r === l,
+    describe: (r, l) => `real=${r} vs local=${l} (widget tartalom-terület háttere - a valós oldalon minden widgeten egységesen ez a szín)`,
+  },
+  newsCardTitleBg: {
+    real: () => {
+      const card = document.querySelector('.elements a.box.type1:not(.main)')
+      const h2 = card ? card.querySelector('h2') : null
+      return h2 ? getComputedStyle(h2).backgroundColor : null
+    },
+    local: () => {
+      const card = document.querySelector('main a[href^="/hirek/"]')
+      const titleBar = card ? card.querySelector('div:nth-child(2)') : null
+      return titleBar ? getComputedStyle(titleBar).backgroundColor : null
+    },
+    compare: (r, l) => r != null && l != null,
+    describe: (r, l) => `real=${r} vs local=${l} (hírkártya címsáv háttere - csak jelenlét-ellenőrzés, a szín kártyánként rotál)`,
+  },
+  bannerToHeaderGap: {
+    real: () => {
+      const nav = document.querySelector('nav.navbar.navbar-default')
+      const banner = document.querySelector('.carousel-inner img, .item.active img')
+      if (!nav || !banner) return null
+      const navBottom = Math.round(nav.getBoundingClientRect().bottom)
+      const bannerTop = Math.round(banner.getBoundingClientRect().top)
+      return bannerTop - navBottom
+    },
+    local: () => {
+      const nav = document.querySelector('header nav')
+      const banner = document.querySelector('img[alt^="A városban"]')
+      if (!nav || !banner) return null
+      const navBottom = Math.round(nav.getBoundingClientRect().bottom)
+      const bannerTop = Math.round(banner.getBoundingClientRect().top)
+      return bannerTop - navBottom
+    },
+    compare: (r, l) => Math.abs(r - l) <= 10,
+    describe: (r, l) => `real gap=${r}px vs local gap=${l}px (a banner-kép közvetlenül a navigáció alatt kell hogy kezdődjön, rés nélkül)`,
+  },
   iconRowAlignment: {
     real: () => {
       const imgs = [...document.querySelectorAll('.navbar-select > li > a img, .navbar-select > li > a em')]
@@ -103,6 +155,32 @@ const CHECKS = {
   },
 }
 
+// Self-consistency regression: the local nav must never wrap to a second
+// line at ANY common desktop width, regardless of what the real site does -
+// this class of bug (nav item text wrapping mid-phrase) was reported by the
+// user at a browser width this script did not previously test (it only ever
+// checked 1440px). Tests the local site alone across a width range.
+const RESPONSIVE_WIDTHS = [1920, 1440, 1280, 1200, 1150, 1100, 1024]
+
+async function runResponsiveChecks(browser) {
+  let pass = 0
+  let fail = 0
+  for (const width of RESPONSIVE_WIDTHS) {
+    const page = await browser.newPage({ viewport: { width, height: 400 } })
+    await page.goto(LOCAL_URL, { waitUntil: 'networkidle', timeout: 30000 })
+    const navHeight = await page.evaluate(() => {
+      const nav = document.querySelector('header nav')
+      return nav ? Math.round(nav.getBoundingClientRect().height) : null
+    })
+    const ok = navHeight != null && navHeight <= 60
+    console.log(`${ok ? 'PASS' : 'FAIL'}  navNoWrap@${width}px: navHeight=${navHeight}px (want <=60px, single line)`)
+    if (ok) pass++
+    else fail++
+    await page.close()
+  }
+  return { pass, fail }
+}
+
 async function run() {
   const browser = await chromium.launch()
   const realPage = await browser.newPage({ viewport: VIEWPORT })
@@ -126,6 +204,11 @@ async function run() {
     if (ok) pass++
     else fail++
   }
+
+  console.log('')
+  const responsive = await runResponsiveChecks(browser)
+  pass += responsive.pass
+  fail += responsive.fail
 
   console.log(`\n${pass} passed, ${fail} failed`)
   await browser.close()

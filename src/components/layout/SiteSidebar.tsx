@@ -149,7 +149,11 @@ export function SiteSidebar() {
       <div className="bg-[#00909B] px-4 py-2.5 rounded-t-lg">
         <h2 className="text-sm font-bold text-white uppercase tracking-wide">Menü</h2>
       </div>
-      <nav className="text-[15px] -mt-3 pb-2 mb-4">
+      {/* A valós oldalon a MENÜ doboz tartalom-területe (és minden más
+          widget tartalom-területe is) egységesen világos ciánkék -
+          Playwright-tal 6 különböző widgeten mérve konzisztensen
+          rgb(204,233,235) = #CCE9EB, NEM fehér. */}
+      <nav className="text-[15px] px-4 pt-1 pb-3 mb-4 bg-[#CCE9EB] rounded-b-lg">
         {MENU_ITEMS.map((item) => (
           <div key={item.href}>
             {item.children ? (
@@ -208,7 +212,7 @@ export function SiteSidebar() {
             <div className={`${w.bg} px-3 py-2`}>
               <div className="font-bold text-xs uppercase tracking-wide leading-tight">{w.label}</div>
             </div>
-            <div className="bg-white px-3 py-4 flex flex-col items-center text-center gap-1.5">
+            <div className="bg-[#CCE9EB] px-3 py-4 flex flex-col items-center text-center gap-1.5">
               <div className="text-slate-400">{w.icon}</div>
               {w.sublabel && <div className="text-[11px] text-slate-500 leading-tight">{w.sublabel}</div>}
             </div>
