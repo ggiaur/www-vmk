@@ -1,6 +1,7 @@
 import React from 'react'
 import { MapPin, Phone } from 'lucide-react'
 import { NewsletterForm } from '@/components/forms/NewsletterForm'
+import { REAL_CONTAINER } from '@/lib/layout'
 
 // A valós vmk.hu lábléce 3 oszlopos (Hírlevél | Kapcsolat | jelvények),
 // NEM 4 oszlopos - Playwright getComputedStyle-lal mérve a tényleges
@@ -15,7 +16,7 @@ import { NewsletterForm } from '@/components/forms/NewsletterForm'
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#00909B] text-teal-50 pt-10 pb-0 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-10">
+      <div className={`${REAL_CONTAINER} grid grid-cols-1 md:grid-cols-3 gap-8 pb-10`}>
         {/* Column 1: Hírlevél - a valós oldalon a cím H2, 24px, félkövér
             (700), NEM nagybetűs, és a vonal a doboz TETEJÉN van (2px
             solid fehér border-top a wrapper divjén), nem a szöveg alatt -
@@ -74,7 +75,7 @@ export const Footer: React.FC = () => {
 
       {/* Bottom Bar - a valós oldalon egy árnyalattal világosabb teal sáv */}
       <div className="bg-[#33A6AF]">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-teal-50">
+        <div className={`${REAL_CONTAINER} py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-teal-50`}>
           <p>© {new Date().getFullYear()} Vörösmarty Mihály Könyvtár. Minden jog fenntartva.</p>
           <p className="flex items-center gap-1">
             <span>Next.js 15 &amp; Payload CMS v3 alapokon</span>

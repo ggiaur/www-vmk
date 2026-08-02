@@ -1,5 +1,6 @@
 import React from 'react'
 import { SiteSidebar } from '@/components/layout/SiteSidebar'
+import { REAL_CONTAINER } from '@/lib/layout'
 
 // A valós www.vmk.hu MINDEN belső oldalon megtartja a teljes bal oldali
 // sávot (MENÜ + widget-torony), nem csak a főoldalon - ezt Playwright
@@ -10,7 +11,7 @@ import { SiteSidebar } from '@/components/layout/SiteSidebar'
 // mellett.
 export function PageWithSidebar({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
+    <div className={`${REAL_CONTAINER} py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8`}>
       <SiteSidebar />
       <main className="min-w-0">{children}</main>
     </div>

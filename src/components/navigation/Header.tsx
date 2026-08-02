@@ -204,8 +204,8 @@ export const Header: React.FC = () => {
           pixelmintavétellel ellenőrizve a valós oldalon (255,255,255 háttér,
           (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
           elválasztó csík színét vetítette rá az egész sorra). */}
-      <div className="hidden lg:block bg-white border-b-[5px] border-[#00909B]">
-        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px]">
+      <div className="hidden lg:block bg-white">
+        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px] border-b-[5px] border-[#00909B]">
           <nav className="flex items-center gap-1 h-[45px] text-[19px] font-normal tracking-normal text-[#333333] uppercase">
             {NAV_ITEMS.map((item) =>
               item.children ? (

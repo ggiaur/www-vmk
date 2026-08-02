@@ -8,6 +8,7 @@ import { HomeNewsTile } from '@/components/home/HomeNewsTile'
 import { FigyelemBanner } from '@/components/home/FigyelemBanner'
 import { EventCalendarWidget } from '@/components/home/EventCalendarWidget'
 import { EventCard } from '@/components/ui/EventCard'
+import { REAL_CONTAINER } from '@/lib/layout'
 import {
   getLatestNews,
   getUpcomingEvents,
@@ -108,7 +109,7 @@ export default async function HomePage() {
     <div>
       <LocationBanner locations={locations} />
 
-      <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
+      <div className={`${REAL_CONTAINER} py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8`}>
         <SiteSidebar />
 
         <main className="min-w-0">
