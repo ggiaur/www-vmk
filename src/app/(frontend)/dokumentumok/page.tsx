@@ -6,6 +6,10 @@ import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { getAllDocuments } from '@/lib/payload'
 import { FileText, Download, Filter } from 'lucide-react'
 
+function isMediaObject(media: unknown): media is { url?: string | null } {
+  return typeof media === 'object' && media !== null
+}
+
 export const metadata: Metadata = {
   title: 'Hivatalos Dokumentumok & Letöltések – Vörösmarty Mihály Könyvtár',
   description: 'SZMSZ, Éves beszámolók, Pályázati kiírások és letölthető űrlapok.',
@@ -101,35 +105,45 @@ export default async function DokumentumokPage({
       {/* Document table */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="divide-y divide-slate-100">
-          {displayDocs.map((doc) => (
-            <div
-              key={doc.id}
-              className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-amber-50 text-[#159097] flex items-center justify-center shrink-0 mt-0.5">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[11px] px-2 py-0.5 rounded font-semibold bg-slate-100 text-slate-700 inline-block mb-1">
-                    {catLabels[doc.category] ?? doc.category}
-                  </span>
-                  <h3 className="font-bold text-slate-900 text-base">{doc.title}</h3>
-                  <span className="text-xs text-slate-400">
-                    Vonatkozó év: {doc.year ?? 2026} • Letöltve: {doc.downloadCount ?? 0} alkalommal
-                  </span>
-                </div>
-              </div>
-
-              <a
-                href="#"
-                className="btn-primary text-xs shrink-0 justify-center"
+          {displayDocs.map((doc) => {
+            const fileUrl = 'file' in doc && isMediaObject(doc.file) ? doc.file.url ?? undefined : undefined
+            return (
+              <div
+                key={doc.id}
+                className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
               >
-                <Download className="w-4 h-4" />
-                <span>Letöltés (PDF)</span>
-              </a>
-            </div>
-          ))}
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-amber-50 text-[#159097] flex items-center justify-center shrink-0 mt-0.5">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] px-2 py-0.5 rounded font-semibold bg-slate-100 text-slate-700 inline-block mb-1">
+                      {catLabels[doc.category] ?? doc.category}
+                    </span>
+                    <h3 className="font-bold text-slate-900 text-base">{doc.title}</h3>
+                    <span className="text-xs text-slate-400">
+                      Vonatkozó év: {doc.year ?? 2026} • Letöltve: {doc.downloadCount ?? 0} alkalommal
+                    </span>
+                  </div>
+                </div>
+
+                {fileUrl ? (
+                  <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs shrink-0 justify-center">
+                    <Download className="w-4 h-4" />
+                    <span>Letöltés (PDF)</span>
+                  </a>
+                ) : (
+                  <span
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-slate-100 text-slate-400 shrink-0 justify-center cursor-not-allowed"
+                    title="A fájl még nincs feltöltve"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Nincs feltöltve</span>
+                  </span>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
       </div>

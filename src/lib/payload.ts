@@ -256,8 +256,8 @@ export async function getAllStaff() {
     if (!payload) return []
     const result = await payload.find({
       collection: 'staff',
-      limit: 100,
-      sort: 'order',
+      limit: 250,
+      sort: 'order,name',
       depth: 1,
     })
     return result.docs

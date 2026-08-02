@@ -14,11 +14,11 @@ export default async function MunkatarsakPage() {
   const staffMembers = await getAllStaff().catch(() => [])
 
   const defaultStaff = [
-    { id: 's1', name: 'Burián Jácint', position: 'Igazgató', phone: '+36 22 312 845', email: 'igazgato@vmk.hu', dept: 'Igazgatóság' },
-    { id: 's2', name: 'Kovács Zsuzsanna', position: 'Igazgatóhelyettes / Szakmai vezető', phone: '+36 22 312 845 / 102', email: 'kovacs.zsuzsanna@vmk.hu', dept: 'Igazgatóság' },
-    { id: 's3', name: 'Tóth Katalin', position: 'Olvasószolgálati Részlegvezető', phone: '+36 22 312 845 / 105', email: 'olvasoszolgalat@vmk.hu', dept: 'Központi Könyvtár' },
-    { id: 's4', name: 'Szabó Péter', position: 'Helyismereti Szakreferens', phone: '+36 22 312 845 / 110', email: 'helyismeret@vmk.hu', dept: 'Helyismereti Részleg' },
-    { id: 's5', name: 'Nagy Andrea', position: 'Gyermekkönyvtáros', phone: '+36 22 312 845 / 112', email: 'gyermekkonyvtar@vmk.hu', dept: 'Gyermekkönyvtár' },
+    { id: 's1', name: 'Horváth Adrienn', position: 'Igazgató', phone: '+36 22 513 933', email: 'igazgato@vmk.hu', dept: 'Igazgatóság' },
+    { id: 's2', name: 'Kálmánné Heim Ágnes', position: 'Szakmai igazgatóhelyettes', phone: '+36 22 340 698', email: 'kalmanne.agi@vmk.hu', dept: 'Igazgatóság' },
+    { id: 's3', name: 'Fülöp Andrea', position: 'Titkárságvezető / Gazdasági vezető', phone: '', email: 'fulop.andrea@vmk.hu', dept: 'Igazgatóság' },
+    { id: 's4', name: 'Darvas Veronika Judit', position: 'Olvasószolgálati vezető', phone: '', email: 'darvas.veronika@vmk.hu', dept: 'Központi Könyvtár' },
+    { id: 's5', name: 'Kaltenecker Klára', position: 'Állományalakítási vezető', phone: '+36 22 340 698', email: 'kaltenecker.klara@vmk.hu', dept: 'Állományalakítás' },
   ]
 
   const displayStaff = staffMembers.length > 0 ? staffMembers : defaultStaff
