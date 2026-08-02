@@ -124,14 +124,14 @@ export async function getArchivedNews(limit = 100) {
 
 // ─── Events ───────────────────────────────────────────────────────────────────
 
-export async function getUpcomingEvents(limit = 4) {
+export async function getUpcomingEvents(limit = 4, sortDirection: 'asc' | 'desc' = 'asc') {
   try {
     const payload = await getPayloadClient()
     if (!payload) return []
     const result = await payload.find({
       collection: 'events',
       limit,
-      sort: 'startDate',
+      sort: sortDirection === 'desc' ? '-startDate' : 'startDate',
       where: {
         and: [
           { _status: { equals: 'published' } },

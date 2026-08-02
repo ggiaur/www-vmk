@@ -1,15 +1,25 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
-import { MapPin, Phone, Mail, Clock } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Building2 } from 'lucide-react'
 import { ContactForm } from '@/components/forms/ContactForm'
+import { getAllLibraries } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'Kapcsolat – Vörösmarty Mihály Könyvtár',
   description: 'A Vörösmarty Mihály Könyvtár elérhetőségei, megközelíthetősége és kapcsolatfelvételi űrlapja.',
 }
 
-export default function KapcsolatPage() {
+// A valós www.vmk.hu "Elérhetőségeink" oldala elsősorban egy munkatárs- és
+// tagkönyvtár-elérhetőségi jegyzék (vezetőség, osztályok, majd mind az 5
+// tagkönyvtár saját címe/telefonja), NEM egy általános üzenetküldő űrlap -
+// ezt lekérdezve derült ki. A felhasználó ugyanakkor explicit kérte, hogy a
+// kapcsolatfelvételi űrlap MŰKÖDJÖN (korábban ma javítva) - ezért az űrlapot
+// megtartjuk, és kiegészítjük a hiányzó, valós tagkönyvtár-jegyzékkel.
+export default async function KapcsolatPage() {
+  const libraries = await getAllLibraries()
+  const branches = libraries.filter((l) => l.type === 'branch')
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-10">
       <Breadcrumb items={[{ label: 'Kapcsolat' }]} />
@@ -45,6 +55,8 @@ export default function KapcsolatPage() {
                 <div>
                   <strong className="block text-slate-900">Telefon / Kölcsönzőpult</strong>
                   <a href="tel:+3622312845" className="hover:underline">+36 22 312 845</a>
+                  <span className="mx-1">·</span>
+                  <a href="tel:+3622312684" className="hover:underline">+36 22 312 684</a>
                 </div>
               </div>
 
@@ -81,6 +93,41 @@ export default function KapcsolatPage() {
           </div>
         </div>
       </div>
+
+      {branches.length > 0 && (
+        <div className="border-t border-slate-200 pt-8">
+          <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-[#159097]" />
+            Tagkönyvtáraink Elérhetőségei
+          </h2>
+          <p className="text-sm text-slate-500 mb-6">
+            Keresse fel az Önhöz legközelebbi tagkönyvtárunkat közvetlenül is.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {branches.map((branch) => (
+              <Link
+                key={branch.id}
+                href={`/tagkonyvtarak/${branch.slug}`}
+                className="block bg-white p-4 rounded-lg border border-slate-200 hover:border-[#159097] hover:shadow-sm transition-all"
+              >
+                <h3 className="font-bold text-slate-900 text-sm mb-2">{branch.name}</h3>
+                <div className="space-y-1 text-xs text-slate-600">
+                  <div className="flex items-start gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#e4b02c] shrink-0 mt-0.5" />
+                    <span>{branch.address}</span>
+                  </div>
+                  {branch.phone && (
+                    <div className="flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-[#e4b02c] shrink-0" />
+                      <span>{branch.phone}</span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

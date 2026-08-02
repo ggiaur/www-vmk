@@ -13,12 +13,13 @@ export const metadata: Metadata = {
 export default async function EsemenyekPage({
   searchParams,
 }: {
-  searchParams: Promise<{ audience?: string }>
+  searchParams: Promise<{ audience?: string; sort?: string }>
 }) {
   const params = await searchParams
   const activeAudience = params.audience ?? 'all'
+  const sortDirection = params.sort === 'desc' ? 'desc' : 'asc'
 
-  let allEvents = await getUpcomingEvents(20).catch(() => [])
+  let allEvents = await getUpcomingEvents(20, sortDirection).catch(() => [])
 
   if (activeAudience !== 'all') {
     allEvents = allEvents.filter((item) => item.targetAudience === activeAudience)
@@ -63,31 +64,63 @@ export default async function EsemenyekPage({
           Könyvtárunk gazdag kulturális és közösségi programokkal várja az érdeklődőket.
         </p>
 
-        {/* Célcsoport szűrők */}
-        <div className="flex flex-wrap gap-2 mt-6">
-          {[
-            { label: 'Minden korosztály', value: 'all' },
-            { label: 'Gyerekeknek', value: 'children' },
-            { label: 'Fiataloknak', value: 'teens' },
-            { label: 'Felnőtteknek', value: 'adults' },
-            { label: 'Szenioroknak', value: 'seniors' },
-          ].map((aud) => (
-            <Link
-              key={aud.value}
-              href={aud.value === 'all' ? '/esemenyek' : `/esemenyek?audience=${aud.value}`}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                activeAudience === aud.value
-                  ? 'bg-[#e4b02c] text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              {aud.label}
-            </Link>
-          ))}
+        {/* Célcsoport szűrők + dátum-rendezés - a valós vmk.hu esemény-listája
+            is szűrő legördülőkkel és dátum növekvő/csökkenő rendezéssel
+            dolgozik, rácsos kártyák helyett lineáris listával. */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mt-6">
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: 'Minden korosztály', value: 'all' },
+              { label: 'Gyerekeknek', value: 'children' },
+              { label: 'Fiataloknak', value: 'teens' },
+              { label: 'Felnőtteknek', value: 'adults' },
+              { label: 'Szenioroknak', value: 'seniors' },
+            ].map((aud) => {
+              const qs = new URLSearchParams()
+              if (aud.value !== 'all') qs.set('audience', aud.value)
+              if (sortDirection !== 'asc') qs.set('sort', sortDirection)
+              const href = qs.toString() ? `/esemenyek?${qs.toString()}` : '/esemenyek'
+              return (
+                <Link
+                  key={aud.value}
+                  href={href}
+                  className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                    activeAudience === aud.value
+                      ? 'bg-[#e4b02c] text-white shadow-sm'
+                      : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  {aud.label}
+                </Link>
+              )
+            })}
+          </div>
+
+          <div className="flex items-center gap-1 text-xs font-semibold">
+            {(['asc', 'desc'] as const).map((dir) => {
+              const qs = new URLSearchParams()
+              if (activeAudience !== 'all') qs.set('audience', activeAudience)
+              if (dir !== 'asc') qs.set('sort', dir)
+              const href = qs.toString() ? `/esemenyek?${qs.toString()}` : '/esemenyek'
+              return (
+                <Link
+                  key={dir}
+                  href={href}
+                  className={`px-3 py-1.5 rounded-lg transition-colors ${
+                    sortDirection === dir
+                      ? 'bg-[#159097] text-white'
+                      : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  {dir === 'asc' ? 'Növekvő' : 'Csökkenő'}
+                </Link>
+              )
+            })}
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="flex flex-col gap-4">
         {displayEvents.map((event) => {
           const loc = 'location' in event ? event.location : undefined
           const locationName =
