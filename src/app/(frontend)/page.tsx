@@ -106,6 +106,23 @@ export default async function HomePage() {
         <main className="min-w-0">
           <h1 className="text-xl font-bold text-slate-900 mb-4">Hírek, Események</h1>
 
+          <p className="text-xs text-slate-500 leading-relaxed mb-5 text-justify">
+            Rendezvényeinken kép- és hangfelvételek készülhetnek. Tiltakozása esetén törölhetjük az
+            Önről készült felvételeket. Bővebben:{' '}
+            <a
+              href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#159097] hover:underline"
+            >
+              Adatkezelési tájékoztató 3.9 pontja
+            </a>
+            . Nyilvános eseményeinken a Vörösmarty Mihály Könyvtár megbízott munkatársain kívül mások
+            is készíthetnek felvételt. Utóbbi esetben felhívjuk látogatóink, partnereink figyelmét,
+            hogy saját céljukból történő felvételkészítésért való jogi felelősség nem a Vörösmarty
+            Mihály Könyvtárat terheli.
+          </p>
+
           <FigyelemBanner />
 
           <div className="flex items-center justify-between mb-4">
