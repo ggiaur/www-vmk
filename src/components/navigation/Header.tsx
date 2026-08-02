@@ -99,7 +99,7 @@ export const Header: React.FC = () => {
           Bootstrap .container (1170px) méretéhez igazítva, hogy keskenyebb
           böngészőablakban se tapadjon a tartalom a képernyő szélére. */}
       <div className="bg-white border-b border-slate-100">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between gap-4">
+        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px] py-3 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/brand/vmk-logo.png"
@@ -118,7 +118,7 @@ export const Header: React.FC = () => {
                 aria-label="E-mail"
                 className="w-7 h-7 rounded bg-[#159097] flex items-center justify-center hover:opacity-80 transition-opacity"
               >
-                <Mail className="w-4 h-4 text-white" strokeWidth={2} />
+                <Mail className="w-[22px] h-[22px] text-white" strokeWidth={2} />
               </a>
               {ICON_LINKS.map((icon) => (
                 <a
@@ -205,7 +205,7 @@ export const Header: React.FC = () => {
           (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
           elválasztó csík színét vetítette rá az egész sorra). */}
       <div className="hidden lg:block bg-white border-b-2 border-[#00909B]">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
+        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px]">
           <nav className="flex items-center gap-1 h-12 text-sm font-semibold text-[#333333] uppercase tracking-wide">
             {NAV_ITEMS.map((item) =>
               item.children ? (

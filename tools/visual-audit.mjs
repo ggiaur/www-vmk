@@ -231,14 +231,53 @@ const CHECKS = {
         Math.max(...l) - Math.min(...l)
       }px (want <=${TOLERANCE_PX}px)`,
   },
+  // KÜLÖN ellenőrzés a MÉRETRE, nem csak az igazításra - a fenti
+  // iconRowAlignment csak azt méri, hogy az ikonok középpontja egy
+  // vonalban van-e, ami PASS-t adhat akkor is, ha az egyik ikon
+  // sokkal kisebb/nagyobb a többinél (pontosan ez történt a mail
+  // ikonnal: 16px volt a 28px-es facebook/instagram mellett, az
+  // igazítás-check ezt nem vette észre, mert középre volt igazítva).
+  iconSizeOutlier: {
+    real: () => {
+      const imgs = [...document.querySelectorAll('.navbar-select > li > a img, .navbar-select > li > a em')]
+      return imgs.map((el) => Math.round(el.getBoundingClientRect().height))
+    },
+    local: () => {
+      const anchors = [...document.querySelectorAll('header .flex.items-center.gap-2 > a')]
+      return anchors.map((a) => {
+        const content = a.querySelector('img, svg')
+        return content ? Math.round(content.getBoundingClientRect().height) : 0
+      })
+    },
+    // Nem várunk azonos abszolút magasságokat (más natív képfájlok),
+    // csak azt, hogy egyik oldalon se legyen olyan ikon, ami a
+    // legnagyobbhoz képest aránytalanul (<55%) kicsi - ez a "mail
+    // ikon 16px a 28px-es mellett" hibaosztály.
+    compare: (r, l) => {
+      const minRatio = (arr) => Math.min(...arr) / Math.max(...arr)
+      return minRatio(l) >= 0.55
+    },
+    describe: (r, l) => {
+      const minRatio = (arr) => (Math.min(...arr) / Math.max(...arr)).toFixed(2)
+      return `real méretek=[${r.join(',')}] arány=${minRatio(r)} | local méretek=[${l.join(',')}] arány=${minRatio(l)} (want local >=0.55)`
+    },
+  },
 }
 
-// Self-consistency regression: the local nav must never wrap to a second
-// line at ANY common desktop width, regardless of what the real site does -
-// this class of bug (nav item text wrapping mid-phrase) was reported by the
-// user at a browser width this script did not previously test (it only ever
-// checked 1440px). Tests the local site alone across a width range.
-const RESPONSIVE_WIDTHS = [1920, 1440, 1280, 1200, 1150, 1100, 1024]
+// Self-consistency regressions: things that must hold at EVERY common
+// desktop width, not just the one width (1440px) the main CHECKS above
+// happen to test. Both bugs below were reported by the user at widths this
+// script did not previously cover, and both slipped through as false PASS.
+const RESPONSIVE_WIDTHS = [1920, 1440, 1280, 1200, 1150, 1100, 1024, 992, 900]
+
+// A valós vmk.hu Bootstrap 3 .container-t használ: a konténer szélessége
+// NEM folyamatosan skálázódik, hanem törésponton ugrik (1170/970/750px),
+// plusz egy fix 30px belső margó a logóig. Ezt a képletet 7 valós mért
+// pontból vezettük le (mind a 7 pixelre egyezett) - lásd MINOSEGPOLITIKA.md.
+function expectedRealLogoX(viewportWidth) {
+  const container = viewportWidth >= 1200 ? 1170 : viewportWidth >= 992 ? 970 : 750
+  return Math.round((viewportWidth - container) / 2) + 30
+}
 
 async function runResponsiveChecks(browser) {
   let pass = 0
@@ -246,14 +285,28 @@ async function runResponsiveChecks(browser) {
   for (const width of RESPONSIVE_WIDTHS) {
     const page = await browser.newPage({ viewport: { width, height: 400 } })
     await page.goto(LOCAL_URL, { waitUntil: 'networkidle', timeout: 30000 })
+
     const navHeight = await page.evaluate(() => {
       const nav = document.querySelector('header nav')
       return nav ? Math.round(nav.getBoundingClientRect().height) : null
     })
-    const ok = navHeight != null && navHeight <= 60
-    console.log(`${ok ? 'PASS' : 'FAIL'}  navNoWrap@${width}px: navHeight=${navHeight}px (want <=60px, single line)`)
-    if (ok) pass++
+    const wrapOk = navHeight != null && navHeight <= 60
+    console.log(`${wrapOk ? 'PASS' : 'FAIL'}  navNoWrap@${width}px: navHeight=${navHeight}px (want <=60px, single line)`)
+    if (wrapOk) pass++
     else fail++
+
+    const logoX = await page.evaluate(() => {
+      const el = document.querySelector('header img[alt*="Vörösmarty"]')
+      return el ? Math.round(el.getBoundingClientRect().x) : null
+    })
+    const expected = expectedRealLogoX(width)
+    const marginOk = logoX != null && Math.abs(logoX - expected) <= 15
+    console.log(
+      `${marginOk ? 'PASS' : 'FAIL'}  logoMargin@${width}px: local x=${logoX}px, valós-képlet szerint várt=${expected}px (±15px)`,
+    )
+    if (marginOk) pass++
+    else fail++
+
     await page.close()
   }
   return { pass, fail }
