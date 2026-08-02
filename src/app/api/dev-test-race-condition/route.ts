@@ -23,6 +23,26 @@ export async function POST() {
     data: { name: '__RACE_TEST_LIBRARY__', slug: `race-test-lib-${suffix}`, type: 'branch', address: 'Test address 1.' },
   })
 
+  try {
+    return await runRaceTests(payload, testLibrary.id, suffix, results)
+  } finally {
+    // Guarantees the library is cleaned up even if event/room creation
+    // itself throws (found the hard way: an earlier debugging run left
+    // exactly one orphaned __RACE_TEST_LIBRARY__ row behind because the
+    // original code only deleted it inside the booking test's own
+    // finally block, never reached if something failed before that).
+    await payload.delete({ collection: 'libraries', id: testLibrary.id }).catch(() => {})
+  }
+}
+
+async function runRaceTests(
+  payload: Awaited<ReturnType<typeof getPayloadClient>>,
+  libraryId: string | number,
+  suffix: number,
+  results: Record<string, unknown>,
+) {
+  if (!payload) throw new Error('unreachable: payload checked by caller')
+
   // --- RSVP race test: capacity=1, 10 concurrent guestCount=1 attempts ---
   const minimalRichText = {
     root: {
@@ -50,7 +70,7 @@ export async function POST() {
       title: '__RACE_TEST_EVENT__',
       slug: `race-test-event-${suffix}`,
       startDate: new Date().toISOString(),
-      location: testLibrary.id,
+      location: libraryId,
       description: minimalRichText,
       capacity: 1,
       _status: 'published',
@@ -74,7 +94,7 @@ export async function POST() {
   // --- Booking race test: same room+date+time, 10 concurrent attempts ---
   const testRoom = await payload.create({
     collection: 'rooms',
-    data: { name: '__RACE_TEST_ROOM__', slug: `race-test-room-${suffix}`, library: testLibrary.id, capacity: 4 },
+    data: { name: '__RACE_TEST_ROOM__', slug: `race-test-room-${suffix}`, library: libraryId, capacity: 4 },
   })
 
   try {
@@ -90,7 +110,6 @@ export async function POST() {
   } finally {
     await payload.delete({ collection: 'bookings', where: { room: { equals: testRoom.id } } })
     await payload.delete({ collection: 'rooms', id: testRoom.id })
-    await payload.delete({ collection: 'libraries', id: testLibrary.id })
   }
 
   return NextResponse.json({ ok: true, results })
