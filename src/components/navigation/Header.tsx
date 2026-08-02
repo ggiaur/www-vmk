@@ -112,13 +112,19 @@ export const Header: React.FC = () => {
           </Link>
 
           <div className="hidden md:flex flex-col items-end gap-2 shrink-0">
-            <div className="flex items-center gap-2">
+            {/* A valós fejlécen az e-mail ikon egy sima, teal színű Font
+                Awesome glyph, SEMMILYEN háttér-dobozzal - nyers HTML:
+                <em style="color:#159097" class="fa fa-envelope">. Korábban
+                tévesen egy tömör teal jelvény-dobozba raktam, mint a többi
+                (kép-alapú) ikont. Az ikon-közök is mérve: a valós oldalon
+                minden ikon között egységesen ~13px a rés, nem 8px. */}
+            <div className="flex items-center gap-[13px]">
               <a
                 href="mailto:kolcsonzo@vmk.hu"
                 aria-label="E-mail"
-                className="w-7 h-7 rounded bg-[#159097] flex items-center justify-center hover:opacity-80 transition-opacity"
+                className="flex items-center justify-center shrink-0 text-[#159097] hover:opacity-70 transition-opacity"
               >
-                <Mail className="w-[22px] h-[22px] text-white" strokeWidth={2} />
+                <Mail className="w-[26px] h-[26px]" strokeWidth={1.75} />
               </a>
               {ICON_LINKS.map((icon) => (
                 <a
@@ -133,7 +139,6 @@ export const Header: React.FC = () => {
                   <img src={icon.img} alt={icon.label} className="max-w-full max-h-full object-contain" />
                 </a>
               ))}
-              <span className="w-px h-6 bg-slate-200" aria-hidden="true" />
               {LANG_FLAGS.map((flag) => (
                 <a
                   key={flag.label}
@@ -205,7 +210,7 @@ export const Header: React.FC = () => {
           (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
           elválasztó csík színét vetítette rá az egész sorra). */}
       <div className="hidden lg:block bg-white">
-        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px] border-b-[5px] border-[#00909B]">
+        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px] border-b-[5px] border-[#00909B]">
           <nav className="flex items-center gap-1 h-[45px] text-[19px] font-normal tracking-normal text-[#333333] uppercase">
             {NAV_ITEMS.map((item) =>
               item.children ? (

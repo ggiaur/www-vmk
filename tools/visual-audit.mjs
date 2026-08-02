@@ -139,15 +139,17 @@ const CHECKS = {
       return { w: Math.round(r.width), h: Math.round(r.height) }
     },
     local: () => {
-      const link = document.querySelector('aside a[href*="webarchivum.vmk.hu"]')
-      const card = link ? link.querySelector('div') : null
+      // A widget teljes kártyája maga az <a> elem (cím-sáv + kép két
+      // közvetlen div gyermeke) - NEM az első gyermek div, ami csak a
+      // cím-sávot adná vissza.
+      const card = document.querySelector('aside a[href*="webarchivum.vmk.hu"]')
       if (!card) return null
       const r = card.getBoundingClientRect()
       return { w: Math.round(r.width), h: Math.round(r.height) }
     },
     // Nagy tolerancia: a valós widget saját promóciós KÉPET mutat, a
-    // miénk ikon+alcím szöveget - ez tudatos, egyszerűsített szerkezeti
-    // választás, csak durva méretrend-egyezést várunk el (±40%).
+    // miénk is valós letöltött képet (2026-08-02 óta) - de eltérő
+    // képarányúak lehetnek, csak durva méretrend-egyezést várunk el.
     compare: (r, l) => Math.abs(r.w - l.w) / r.w <= 0.15 && Math.abs(r.h - l.h) / r.h <= 0.4,
     describe: (r, l) => `real ${r.w}x${r.h} vs local ${l.w}x${l.h} (szélesség ±15%, magasság ±40% tolerancia - eltérő tartalom-típus miatt)`,
   },
@@ -216,11 +218,18 @@ const CHECKS = {
       })
     },
     local: () => {
-      const imgs = [...document.querySelectorAll('header .flex.items-center.gap-2 img, header .flex.items-center.gap-2 svg')]
-      return imgs.map((el) => {
-        const r = el.getBoundingClientRect()
-        return Math.round(r.y + r.height / 2)
-      })
+      // aria-label alapú szelektor, NEM a szülő pontos Tailwind gap-
+      // osztálya alapján - az utóbbi elavulttá vált, amikor a gap
+      // értékét gap-2-ről gap-[13px]-re javítottuk (mért valós
+      // érték alapján), és a check emiatt hamis FAIL-t adott.
+      const anchors = [...document.querySelectorAll('header > div:first-child a[aria-label]')]
+      return anchors
+        .map((a) => a.querySelector('img, svg'))
+        .filter(Boolean)
+        .map((el) => {
+          const r = el.getBoundingClientRect()
+          return Math.round(r.y + r.height / 2)
+        })
     },
     compare: (r, l) => {
       const spread = (arr) => (arr.length ? Math.max(...arr) - Math.min(...arr) : 0)
@@ -243,7 +252,7 @@ const CHECKS = {
       return imgs.map((el) => Math.round(el.getBoundingClientRect().height))
     },
     local: () => {
-      const anchors = [...document.querySelectorAll('header .flex.items-center.gap-2 > a')]
+      const anchors = [...document.querySelectorAll('header > div:first-child a[aria-label]')]
       return anchors.map((a) => {
         const content = a.querySelector('img, svg')
         return content ? Math.round(content.getBoundingClientRect().height) : 0
@@ -284,7 +293,11 @@ const CHECKS = {
       return nav ? getComputedStyle(nav).borderBottomWidth : null
     },
     local: () => {
-      const row = document.querySelector('header > div:nth-child(2)')
+      // A border a BELSŐ konténeren van (a max-w-[...] divjén), nem a
+      // külső, teljes szélességű wrapperen - 2026-08-02-én ezt is
+      // javítottuk (korábban a csík tévesen a teljes viewport
+      // szélességén futott), a szelektort is frissítve kellett erre.
+      const row = document.querySelector('header > div:nth-child(2) > div')
       return row ? getComputedStyle(row).borderBottomWidth : null
     },
     compare: (r, l) => r === l,
