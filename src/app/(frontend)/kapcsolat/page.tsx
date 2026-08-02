@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { MapPin, Phone, Mail, Clock, Building2 } from 'lucide-react'
 import { ContactForm } from '@/components/forms/ContactForm'
 import { getAllLibraries } from '@/lib/payload'
@@ -21,7 +22,8 @@ export default async function KapcsolatPage() {
   const libraries = await getAllLibraries()
   const branches = libraries.filter((l) => l.type === 'branch')
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-10">
+    <PageWithSidebar>
+      <div className="space-y-10">
       <Breadcrumb items={[{ label: 'Kapcsolat' }]} />
 
       <div className="border-b border-slate-200 pb-6">
@@ -128,6 +130,7 @@ export default async function KapcsolatPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </PageWithSidebar>
   )
 }

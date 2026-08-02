@@ -94,7 +94,7 @@ const MENU_ITEMS: Array<{ label: string; href: string; external?: boolean }> = [
   { label: 'Foglalkozáskereső', href: 'https://www.vmk.hu/foglalkozaskereso', external: true },
 ]
 
-export function HomeSidebar() {
+export function SiteSidebar() {
   return (
     <aside className="space-y-3">
       <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider px-1 mb-2">Menü</h2>

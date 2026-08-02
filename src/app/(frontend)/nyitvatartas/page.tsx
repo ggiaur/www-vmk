@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { Clock, MapPin, Phone, Mail, AlertTriangle } from 'lucide-react'
 import { getAllLibraries, getAllOpeningHours, formatOpeningHours } from '@/lib/payload'
 
@@ -96,7 +97,8 @@ export default async function NyitvatartasPage() {
     librariesWithSchedule.length > 0 ? librariesWithSchedule : FALLBACK_LIBRARIES
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <div className="space-y-8">
       <Breadcrumb items={[{ label: 'Nyitvatartás' }]} />
 
       <div className="border-b border-slate-200 pb-6">
@@ -202,6 +204,7 @@ export default async function NyitvatartasPage() {
           </div>
         ))}
       </div>
-    </div>
+      </div>
+    </PageWithSidebar>
   )
 }

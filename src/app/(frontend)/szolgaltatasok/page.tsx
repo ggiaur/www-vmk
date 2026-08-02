@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { getAllServices } from '@/lib/payload'
 import { BookOpen, FileText, Bookmark, Users, CheckCircle2 } from 'lucide-react'
 
@@ -23,7 +24,8 @@ export default async function SzolgaltatasokPage() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-10">
+    <PageWithSidebar>
+      <div className="space-y-10">
       <Breadcrumb items={[{ label: 'Szolgáltatások & Díjszabás' }]} />
 
       <div className="border-b border-slate-200 pb-6">
@@ -119,6 +121,7 @@ export default async function SzolgaltatasokPage() {
           </table>
         </div>
       </div>
-    </div>
+      </div>
+    </PageWithSidebar>
   )
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { getAllGalleries } from '@/lib/payload'
 import { Image as ImageIcon, Calendar } from 'lucide-react'
 
@@ -18,7 +19,8 @@ export default async function GaleriaPage() {
   const galleries = await getAllGalleries().catch(() => [])
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <div className="space-y-8">
       <Breadcrumb items={[{ label: 'Galéria' }]} />
 
       <div className="border-b border-slate-200 pb-6">
@@ -67,6 +69,7 @@ export default async function GaleriaPage() {
           })}
         </div>
       )}
-    </div>
+      </div>
+    </PageWithSidebar>
   )
 }

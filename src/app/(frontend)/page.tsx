@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, Calendar } from 'lucide-react'
-import { HomeSidebar } from '@/components/home/HomeSidebar'
+import { SiteSidebar } from '@/components/layout/SiteSidebar'
 import { LocationBanner } from '@/components/home/LocationBanner'
 import { HomeNewsTile } from '@/components/home/HomeNewsTile'
 import { FigyelemBanner } from '@/components/home/FigyelemBanner'
@@ -101,7 +101,7 @@ export default async function HomePage() {
       <LocationBanner locations={locations} />
 
       <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
-        <HomeSidebar />
+        <SiteSidebar />
 
         <main className="min-w-0">
           <h1 className="text-xl font-bold text-slate-900 mb-4">Hírek, Események</h1>

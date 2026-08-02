@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import { getLibraryBySlug, getOpeningHoursForLibrary, formatOpeningHours } from '@/lib/payload'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
@@ -28,7 +29,8 @@ export default async function TagkonyvtarDetailPage({ params }: Args) {
   const schedule = formatOpeningHours(hours)
 
   return (
-    <article className="max-w-4xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <article className="max-w-4xl space-y-8">
       <Breadcrumb items={[{ label: 'Tagkönyvtárak', href: '/tagkonyvtarak' }, { label: branch.name }]} />
 
       <div>
@@ -71,6 +73,7 @@ export default async function TagkonyvtarDetailPage({ params }: Args) {
           </div>
         </div>
       )}
-    </article>
+      </article>
+    </PageWithSidebar>
   )
 }

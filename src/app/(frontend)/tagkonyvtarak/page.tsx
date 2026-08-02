@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { LibraryCard } from '@/components/ui/LibraryCard'
 import { getLibrariesByType } from '@/lib/payload'
 import { Building2 } from 'lucide-react'
@@ -23,7 +24,8 @@ export default async function TagkonyvtarakPage() {
   const displayBranches = branches.length > 0 ? branches : FALLBACK_BRANCHES
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+    <PageWithSidebar>
+      <div className="space-y-8">
       <Breadcrumb items={[{ label: 'Tagkönyvtárak' }]} />
 
       <div className="border-b border-slate-200 pb-6">
@@ -50,6 +52,7 @@ export default async function TagkonyvtarakPage() {
           />
         ))}
       </div>
-    </div>
+      </div>
+    </PageWithSidebar>
   )
 }
