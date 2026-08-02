@@ -25,9 +25,9 @@ import {
 // változott.
 export default async function HomePage() {
   const cmsNews = await getLatestNews(6)
-  const cmsEvents = await getUpcomingEvents(2)
+  const cmsEvents = await getUpcomingEvents(3)
   const cmsLibraries = await getAllLibraries()
-  const cmsGalleries = await getAllGalleries(6)
+  const cmsGalleries = await getAllGalleries(9)
 
   const sampleNews = [
     {
@@ -69,6 +69,14 @@ export default async function HomePage() {
       locationName: 'Gyermekkönyvtár (Bartók B. tér 1.)',
       targetAudience: 'children',
       slug: 'mesedelutan-gyermekkonyvtar',
+    },
+    {
+      id: 'fe3',
+      title: 'Csendes Olvasás a Szabadban',
+      startDate: '2026-08-04T16:00:00.000Z',
+      locationName: 'Széna Téri Tagkönyvtár',
+      targetAudience: 'adults',
+      slug: 'csendes-olvasas-szabadban',
     },
   ]
 
@@ -172,7 +180,7 @@ export default async function HomePage() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {displayEvents.map((event) => {
                   const loc = 'location' in event ? event.location : undefined
                   const locationName =
@@ -204,14 +212,44 @@ export default async function HomePage() {
                 year={now.getFullYear()}
                 month={now.getMonth()}
               />
-              <div className="bg-white border border-slate-200 rounded-lg p-4">
-                <h3 className="font-bold text-sm text-slate-800 mb-2">Folyóiratok könyvtárunkban</h3>
-                <p className="text-xs text-slate-500 mb-3">
-                  Kurrens folyóiratok a Központi Könyvtár Olvasótermében, valamint a Tagkönyvtárakban.
-                </p>
-                <Link href="/reszlegek" className="text-xs font-semibold text-[#159097] hover:underline">
-                  Kurrens folyóiratok listája →
-                </Link>
+              <div className="bg-green-50 border border-green-100 rounded-lg p-4 space-y-1.5">
+                <h3 className="font-bold text-sm text-slate-800 mb-1">Folyóiratok könyvtárunkban</h3>
+                <a
+                  href="http://www.vmk.hu/kurrens"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-xs font-semibold text-[#159097] hover:underline"
+                >
+                  Kurrens folyóiratok a Központi Könyvtár Olvasótermében →
+                </a>
+                <a
+                  href="https://www.vmk.hu/folyoiratok-a-tagkonyvtarakban"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-xs font-semibold text-[#159097] hover:underline"
+                >
+                  Kurrens folyóiratok a Tagkönyvtárakban →
+                </a>
+              </div>
+
+              <div className="bg-green-50 border border-green-100 rounded-lg p-4 space-y-1.5">
+                <h3 className="font-bold text-sm text-slate-800 mb-1">Idegennyelvi gyűjteményeink</h3>
+                <a
+                  href="https://www.vmk.hu/gateway-uk-m"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-xs font-semibold text-[#159097] hover:underline"
+                >
+                  Gateway UK gyűjtemény →
+                </a>
+                <a
+                  href="https://www.goethe.de/ins/hu/hu/index.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-xs font-semibold text-[#159097] hover:underline"
+                >
+                  Német nyelvi gyűjtemény (Goethe) →
+                </a>
               </div>
             </aside>
           </div>
