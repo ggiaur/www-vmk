@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { generateSlug } from '../lib/slugify'
 
 export const Services: CollectionConfig = {
   slug: 'services',
@@ -8,6 +9,17 @@ export const Services: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    // Automatikus slug-generálás a szolgáltatás nevéből.
+    beforeChange: [
+      ({ data }) => {
+        if (!data.slug && data.title) {
+          data.slug = generateSlug(data.title)
+        }
+        return data
+      },
+    ],
   },
   admin: {
     group: 'Szolgáltatások & Bolt',

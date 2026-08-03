@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisearch'
 import { scopedToOwnLibrary } from '../lib/access'
+import { generateSlug } from '../lib/slugify'
 
 export const News: CollectionConfig = {
   slug: 'news',
@@ -37,6 +38,17 @@ export const News: CollectionConfig = {
     drafts: true,
   },
   hooks: {
+    // Automatikus slug-generálás: ha a szerkesztő nem tölt ki slug-ot,
+    // a cím alapján generálódik (ékezet-mentes, kisbetűs, kötőjeles).
+    // Ha a slug már ki van töltve (szerkesztő manuálisan adta meg), azt hagyjuk.
+    beforeChange: [
+      ({ data }) => {
+        if (!data.slug && data.title) {
+          data.slug = generateSlug(data.title)
+        }
+        return data
+      },
+    ],
     afterChange: [
       async ({ doc }) => {
         if (doc._status === 'published') {

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { PageBlocks } from '../blocks/PageBlocks'
+import { generateSlug } from '../lib/slugify'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -24,6 +25,19 @@ export const Pages: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    // Automatikus slug-generálás az oldal címéből.
+    // Megjegyzés: az Oldalaknál a slug lehet többszintű útvonal
+    // (pl. 'hasznalat/beiratkozas') — a szerkesztő átírhatja.
+    beforeChange: [
+      ({ data }) => {
+        if (!data.slug && data.title) {
+          data.slug = generateSlug(data.title)
+        }
+        return data
+      },
+    ],
   },
   fields: [
     {

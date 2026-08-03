@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisearch'
 import { scopedToOwnLibrary } from '../lib/access'
+import { generateSlug } from '../lib/slugify'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -33,6 +34,15 @@ export const Events: CollectionConfig = {
     drafts: true,
   },
   hooks: {
+    // Automatikus slug-generálás a rendezvény címéből.
+    beforeChange: [
+      ({ data }) => {
+        if (!data.slug && data.title) {
+          data.slug = generateSlug(data.title)
+        }
+        return data
+      },
+    ],
     afterChange: [
       async ({ doc }) => {
         if (doc._status === 'published') {
