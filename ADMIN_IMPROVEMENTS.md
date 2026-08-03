@@ -16,73 +16,95 @@
 ## 1. FELADATLISTA
 
 ### 1A. Admin navigáció rendezése — `admin.group` minden collection-ben
-> Érintett fájlok: `src/collections/*.ts` (~15 fájl)  
-> Hatás: Az admin oldalsávja logikusan csoportosítva jelenik meg.
+> Commit: `882f1d6`
 
-- [x] `News.ts` — már kész: csoport = `'Tartalom'`
-- [x] `Events.ts` — már kész: csoport = `'Tartalom'`
-- [x] `Users.ts` — már kész: csoport = `'Rendszer'`
-- [x] `Bookings.ts` — már kész: csoport = `'Foglalások és tranzakciók'`
-- [x] `ContactMessages.ts` — már kész: csoport = `'Foglalások és tranzakciók'`
-- [ ] `Libraries.ts` — hiányzik: célcsoport = `'Könyvtárak & Helyszínek'`
-- [ ] `OpeningHours.ts` — hiányzik: célcsoport = `'Könyvtárak & Helyszínek'`
-- [ ] `Rooms.ts` — hiányzik: célcsoport = `'Könyvtárak & Helyszínek'`
-- [ ] `Staff.ts` — hiányzik: célcsoport = `'Munkatársak & Dokumentumok'`
-- [ ] `Documents.ts` — hiányzik: célcsoport = `'Munkatársak & Dokumentumok'`
-- [ ] `Services.ts` — hiányzik: célcsoport = `'Szolgáltatások & Bolt'`
-- [ ] `Products.ts` — hiányzik: célcsoport = `'Szolgáltatások & Bolt'`
-- [ ] `Partners.ts` — hiányzik: célcsoport = `'Szolgáltatások & Bolt'`
-- [ ] `Galleries.ts` — hiányzik: célcsoport = `'Tartalom'`
-- [ ] `Pages.ts` — hiányzik: célcsoport = `'Tartalom'`
-- [ ] `Media.ts` — hiányzik: célcsoport = `'Médiatár'`
-- [ ] `DonationPledges.ts` — hiányzik: célcsoport = `'Foglalások és tranzakciók'`
-- [ ] `NewsletterSubscribers.ts` — hiányzik: célcsoport = `'Foglalások és tranzakciók'`
-- [ ] `Registrations.ts` — hiányzik: célcsoport = `'Foglalások és tranzakciók'`
+- [x] `News.ts` — `'Tartalom'`
+- [x] `Events.ts` — `'Tartalom'`
+- [x] `Users.ts` — `'Rendszer'`
+- [x] `Bookings.ts` — `'Foglalások és tranzakciók'`
+- [x] `ContactMessages.ts` — `'Foglalások és tranzakciók'`
+- [x] `DonationPledges.ts` — `'Foglalások és tranzakciók'`
+- [x] `NewsletterSubscribers.ts` — `'Foglalások és tranzakciók'`
+- [x] `Registrations.ts` — `'Foglalások és tranzakciók'`
+- [x] `Libraries.ts` — `'Könyvtárak'`
+- [x] `OpeningHours.ts` — `'Könyvtárak'`
+- [x] `Rooms.ts` — `'Könyvtárak'`
+- [x] `Staff.ts` — `'Munkatársak & Dokumentumok'` *(javítva: volt 'Könyvtárak')*
+- [x] `Documents.ts` — `'Munkatársak & Dokumentumok'` *(javítva: volt 'Tartalom')*
+- [x] `Services.ts` — `'Szolgáltatások & Bolt'` *(javítva: volt 'Tartalom')*
+- [x] `Partners.ts` — `'Szolgáltatások & Bolt'` *(javítva: volt 'Könyvtárak')*
+- [x] `Products.ts` — `'Szolgáltatások & Bolt'` *(javítva: volt 'Foglalások és tranzakciók')*
+- [x] `Galleries.ts` — `'Tartalom'`
+- [x] `Pages.ts` — `'Tartalom'`
+- [x] `Media.ts` — `'Médiatár'` *(javítva: volt 'Rendszer')*
+
+**Végső admin navigáció-struktúra:**
+```
+📚 Könyvtárak          → Libraries, OpeningHours, Rooms
+📝 Tartalom            → News, Events, Pages, Galleries
+👥 Munkatársak & Dok.  → Staff, Documents
+🛒 Szolgáltatások      → Services, Products, Partners
+📋 Foglalások          → Bookings, Registrations, ContactMessages, DonationPledges, NewsletterSubscribers
+🖼️  Médiatár           → Media
+⚙️  Rendszer           → Users
+(alján) Globals        → HeaderSettings, FooterSettings, SiteMetadata, OpeningHoursGlobal
+```
 
 ### 1B. Slug auto-generálás (`beforeChange` hook)
-> Érintett fájlok: `src/collections/News.ts`, `src/collections/Events.ts`, `src/collections/Pages.ts`, `src/collections/Services.ts`  
-> Hatás: A szerkesztőnek nem kell manuálisan kitölteni a slug mezőt — a cím alapján automatikusan generálódik (ékezet-mentesítve, kisbetűs, kötőjeles).
+> Commit: `8e49953`
 
-- [ ] `src/lib/slugify.ts` — segédfüggvény létrehozása
-- [ ] `News.ts` — `beforeChange` hook hozzáadása
-- [ ] `Events.ts` — `beforeChange` hook hozzáadása
-- [ ] `Pages.ts` — `beforeChange` hook hozzáadása
-- [ ] `Services.ts` — `beforeChange` hook hozzáadása
+- [x] `src/lib/slugify.ts` — segédfüggvény (`generateSlug`) — magyar ékezetek kezelése
+- [x] `News.ts` — `beforeChange` hook hozzáadva
+- [x] `Events.ts` — `beforeChange` hook hozzáadva
+- [x] `Pages.ts` — `beforeChange` hook hozzáadva (többszintű slug átírható)
+- [x] `Services.ts` — `beforeChange` hook hozzáadva
 
 ### 1C. Globals implementálása
-> Érintett fájlok: `src/globals/*.ts` (új mappa), `src/payload.config.ts`  
-> Hatás: A könyvtárosok az admin felületen szerkeszthetik a fejlécet, láblécet és a SEO adatokat.
+> Commit: `8f1a5a5`
 
-- [ ] `src/globals/HeaderSettings.ts` létrehozása
-- [ ] `src/globals/FooterSettings.ts` létrehozása
-- [ ] `src/globals/SiteMetadata.ts` létrehozása
-- [ ] `src/globals/OpeningHoursGlobal.ts` létrehozása
-- [ ] `src/payload.config.ts` — globals regisztrálása
+- [x] `src/globals/HeaderSettings.ts` — TopBar telefon/email, OPAC URL, navigációs menüpontok
+- [x] `src/globals/FooterSettings.ts` — 3 oszlopos lábléc, social URL-ek, jogi sáv
+- [x] `src/globals/SiteMetadata.ts` — siteName, OG kép, canonical URL, GTM/GA4, noindex
+- [x] `src/globals/OpeningHoursGlobal.ts` — ünnepi zárások, banner üzenet
+- [x] `src/payload.config.ts` — globals[] tömb regisztrálva
 
 ### 1D. Custom Admin Dashboard
-> Érintett fájlok: `src/components/admin/Dashboard.tsx`, `src/payload.config.ts`  
-> Hatás: Az admin főoldala statisztikákat mutat (hírek száma, foglalások, legutóbbi üzenetek).
+> Commit: `aeead7f`
 
-- [ ] `src/components/admin/Dashboard.tsx` — React Server Component
-- [ ] `payload.config.ts` — `admin.components.views.Dashboard` regisztráció
-
----
-
-## 2. IMPLEMENTÁLÁS SORRENDJE
-
-```
-1A (admin.group) → 1B (slugify) → 1C (globals) → 1D (dashboard)
-```
-
-Minden lépés után: `npm run type-check` → commit → push.
+- [x] `src/components/admin/Dashboard.tsx` — statisztika kártyák + gyors-hozzáférés panel
+- [x] `payload.config.ts` — `admin.components.views.dashboard` regisztrálva
 
 ---
 
-## 3. COMMIT-NAPLÓ (folyamatosan frissítve)
+## 2. COMMIT-NAPLÓ
 
 | Commit hash | Leírás |
 |---|---|
-| *(üres — fejlesztés elkezdődik)* | — |
+| `882f1d6` | feat(admin): admin navigáció logikus csoportosítása — 6 collection javítva |
+| `8e49953` | feat(admin): slug auto-generálás beforeChange hook-okkal (News, Events, Pages, Services) |
+| `8f1a5a5` | feat(admin): 4 Payload Globals implementálva és regisztrálva |
+| `aeead7f` | feat(admin): custom admin dashboard — statisztika kártyák és gyors-hozzáférési panel |
+
+---
+
+## 3. ELVÉGZETT — A BRANCH MERGE-ELHETŐ
+
+Az összes feladat kész. A branch `feature/admin-improvements` → `main` merge előtt:
+
+### PR Ellenőrzőlista
+- [x] `npm run type-check` — 0 hiba
+- [x] `npm run test:unit` — 33/33 OK
+- [ ] Admin `/admin` URL betöltődik (manuális ellenőrzés futó stack-en)
+- [ ] Minden collection látható a megfelelő csoportban (manuális ellenőrzés)
+- [ ] Slug automatikusan generálódik új hír/esemény létrehozásakor (manuális ellenőrzés)
+- [ ] Globals megjelennek az admin navigációban (manuális ellenőrzés)
+- [ ] Dashboard statisztikák betöltődnek (manuális ellenőrzés)
+
+### Merge parancs (ha manuális ellenőrzés OK):
+```bash
+git checkout main
+git merge --no-ff feature/admin-improvements -m "feat(admin): admin felület teljes kialakítása (navigáció, globals, slugify, dashboard)"
+```
 
 ---
 
@@ -96,13 +118,11 @@ Ha félbeszakadt a munka:
 4. `npm run type-check` — mindig ellenőrizd az aktuális állapotot
 5. Commit-olj minden logikai egység után
 
----
+### Esetleges jövőbeli fejlesztések (nem kritikus, nem blokkoló)
 
-## 5. TESZTELÉSI ELLENŐRZŐLISTA (PR előtt)
-
-- [ ] `npm run type-check` — 0 hiba
-- [ ] `npm run test:unit` — 0 elbukott teszt
-- [ ] Admin `/admin` URL betöltődik
-- [ ] Minden collection látható a megfelelő csoportban
-- [ ] Slug automatikusan generálódik új hír/esemény létrehozásakor
-- [ ] Globals megjelennek az admin navigációban
+- [ ] `Galleries.ts`, `Products.ts`, `Rooms.ts` slug auto-generálás (ha szükséges)
+- [ ] E-mail értesítések `ContactMessages` és `Bookings` beérkezésekor (SMTP konfig szükséges)
+- [ ] `Dashboard.tsx` — „Legutóbb módosított tartalmak" szekció
+- [ ] Frontend: `HeaderSettings` és `FooterSettings` Globals bekötése a `Header.tsx` és `Footer.tsx` komponensekbe (jelenleg hardcoded adatok)
+- [ ] Frontend: `SiteMetadata` Global bekötése a `layout.tsx` `generateMetadata` funkciójába
+- [ ] Frontend: `OpeningHoursGlobal.bannerMessage` megjelenítése site-wide bannerként
