@@ -9,10 +9,25 @@ import sys
 from PIL import Image, ImageChops, ImageDraw
 
 # Egy képpontot akkor tekintünk eltérőnek, ha az RGB-távolság ennél nagyobb.
-# 30 elég nagy ahhoz, hogy a betű-élsimítási (anti-aliasing) apró
-# különbségeket ne jelezze hibaként, de a valódi szín/elrendezés-eltérést
-# megfogja.
-PIXEL_THRESHOLD = 30
+#
+# 0 = NINCS TOLERANCIA. Ez szándékos.
+#
+# Korábban itt 30 állt, azzal az indoklással, hogy "a böngészők közti
+# anti-aliasing eltérés nem hiba". Ez az indoklás HAMIS VOLT: a
+# pixel-diff.mjs UGYANAZT az egyetlen Chromium-példányt, ugyanazt az
+# operációs rendszert és ugyanazt a viewportot használja MINDKÉT
+# oldalhoz (real.png és local.png). Azonos renderelő motornál nincs
+# legitim böngészők-közti anti-aliasing különbség - ha a szöveg
+# másképp renderelődik, annak VALÓS oka van (más betűtípus, méret,
+# vastagság, szín vagy szubpixel-pozíció), tehát VALÓDI eltérés.
+#
+# Mérve, mennyit rejtett el a régi küszöb ugyanazon a felvételpáron:
+#   küszöb  0 -> 67.3% eltérő képpont  (a valóság)
+#   küszöb 30 -> 50.8% eltérő képpont  (amit jelentettem)
+# = 16.5 százalékpontnyi valódi eltérés eltüntetve egy önigazoló
+# számmal. A küszöböt csak akkor szabad 0 fölé emelni, ha az adott
+# értékhez MÉRT bizonyíték tartozik, nem feltételezés.
+PIXEL_THRESHOLD = 0
 BAND_HEIGHT = 100
 
 
@@ -73,7 +88,12 @@ def main():
 
     print(f'\nÖSSZ ELTÉRÉS: {pct:.1f}%  ({total_diff:,} / {total_px:,} képpont)')
     print(f'Összehasonlított terület: {w}x{h}px')
-    print(f'(A küszöb {PIXEL_THRESHOLD}/255 RGB-távolság - az ez alatti eltérés betű-élsimítás, nem hiba.)\n')
+    if PIXEL_THRESHOLD == 0:
+        print('(Küszöb 0 = nincs tolerancia. Ugyanaz a Chromium-példány renderelte')
+        print(' mindkét oldalt, ezért MINDEN eltérés valódi eltérés.)\n')
+    else:
+        print(f'(FIGYELEM: {PIXEL_THRESHOLD}/255 tolerancia aktív - ez elrejt valódi')
+        print(' eltéréseket. Csak MÉRT bizonyíték alapján szabad 0 fölé állítani.)\n')
 
     print('SÁVONKÉNTI BONTÁS (hol a legrosszabb):')
     print(f'{"y-tartomány":>16} | {"eltérés":>8} | grafikon')

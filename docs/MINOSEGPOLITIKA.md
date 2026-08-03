@@ -1,144 +1,122 @@
-# Minőségpolitika — www-vmk vizuális klón-egyezés
+# Minőségpolitika — www-vmk
 
-Ez a dokumentum azt írja le, hogy ténylegesen milyen módszerrel ellenőrzöm,
-hogy a www-vmk klón megegyezik-e a valós www.vmk.hu oldallal — nem
-ígéretként, hanem a `tools/visual-audit.mjs` szkript tényleges működésének
-leírásaként.
+Ez a dokumentum **szabályokat és elfogadási kritériumokat** rögzít.
+Nem hibatörténet és nem módszertani napló — az a
+[MINOSEG_TORTENET.md](./MINOSEG_TORTENET.md)-ben van.
 
-## A KÉT ESZKÖZ, ÉS MIÉRT KELL MINDKETTŐ
+Cél: kimondani, **mikor mondható valamire, hogy kész**, és **milyen
+bizonyíték nélkül nem mondható**.
 
-**1. `tools/pixel-diff.mjs` — TELJES OLDALAS KÉPPONT-DIFF (ez a fő eszköz)**
+---
 
-```bash
-node tools/pixel-diff.mjs
-```
+## 1. Alapelvek
 
-Screenshotot készít a valós vmk.hu-ról és a klónról ugyanazon a
-szélességen, majd **minden képpontot** összehasonlít. Kimenet:
-összesített eltérés %-ban, 100px-es sávonkénti bontás (hol a
-legrosszabb), és egy **hőtérkép** (piros = eltérés).
+**A1. Mérés, nem benyomás.**
+Vizuális egyezésre vonatkozó állítás csak mért számmal együtt
+hangozhat el. "Jónak tűnik", "megegyezik", "rendben van" önmagában
+nem elfogadható állítás.
 
-Ez azért fontos, mert **megtalálja azt is, amire senki nem gondolt
-előre**. Az első futtatás azonnal kimutatott egy olyan hibát, amit
-16 kézi ellenőrzés együtt sem vett észre: a fejlécem 14px-szel
-magasabb volt, és ez az eltolódás **lefelé kaszkádosodott** az egész
-oldalon — emiatt minden szöveg elcsúszva renderelődött.
+**A2. Nincs önigazoló tolerancia.**
+Tolerancia csak akkor állítható 0 fölé, ha az adott értékhez **mért
+bizonyíték** tartozik arról, hogy az eltérés az adott mértékig
+elkerülhetetlen. Tilos a toleranciát úgy megválasztani, hogy a
+jelenlegi állapot átmenjen.
 
-**2. `tools/visual-audit.mjs` — célzott ellenőrzések (kiegészítő)**
+**A3. Azonos mérési feltételek.**
+Az eredeti és a klón összehasonlítása **ugyanazzal a böngésző-
+példánnyal, ugyanazon az operációs rendszeren, ugyanazon a
+viewporton** történik. Ebből következik: **azonos feltételek mellett
+minden vizuális eltérés hiba**, beleértve a betű-renderelést is.
+Nincs "anti-aliasing" mentség.
 
-Konkrét, névvel nevezett tulajdonságokat mér (logó mérete, gomb
-színe stb.). Hasznos regresszió-figyelésre, DE önmagában
-**megtévesztő**: csak azt találja meg, amit előre beleírtam.
+**A4. A negatív eredmény is eredmény.**
+Ha egy mérés nem végezhető el megbízhatóan, azt ki kell mondani.
+Tilos becsült vagy valószínűnek tűnő számot valós mérésként közölni.
 
-### A korábbi rendszer hibája (őszintén)
+**A5. A lefedettség hiánya nem egyenlő a hibátlansággal.**
+Az, hogy egy ellenőrzés PASS, csak annyit jelent: *az adott,
+megnevezett tulajdonság rendben van*. Nem jelenti, hogy az oldal
+egyezik. Ezt minden jelentésben explicit ki kell mondani.
 
-A `visual-audit.mjs` "33 passed, 0 failed" eredményt adott, miközben
-a valóságban a képpontok **54,6%-a eltért**. Ennek négy oka volt:
+---
 
-1. **Whitelist, nem összehasonlítás.** ~16 tulajdonságot néztem több
-   ezerből. A "passed" csak annyit jelentett: *"az általam kiválasztott
-   16 dolog rendben van"* — a többiről semmit.
-2. **Mindig utólag futott.** Csak azután került be egy ellenőrzés,
-   hogy a hibát valaki más megtalálta. Sosem talált meg semmit elsőként.
-3. **A toleranciák önigazolóak voltak.** ±40% magasság-tolerancia,
-   ±20% képmagasság — ezek nem elvi alapon választott számok voltak,
-   hanem olyanok, amikkel az akkori állapot átment. Egy 170px vs 144px
-   eltérés (amit szemmel azonnal látni) "PASS"-t kapott.
-4. **A PASS-t erősebb bizonyítékként adtam elő, mint amilyen.** Ez volt
-   a tényleges hiba: a gyenge jelzést biztos egyezésként kommunikáltam.
+## 2. Elfogadási kritériumok
 
-**Ezért mostantól a `pixel-diff.mjs` a mérvadó**, a `visual-audit.mjs`
-csak kiegészítő regresszió-figyelő. Egy állítás csak akkor hangozhat el,
-hogy "egyezik", ha a pixel-diff száma is alátámasztja.
-
-## A pixel-diff korlátja: pozíció vs. tartalom (2026-08-02)
-
-A felhasználó kérésére lecloneoztuk a valós hírképeket (6 cikk, valós
-fotó, valós dátum-sorrend, pontosan a valós oldal aktuális állapotát
-követve). Az eredmény: a pixel-diff szám **alig mozdult** (50.0% →
-50.1%), pedig a tartalom immár pixelre ugyanaz.
-
-Ok, megmérve: a kártya pozíciója/mérete eltér a két oldalon
-(valós: x=443, y=1123, 262×450px; helyi: x=388, y=1193, 308×273px).
-A `pixel-diff.py` koordinátánként hasonlít - egy helyes tartalom,
-ami 55px-szel arrébb van, 100%-ban eltérőnek számít, még ha a kép
-maga pixelre azonos is.
-
-**Tanulság:** a nyers pixel-diff % csak akkor közelít 0-hoz, ha
-MINDKÉT feltétel teljesül - helyes tartalom ÉS pontos rács-pozíció
-minden szekcióban (nem csak a fejlécben, ahol ezt már elvégeztük).
-Ez utóbbi a teljes oldal Bootstrap-rács-matematikájának
-lereprodukálását igényelné minden szekcióban, nem csak a fejlécen.
-
-## Mi változott, és miért
-
-Korábban a vizuális ellenőrzés screenshot-ok szemrevételezéséből állt. Ez
-többször hibázott (pl. a katalógus gomb színét bordónak láttam telinek,
-holott teal volt; a fejléc navigációs sorát teal hátterűnek gondoltam,
-holott fehér). A szemrevételezés nem megbízható módszer méret- és
-színegyezés ellenőrzésére.
-
-## A jelenlegi módszer
-
-1. **Playwright** ugyanazon a viewport-méreten megnyitja a valós
-   `www.vmk.hu`-t ÉS a helyi klónt.
-2. Konkrét DOM-elemeken `getBoundingClientRect()` (pozíció, méret) és
-   `getComputedStyle()` (szín) hívásokkal MÉRÜNK — nem becslünk.
-3. Ahol a DOM-lekérdezés megbízhatatlan lehet (pl. cookie-consent overlay
-   eltorzíthatja a koordinátákat, vagy egy CSS-szelektor véletlenül rossz
-   elemet talál el), ott **közvetlen pixel-mintavétellel** (PIL, a
-   renderelt PNG konkrét (x,y) koordinátáin) ellenőrizzük a tényleges
-   RGB-értéket. Ez történt a fejléc navigációs sávjának színénél is.
-4. Minden ellenőrzés PASS/FAIL-t ír ki **konkrét számokkal**, nem
-   "úgy néz ki, hogy jó".
-5. A szkript a repóban van (`tools/visual-audit.mjs`), verzionálva —
-   minden jövőbeli vizuális változtatás után újra lefuttatható, és
-   bővíthető új ellenőrzésekkel.
-
-## Jelenlegi lefedettség (33 ellenőrzés)
-
-Négy új hibaosztály került be 2026-08-02-én, miután a felhasználó
-konkrét, pixelre mutatott eltéréseket talált, amiket a korábbi
-ellenőrzések nem fogtak meg: a fejléc-margó törésponti (nem
-folyamatos) skálázása, egy ikon aránytalanul kicsi mérete (a
-korábbi ellenőrzés csak a középre-igazítást nézte, a méretet nem),
-a navigáció betűmérete/súlya, és a lábléc oszlopcímeinek stílusa.
-Lásd `navFontMetrics`, `navBottomStripeWidth`, `wifiToFlagGap`,
-`footerColumnHeaderStyle`, `iconSizeOutlier`, `logoMargin@*px`.
-
-| # | Ellenőrzés | Mit mér |
+| Szint | Kritérium | Mérőeszköz |
 |---|---|---|
-| 1 | `logoBox` | Logó méret (szélesség/magasság) |
-| 2 | `logoLeftMargin` | Logó bal margója a képernyő szélétől |
-| 3 | `catalogBtnBelowIcons` | Katalógus gomb az ikonsor ALATT van-e |
-| 4 | `widgetContentBg` | Oldalsáv widget-dobozok háttérszíne |
-| 5 | `newsCardTitleBg` | Hírkártya címsávjának háttérszíne |
-| 6 | `bannerToHeaderGap` | Banner-kép közvetlenül a navigáció alatt kezdődik-e |
-| 7 | `widgetBoxSize` | Oldalsáv widget-doboz mérete (±15%/±40% tolerancia - eltérő tartalom-típus miatt) |
-| 8 | `newsCardImageHeight` | Hírkártya kép-részének magassága (±20% tolerancia) |
-| 9 | `bannerAspectRatio` | "A városban N helyen" banner-kép aránya (±5% - ugyanaz a letöltött kép) |
-| 10 | `figyelemBannerSize` | FIGYELEM! banner mérete - jelenleg SKIP, mert a valós oldalon időszakos/dinamikus tartalom, épp nincs kint, nincs stabil mérési alap |
-| 11 | `iconRowAlignment` | Fejléc-ikonok függőleges igazítása |
-| 12-18 | `navNoWrap@{szélesség}px` | A navigáció NEM törik két sorba 1024px és 1920px között egyetlen tesztelt szélességen sem |
+| **K1 — Szerkezet** | Minden szekció x-pozíciója és szélessége ±2px-en belül | `visual-audit.mjs` |
+| **K2 — Tipográfia** | Betűméret, -vastagság, -szín, sormagasság **pontosan** egyezik | `visual-audit.mjs` |
+| **K3 — Szín** | Háttér- és szövegszín RGB-értéke **pontosan** egyezik | `visual-audit.mjs` |
+| **K4 — Tartalom** | Nincs kitalált/tartalék adat éles nézetben | kód-átvizsgálás |
+| **K5 — Teljes egyezés** | `pixel-diff` ≤ 5% (küszöb = 0) | `pixel-diff.mjs` |
+| **K6 — Reszponzív** | K1–K3 teljesül 1024/1200/1440/1920px-en | `visual-audit.mjs` |
 
-## Mit NEM garantál ez a módszer
+**Kész állapot**: K1–K4 + K6 teljesül. K5 a végcél.
 
-- **Betűtípus-renderelés**: a szubpixel-szintű anti-aliasing böngészőnként/
-  operációs rendszerenként eltérhet, ez nem hiba.
-- **Csak azt látjuk, amit mérünk**: ha egy elemre nincs ellenőrzés, arról
-  nem tudunk automatikusan — ezért minden alkalommal, amikor a felhasználó
-  konkrét eltérést jelez, az az adott elemre új, permanens ellenőrzésként
-  kerül be a szkriptbe, nem eldobjuk a mérést a hiba javítása után.
-- **Csak a jelenleg felfedezett elemekre terjed ki**: a főoldal alján lévő
-  gazdag, képes widget-tartalom (SmartLibrary, EU-pályázati jelvények)
-  még nincs lemérve — ismert, nyitott tétel (ld. feladatlista #53).
+**Ismert korlát K5-höz**: eltérő fotótartalom (saját CMS más
+cikkekkel) matematikailag megakadályozza a 0%-ot. Ezért a K5
+mérésekor külön jelenteni kell a *szerkezeti* és a *tartalmi*
+eltérés arányát — nem összemosva.
 
-## Hogyan futtatható
+---
 
-```bash
-cd /srv/projects/www-vmk
-node tools/visual-audit.mjs
+## 3. Kötelező eljárás minden vizuális változtatás után
+
+1. `node tools/pixel-diff.mjs` — teljes oldalas mérés
+2. `node tools/visual-audit.mjs` — célzott ellenőrzések
+3. `npx tsc --noEmit && npx next lint && npx vitest run`
+4. **A teljes hőtérkép szisztematikus átnézése** — nem kiválasztott
+   részleteké. Az oldalt 600px-es szeletekre kell bontani, és
+   **minden szeletet** meg kell nézni.
+5. Jelentés: mért számok + mi nincs lefedve
+
+Az 5. pont elhagyása a jelentést érvénytelenné teszi.
+
+---
+
+## 4. Hibabejelentés kezelése
+
+Amikor eltérést jeleznek:
+
+1. **Reprodukálás mérése** — nem szemrevételezés
+2. Ha nem reprodukálható: ezt **ki kell mondani**, nem szabad
+   "javítottnak" nyilvánítani, amit nem láttunk
+3. Ha reprodukálható: javítás → **újramérés** → a két szám közlése
+4. **Permanens ellenőrzés felvétele** az adott hibaosztályra a
+   `visual-audit.mjs`-be, hogy ne térhessen vissza észrevétlenül
+
+---
+
+## 5. Tiltott állítások
+
+- „Pixelre pontos" — pixel-diff mérés nélkül
+- „Minden rendben" — a lefedettség korlátjának említése nélkül
+- „Javítottam" — újramérés nélkül
+- „Nem hiba, csak renderelési különbség" — azonos böngészőnél ilyen
+  nincs (A3)
+- Bármely szám, ami nem tényleges futtatásból származik
+
+---
+
+## 6. Eszközök
+
+| Eszköz | Szerep |
+|---|---|
+| `tools/pixel-diff.mjs` | **Mérvadó.** Teljes oldal, minden képpont, küszöb 0 |
+| `tools/pixel-diff.py` | A diff motorja (PIL) |
+| `tools/visual-audit.mjs` | Kiegészítő. Célzott, névvel nevezett ellenőrzések |
+
+`visual-audit.mjs` önmagában **nem elegendő** kész-nyilvánításhoz
+(A5 miatt) — csak regresszió-figyelésre.
+
+---
+
+## 7. Jelenlegi állapot (mérve, 2026-08-03)
+
+```
+pixel-diff (küszöb 0): 67.3% eltérés
+oldalmagasság: valós 5144px / klón 3412px (33.7% eltérés)
 ```
 
-A kimenet minden sora PASS vagy FAIL, konkrét mért számokkal — nem
-szubjektív értékelés.
+**Ez az állapot NEM felel meg K5-nek.** A dokumentum nem állítja,
+hogy az oldal kész — ez a nyitott, mért különbség.
