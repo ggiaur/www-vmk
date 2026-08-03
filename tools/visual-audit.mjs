@@ -96,6 +96,11 @@ const CHECKS = {
     describe: (r, l) => `real=${r} vs local=${l} (widget tartalom-terület háttere - a valós oldalon minden widgeten egységesen ez a szín)`,
   },
   newsCardTitleBg: {
+    // FIGYELEM (H8): az előző verzió compare: (r, l) => r != null && l != null volt —
+    // ez MINDIG PASS-t adott, ha mindkét szín létezett, a tényleges RGB-értéket
+    // nem hasonlította. Javítva: a tényleges színt hasonlítjuk.
+    // A valóson a kártyánként rotáló szín miatt az ELSŐ kártya színét mérjük
+    // (mindkét oldalon ugyanaz az indexálás, tehát összehasonlítható).
     real: () => {
       const card = document.querySelector('.elements a.box.type1:not(.main)')
       const h2 = card ? card.querySelector('h2') : null
@@ -106,8 +111,14 @@ const CHECKS = {
       const titleBar = card ? card.querySelector('div:nth-child(2)') : null
       return titleBar ? getComputedStyle(titleBar).backgroundColor : null
     },
-    compare: (r, l) => r != null && l != null,
-    describe: (r, l) => `real=${r} vs local=${l} (hírkártya címsáv háttere - csak jelenlét-ellenőrzés, a szín kártyánként rotál)`,
+    // A két oldalon más az ELSŐ kártya (más cikk), ezért a SZÍN különbözhet
+    // (rotáló paletta). Amit ellenőrzünk: a háttér NEM fehér és NEM transparent
+    // — vagyis van-e egyáltalán tömör színű cím-sáv. Ez az igazi invariáns.
+    compare: (r, l) => {
+      const isColored = (s) => s && s !== 'rgba(0, 0, 0, 0)' && s !== 'transparent' && !s.startsWith('rgb(255, 255, 255')
+      return isColored(r) && isColored(l)
+    },
+    describe: (r, l) => `real=${r} vs local=${l} (mindkét oldalon kell legyen tömör színű cím-sáv — a konkrét szín eltérhet, mert más cikk az első)`,
   },
   bannerToHeaderGap: {
     real: () => {
@@ -150,14 +161,12 @@ const CHECKS = {
       return { w: Math.round(r.width), h: Math.round(r.height) }
     },
     // FIGYELEM: ez az ellenőrzés EGYETLEN widgetet (FEWA) mér, ami a
-    // legkisebb a toronyban. Emiatt korábban PASS-t adott, miközben az
-    // ÖSSZES widget fix 137px-re volt kényszerítve a valós 135-374px
-    // változó magasságok helyett - a torony 1644px lett a valós 3091px
-    // helyett. Ezért van MELLETTE a widgetTowerTotalHeight ellenőrzés,
-    // ami az EGÉSZ tornyot méri. Egy elemet mérni és általánosítani
-    // pontosan az a hibaosztály, amit a MINOSEG_TORTENET H2 leír.
-    compare: (r, l) => Math.abs(r.w - l.w) / r.w <= 0.15 && Math.abs(r.h - l.h) / r.h <= 0.4,
-    describe: (r, l) => `real ${r.w}x${r.h} vs local ${l.w}x${l.h} (CSAK a FEWA widget - a torony egészére ld. widgetTowerTotalHeight)`,
+    // legkisebb a toronyban. Ezért van MELLETTE a widgetTowerTotalHeight ellenőrzés.
+    // H8 javítás: az előző ±40% magasság-tolerancia önigazoló volt (135px valós
+    // vs 189px klón = PASS volt). Javítva ±5%-ra mindkét dimenzióra.
+    // Elvi alap: a FEWA widget-képe statikus, fix méretű — nincs oka eltérni.
+    compare: (r, l) => Math.abs(r.w - l.w) / r.w <= 0.05 && Math.abs(r.h - l.h) / r.h <= 0.05,
+    describe: (r, l) => `real ${r.w}x${r.h} vs local ${l.w}x${l.h} (CSAK a FEWA widget — ±5% mindkét dimenzióra, elvi alap: statikus kép)`,
   },
   // Az EGÉSZ oldalsáv widget-torony együttes magassága. Ez fogja meg
   // azt a hibaosztályt, amit a widgetBoxSize (egyetlen widget) nem:
@@ -176,9 +185,15 @@ const CHECKS = {
       const cards = [...document.querySelectorAll('aside a[href]')].filter((a) => a.querySelector('img'))
       return cards.reduce((sum, a) => sum + a.getBoundingClientRect().height, 0)
     },
-    compare: (r, l) => Math.abs(r - l) / r <= 0.15,
+    // H8 javítás: ±15% = ~460px elfogadható eltérés volt — önigazoló.
+    // A mért különbség 2734px vs 3055px = 321px (10.5%).
+    // ±8% = ~244px — ez az a határérték, ami alatt a torony "jól" néz ki,
+    // de még kezelhetőbb hibahatárt jelent mint ±15%.
+    // Elvi alap: ha a widget-torony >8%-kal rövidebb a valósnál, a
+    // grid layout felborul (az oldalsáv "elmarad" a fő tartalomtól).
+    compare: (r, l) => Math.abs(r - l) / r <= 0.08,
     describe: (r, l) =>
-      `real torony=${Math.round(r)}px vs local=${Math.round(l)}px (±15%; a widgetek magassága a valós oldalon VÁLTOZÓ, nem fix)`,
+      `real torony=${Math.round(r)}px vs local=${Math.round(l)}px (±8% = ±${Math.round(r * 0.08)}px; mért különbség: ${Math.round(Math.abs(r - l))}px = ${(Math.abs(r - l) / r * 100).toFixed(1)}%)`,
   },
   newsCardImageHeight: {
     real: () => {
@@ -191,8 +206,12 @@ const CHECKS = {
       const imgWrap = card ? card.querySelector('div') : null
       return imgWrap ? Math.round(imgWrap.getBoundingClientRect().height) : null
     },
-    compare: (r, l) => Math.abs(r - l) / r <= 0.2,
-    describe: (r, l) => `real image height=${r}px vs local=${l}px (±20% tolerancia)`,
+    // H8 javítás: ±20% = ~34px volt elfogadható — önigazoló.
+    // Elvi alap: a kép-konténer magassága CSS-sel van rögzítve (h-36 = 144px
+    // klónban, valóson ~170px). Ez mért különbség, ezért a tolerancia
+    // ±10% = ~17px — ha ennél nagyobb, a CSS változott.
+    compare: (r, l) => Math.abs(r - l) / r <= 0.1,
+    describe: (r, l) => `real image height=${r}px vs local=${l}px (±10% = ±${Math.round(r * 0.1)}px; mért különbség: ${Math.abs(r - l)}px = ${(Math.abs(r - l) / r * 100).toFixed(1)}%)`,
   },
   bannerAspectRatio: {
     // Az "A városban N helyen" banner-kép aránya - ugyanaz a letöltött
@@ -214,9 +233,10 @@ const CHECKS = {
     describe: (r, l) => `real aspect=${r.toFixed(3)} vs local aspect=${l.toFixed(3)} (±5% tolerancia - ugyanaz a letöltött kép)`,
   },
   figyelemBannerSize: {
-    // A FIGYELEM! banner a valós oldalon dinamikus/időszakos tartalom -
-    // ha épp nincs kint (jelenleg nincs, ellenőrizve), nem hasonlítunk
-    // fabrikált számhoz, hanem SKIP-elünk, jelezve az okot.
+    // H8 javítás: az előző compare: () => true MINDIG PASS-t adott — ez hamis.
+    // Helyes viselkedés: ha a valóson NINCS banner (null), SKIP-elünk.
+    // Ha mindkét oldalon van, a magasságot hasonlítjuk ±10%-on belül.
+    // Ha a klónon van, de a valóson nincs: FAIL (felesleges elem a klónban).
     real: () => {
       const el = [...document.querySelectorAll('*')].find(
         (e) => e.children.length === 0 && e.textContent.trim() === 'FIGYELEM!',
@@ -232,9 +252,12 @@ const CHECKS = {
       for (let i = 0; i < 4 && card; i++) card = card.parentElement
       return card ? Math.round(card.getBoundingClientRect().height) : null
     },
-    compare: () => true, // nincs stabil valós referenciaszám - lásd describe
+    // compare null-ra: a runner SKIP-el (mindkét oldal null) vagy FAIL-t adhat
+    // ha csak az egyik oldal null. Az alábbi null-eset a runner logikájával
+    // együtt SKIP-et jelent ha real=null (időszakos tartalom nincs kint).
+    compare: (r, l) => Math.abs(r - l) / r <= 0.1,
     describe: (r, l) =>
-      `real=${r}px (JELENLEG NEM LÁTHATÓ a valós oldalon - időszakos tartalom, nincs stabil mérési alap) vs local=${l}px`,
+      `real=${r}px vs local=${l}px (ha mindkét oldalon van, ±10% tolerancia; ha valóson nincs → SKIP)`,
   },
   iconRowAlignment: {
     real: () => {
@@ -362,6 +385,69 @@ const CHECKS = {
     compare: (r, l) => Math.abs(r.fontSize - l.fontSize) <= 2 && r.fontWeight === l.fontWeight && r.textTransform === l.textTransform,
     describe: (r, l) =>
       `real ${r.fontSize}px/${r.fontWeight}/${r.textTransform} vs local ${l.fontSize}px/${l.fontWeight}/${l.textTransform}`,
+  },
+  // --- ÚJ ELLENŐRZÉSEK: fő tartalom-rács pozíciója és mérete ---
+  // Ezek hiányoztak, miközben a pixel-diff legsötétebb tartományai
+  // (y=200-1200, ~65-82%) épp a fő tartalom-rácson voltak.
+  // (H8: az audit addig egyetlen ellenőrzést sem tartalmazott erre.)
+
+  mainColumnX: {
+    // A fő tartalom-oszlop bal széle. Ez a legfontosabb pozíciós invariáns:
+    // ha az oszlop eltolódik, az egész tartalom elcsúszik.
+    // Mérve: valós oldalon a .elements x=443px, klónon az első hírkártya x=442px.
+    real: () => {
+      const el = document.querySelector('.elements')
+      return el ? Math.round(el.getBoundingClientRect().x) : null
+    },
+    local: () => {
+      // A `main` elem fullwidth (x=0), a tartalom beljebb kezdődik.
+      // Az első hírkártya x-pozíciója a tényleges tartalom-oszlop kezdetét jelzi.
+      const card = document.querySelector('main a[href^="/hirek/"]')
+      return card ? Math.round(card.getBoundingClientRect().x) : null
+    },
+    compare: (r, l) => Math.abs(r - l) <= 8,
+    describe: (r, l) => `real x=${r}px vs local x=${l}px (fő tartalom első hírkártya bal széle — ±8px)`,
+  },
+
+  newsCardGridWidth: {
+    // A hírkártya-rács teljes szélessége.
+    // Valós oldalon Bootstrap konténer belső tartalma: .elements = 848px
+    // (a sidebar 262px, köze 30px = 848+262+30 ≈ 1140px + márgók).
+    // Klón: main .grid = 1170px (a klón szélesebb rácsot használ).
+    // Ez egy valódi eltérés: a klón nem reprodukálja pontosan a Bootstrap
+    // konténer szélességét a sidebar melletti területre.
+    real: () => {
+      const grid = document.querySelector('.elements')
+      return grid ? Math.round(grid.getBoundingClientRect().width) : null
+    },
+    local: () => {
+      const grid = document.querySelector('main .grid')
+      return grid ? Math.round(grid.getBoundingClientRect().width) : null
+    },
+    // A valós és klón konténer-szélesség pontosan számítható:
+    // valóson: Bootstrap konténer 1170px - sidebar ~262px - gap ~60px ≈ 848px
+    // klónon: REAL_CONTAINER szélessége - sidebar 260px - gap 32px ≈ 878px (Tailwind)
+    // Az eltérés mért: 848px vs 1170px — ez azt jelzi, hogy a klón
+    // .grid nem a sidebar melletti részre van szűkítve, hanem a teljes
+    // konténer szélességére. FAIL jó — valódi hiba.
+    compare: (r, l) => Math.abs(r - l) / r <= 0.05,
+    describe: (r, l) => `real width=${r}px vs local=${l}px (valós Bootstrap konténer vs klón rács-szélesség — ±5%)`,
+  },
+
+  newsCardWidth: {
+    // Egyedi hírkártya szélessége: mennyi hely jut egy kártyának.
+    // Valós mérés (moz + BoundingClientRect): ~262px
+    // Klón mérés: 272px
+    real: () => {
+      const card = document.querySelector('.elements a.box.type1:not(.main)')
+      return card ? Math.round(card.getBoundingClientRect().width) : null
+    },
+    local: () => {
+      const card = document.querySelector('main a[href^="/hirek/"]')
+      return card ? Math.round(card.getBoundingClientRect().width) : null
+    },
+    compare: (r, l) => Math.abs(r - l) / r <= 0.05,
+    describe: (r, l) => `real card=${r}px vs local=${l}px (egyedi hírkártya szélesség — ±5%)`,
   },
 }
 

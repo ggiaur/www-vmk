@@ -124,6 +124,40 @@ sima HTTP fetch-csel lekérhető. A blokkoló nem létezett.
 
 ---
 
+## H8. Hamis PASS ellenőrzések a visual-audit.mjs-ben (2026-08-03)
+
+**Hiba:** a `visual-audit.mjs`-ben 5 ellenőrzés strukturálisan képtelen volt
+FAIL-t adni, mégis beleszámított a „34 passed, 0 failed" eredménybe:
+
+| Ellenőrzés | Probléma |
+|---|---|
+| `newsCardTitleBg` | `compare: (r, l) => r != null && l != null` — csak jelenlétet ellenőriz, a tényleges RGBSZÍNT nem |
+| `figyelemBannerSize` | `compare: () => true` — feltétel nélkül mindig PASS |
+| `widgetBoxSize` | `±40% magasság` tolerancia — ha a widget 135px valós és 189px klón, ez PASS |
+| `widgetTowerTotalHeight` | `±15%` tolerancia = ~460px elfogadható eltérés. A torony 2734px vs 3055px = 321px különbség, ez PASS-t kapott |
+| `newsCardImageHeight` | `±20%` tolerancia = ~34px elfogadható eltérés |
+
+**Ráadás:** az eszköznek egyetlen ellenőrzése sem volt a fő tartalom-rács
+pozíciójára (hírkártya x-koordináta, szélesség, gap, sorok száma) —
+márpedig a pixel-diff legsötétebb tartományai ott vannak.
+
+**Következmény:** az audit „34 passed" eredménye közben a pixel-diff 61.4%
+volt. Ez pontosan a H2-t ismétli (whitelist-csapda), más ellenőrzésekkel.
+
+**Javítva:**
+- `newsCardTitleBg.compare`: a tényleges RGB-értéket hasonlítja
+- `figyelemBannerSize`: SKIP ha nincs banner (nem PASS)
+- `widgetBoxSize.compare`: `±5%` mindkét dimenzióra
+- `widgetTowerTotalHeight.compare`: `±8%` (~245px), mért elvi alapon
+- `newsCardImageHeight.compare`: `±10%` (~17px)
+- Új ellenőrzések: `newsCardGridX` (hírkártya-rács x-pozíció), `newsCardWidth` (kártya szélesség), `mainColumnX` (fő tartalom-oszlop bal széle)
+
+**Tanulság → szabály:** Minden `compare` függvény megírásakor explicit
+ki kell mondani: „milyen konkrét értéknél adna ez FAIL-t?" Ha a válasz
+„soha" vagy „nem tudom", a check hibás.
+
+---
+
 ## H7. Pozíció vs. tartalom a pixel-diffben
 
 **Megfigyelés:** a valós hírképek lecloneozása után a pixel-diff szám
