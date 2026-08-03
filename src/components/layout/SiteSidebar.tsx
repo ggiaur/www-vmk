@@ -183,7 +183,18 @@ export function SiteSidebar() {
           A fejléc font-size: 18px (valós), padding: 8px 15px (valós). */}
       <div className="bg-[#00909B] w-full" style={{ padding: '8px 15px', marginBottom: 0 }}>
         {/* div, nem h2: a h2 Cinzel fontot örököl (globals.css), ami eltérő line-height-et ad */}
-        <div style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700, lineHeight: '1.1' }}>Menü</div>
+        <div
+          style={{
+            margin: 0,
+            color: '#FFF',
+            fontSize: '18px',
+            fontWeight: 700,
+            lineHeight: '1.1',
+            textTransform: 'uppercase',
+          }}
+        >
+          Menü
+        </div>
       </div>
       {/* valós vmk.hu: .box.submenu { background-color: #fff } — fehér háttér, nem CCE9EB */}
       <nav className="text-[16px] px-[15px] pt-[10px] pb-[15px] bg-white mb-[30px]">
@@ -257,7 +268,11 @@ export function SiteSidebar() {
             rel="noopener noreferrer"
             style={{ display: 'block', backgroundColor: '#00909b', padding: '8px 15px' }}
           >
-            <div style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700 }}>{w.label}</div>
+            <div
+              style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700, textTransform: 'uppercase' }}
+            >
+              {w.label}
+            </div>
           </a>
           {w.type === 'text' ? (
             <div style={{ padding: '15px' }}>
@@ -266,7 +281,7 @@ export function SiteSidebar() {
                 src="https://fehervartv.hu/embed.php?vid=44695;autoplay=false"
                 width="100%"
                 height="150"
-                style={{ display: 'block', border: 'none' }}
+                style={{ display: 'block', border: '1px solid #b9b9b9', backgroundColor: '#fff' }}
                 title="Filmes-téka"
               />
               <p style={{ fontSize: '11px', color: '#555', marginTop: '4px', marginBottom: '4px' }}>

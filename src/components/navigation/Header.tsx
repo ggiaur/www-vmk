@@ -63,11 +63,16 @@ const NAV_ITEMS: NavItem[] = [
 // nyelvi/akadálymentes linkek a valós, élő vmk.hu megfelelő aloldalára
 // mutatnak, mert ezeket a funkciókat (nyelvváltás, vakbarát mód) itt nem
 // építettük ki.
+// Méretek a valós oldal nyers HTML-jéből (img width/height attribútumok) és
+// Playwright-tal mért pixel-bbox-okkal ellenőrizve: a YouTube ikon NEM
+// négyzet (39x28), a többi pedig 28x28. Korábban mindegyik egy egységes
+// 28x28-as négyzet dobozba volt kényszerítve object-contain-nel, ami a
+// szélesebb YouTube ikont összenyomta/kicsinyítette a valóshoz képest.
 const ICON_LINKS: Array<{ href: string; label: string; img: string; w: number; h: number }> = [
-  { href: 'https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos', label: 'YouTube', img: '/brand/icons/vmk_youtube.jpg', w: 33, h: 23 },
-  { href: 'https://www.facebook.com/vmk13', label: 'Facebook', img: '/brand/icons/vmk_facebook.png', w: 24, h: 24 },
-  { href: 'https://www.instagram.com/vmkszekesfehervar/', label: 'Instagram', img: '/brand/icons/instagram_vmk.png', w: 24, h: 24 },
-  { href: 'https://www.vmk.hu/page/menu/156/preview/1', label: 'Wifi elérhetőség', img: '/brand/icons/icon_wifi.png', w: 22, h: 20 },
+  { href: 'https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos', label: 'YouTube', img: '/brand/icons/vmk_youtube.jpg', w: 39, h: 28 },
+  { href: 'https://www.facebook.com/vmk13', label: 'Facebook', img: '/brand/icons/vmk_facebook.png', w: 28, h: 28 },
+  { href: 'https://www.instagram.com/vmkszekesfehervar/', label: 'Instagram', img: '/brand/icons/instagram_vmk.png', w: 28, h: 28 },
+  { href: 'https://www.vmk.hu/page/menu/156/preview/1', label: 'Wifi elérhetőség', img: '/brand/icons/icon_wifi.png', w: 28, h: 28 },
 ]
 
 const LANG_FLAGS: Array<{ href: string; label: string; img: string; active?: boolean }> = [
@@ -133,10 +138,10 @@ export const Header: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={icon.label}
-                  className="w-7 h-7 flex items-center justify-center shrink-0"
+                  className="flex items-center justify-center shrink-0"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={icon.img} alt={icon.label} className="max-w-full max-h-full object-contain" />
+                  <img src={icon.img} alt={icon.label} width={icon.w} height={icon.h} className="object-contain" />
                 </a>
               ))}
               {LANG_FLAGS.map((flag) => (
@@ -146,7 +151,7 @@ export const Header: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={flag.label}
-                  className={`w-7 h-7 flex items-center justify-center shrink-0 ${flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}`}
+                  className={`flex items-center justify-center shrink-0 ${flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={flag.img} alt={flag.label} width={31} height={22} className="object-contain rounded-sm" />
@@ -157,7 +162,7 @@ export const Header: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Akadálymentes (vakok és gyengénlátók) nézet"
-                className="w-7 h-7 flex items-center justify-center shrink-0"
+                className="flex items-center justify-center shrink-0"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={31} height={22} className="object-contain rounded-sm" />
@@ -210,8 +215,14 @@ export const Header: React.FC = () => {
           (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
           elválasztó csík színét vetítette rá az egész sorra). */}
       <div className="hidden lg:block bg-white">
-        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px] border-b-[5px] border-[#00909B]">
-          <nav className="flex items-center gap-1 h-[45px] text-[19px] font-normal tracking-normal text-[#333333] uppercase">
+        {/* A teal elválasztó csík a valós oldalon a NAV szélességét követi (a
+            container belső, 15px-szel beljebb eső tartalmi szélessége -
+            1440px-en x=150..1289, 1140px), NEM a külső, paddingolt
+            konténerét. Korábban a border a külső div-en volt, ami 15-15px-szel
+            szélesebbre ("túllógva") húzta a csíkot mindkét oldalon - ezért
+            most a border-b a nav elemen van, nem a szülőn. */}
+        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px]">
+          <nav className="flex items-center gap-1 h-[45px] text-[19px] font-normal tracking-normal text-[#333333] uppercase border-b-[5px] border-[#00909B]">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div
