@@ -15,8 +15,14 @@ import { ChevronDown } from 'lucide-react'
 const WIDGETS: Array<{
   label: string
   href: string
-  img: string
-  imgAlt: string
+  img?: string
+  imgAlt?: string
+  // 'text' típusú widgetek: a valóson YouTube embed vagy szöveges tartalom van,
+  // amihez nincs megfelelő kép. A szöveges tartalom a valós oldal HTML-jéből.
+  type?: 'img' | 'text'
+  textContent?: string
+  textLink?: string
+  textLinkLabel?: string
 }> = [
   { label: 'FEWA', href: 'https://fewa.vmk.hu/', img: '/brand/widgets/fewa.jpg', imgAlt: 'FEWA' },
   {
@@ -26,10 +32,17 @@ const WIDGETS: Array<{
     imgAlt: 'Aranybulla Webarchívum',
   },
   {
+    // A valós oldalon YouTube embed + 'Olvasni élvezet' szöveg + forrás link.
+    // A filmes-teka.png ikon 24x24px — ez szándékos ikon a valós oldalon,
+    // nem a widget fő képe. A YouTube iframe sandbox-ban nem töltődik be,
+    // ezért szöveges helyettesítőt használunk (H8: a 24x24px kép w-full
+    // h-auto esetén 236x236px-re nyúlik — ez hibas volt).
     label: 'Filmes-téka',
     href: 'https://www.fehervartv.hu/video/index/44695',
-    img: '/brand/widgets/filmes-teka.png',
-    imgAlt: 'Filmes-téka',
+    type: 'text',
+    textContent: 'Olvasni élvezet',
+    textLink: 'https://www.fehervartv.hu/video/index/44695',
+    textLinkLabel: 'További videók →',
   },
   {
     label: 'TOP-7.1.1-16-H-ERFA-2019-00463',
@@ -228,20 +241,33 @@ export function SiteSidebar() {
           rel="noopener noreferrer"
           className="block rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-100"
         >
-          <div className="bg-[#00909B] px-3 py-2">
+          {/* Widget fejléc padding: px-[15px] py-[8px] — mérve a valós oldalon:
+              getComputedStyle(h1).padding = '8px 15px'. Korábban px-3 py-2
+              (12px/8px) volt, ettől a fejléc 31px lett a valós 36px helyett. */}
+          <div className="bg-[#00909B] px-[15px] py-[8px]">
             <div className="font-bold text-xs uppercase tracking-wide leading-tight text-white">{w.label}</div>
           </div>
-          {/* NINCS fix magasság. A valós oldalon a widgetek magassága
-              VÁLTOZÓ (mérve: 135px FEWA ... 374px Aranybulla, összesen
-              3091px). Korábban itt h-[104px] állt, mert a legkisebb
-              widgetet (FEWA) mértem le és azt általánosítottam mindre -
-              ettől a widgetBoxSize ellenőrzés PASS lett, miközben a
-              widget-torony 1644px-re zsugorodott a valós 3091px helyett,
-              ami egymaga a teljes oldalmagasság-rés 84%-a volt. */}
-          <div className="bg-[#CCE9EB] p-3 flex items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={w.img} alt={w.imgAlt} className="w-full h-auto object-contain" />
-          </div>
+          {/* Widget tartalom-terület: kép vagy szöveges (pl. Filmes-téka YouTube-helyettesítő) */}
+          {w.type === 'text' ? (
+            <div className="bg-[#CCE9EB] p-[15px] min-h-[254px]">
+              <p className="text-[13px] font-semibold text-slate-700 italic mb-3">{w.textContent}</p>
+              <p className="text-[11px] text-slate-500 mb-2">forrás: Fehérvár Médiacentrum</p>
+              <a
+                href={w.textLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-[#159097] font-semibold hover:underline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {w.textLinkLabel}
+              </a>
+            </div>
+          ) : (
+            <div className="bg-[#CCE9EB] p-[15px] flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={w.img} alt={w.imgAlt} className="w-full h-auto object-contain" />
+            </div>
+          )}
         </a>
       ))}
     </aside>

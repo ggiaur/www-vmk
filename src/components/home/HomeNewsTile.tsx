@@ -30,7 +30,10 @@ export function HomeNewsTile({ title, summary, publishedAt, slug, imageUrl, inde
       href={`/hirek/${slug}`}
       className="group block rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
     >
-      <div className="h-36 w-full relative bg-slate-200 overflow-hidden">
+      {/* Képmagasság: h-[170px] — mérve a valós vmk.hu-n (real.png pixel-mintavétel).
+          Korábban h-36 (144px) volt, ami 26px-szel alacsonyabb a valósnál (15.3%
+          különbség — visual-audit newsCardImageHeight FAIL). */}
+      <div className="h-[170px] w-full relative bg-slate-200 overflow-hidden">
         {imageUrl ? (
           <Image
             src={imageUrl}

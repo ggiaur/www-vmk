@@ -413,25 +413,23 @@ const CHECKS = {
     // A hírkártya-rács teljes szélessége.
     // Valós oldalon Bootstrap konténer belső tartalma: .elements = 848px
     // (a sidebar 262px, köze 30px = 848+262+30 ≈ 1140px + márgók).
-    // Klón: main .grid = 1170px (a klón szélesebb rácsot használ).
-    // Ez egy valódi eltérés: a klón nem reprodukálja pontosan a Bootstrap
-    // konténer szélességét a sidebar melletti területre.
+    // Klón: page-szintű main (min-w-0) belső rácsa = 848px.
+    // FIGYELEM: két 'main' elem van az oldalon (Next.js app shell + page).
+    // A 'main .grid' a layout-szintű main-t találja (1170px, hibás).
+    // A helyes: 'main.min-w-0 .grid' — a page-szintű main-en belüli első rács.
     real: () => {
       const grid = document.querySelector('.elements')
       return grid ? Math.round(grid.getBoundingClientRect().width) : null
     },
     local: () => {
-      const grid = document.querySelector('main .grid')
+      // A page-szintű main elem (min-w-0 osztállyal) a konténer-grid cellaéban van.
+      // Az első belső .grid eleme a hírkártya-rács.
+      const pageMain = document.querySelector('main.min-w-0')
+      const grid = pageMain ? pageMain.querySelector('.grid') : null
       return grid ? Math.round(grid.getBoundingClientRect().width) : null
     },
-    // A valós és klón konténer-szélesség pontosan számítható:
-    // valóson: Bootstrap konténer 1170px - sidebar ~262px - gap ~60px ≈ 848px
-    // klónon: REAL_CONTAINER szélessége - sidebar 260px - gap 32px ≈ 878px (Tailwind)
-    // Az eltérés mért: 848px vs 1170px — ez azt jelzi, hogy a klón
-    // .grid nem a sidebar melletti részre van szűkítve, hanem a teljes
-    // konténer szélességére. FAIL jó — valódi hiba.
     compare: (r, l) => Math.abs(r - l) / r <= 0.05,
-    describe: (r, l) => `real width=${r}px vs local=${l}px (valós Bootstrap konténer vs klón rács-szélesség — ±5%)`,
+    describe: (r, l) => `real width=${r}px vs local=${l}px (fő tartalom-rács szélessége — ±5%)`,
   },
 
   newsCardWidth: {
