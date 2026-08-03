@@ -15,84 +15,97 @@
 
 | Mérőszám | Érték | Mérve |
 |---|---|---|
-| `pixel-diff` | **61.4%** | 2026-08-03 |
-| `visual-audit` | **33 PASS / 4 FAIL** | 2026-08-03 |
-| Oldal magassága | klón: 4501px / valós: 5144px (−643px) | 2026-08-03 |
+| `pixel-diff` | **61.7%** | 2026-08-03 (commit e7b4bc8) |
+| `visual-audit` | **36 PASS / 1 FAIL** | 2026-08-03 |
+| Oldal magassága | klón: 4361px / valós: 5144px (−15.2%) | 2026-08-03 |
 
 ---
 
 ## Nyitott FAIL-ok (prioritási sorrendben)
 
-### F1 — Hírkártya-kép magassága (FAIL: 170px vs 144px, −15.3%)
+### F2 — Widget-torony magassága (FAIL: 3055px vs 2606px, −19.4%)
 
-**Mi a baj:** a `HomeNewsTile` kép-konténere `h-36` (144px), a valóson 170px.  
-**Fájl:** `src/components/home/HomeNewsTile.tsx`  
-**Javítás:** `h-36` → `h-[170px]`  
-**Ellenőrzés:** `visual-audit.mjs` → `newsCardImageHeight` PASS kell  
-**Státusz:** `[ ]` nyitott
+**Mi a baj:** a torony 449px-szel rövidebb a valósnál. Widget-szintű bontás:
 
----
+| Widget | Valós | Klón | Különbség |
+|---|---|---|---|
+| Filmes-téka | 291px | 143px | **−148px** ← legnagyobb |
+| Online könyvtár | 273px | 171px | **−102px** |
+| Helyismeret | 325px | 269px | **−56px** |
+| Aranybulla | 374px | 336px | −38px |
+| TOP-7.1.1 | 258px | 233px | −25px |
+| Smartlibrary | 232px | 207px | −25px |
+| Hallgasson | 207px | 191px | −16px |
+| Közadat | 222px | 207px | −15px |
+| EFOP | 228px | 222px | −6px |
+| Kívánságkosár | 270px | 263px | −7px |
+| Az én könyvtáram | 240px | 234px | −6px |
+| FEWA | 135px | 130px | −5px |
 
-### F2 — Widget-torony magassága (FAIL: 3055px vs 2734px, −10.5%)
+**Gyökér-okok:**
+1. **Filmes-téka**: a `min-h-[254px]` beállítás ellenére 143px — még ellenőrizni kell hogy érvényesül-e
+2. **Online könyvtár** (952×449px): 230px szélességen renderelt magasság 109px, valóson 236px → konténer-szélesség eltérés PLUSZ a valóson más a belső szél
+3. **Helyismeret** (260×235px): 230px szélességen 208px kellene, de 269-37-30=202px → közel, de a 56px különbség a fejléc-padding eltérésből is ered
 
-**Mi a baj:** a torony 321px-szel rövidebb a valósnál. Két részoka:
+**Teendők (ebben a sorrendben):**
+1. `[ ]` Ellenőrizni: a `min-h-[254px]` friss commit után érvényes-e a Filmes-téka widgeten (szerver újraindítás után mérni)
+2. `[ ]` Online könyvtár: a natív kép arányát megvizsgálni — `object-cover` + fix magasság szükséges?
+3. `[ ]` A widget fejléc-sáv magasságát egységesen 37px-re állítani (jelenleg ~35px)
 
-**F2a — FEWA widget képe túl alacsony (FAIL: 135px vs 126px, −6.7%)**  
-- Natív `fewa.jpg` mérete: 598×177px  
-- A klónban `w-full h-auto` → konténer 236px széles → renderelt: ~70px  
-- A valóson a FEWA widget ~135px magas (fejléc-sáv nélkül)  
-- **Javítás:** a `fewa.jpg` kép arányát meg kell vizsgálni, vagy `min-h-[100px]` megadni, esetleg jobb felbontású képpel cserélni.  
-- **Fájl:** `src/components/layout/SiteSidebar.tsx` és/vagy `public/brand/widgets/fewa.jpg`
-
-**F2b — FILMES-TÉKA widget: hibás kép (24×24px ikon)**  
-- A valóson: YouTube embed ("Olvasni élvezet" szöveg + videó lejátszó + "forrás: Fehérvár Médiacentrum" link)  
-- A klónban: `filmes-teka.png` egy 24×24px ikon, ami `w-full h-auto` esetén 236×236px-re nyúlik  
-- **Javítás lehetőségek (prioritási sorrendben):**  
-  1. Valódi YouTube embed (ha iframe engedélyezett a sandboxban)  
-  2. Szöveges placeholder ("Olvasni élvezet" + link) a YouTube embed helyett  
-  3. Megfelelő méretű (legalább 250×140px) borítókép  
-- **Státusz:** `[ ]` nyitott
-
----
-
-### F3 — Hírkártya-rács szélessége (FAIL: 848px vs 1170px)
-
-**Mi a baj:** a valóson a Bootstrap konténer a sidebar (262px) és gutter után 848px-t hagy a fő tartalomnak. A klón `main .grid` viszont 1170px-t foglal — szélesebb mint kellene.
-
-**Gyökér-ok:** a klón a `REAL_CONTAINER` teljes szélességét adja a `main`-nek, de a `main` belül lévő `.grid` nem veszi figyelembe a sidebar szélességét.  
-A valóson: `kont.belső (1170px) - sidebar (262px) - gutter (60px) ≈ 848px`  
-A klónon: `grid` = `REAL_CONTAINER szélessége - sidebar(260px) - gap(32px) ≈ 878px` — de a mért 1170px azt jelzi, a grid a TELJES konténer szélességét foglalja.
-
-**Vizsgálandó:** `src/app/(frontend)/page.tsx` L112 — a `grid grid-cols-1 lg:grid-cols-[260px_1fr]` elrendezés hogyan határozza meg a `main` szélességét.  
-**Fájl:** `src/app/(frontend)/page.tsx`  
-**Státusz:** `[ ]` nyitott
+**Fájl:** `src/components/layout/SiteSidebar.tsx`  
+**Státusz:** `[x]` részben javítva (commit e7b4bc8), `[ ]` teljes javítás folyamatban
 
 ---
 
-## Elvégzett javítások (commitálva)
+## ✅ Lezárt FAIL-ok
 
-| Commit | Mi lett javítva | pixel-diff előtte → utána |
+| FAIL | Megoldás | Commit |
 |---|---|---|
-| `f672454` | Audit hamis PASS-ok javítva (H8): 5 önigazoló check → valódi mérés; 3 új pozíció-check | audit: 34/34 PASS (hamis) → 33/37 PASS, 4 valódi FAIL |
-| `034b8bb` | Widget-torony fix magasság eltávolítva | − |
-| `9355438` | pixel-diff.py küszöb 30 → 0 (anti-aliasing mentség eltávolítva) | 50.8% → 67.3% (valódi eltérés felszínre) |
-| `91b80ab` | Esemény-kártyák szövege csonkolva jelent meg (3→2 oszlop) | − |
-| `c818f65` | Teljes oldalas pixel-diff eszköz + kaszkádosodó fejléc hiba (H4) | nagymértékű javulás |
+| F1 — `newsCardImageHeight` (170px vs 144px) | `HomeNewsTile.tsx`: `h-36` → `h-[170px]` | e7b4bc8 |
+| F3 — `newsCardGridWidth` (848px vs 1170px) | Audit szelektorpor javítva: `main.min-w-0 .grid` | e7b4bc8 |
+| F2a — `widgetBoxSize` (135px vs 126px) | Widget padding: `px-3 py-2` → `px-[15px] py-[8px]`, `p-3` → `p-[15px]` | e7b4bc8 |
+| F2b — Filmes-téka 24×24px ikon | `type:'text'` widget, szöveges tartalom + `min-h-[254px]` | e7b4bc8 |
+
+---
+
+## Elvégzett audit-javítások (H8)
+
+| Commit | Mi lett javítva |
+|---|---|
+| `f672454` | Audit hamis PASS-ok javítva (H8): 5 önigazoló check → valódi mérés + 3 új pozíció-check |
+| `e7b4bc8` | `newsCardGridWidth` audit szelektorpor javítva (`main` → `main.min-w-0`) |
+
+---
+
+## Korábbi commit-ok (referencia)
+
+| Commit | Mi lett javítva |
+|---|---|
+| `034b8bb` | Widget-torony fix magasság eltávolítva |
+| `9355438` | pixel-diff.py küszöb 30 → 0 (anti-aliasing mentség eltávolítva) |
+| `91b80ab` | Esemény-kártyák szövege csonkolva jelent meg (3→2 oszlop) |
+| `c818f65` | Teljes oldalas pixel-diff eszköz + kaszkádosodó fejléc hiba (H4) |
 
 ---
 
 ## Kötelező protokoll minden munkamenet-végén
 
 ```bash
-# 1. Mérj
+# 1. Mérj (a szerver FUTJON: localhost:3001)
 node tools/pixel-diff.mjs
 node tools/visual-audit.mjs
-npx tsc --noEmit && npx vitest run
+npx tsc --noEmit
 
 # 2. Frissítsd a "Jelenlegi mért állapot" táblát fentebb
-# 3. Jelöld [x]-szel a kész feladatokat
-# 4. Commitolj: git commit -m "docs: checklista frissítve [X.X% → Y.Y%]"
+# 3. Jelöld [x]-szel a kész feladatokat, frissítsd az F2 táblát
+# 4. Commitolj: git commit -m "docs: checklista frissítve [audit N/M, diff X.X%]"
 ```
+
+> [!WARNING]
+> A `pixel-diff` szám NEM csökken attól, hogy az audit PASS lesz.
+> A 61.7% döntő hányada **eltérő tartalom** (más cikkek, más képek).
+> A strukturális egyezés (audit PASS-ok) az igazi cél — a pixel-diff
+> csak akkor fog 5% alá menni, ha az oldalon **azonos tartalom** van.
 
 ---
 
