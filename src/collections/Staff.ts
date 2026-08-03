@@ -10,7 +10,7 @@ export const Staff: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    group: 'Könyvtárak',
+    group: 'Munkatársak & Dokumentumok',
     useAsTitle: 'name',
     defaultColumns: ['name', 'position', 'department', 'email', 'order'],
     description: 'Könyvtári munkatársak és elérhetőségeik.',

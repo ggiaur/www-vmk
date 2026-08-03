@@ -10,7 +10,7 @@ export const Partners: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    group: 'Könyvtárak',
+    group: 'Szolgáltatások & Bolt',
     useAsTitle: 'name',
     defaultColumns: ['name', 'type', 'order'],
     description: 'Támogatók és együttműködő partnerek.',

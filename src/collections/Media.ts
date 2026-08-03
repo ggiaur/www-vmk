@@ -12,7 +12,7 @@ export const Media: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    group: 'Rendszer',
+    group: 'Médiatár',
     useAsTitle: 'filename',
   },
   upload: {

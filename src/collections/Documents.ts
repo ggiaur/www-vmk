@@ -10,7 +10,7 @@ export const Documents: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    group: 'Tartalom',
+    group: 'Munkatársak & Dokumentumok',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'year', 'downloadCount'],
     description: 'Letölthető PDF dokumentumok: szabályzatok, beszámolók, űrlapok.',

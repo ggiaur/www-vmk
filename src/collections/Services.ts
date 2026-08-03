@@ -10,7 +10,7 @@ export const Services: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    group: 'Tartalom',
+    group: 'Szolgáltatások & Bolt',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'icon'],
     description: 'Könyvtári szolgáltatások és díjtáblázatok.',

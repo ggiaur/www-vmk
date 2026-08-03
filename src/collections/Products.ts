@@ -13,7 +13,7 @@ export const Products: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    group: 'Foglalások és tranzakciók',
+    group: 'Szolgáltatások & Bolt',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'price', 'stockStatus'],
     description: 'Könyvtári bolt: selejtezett könyvek, ajándéktárgyak.',
