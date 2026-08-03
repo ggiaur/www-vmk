@@ -112,7 +112,7 @@ function slugFromUrl(url: string): string {
   return url.replace(/^\/+/, '').split('?')[0].split('/').pop() || url
 }
 
-async function uploadImageToMedia(payload: Payload, imageUrl: string, altText: string) {
+export async function uploadImageToMedia(payload: Payload, imageUrl: string, altText: string) {
   const res = await fetch(imageUrl, { headers: { 'User-Agent': USER_AGENT } })
   if (!res.ok) throw new Error(`Image fetch failed ${res.status} for ${imageUrl}`)
   const arrayBuffer = await res.arrayBuffer()
@@ -239,6 +239,61 @@ export async function scrapeNewsIntoPayload(
           ? JSON.stringify((error as { data: unknown }).data)
           : String(error)
       result.errors.push({ url: item.url, error: detail })
+    }
+  }
+
+  return result
+}
+
+export type BackfillResult = {
+  processed: number
+  attached: number
+  noImageFound: number
+  errors: { slug: string; error: string }[]
+}
+
+/** For News records that already exist but have no featuredImage (common
+ *  after the initial migration - many listing-page scrapes ran before the
+ *  per-article image step was reliable), re-fetches each article's real
+ *  detail page from vmk.hu by slug and attaches its real image if found.
+ *  Does NOT create new records or touch records that already have an
+ *  image - purely a backfill for the gap. `limit` bounds how many are
+ *  processed per call (source-server courtesy + request timeout safety). */
+export async function backfillMissingNewsImages(
+  payload: Payload,
+  { limit = 20 }: { limit?: number } = {},
+): Promise<BackfillResult> {
+  const result: BackfillResult = { processed: 0, attached: 0, noImageFound: 0, errors: [] }
+
+  const missing = await payload.find({
+    collection: 'news',
+    where: { featuredImage: { equals: null } },
+    limit,
+    depth: 0,
+  })
+
+  for (const doc of missing.docs) {
+    result.processed++
+    const slug = doc.slug as string
+    try {
+      const detailHtml = await fetchHtml(`/${slug}`)
+      await sleep(REQUEST_DELAY_MS)
+      const article = parseArticleDetail(detailHtml)
+
+      if (!article.imageUrls[0]) {
+        result.noImageFound++
+        continue
+      }
+
+      const media = await uploadImageToMedia(payload, article.imageUrls[0], article.title || (doc.title as string))
+      await payload.update({
+        collection: 'news',
+        id: doc.id,
+        data: { featuredImage: media.id },
+      })
+      result.attached++
+    } catch (error) {
+      result.errors.push({ slug, error: String(error) })
     }
   }
 
