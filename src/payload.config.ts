@@ -26,6 +26,10 @@ import { Rooms } from './collections/Rooms'
 import { Services } from './collections/Services'
 import { Staff } from './collections/Staff'
 import { Users } from './collections/Users'
+import { HeaderSettings } from './globals/HeaderSettings'
+import { FooterSettings } from './globals/FooterSettings'
+import { SiteMetadata } from './globals/SiteMetadata'
+import { OpeningHoursGlobal } from './globals/OpeningHoursGlobal'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -109,6 +113,14 @@ export default buildConfig({
     ContactMessages,
     NewsletterSubscribers,
     Products,
+  ],
+  // Globals: singleton rekordok, amelyekből pontosan 1 példány létezik.
+  // A szerkesztők ezeket az admin-ban a bal oldalsáv alján találják.
+  globals: [
+    HeaderSettings,    // Fejléc: telefon, OPAC URL, navigáció
+    FooterSettings,    // Lábléc: cím, gyors linkek, social, jogi sáv
+    SiteMetadata,      // Globális SEO, OpenGraph, GTM/GA4
+    OpeningHoursGlobal, // Rendıvüli nyitvatartás, banner üzenet
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'vmk_super_secret_payload_key_2026_dev',
