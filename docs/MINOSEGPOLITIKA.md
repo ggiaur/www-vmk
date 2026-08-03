@@ -1,122 +1,108 @@
 # Minőségpolitika — www-vmk
 
-Ez a dokumentum **szabályokat és elfogadási kritériumokat** rögzít.
-Nem hibatörténet és nem módszertani napló — az a
-[MINOSEG_TORTENET.md](./MINOSEG_TORTENET.md)-ben van.
-
-Cél: kimondani, **mikor mondható valamire, hogy kész**, és **milyen
-bizonyíték nélkül nem mondható**.
+Ez a dokumentum Claude-nak szól. Minden vizuális feladatnál ezt a
+protokollt kell követni — nem opcionális, nem kihagyható.
 
 ---
 
-## 1. Alapelvek
+## GATE 1 — Módosítás után (minden alkalommal)
 
-**A1. Mérés, nem benyomás.**
-Vizuális egyezésre vonatkozó állítás csak mért számmal együtt
-hangozhat el. "Jónak tűnik", "megegyezik", "rendben van" önmagában
-nem elfogadható állítás.
+Minden vizuális változtatás után le kell futtatni, ebben a sorrendben:
 
-**A2. Nincs önigazoló tolerancia.**
-Tolerancia csak akkor állítható 0 fölé, ha az adott értékhez **mért
-bizonyíték** tartozik arról, hogy az eltérés az adott mértékig
-elkerülhetetlen. Tilos a toleranciát úgy megválasztani, hogy a
-jelenlegi állapot átmenjen.
+```bash
+node tools/pixel-diff.mjs
+node tools/visual-audit.mjs
+npx tsc --noEmit && npx next lint && npx vitest run
+```
 
-**A3. Azonos mérési feltételek.**
-Az eredeti és a klón összehasonlítása **ugyanazzal a böngésző-
-példánnyal, ugyanazon az operációs rendszeren, ugyanazon a
-viewporton** történik. Ebből következik: **azonos feltételek mellett
-minden vizuális eltérés hiba**, beleértve a betű-renderelést is.
-Nincs "anti-aliasing" mentség.
+Kötelező jelentési formátum:
 
-**A4. A negatív eredmény is eredmény.**
-Ha egy mérés nem végezhető el megbízhatóan, azt ki kell mondani.
-Tilos becsült vagy valószínűnek tűnő számot valós mérésként közölni.
+```
+pixel-diff:    X.X%  (előző: Y.Y%)
+visual-audit:  N FAIL — [felsorolva mind]
+tsc/lint:      0 hiba / N hiba
+hőtérkép:      átnézve [N db 600px-es szelet]
+```
 
-**A5. A lefedettség hiánya nem egyenlő a hibátlansággal.**
-Az, hogy egy ellenőrzés PASS, csak annyit jelent: *az adott,
-megnevezett tulajdonság rendben van*. Nem jelenti, hogy az oldal
-egyezik. Ezt minden jelentésben explicit ki kell mondani.
+Ha bármelyik parancs nem futott le ebben a munkamenetben, az érték
+**ismeretlen** — nem közölhető.
 
 ---
 
-## 2. Elfogadási kritériumok
+## GATE 2 — „Kész" nyilvánítás előtt
 
-| Szint | Kritérium | Mérőeszköz |
+Kész csak akkor mondható, ha mindegyik teljesül és mérve van:
+
+| # | Feltétel | Küszöb |
 |---|---|---|
-| **K1 — Szerkezet** | Minden szekció x-pozíciója és szélessége ±2px-en belül | `visual-audit.mjs` |
-| **K2 — Tipográfia** | Betűméret, -vastagság, -szín, sormagasság **pontosan** egyezik | `visual-audit.mjs` |
-| **K3 — Szín** | Háttér- és szövegszín RGB-értéke **pontosan** egyezik | `visual-audit.mjs` |
-| **K4 — Tartalom** | Nincs kitalált/tartalék adat éles nézetben | kód-átvizsgálás |
-| **K5 — Teljes egyezés** | `pixel-diff` ≤ 5% (küszöb = 0) | `pixel-diff.mjs` |
-| **K6 — Reszponzív** | K1–K3 teljesül 1024/1200/1440/1920px-en | `visual-audit.mjs` |
+| K1 | `pixel-diff.mjs` | ≤ 5 % |
+| K2 | `visual-audit.mjs` | 0 FAIL |
+| K3 | `tsc --noEmit` + `next lint` | 0 hiba |
+| K4 | Nincs kitalált/tartalék adat a nézetekben | — |
 
-**Kész állapot**: K1–K4 + K6 teljesül. K5 a végcél.
-
-**Ismert korlát K5-höz**: eltérő fotótartalom (saját CMS más
-cikkekkel) matematikailag megakadályozza a 0%-ot. Ezért a K5
-mérésekor külön jelenteni kell a *szerkezeti* és a *tartalmi*
-eltérés arányát — nem összemosva.
+Ha K1–K4 bármelyike nem teljesül: **a feladat nincs kész**, és
+pontosan meg kell mondani melyik nem teljesül és miért.
 
 ---
 
-## 3. Kötelező eljárás minden vizuális változtatás után
+## GATE 3 — „Javítottam" állítás előtt
 
-1. `node tools/pixel-diff.mjs` — teljes oldalas mérés
-2. `node tools/visual-audit.mjs` — célzott ellenőrzések
-3. `npx tsc --noEmit && npx next lint && npx vitest run`
-4. **A teljes hőtérkép szisztematikus átnézése** — nem kiválasztott
-   részleteké. Az oldalt 600px-es szeletekre kell bontani, és
-   **minden szeletet** meg kell nézni.
-5. Jelentés: mért számok + mi nincs lefedve
+„Javítottam" csak két mért szám összehasonlításával mondható:
 
-Az 5. pont elhagyása a jelentést érvénytelenné teszi.
+```
+pixel-diff: 61.4% → 54.2%
+```
 
----
-
-## 4. Hibabejelentés kezelése
-
-Amikor eltérést jeleznek:
-
-1. **Reprodukálás mérése** — nem szemrevételezés
-2. Ha nem reprodukálható: ezt **ki kell mondani**, nem szabad
-   "javítottnak" nyilvánítani, amit nem láttunk
-3. Ha reprodukálható: javítás → **újramérés** → a két szám közlése
-4. **Permanens ellenőrzés felvétele** az adott hibaosztályra a
-   `visual-audit.mjs`-be, hogy ne térhessen vissza észrevétlenül
+Mindkét szám ebből a munkamenetből, tényleges futtatásból kell
+származzon. Becsült vagy korábbi munkamenetből hozott szám nem
+fogadható el.
 
 ---
 
-## 5. Tiltott állítások
+## Hőtérkép-protokoll
 
-- „Pixelre pontos" — pixel-diff mérés nélkül
-- „Minden rendben" — a lefedettség korlátjának említése nélkül
-- „Javítottam" — újramérés nélkül
-- „Nem hiba, csak renderelési különbség" — azonos böngészőnél ilyen
-  nincs (A3)
-- Bármely szám, ami nem tényleges futtatásból származik
+A `diff-heatmap.png` **teljes egészét** át kell nézni, nem csak
+sejtett hibaterületeket. Módszer:
+
+```python
+from PIL import Image
+img = Image.open('tools/output/diff-heatmap.png')
+for i, y in enumerate(range(0, img.height, 600)):
+    img.crop((0, y, 1440, min(y+600, img.height))).save(f'/tmp/heat_{i}.png')
+```
+
+Majd minden `/tmp/heat_N.png` szelet megtekintése. A legrosszabb
+sávokat a `pixel-diff.mjs` kimenete is listázza — ezeket először
+kell megnézni.
 
 ---
 
-## 6. Eszközök
+## Tiltott mondatok
 
-| Eszköz | Szerep |
+Ezeket a mondatokat nem szabad leírni vagy kimondani:
+
+| Tiltott | Miért |
 |---|---|
-| `tools/pixel-diff.mjs` | **Mérvadó.** Teljes oldal, minden képpont, küszöb 0 |
-| `tools/pixel-diff.py` | A diff motorja (PIL) |
-| `tools/visual-audit.mjs` | Kiegészítő. Célzott, névvel nevezett ellenőrzések |
-
-`visual-audit.mjs` önmagában **nem elegendő** kész-nyilvánításhoz
-(A5 miatt) — csak regresszió-figyelésre.
+| „Jónak tűnik" | Nem mérés |
+| „Pixelre pontos" | Pixel-diff nélkül értelmetlen |
+| „Minden rendben" / „PASS" | A visual-audit csak a felsorolt tulajdonságokat nézi, nem az egész oldalt |
+| „Javítottam" [mérés nélkül] | Az állítás bizonyítatlan |
+| „Nem hiba, csak renderelési különbség" | Azonos Chromium-példánynál nincs ilyen |
+| Bármely szám ebből a munkamenetből futtatás nélkül | Becslés, nem mérés |
 
 ---
 
-## 7. Jelenlegi állapot (mérve, 2026-08-03)
+## A mérvadó eszköz
 
-```
-pixel-diff (küszöb 0): 67.3% eltérés
-oldalmagasság: valós 5144px / klón 3412px (33.7% eltérés)
-```
+`tools/pixel-diff.mjs` — küszöb: **0**
 
-**Ez az állapot NEM felel meg K5-nek.** A dokumentum nem állítja,
-hogy az oldal kész — ez a nyitott, mért különbség.
+Mindkét screenshotot ugyanaz az egyetlen Chromium-példány készíti.
+Azonos renderelő motor → minden vizuális eltérés valódi eltérés.
+A küszöböt csak mért bizonyíték alapján szabad 0 fölé emelni.
+
+---
+
+## Kapcsolódó dokumentumok
+
+- [`ATADAS_VIZUALIS_EGYEZES.md`](./ATADAS_VIZUALIS_EGYEZES.md) — jelenlegi mért állapot és elvégzendő munka
+- [`MINOSEG_TORTENET.md`](./MINOSEG_TORTENET.md) — korábbi hibák és tanulságok

@@ -17,7 +17,7 @@
 
 import { chromium } from 'playwright'
 import { execFileSync } from 'child_process'
-import { mkdirSync } from 'fs'
+import { mkdirSync, existsSync, copyFileSync, readFileSync } from 'fs'
 import path from 'path'
 
 const args = process.argv.slice(2)
@@ -25,11 +25,23 @@ const getArg = (name, dflt) => {
   const hit = args.find((a) => a.startsWith(`--${name}=`))
   return hit ? hit.split('=')[1] : dflt
 }
+const hasFlag = (name) => args.includes(`--${name}`)
 
 const WIDTH = parseInt(getArg('width', '1440'), 10)
 const LOCAL_URL = getArg('local-url', 'http://localhost:3001')
 const REAL_URL = 'https://www.vmk.hu/'
 const OUT_DIR = getArg('out', '/tmp/claude-999/-srv-projects/5bb47936-566c-49a0-962f-2ea7d2865fe8/scratchpad/pixeldiff')
+
+// FAGYASZTOTT VISZONYÍTÁSI ALAP: 2026-08-03-án a felhasználó kifejezetten
+// előírta, hogy a valós vmk.hu főoldal EGYSZER legyen befagyasztva, és
+// attól kezdve EZ legyen a folyamatos összehasonlítási alap - nem a mindig
+// újra lekért élő oldal ("ezt nem használhatod kifogásnak"). A fagyasztott
+// képet a tools/reference/real-baseline/ tartalmazza (real.png + meta.json).
+// Csak --live kapcsolóval kérhető újra élő lekérés (pl. ha a felhasználó
+// tudatosan frissíteni akarja a fagyasztott alapot).
+const FROZEN_DIR = path.join(path.dirname(new URL(import.meta.url).pathname), 'reference', 'real-baseline')
+const FROZEN_REAL = path.join(FROZEN_DIR, 'real.png')
+const USE_FROZEN = !hasFlag('live') && WIDTH === 1440 && existsSync(FROZEN_REAL)
 
 mkdirSync(OUT_DIR, { recursive: true })
 
@@ -72,8 +84,17 @@ async function shoot(browser, url, file, { dismissCookies = false } = {}) {
 }
 
 const browser = await chromium.launch()
-console.log(`Screenshot: valós oldal (${WIDTH}px)...`)
-const real = await shoot(browser, REAL_URL, 'real.png', { dismissCookies: true })
+let real
+if (USE_FROZEN) {
+  const meta = JSON.parse(readFileSync(path.join(FROZEN_DIR, 'meta.json'), 'utf-8'))
+  console.log(`Valós oldal: FAGYASZTOTT ALAP (rögzítve: ${meta.capturedAt}), nem élő lekérés.`)
+  const dest = path.join(OUT_DIR, 'real.png')
+  copyFileSync(FROZEN_REAL, dest)
+  real = { path: dest, height: meta.height }
+} else {
+  console.log(`Screenshot: valós oldal (${WIDTH}px, ÉLŐ lekérés)...`)
+  real = await shoot(browser, REAL_URL, 'real.png', { dismissCookies: true })
+}
 console.log(`Screenshot: helyi klón (${WIDTH}px)...`)
 const local = await shoot(browser, LOCAL_URL, 'local.png')
 await browser.close()

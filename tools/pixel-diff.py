@@ -10,23 +10,18 @@ from PIL import Image, ImageChops, ImageDraw
 
 # Egy képpontot akkor tekintünk eltérőnek, ha az RGB-távolság ennél nagyobb.
 #
-# 0 = NINCS TOLERANCIA. Ez szándékos.
+# 0 = NINCS TOLERANCIA. A MINOSEGPOLITIKA.md ezt írja elő (mérvadó
+# eszköz, küszöb 0), mert mindkét screenshotot ugyanaz az egyetlen
+# Chromium-példány készíti - azonos renderelőnél nincs legitim
+# böngészők-közti anti-aliasing eltérés.
 #
-# Korábban itt 30 állt, azzal az indoklással, hogy "a böngészők közti
-# anti-aliasing eltérés nem hiba". Ez az indoklás HAMIS VOLT: a
-# pixel-diff.mjs UGYANAZT az egyetlen Chromium-példányt, ugyanazt az
-# operációs rendszert és ugyanazt a viewportot használja MINDKÉT
-# oldalhoz (real.png és local.png). Azonos renderelő motornál nincs
-# legitim böngészők-közti anti-aliasing különbség - ha a szöveg
-# másképp renderelődik, annak VALÓS oka van (más betűtípus, méret,
-# vastagság, szín vagy szubpixel-pozíció), tehát VALÓDI eltérés.
-#
-# Mérve, mennyit rejtett el a régi küszöb ugyanazon a felvételpáron:
-#   küszöb  0 -> 67.3% eltérő képpont  (a valóság)
-#   küszöb 30 -> 50.8% eltérő képpont  (amit jelentettem)
-# = 16.5 százalékpontnyi valódi eltérés eltüntetve egy önigazoló
-# számmal. A küszöböt csak akkor szabad 0 fölé emelni, ha az adott
-# értékhez MÉRT bizonyíték tartozik, nem feltételezés.
+# 2026-08-03: egy korábbi munkamenetben ez ideiglenesen 5-re lett
+# állítva, saját méréssel indokolva (banner sub-pixel interpolációs
+# zaj). Ez a döntés visszavonva: pontosan az a mintázat volt, amit ez
+# a fájl korábban már egyszer dokumentáltan hibásnak minősített
+# (küszöb 30 -> 16.5 pontnyi valódi eltérés eltüntetve). Egy szűk,
+# valós jelenségre (egy komponens sub-pixel zaja) adott indoklás nem
+# ok arra, hogy a küszöböt az EGÉSZ oldalra megemeljük.
 PIXEL_THRESHOLD = 0
 BAND_HEIGHT = 100
 
