@@ -43,12 +43,19 @@ export default buildConfig({
     meta: {
       titleSuffix: ' — VMK Admin',
     },
+    // Egyedi admin főoldal (dashboard) — felváltja a Payload alapértelmezett
+    // 'Welcome to Payload' képernyőjét. Az elérési út az importMap baseDir-hez
+    // képest relatív — a Payload v3 ezt automatikusan feloldja.
     components: {
       graphics: {
         Logo: './components/admin/Logo#Logo',
         Icon: './components/admin/Icon#Icon',
       },
-      beforeDashboard: ['./components/admin/DashboardBanner#DashboardBanner'],
+      views: {
+        dashboard: {
+          Component: '/components/admin/Dashboard#default',
+        },
+      },
     },
     livePreview: {
       collections: ['news', 'events', 'pages'],
