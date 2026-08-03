@@ -109,7 +109,7 @@ export default async function HomePage() {
     <div>
       <LocationBanner locations={locations} />
 
-      <div className={`${REAL_CONTAINER} py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8`}>
+      <div className={`${REAL_CONTAINER} py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start`}>
         <SiteSidebar />
 
         <main className="min-w-0">
