@@ -17,9 +17,9 @@ const WIDGETS: Array<{
   href: string
   img?: string
   imgAlt?: string
-  // 'text' típusú widgetek: a valóson YouTube embed vagy szöveges tartalom van,
-  // amihez nincs megfelelő kép. A szöveges tartalom a valós oldal HTML-jéből.
-  type?: 'img' | 'text'
+  type?: 'img' | 'text' | 'multi-img' | 'img-buttons'
+  imgs?: Array<{ src: string; alt: string }>
+  buttons?: Array<{ label: string; href: string }>
   textContent?: string
   textLink?: string
   textLinkLabel?: string
@@ -75,16 +75,26 @@ const WIDGETS: Array<{
     imgAlt: 'Kívánságkosár',
   },
   {
+    // Valós oldal: 2 kép egymás alatt (lexikon.jpg + naptar-evfordulo.jpg)
     label: 'Helyismeret',
     href: 'https://konyvtar.vmk.hu/fejerlex/uj2019/index.php',
-    img: '/brand/widgets/helyismeret.jpg',
-    imgAlt: 'Fejér vármegyei lexikon',
+    type: 'multi-img',
+    imgs: [
+      { src: '/brand/widgets/lexikon.jpg', alt: 'Fejér vármegyei lexikon' },
+      { src: '/brand/widgets/naptar-evfordulo.jpg', alt: 'Naptár és évforduló' },
+    ],
   },
   {
     label: 'Online könyvtár',
     href: 'https://www.vmk.hu/adatbazisok-1',
+    type: 'img-buttons',
     img: '/brand/widgets/online-konyvtar.jpg',
     imgAlt: 'Online könyvtár',
+    // Valós oldalon 2 Bootstrap btn-info gomb van a kép alatt – vmk.hu/adatbazisok-1 oldal linkek
+    buttons: [
+      { label: 'Adatbázisok', href: 'https://www.vmk.hu/adatbazisok-1' },
+      { label: 'Adatbázisok', href: 'https://www.vmk.hu/adatbazisok' },
+    ],
   },
   {
     label: 'Az én könyvtáram',
@@ -167,20 +177,16 @@ export function SiteSidebar() {
   const [openItem, setOpenItem] = useState<string | null>(null)
 
   return (
-    <aside className="space-y-3">
-      {/* A valós "MENÜ" fejléc fehér szövegű, teal hátterű doboz - Playwright
-          screenshot pixelmintavétellel ellenőrizve (0,144,155 háttér),
-          NEM egyszerű szürke felirat, ahogy korábban itt volt. Az
-          alatta lévő linklista a valós oldalon lapos, keret és
-          háttérdoboz nélküli, sötét (kb. #161616) szövegű lista. */}
-      <div className="bg-[#00909B] px-4 py-2.5 rounded-t-lg">
-        <h2 className="text-sm font-bold text-white uppercase tracking-wide">Menü</h2>
+    <aside>
+      {/* Valós oldal CSS: .box { margin-bottom: 30px }, de .box.menu { margin-bottom: 0 }
+          → a MENÜ header-nek nincs bottom marginaja, a submenu (nav) viszont kapja a 30px-et.
+          A fejléc font-size: 18px (valós), padding: 8px 15px (valós). */}
+      <div className="bg-[#00909B] w-full" style={{ padding: '8px 15px', marginBottom: 0 }}>
+        {/* div, nem h2: a h2 Cinzel fontot örököl (globals.css), ami eltérő line-height-et ad */}
+        <div style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700, lineHeight: '1.1' }}>Menü</div>
       </div>
-      {/* A valós oldalon a MENÜ doboz tartalom-területe (és minden más
-          widget tartalom-területe is) egységesen világos ciánkék -
-          Playwright-tal 6 különböző widgeten mérve konzisztensen
-          rgb(204,233,235) = #CCE9EB, NEM fehér. */}
-      <nav className="text-[15px] px-4 pt-1 pb-3 mb-4 bg-[#CCE9EB] rounded-b-lg">
+      {/* valós vmk.hu: .box.submenu { background-color: #fff } — fehér háttér, nem CCE9EB */}
+      <nav className="text-[16px] px-[15px] pt-[10px] pb-[15px] bg-white mb-[30px]">
         {MENU_ITEMS.map((item) => (
           <div key={item.href}>
             {item.children ? (
@@ -188,7 +194,7 @@ export function SiteSidebar() {
                 <button
                   type="button"
                   onClick={() => setOpenItem(openItem === item.label ? null : item.label)}
-                  className="w-full flex items-center justify-between gap-2 py-2.5 text-left text-[#161616] hover:text-[#159097] transition-colors"
+                  className="w-full flex items-center justify-between gap-2 py-[8px] text-left text-[#161616] hover:text-[#159097] transition-colors"
                   aria-expanded={openItem === item.label}
                 >
                   <span>{item.label}</span>
@@ -217,12 +223,12 @@ export function SiteSidebar() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block py-2.5 text-[#161616] hover:text-[#159097] transition-colors"
+                className="block py-[8px] text-[#161616] hover:text-[#159097] transition-colors"
               >
                 {item.label}
               </a>
             ) : (
-              <Link href={item.href} className="block py-2.5 text-[#161616] hover:text-[#159097] transition-colors">
+              <Link href={item.href} className="block py-[8px] text-[#161616] hover:text-[#159097] transition-colors">
                 {item.label}
               </Link>
             )}
@@ -234,41 +240,99 @@ export function SiteSidebar() {
           világos tartalom-terület a jellemző ikonnal/logóval - nem
           egységesen színezett dobozok, ahogy korábban itt volt. */}
       {WIDGETS.map((w) => (
-        <a
+        /* Valós CSS: .box { margin-bottom: 30px; background-color: #cce9eb; width: 100%; }
+           .box h1 { padding: 8px 15px; font-size: 18px; font-weight: 700; color: #FFF; background: #00909b; margin: 0; }
+           .box .content { padding: 15px; }
+           MEGJEGYZÉS: a külső keret div (nem a), mert egyes widgetek (Filmes-téka, Online könyvtár)
+           beágyazott <a> elemeket tartalmaznak → <a> nem lehet <a> gyereke (HTML szabály + hydration error). */
+        <div
           key={w.label}
-          href={w.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-100"
+          className="overflow-hidden"
+          style={{ marginBottom: '30px', backgroundColor: '#cce9eb', width: '100%' }}
         >
-          {/* Widget fejléc padding: px-[15px] py-[8px] — mérve a valós oldalon:
-              getComputedStyle(h1).padding = '8px 15px'. Korábban px-3 py-2
-              (12px/8px) volt, ettől a fejléc 31px lett a valós 36px helyett. */}
-          <div className="bg-[#00909B] px-[15px] py-[8px]">
-            <div className="font-bold text-xs uppercase tracking-wide leading-tight text-white">{w.label}</div>
-          </div>
-          {/* Widget tartalom-terület: kép vagy szöveges (pl. Filmes-téka YouTube-helyettesítő) */}
+          {/* A fejléc sáv maga a kattintható link a widget fő URL-jére */}
+          <a
+            href={w.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'block', backgroundColor: '#00909b', padding: '8px 15px' }}
+          >
+            <div style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700 }}>{w.label}</div>
+          </a>
           {w.type === 'text' ? (
-            <div className="bg-[#CCE9EB] p-[15px] min-h-[254px]">
-              <p className="text-[13px] font-semibold text-slate-700 italic mb-3">{w.textContent}</p>
-              <p className="text-[11px] text-slate-500 mb-2">forrás: Fehérvár Médiacentrum</p>
+            <div style={{ padding: '15px' }}>
+              <p style={{ fontSize: '13px', fontStyle: 'italic', marginBottom: '8px' }}>{w.textContent}</p>
+              <iframe
+                src="https://fehervartv.hu/embed.php?vid=44695;autoplay=false"
+                width="100%"
+                height="150"
+                style={{ display: 'block', border: 'none' }}
+                title="Filmes-téka"
+              />
+              <p style={{ fontSize: '11px', color: '#555', marginTop: '4px', marginBottom: '4px' }}>
+                forrás:{' '}
+                <a
+                  href="https://www.fehervartv.hu/video/index/44695"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#555' }}
+                >
+                  Fehérvár Médiacentrum
+                </a>
+              </p>
               <a
                 href={w.textLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[11px] text-[#159097] font-semibold hover:underline"
-                onClick={(e) => e.stopPropagation()}
+                style={{ fontSize: '11px', color: '#159097' }}
               >
                 {w.textLinkLabel}
               </a>
             </div>
-          ) : (
-            <div className="bg-[#CCE9EB] p-[15px] flex items-center justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={w.img} alt={w.imgAlt} className="w-full h-auto object-contain" />
+          ) : w.type === 'multi-img' ? (
+            <a href={w.href} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '15px' }}>
+              {w.imgs?.map((img) => (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img key={img.src} src={img.src} alt={img.alt} style={{ display: 'block', maxWidth: '100%', height: 'auto' }} />
+              ))}
+            </a>
+          ) : w.type === 'img-buttons' ? (
+            <div style={{ padding: '15px' }}>
+              <a href={w.href} target="_blank" rel="noopener noreferrer" style={{ display: 'block' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={w.img} alt={w.imgAlt} style={{ display: 'block', maxWidth: '100%', height: 'auto', marginBottom: '10px' }} />
+              </a>
+              {/* Bootstrap btn btn-info gombok – valós oldal: 2 db gomb kép alatt, #5bc0de háttér */}
+              {w.buttons?.map((btn) => (
+                <a
+                  key={btn.href}
+                  href={btn.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    marginBottom: '10px',
+                    padding: '6px 12px',
+                    backgroundColor: '#5bc0de',
+                    color: '#fff',
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    borderRadius: '4px',
+                    textDecoration: 'none',
+                  }}
+                >
+                  {btn.label}
+                </a>
+              ))}
             </div>
+          ) : (
+            <a href={w.href} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '15px' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={w.img} alt={w.imgAlt} style={{ display: 'block', maxWidth: '100%', height: 'auto' }} />
+            </a>
           )}
-        </a>
+        </div>
       ))}
     </aside>
   )

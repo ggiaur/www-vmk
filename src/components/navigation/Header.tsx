@@ -90,7 +90,7 @@ export const Header: React.FC = () => {
   const [catalogOpen, setCatalogOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 shadow-md">
+    <header className="sticky top-0 z-50">
       {/* 1. sor: fehér, logó + közösségi ikonok (felül) + katalógus gomb (alul,
           külön sorban az ikonok alatt - Playwright getBoundingClientRect-tel
           mérve: a valós oldalon a gomb kb. 35-40px-szel LEJJEBB kezdődik, mint
@@ -98,8 +98,8 @@ export const Header: React.FC = () => {
           vízszintes belső margója (px-6 lg:px-10, max-w-[1200px]) a valós
           Bootstrap .container (1170px) méretéhez igazítva, hogy keskenyebb
           böngészőablakban se tapadjon a tartalom a képernyő szélére. */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[30px] py-[7px] flex items-center justify-between gap-4">
+      <div className="bg-white">
+        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px] py-[7px] flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/brand/vmk-logo.png"

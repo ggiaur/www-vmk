@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { MapPin, Phone } from 'lucide-react'
 import { NewsletterForm } from '@/components/forms/NewsletterForm'
 import { REAL_CONTAINER } from '@/lib/layout'
@@ -56,30 +57,40 @@ export const Footer: React.FC = () => {
           </a>
         </div>
 
-        {/* Column 3: Jelvények (valós képek) */}
-        <div className="flex flex-col items-start md:items-end gap-4">
+        {/* Column 3: Jelvények (valós képek) - a valós oldalon a wrapper
+            div-nek margin-top:30px;margin-bottom:30px van, a képek
+            205px szélesek (natív méretből számított, arányos magasság) -
+            nyers HTML-ből ellenőrizve. */}
+        <div className="flex flex-col items-start md:items-end gap-4 pt-[30px] pb-[30px]">
           <a href="https://outlook.office365.com" target="_blank" rel="noopener noreferrer">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/icons/outlook_web_app.jpg"
               alt="Outlook Web App"
-              width={140}
-              height={60}
+              width={205}
+              height={88}
               className="bg-white rounded p-1"
             />
           </a>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/icons/min_vmk.png" alt="Minősített Könyvtár 2020" width={100} height={95} />
+          <img src="/brand/icons/min_vmk.png" alt="Minősített Könyvtár 2020" width={205} height={194} />
         </div>
       </div>
 
-      {/* Bottom Bar - a valós oldalon egy árnyalattal világosabb teal sáv */}
+      {/* Bottom Bar - a valós oldalon egy árnyalattal világosabb teal sáv,
+          és egy második, "bottom-menu" linksor is van benne (nyitvatartás,
+          megemlékezés) - a valós oldal nyers HTML-jéből ellenőrizve. */}
       <div className="bg-[#33A6AF]">
         <div className={`${REAL_CONTAINER} py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-teal-50`}>
           <p>© {new Date().getFullYear()} Vörösmarty Mihály Könyvtár. Minden jog fenntartva.</p>
-          <p className="flex items-center gap-1">
-            <span>Next.js 15 &amp; Payload CMS v3 alapokon</span>
-          </p>
+          <nav className="flex items-center gap-4">
+            <Link href="/nyitvatartas" className="hover:text-white transition">
+              Nyitvatartás
+            </Link>
+            <Link href="/arato-antal-emlekere" className="hover:text-white transition">
+              Dr. Arató Antal (1942-2025)
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>

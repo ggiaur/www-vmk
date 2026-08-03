@@ -22,7 +22,7 @@ export function NewsletterForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-2.5">
+    <form action={formAction} className="space-y-[15px]">
       <div>
         <label htmlFor="newsletter-email" className="block text-sm text-white mb-1">
           E-mail:
@@ -46,9 +46,20 @@ export function NewsletterForm() {
           className="w-full px-3 py-2 rounded bg-white border border-slate-300 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#e4b02c]"
         />
       </div>
-      <label className="flex items-start gap-2 text-[11px] text-teal-100">
-        <input type="checkbox" required className="mt-0.5" />
-        <span>Az Adatvédelmi tájékoztatóban foglaltakat megismertem és elfogadom.</span>
+      <label className="flex items-start gap-2 text-sm text-teal-50">
+        <input type="checkbox" required className="mt-1 shrink-0" />
+        <span>
+          Az{' '}
+          <a
+            href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-white"
+          >
+            Adatkezelési tájékoztatóban
+          </a>{' '}
+          foglaltakat megismertem és elfogadom.
+        </span>
       </label>
       {state && !state.ok && (
         <p className="text-xs text-red-200 flex items-center gap-1.5" role="alert">
