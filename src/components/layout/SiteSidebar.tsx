@@ -231,9 +231,16 @@ export function SiteSidebar() {
           <div className="bg-[#00909B] px-3 py-2">
             <div className="font-bold text-xs uppercase tracking-wide leading-tight text-white">{w.label}</div>
           </div>
-          <div className="bg-[#CCE9EB] p-3 flex items-center justify-center h-[104px]">
+          {/* NINCS fix magasság. A valós oldalon a widgetek magassága
+              VÁLTOZÓ (mérve: 135px FEWA ... 374px Aranybulla, összesen
+              3091px). Korábban itt h-[104px] állt, mert a legkisebb
+              widgetet (FEWA) mértem le és azt általánosítottam mindre -
+              ettől a widgetBoxSize ellenőrzés PASS lett, miközben a
+              widget-torony 1644px-re zsugorodott a valós 3091px helyett,
+              ami egymaga a teljes oldalmagasság-rés 84%-a volt. */}
+          <div className="bg-[#CCE9EB] p-3 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={w.img} alt={w.imgAlt} className="max-w-full max-h-full object-contain" />
+            <img src={w.img} alt={w.imgAlt} className="w-full h-auto object-contain" />
           </div>
         </a>
       ))}

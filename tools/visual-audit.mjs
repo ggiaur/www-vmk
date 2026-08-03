@@ -139,19 +139,46 @@ const CHECKS = {
       return { w: Math.round(r.width), h: Math.round(r.height) }
     },
     local: () => {
-      // A widget teljes kártyája maga az <a> elem (cím-sáv + kép két
-      // közvetlen div gyermeke) - NEM az első gyermek div, ami csak a
-      // cím-sávot adná vissza.
-      const card = document.querySelector('aside a[href*="webarchivum.vmk.hu"]')
+      // UGYANAZT a widgetet kell mérni, mint a valós oldalon (FEWA).
+      // Korábban itt a webarchivum.vmk.hu (Aranybulla) link állt, tehát
+      // a check a valós FEWA-t hasonlította a helyi ARANYBULLA-hoz -
+      // két különböző widgetet. Ez csak addig "ment át", amíg minden
+      // widget azonos fix magasságra volt kényszerítve.
+      const card = document.querySelector('aside a[href*="fewa.vmk.hu"]')
       if (!card) return null
       const r = card.getBoundingClientRect()
       return { w: Math.round(r.width), h: Math.round(r.height) }
     },
-    // Nagy tolerancia: a valós widget saját promóciós KÉPET mutat, a
-    // miénk is valós letöltött képet (2026-08-02 óta) - de eltérő
-    // képarányúak lehetnek, csak durva méretrend-egyezést várunk el.
+    // FIGYELEM: ez az ellenőrzés EGYETLEN widgetet (FEWA) mér, ami a
+    // legkisebb a toronyban. Emiatt korábban PASS-t adott, miközben az
+    // ÖSSZES widget fix 137px-re volt kényszerítve a valós 135-374px
+    // változó magasságok helyett - a torony 1644px lett a valós 3091px
+    // helyett. Ezért van MELLETTE a widgetTowerTotalHeight ellenőrzés,
+    // ami az EGÉSZ tornyot méri. Egy elemet mérni és általánosítani
+    // pontosan az a hibaosztály, amit a MINOSEG_TORTENET H2 leír.
     compare: (r, l) => Math.abs(r.w - l.w) / r.w <= 0.15 && Math.abs(r.h - l.h) / r.h <= 0.4,
-    describe: (r, l) => `real ${r.w}x${r.h} vs local ${l.w}x${l.h} (szélesség ±15%, magasság ±40% tolerancia - eltérő tartalom-típus miatt)`,
+    describe: (r, l) => `real ${r.w}x${r.h} vs local ${l.w}x${l.h} (CSAK a FEWA widget - a torony egészére ld. widgetTowerTotalHeight)`,
+  },
+  // Az EGÉSZ oldalsáv widget-torony együttes magassága. Ez fogja meg
+  // azt a hibaosztályt, amit a widgetBoxSize (egyetlen widget) nem:
+  // ha minden widget azonos, fix magasságra van kényszerítve, az
+  // egyedi doboz mérete stimmelhet, de a torony drasztikusan rövidebb
+  // lesz - ez volt a teljes oldalmagasság-rés 84%-a (1447px).
+  widgetTowerTotalHeight: {
+    real: () => {
+      const boxes = [...document.querySelectorAll('.box')].filter((b) => b.querySelector('h1'))
+      // A "Menü" doboz nem promóciós widget, kihagyjuk a torony-összegből
+      return boxes
+        .filter((b) => b.querySelector('h1').textContent.trim() !== 'Menü')
+        .reduce((sum, b) => sum + b.getBoundingClientRect().height, 0)
+    },
+    local: () => {
+      const cards = [...document.querySelectorAll('aside a[href]')].filter((a) => a.querySelector('img'))
+      return cards.reduce((sum, a) => sum + a.getBoundingClientRect().height, 0)
+    },
+    compare: (r, l) => Math.abs(r - l) / r <= 0.15,
+    describe: (r, l) =>
+      `real torony=${Math.round(r)}px vs local=${Math.round(l)}px (±15%; a widgetek magassága a valós oldalon VÁLTOZÓ, nem fix)`,
   },
   newsCardImageHeight: {
     real: () => {
