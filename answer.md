@@ -1,60 +1,38 @@
-# Részletes Tipográfiai, Méretezési és Szerkezeti Audit Jelentés
+# A Projekt Vizuális és Szerkezeti Audit Jelentése
 
 **Projekt:** `/srv/projects/www-vmk`  
-**Referencia oldal:** `https://www.vmk.hu/`  
-**Helyi ellenőrzött oldal:** `http://localhost:3001`  
-**Mérési eszköz:** Playwright `deep-style-audit.mjs` (DOM getComputedStyle szken)  
+**Élő referencia oldal:** `https://www.vmk.hu/`  
+**Távoli kihelyezett teszt szerver (Staging):** `https://koha.vmk.hu/`  
+**Helyi fejlesztői környezet (Dev):** `http://localhost:3001`  
 **Dátum:** 2026-08-04  
 
 ---
 
-## 1. Elvégzett Mélyreható Audit és Eltérések (Mért Adatok Alapján)
+## 1. Miért nem látszódnak a változások a https://koha.vmk.hu/ oldalon?
 
-A Playwright `getComputedStyle` szkenneléssel oldalcsoportonként lekérdeztük és összehasonlítottuk a **valós oldal (`www.vmk.hu`)** és a **klón (`localhost:3001`)** elemeit.
+A **`https://koha.vmk.hu/` egy távoli szerveren futó éles/staging weboldal**. 
 
-Az alábbi pontos eltéréseket azonosítottuk és javítottuk ki a kódbázisban 1:1-ben:
-
-### A. Hírkártyák Tipográfiája (`HomeNewsTile.tsx`)
-* **Kártya Cím (News Tile Title):**
-  * **Eredeti (`www.vmk.hu`):** `font: Roboto`, `size: 20px`, `weight: 700`, `lineHeight: 22px`, `padding: 15px`.
-  * **Előző klón állapot:** `size: 16px`, `weight: 400`, `lineHeight: 24px`.
-  * **JAVÍTVA:** Az kártya címsávjának külső és belső elemei explicit `text-[20px] font-bold leading-[22px] p-[15px]` stílust kaptak.
-* **Kártya Leírás Szövege (News Tile Body):**
-  * **Eredeti (`www.vmk.hu`):** `font: Roboto`, `size: 15px`, `weight: 400`, `lineHeight: 20px`, `color: rgb(0,0,0)`.
-  * **Előző klón állapot:** `size: 13px`, `lineHeight: 18.2px`.
-  * **JAVÍTVA:** A leírásszöveg átállítva `text-[15px] leading-[20px] font-normal text-black` értékre.
-
-### B. Bal Oldali Sidebar MENÜ Fejléc (`SiteSidebar.tsx`)
-* **MENÜ Fejléc (Sidebar Menu Header):**
-  * **Eredeti (`www.vmk.hu`):** `font: Roboto`, `size: 18px`, `weight: 700`, `lineHeight: 19.8px`, `textTransform: UPPERCASE`, `color: white`, `bg: #00909B`, padding `8px 15px`.
-  * **Előző klón állapot:** `size: 16px`, `weight: 400`, `color: rgb(27, 27, 27)`.
-  * **JAVÍTVA:** A MENÜ doboz és belső felirata explicit `text-white font-bold text-[18px] uppercase leading-[19.8px]` formázást kapott, a szöveg `MENÜ` csupa nagybetűsítésével.
-
-### C. Navigációs Menüsor (`Header.tsx`)
-* **Menü Linkek (Nav Link):**
-  * **Eredeti (`www.vmk.hu`):** `font: Roboto`, `size: 16px`, `weight: 700`, `lineHeight: 22.85px`, `textTransform: UPPERCASE`, `color: #333333`.
-  * **Előző klón állapot:** `size: 19px`, `weight: 400`, `lineHeight: 28.5px`.
-  * **JAVÍTVA:** A navigációs menüsor szövegei átállítva `text-[16px] font-bold tracking-normal text-[#333333] uppercase` értékre.
-
-### D. Lábléc Tipográfiája (`Footer.tsx`)
-* **Oszlopfejlécek (Footer Header):**
-  * **Eredeti (`www.vmk.hu`):** `font: Roboto`, `size: 24px`, `weight: 700`, `lineHeight: 26.4px`, `color: white`.
-  * **Előző klón állapot:** `font: ui-sans-serif` (Tailwind alapértelmezett rendszerfont), `lineHeight: 36px`.
-  * **JAVÍTVA:** A lábléc oszlopfejlécei explicit `font-bold text-white text-[24px] leading-[26.4px]` stílust kaptak `Roboto, sans-serif` font-family beállítással.
-* **Alsó Sáv (Footer Bottom Bar):**
-  * **Eredeti (`www.vmk.hu`):** `font: Roboto`, `size: 14px`, `weight: 400`, `lineHeight: 20px`, padding `10px 15px`.
-  * **Előző klón állapot:** `size: 16px`, `lineHeight: 24px`.
-  * **JAVÍTVA:** Az alsó sáv átállítva `text-[14px] leading-[20px] py-[10px] px-[15px]` értékre.
-
-### E. Főoldali Szekciócím (`page.tsx`)
-* **HÍREK, ESEMÉNYEK Címsor:**
-  * **Eredeti (`www.vmk.hu`):** `font: Cinzel`, `size: 24px`, `weight: 700`, `lineHeight: 26.4px`, `color: #333333`, padding `10px 0px 15px`, szöveg: `HÍREK, ESEMÉNYEK`.
-  * **Előző klón állapot:** `size: 20px`, `color: #0f172a` (slate-900), szöveg: `Hírek, Események`.
-  * **JAVÍTVA:** Átállítva `font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]` formázásra.
+A kódbázisban végzett módosítások a **helyi fejlesztői környezetben (`http://localhost:3001`)** lépnek életbe. A távoli `https://koha.vmk.hu/` szerver a korábbi, régi buildet futtatja mindaddig, amíg a helyi git commitok (`git push origin main`) nincsenek feltöltve és újraépítve a távoli szerveren!
 
 ---
 
-## 2. Igazoló Mérési Mátrix (1:1 Egyezés)
+## 2. Vizuális Hőtérkép (Heatmap) Elemzés
+
+Előállítottuk a vizuális hőtérképet a valós élő oldal (`www.vmk.hu`) és a helyi fejlesztés (`http://localhost:3001`) között:
+
+![Vizuális Hőtérkép Elemzés](file:///home/dockeruser/.gemini/antigravity-cli/brain/db454c03-8205-4811-806d-e48a45714898/visual_heatmap_comparison.png)
+
+### A hőtérkép megállapításai:
+* **Sötétszürke zónák (Egyező elrendezés és szerkezet):** A fejléclogó, a navigációs menü, a bal oldali widget-torony (FEWA, Aranybulla, stb.), a hírkártyák elrendezése és a konténer-szélességek szerkezetileg **pontosan illeszkednek**.
+* **Piros zónák (Eltérések okai):**
+  1. **Süti sáv (Cookie banner):** A valós oldalon kint van a fekete süti-sáv (`Az oldal sütiket használ`), ami az élő oldalt ~100px-szel lejjebb tolja.
+  2. **Dinamikus képek:** A hírkártyák fotói és a felugró süti-ablak okozzák a piros elszíneződést.
+
+---
+
+## 3. Mélyreható Tipográfiai és Méretezési Audit Mátrix (1:1 Egyezés)
+
+Playwright `deep-style-audit.mjs` eszközzel, `getComputedStyle` segítségével összehasonlítottuk és 1:1-ben beállítottuk az elemeket:
 
 | Elem | Eredeti (www.vmk.hu) | Klón (localhost:3001) | Státusz |
 |---|---|---|---|
@@ -67,8 +45,8 @@ Az alábbi pontos eltéréseket azonosítottuk és javítottuk ki a kódbázisba
 
 ---
 
-## 3. Ellenőrzés és Git Állapot
+## 4. Ellenőrzés és Git Állapot
 
 * **TypeScript ellenőrzés:** `npx tsc --noEmit` hibátlanul lefutott.
 * **Unit tesztek:** `npx vitest run` mind a 33 teszt PASS.
-* **Git commit:** A javítások elmentve a `main` ágon (`commit abbb327`).
+* **Git commit:** A változtatások elmentve a `main` ágon.
