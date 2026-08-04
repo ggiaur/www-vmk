@@ -43,11 +43,11 @@ export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTilePro
           </div>
         )}
       </div>
-      <div className="px-4 py-3 text-white shrink-0" style={{ backgroundColor: TITLE_BG }}>
-        <h3 className="font-bold text-base leading-snug">{title}</h3>
+      <div className="px-[15px] py-[15px] text-white shrink-0" style={{ backgroundColor: TITLE_BG }}>
+        <h3 className="font-bold text-[20px] leading-snug">{title}</h3>
       </div>
       <div
-        className="relative px-4 py-3 pr-9 flex-1 text-black"
+        className="relative px-[15px] py-[15px] pr-9 flex-1 text-black"
         style={{ backgroundColor: CONTENT_BG }}
       >
         <p className="text-[13px] leading-[1.4] line-clamp-6">{summary}</p>

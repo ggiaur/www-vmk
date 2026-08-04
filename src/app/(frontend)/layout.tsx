@@ -39,23 +39,22 @@ export default function FrontendLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        {/* Széchenyi logók: a valós vmk.hu-n fixed pozíciós elemek a </footer> után,
-            .szlogo.szlogo-left és .szlogo.szlogo-right CSS osztályokkal */}
+        {/* Széchenyi logók: a valós vmk.hu-n fixed pozíciós elemek a </footer> után */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/brand/szechenyi2020_esza_bal.png"
           alt="Széchenyi 2020 ESZA"
-          width={250}
-          height={175}
-          style={{ position: 'fixed', bottom: 0, left: 0, zIndex: 9999 }}
+          width={220}
+          height={154}
+          style={{ position: 'fixed', bottom: 0, left: 0, zIndex: 30, pointerEvents: 'none' }}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/brand/szechenyi2020_erfa_jobb.png"
           alt="Széchenyi 2020 ERFA"
-          width={250}
-          height={175}
-          style={{ position: 'fixed', bottom: 0, right: 0, zIndex: 9999 }}
+          width={220}
+          height={154}
+          style={{ position: 'fixed', bottom: 0, right: 0, zIndex: 30, pointerEvents: 'none' }}
         />
       </body>
     </html>

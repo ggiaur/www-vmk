@@ -22,26 +22,23 @@ export const Footer: React.FC = () => {
             (700), NEM nagybetűs, és a vonal a doboz TETEJÉN van (2px
             solid fehér border-top a wrapper divjén), nem a szöveg alatt -
             Playwright-tal getComputedStyle-lal mérve. */}
+        {/* Column 1: Hírlevél */}
         <div className="space-y-3 pt-4 border-t-2 border-white">
-          <h2 className="font-bold text-white text-2xl">Hírlevél</h2>
+          <h2 className="font-sans font-bold text-white text-[24px]">Hírlevél</h2>
           <NewsletterForm />
         </div>
 
         {/* Column 2: Kapcsolat */}
         <div className="space-y-3 pt-4 border-t-2 border-white">
-          <h2 className="font-bold text-white text-2xl">Kapcsolat</h2>
+          <h2 className="font-sans font-bold text-white text-[24px]">Kapcsolat</h2>
           <div className="space-y-1.5 text-sm text-teal-50">
             <p className="font-semibold text-white">Vörösmarty Mihály Könyvtár</p>
-            <p className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-teal-100 mt-0.5 shrink-0" />
-              <span>
-                Cím: 8000 Székesfehérvár, Bartók Béla tér 1.
-                <br />
-                8001 Székesfehérvár, Pf: 65.
-              </span>
+            <p>
+              Cím: 8000 Székesfehérvár, Bartók Béla tér 1.
+              <br />
+              8001 Székesfehérvár, Pf: 65.
             </p>
-            <p className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-teal-100 shrink-0" />
+            <p>
               <a href="tel:+3622340699" className="hover:text-white transition">
                 Tel.: 22/340-699
               </a>
@@ -57,10 +54,7 @@ export const Footer: React.FC = () => {
           </a>
         </div>
 
-        {/* Column 3: Jelvények (valós képek) - a valós oldalon a wrapper
-            div-nek margin-top:30px;margin-bottom:30px van, a képek
-            205px szélesek (natív méretből számított, arányos magasság) -
-            nyers HTML-ből ellenőrizve. */}
+        {/* Column 3: Jelvények */}
         <div className="flex flex-col items-start md:items-end gap-4 pt-[30px] pb-[30px]">
           <a href="https://outlook.office365.com" target="_blank" rel="noopener noreferrer">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -77,15 +71,13 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Bar - a valós oldalon egy árnyalattal világosabb teal sáv,
-          és egy második, "bottom-menu" linksor is van benne (nyitvatartás,
-          megemlékezés) - a valós oldal nyers HTML-jéből ellenőrizve. */}
+      {/* Bottom Bar */}
       <div className="bg-[#33A6AF]">
         <div className={`${REAL_CONTAINER} py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-teal-50`}>
-          <p>© {new Date().getFullYear()} Vörösmarty Mihály Könyvtár. Minden jog fenntartva.</p>
+          <p>©2015 Vörösmarty Mihály Könyvtár. Minden jog fenntartva! - NEOSOFT</p>
           <nav className="flex items-center gap-4">
             <Link href="/nyitvatartas" className="hover:text-white transition">
-              Nyitvatartás
+              Opening hours
             </Link>
             <Link href="/arato-antal-emlekere" className="hover:text-white transition">
               Dr. Arató Antal (1942-2025)

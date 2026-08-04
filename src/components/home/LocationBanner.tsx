@@ -52,9 +52,10 @@ export function LocationBanner({ locations }: { locations: LocationBannerItem[] 
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              textDecoration: 'none'
             }}
           >
-            <span style={{ fontSize: '30px', fontWeight: 700 }}>&#8249;</span>
+            <span style={{ fontSize: '50px', fontWeight: 300, lineHeight: 1, fontFamily: 'Arial, sans-serif' }}>‹</span>
           </a>
           {/* Bootstrap .carousel-control.right */}
           <a
@@ -74,9 +75,10 @@ export function LocationBanner({ locations }: { locations: LocationBannerItem[] 
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              textDecoration: 'none'
             }}
           >
-            <span style={{ fontSize: '30px', fontWeight: 700 }}>&#8250;</span>
+            <span style={{ fontSize: '50px', fontWeight: 300, lineHeight: 1, fontFamily: 'Arial, sans-serif' }}>›</span>
           </a>
         </div>
       </div>
