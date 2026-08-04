@@ -156,6 +156,16 @@ export default async function HomePage() {
             })}
           </div>
 
+          <div className="flex justify-end mb-6">
+            <Link
+              href="/hirek"
+              className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+            >
+              <span>További híreink</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px] items-stretch mb-4">
             {displayEvents.map((event, i) => (
               <HomeNewsTile
@@ -179,7 +189,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 pt-4" style={{ borderTop: '2px solid #00909b' }}>
             <section>
               {/* real.png pixel-mérés (2026-08-04, y~3150-3172, x~460-650):
                   24px, #333333, DE nem Cinzel - a fagyasztott bázisképen ez a
@@ -230,17 +240,8 @@ export default async function HomePage() {
           </div>
 
           {cmsGalleries.length > 0 && (
-            <section className="mt-10">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-[#333333]">Galéria</h2>
-                <Link
-                  href="/galeria"
-                  className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
-                >
-                  <span>További Galériák</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+            <section className="mt-10 pt-4" style={{ borderTop: '2px solid #00909b' }}>
+              <h2 className="text-2xl font-bold text-[#333333] mb-4">Galéria</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-[30px]">
                 {cmsGalleries.map((g) => {
                   const cover =
@@ -251,7 +252,7 @@ export default async function HomePage() {
                     <Link
                       key={g.id}
                       href={`/galeria/${g.slug}`}
-                      className="relative aspect-[4/3] overflow-hidden bg-slate-100 group block"
+                      className="relative aspect-[3/2] overflow-hidden bg-slate-100 group block"
                     >
                       {cover ? (
                         <Image
@@ -273,6 +274,15 @@ export default async function HomePage() {
                     </Link>
                   )
                 })}
+              </div>
+              <div className="flex justify-end mt-4">
+                <Link
+                  href="/galeria"
+                  className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+                >
+                  <span>További Galériák</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </section>
           )}

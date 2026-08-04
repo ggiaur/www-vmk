@@ -111,7 +111,7 @@ export const Header: React.FC = () => {
               alt="Vörösmarty Mihály Könyvtár"
               width={200}
               height={80}
-              className="h-[72px] w-auto"
+              className="h-24 w-auto"
               priority
             />
           </Link>
