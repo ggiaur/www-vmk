@@ -179,7 +179,7 @@ export const Header: React.FC = () => {
                 aria-expanded={catalogOpen}
               >
                 <span>Online Katalógus / Beiratkozás</span>
-                <ChevronDown className="w-3.5 h-3.5" />
+                <span className="text-[10px] ml-1">▾</span>
               </button>
               {catalogOpen && (
                 <div className="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-2 z-50 normal-case">
@@ -210,17 +210,8 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. sor: FEHÉR háttér, sötétszürke szöveg - Playwright screenshot
-          pixelmintavétellel ellenőrizve a valós oldalon (255,255,255 háttér,
-          (51,51,51) szöveg; a korábbi teal háttér tévesen a lenti dekoratív
-          elválasztó csík színét vetítette rá az egész sorra). */}
+      {/* 2. sor: FEHÉR háttér, sötétszürke szöveg */}
       <div className="hidden lg:block bg-white">
-        {/* A teal elválasztó csík a valós oldalon a NAV szélességét követi (a
-            container belső, 15px-szel beljebb eső tartalmi szélessége -
-            1440px-en x=150..1289, 1140px), NEM a külső, paddingolt
-            konténerét. Korábban a border a külső div-en volt, ami 15-15px-szel
-            szélesebbre ("túllógva") húzta a csíkot mindkét oldalon - ezért
-            most a border-b a nav elemen van, nem a szülőn. */}
         <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px]">
           <nav className="flex items-center gap-1 h-[45px] text-[19px] font-normal tracking-normal text-[#333333] uppercase border-b-[5px] border-[#00909B]">
             {NAV_ITEMS.map((item) =>
@@ -238,7 +229,7 @@ export const Header: React.FC = () => {
                     aria-haspopup="true"
                   >
                     {item.label}
-                    <ChevronDown className="w-3 h-3" />
+                    <span className="text-[10px] ml-1">▾</span>
                   </Link>
                   {openDropdown === item.label && (
                     <div className="absolute left-0 top-full w-64 z-50">
@@ -293,9 +284,9 @@ export const Header: React.FC = () => {
               href="/kereses"
               aria-label="Keresés a honlapon"
               title="Keresés a honlapon"
-              className="ml-auto p-2 rounded text-slate-500 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+              className="ml-auto p-2 rounded text-slate-600 hover:text-[#159097] hover:bg-slate-50 transition-colors"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-[18px] h-[18px]" strokeWidth={2.75} />
             </Link>
           </nav>
         </div>
