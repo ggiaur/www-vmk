@@ -95,7 +95,7 @@ export const Header: React.FC = () => {
   const [catalogOpen, setCatalogOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className="relative z-50">
       {/* 1. sor: fehér, logó + közösségi ikonok (felül) + katalógus gomb (alul,
           külön sorban az ikonok alatt - Playwright getBoundingClientRect-tel
           mérve: a valós oldalon a gomb kb. 35-40px-szel LEJJEBB kezdődik, mint
@@ -111,7 +111,7 @@ export const Header: React.FC = () => {
               alt="Vörösmarty Mihály Könyvtár"
               width={200}
               height={80}
-              className="h-24 w-auto"
+              className="h-[72px] w-auto"
               priority
             />
           </Link>
@@ -174,7 +174,7 @@ export const Header: React.FC = () => {
                 type="button"
                 onClick={() => setCatalogOpen((v) => !v)}
                 onBlur={() => setTimeout(() => setCatalogOpen(false), 150)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded bg-[#159097] hover:bg-[#0f656a] text-white text-sm font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded bg-[#159097] hover:bg-[#0f656a] text-white text-[14px] font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
                 aria-haspopup="true"
                 aria-expanded={catalogOpen}
               >

@@ -1,13 +1,12 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Calendar } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { SiteSidebar } from '@/components/layout/SiteSidebar'
 import { LocationBanner } from '@/components/home/LocationBanner'
 import { HomeNewsTile } from '@/components/home/HomeNewsTile'
 import { FigyelemBanner } from '@/components/home/FigyelemBanner'
 import { EventCalendarWidget } from '@/components/home/EventCalendarWidget'
-import { EventCard } from '@/components/ui/EventCard'
 import { REAL_CONTAINER } from '@/lib/layout'
 import {
   getLatestNews,
@@ -136,18 +135,7 @@ export default async function HomePage() {
 
           <FigyelemBanner />
 
-          <div className="flex items-center justify-between mb-4">
-            <span className="sr-only">Legfrissebb híreink</span>
-            <Link
-              href="/hirek"
-              className="ml-auto text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
-            >
-              <span>Összes hírünk</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px] items-stretch mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px] items-stretch mb-4">
             {displayNews.map((item, i) => {
               const img = 'featuredImage' in item ? item.featuredImage : undefined
               const imgUrl =
@@ -168,52 +156,28 @@ export default async function HomePage() {
             })}
           </div>
 
-          {/* A valós vmk.hu-n a "közelgő események" ugyanazzal a kártyastílussal
-              jelennek meg, mint a hírek (további sorok ugyanabban a rácsban),
-              az Eseménynaptár pedig KÜLÖN, alatta lévő szekció, kb. 50/50
-              arányban osztva a naptár és a Folyóiratok/Idegennyelvi panelek
-              között - NEM egy szűk 260px-es oldalsáv egy széles eseményrács
-              mellett, ahogy korábban itt volt (real.html + real.png
-              pixel-ellenőrzéssel mérve, 2026-08-04). */}
-          <section className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-[#e4b02c]" />
-                Események
-              </h2>
-              <Link
-                href="/esemenyek"
-                className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
-              >
-                <span>További eseményeink</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {displayEvents.map((event) => {
-                const loc = 'location' in event ? event.location : undefined
-                const locationName =
-                  loc && typeof loc === 'object' && 'name' in loc
-                    ? (loc.name as string)
-                    : 'locationName' in event
-                      ? (event.locationName as string)
-                      : 'VMK Székesfehérvár'
-                return (
-                  <EventCard
-                    key={event.id}
-                    title={event.title}
-                    startDate={
-                      typeof event.startDate === 'string' ? event.startDate : new Date().toISOString()
-                    }
-                    locationName={locationName}
-                    targetAudience={event.targetAudience}
-                    slug={event.slug}
-                    registrationUrl={'registrationUrl' in event ? event.registrationUrl ?? undefined : undefined}
-                  />
-                )
-              })}
-            </div>
-          </section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px] items-stretch mb-4">
+            {displayEvents.map((event, i) => (
+              <HomeNewsTile
+                key={event.id}
+                title={event.title}
+                summary={'summary' in event && typeof event.summary === 'string' ? event.summary : event.title}
+                publishedAt={typeof event.startDate === 'string' ? event.startDate : new Date().toISOString()}
+                slug={`esemenyek/${event.slug}`}
+                index={displayNews.length + i}
+              />
+            ))}
+          </div>
+
+          <div className="flex justify-end mb-10">
+            <Link
+              href="/esemenyek"
+              className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+            >
+              <span>További eseményeink</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
             <section>
@@ -234,45 +198,33 @@ export default async function HomePage() {
               />
             </section>
 
-            <aside className="space-y-4">
-              <div className="bg-green-50 border border-green-100 rounded-lg p-4 space-y-1.5">
-                <h3 className="font-bold text-sm text-slate-800 mb-1">Folyóiratok könyvtárunkban</h3>
-                <a
-                  href="http://www.vmk.hu/kurrens"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-xs font-semibold text-[#159097] hover:underline"
-                >
-                  Kurrens folyóiratok a Központi Könyvtár Olvasótermében →
-                </a>
-                <a
-                  href="https://www.vmk.hu/folyoiratok-a-tagkonyvtarakban"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-xs font-semibold text-[#159097] hover:underline"
-                >
-                  Kurrens folyóiratok a Tagkönyvtárakban →
-                </a>
+            <aside className="space-y-[30px]" style={{ marginTop: 30 }}>
+              <div className="border border-[#d6e9c6] rounded">
+                <div className="px-[15px] py-[10px] rounded-t" style={{ backgroundColor: '#dff0d8', borderBottom: '1px solid #d6e9c6' }}>
+                  <h3 className="text-[14px] font-normal" style={{ fontFamily: 'Roboto, sans-serif', color: '#3c763d' }}>Folyóiratok könyvtárunkban</h3>
+                </div>
+                <div className="px-[15px] py-[15px] space-y-2">
+                  <a href="http://www.vmk.hu/kurrens" target="_blank" rel="noopener noreferrer" className="block text-[15px] text-black hover:text-black hover:no-underline" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                    Kurrens folyóiratok a Központi Könyvtár Olvasótermében &gt;
+                  </a>
+                  <a href="https://www.vmk.hu/folyoiratok-a-tagkonyvtarakban" target="_blank" rel="noopener noreferrer" className="block text-[15px] text-black hover:text-black hover:no-underline" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                    Kurrens folyóiratok a Tagkönyvtárakban &gt;
+                  </a>
+                </div>
               </div>
 
-              <div className="bg-green-50 border border-green-100 rounded-lg p-4 space-y-1.5">
-                <h3 className="font-bold text-sm text-slate-800 mb-1">Idegennyelvi gyűjteményeink</h3>
-                <a
-                  href="https://www.vmk.hu/gateway-uk-m"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-xs font-semibold text-[#159097] hover:underline"
-                >
-                  Gateway UK gyűjtemény →
-                </a>
-                <a
-                  href="https://www.goethe.de/ins/hu/hu/index.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-xs font-semibold text-[#159097] hover:underline"
-                >
-                  Német nyelvi gyűjtemény (Goethe) →
-                </a>
+              <div className="border border-[#d6e9c6] rounded">
+                <div className="px-[15px] py-[10px] rounded-t" style={{ backgroundColor: '#dff0d8', borderBottom: '1px solid #d6e9c6' }}>
+                  <h3 className="text-[14px] font-normal" style={{ fontFamily: 'Roboto, sans-serif', color: '#3c763d' }}>Idegennyelvi gyűjteményeink</h3>
+                </div>
+                <div className="px-[15px] py-[15px] space-y-2">
+                  <a href="https://www.vmk.hu/gateway-uk-m" target="_blank" rel="noopener noreferrer" className="block text-[15px] text-black hover:text-black hover:no-underline" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                    Gateway UK gyűjtemény &gt;
+                  </a>
+                  <a href="https://www.goethe.de/ins/hu/hu/index.html" target="_blank" rel="noopener noreferrer" className="block text-[15px] text-black hover:text-black hover:no-underline" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                    Német nyelvi gyűjtemény (Goethe) &gt;
+                  </a>
+                </div>
               </div>
             </aside>
           </div>
@@ -289,7 +241,7 @@ export default async function HomePage() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-[30px]">
                 {cmsGalleries.map((g) => {
                   const cover =
                     g.coverImage && typeof g.coverImage === 'object' && 'url' in g.coverImage
@@ -299,7 +251,7 @@ export default async function HomePage() {
                     <Link
                       key={g.id}
                       href={`/galeria/${g.slug}`}
-                      className="relative aspect-video rounded-lg overflow-hidden bg-slate-100 group"
+                      className="relative aspect-[4/3] overflow-hidden bg-slate-100 group block"
                     >
                       {cover ? (
                         <Image
@@ -307,15 +259,16 @@ export default async function HomePage() {
                           alt={g.title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 768px) 50vw, 33vw"
+                          sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-[#159097] text-white/50 text-xs font-bold">
                           VMK
                         </div>
                       )}
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[11px] px-2 py-1 truncate">
-                        {g.title}
+                      <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-[15px] py-[10px] text-white text-[18px]" style={{ backgroundColor: 'rgba(0,144,155,0.85)', fontFamily: 'Roboto, sans-serif' }}>
+                        <span className="truncate pr-2">{g.title}</span>
+                        <span className="shrink-0 text-white text-xl font-bold">&gt;</span>
                       </div>
                     </Link>
                   )

@@ -8,69 +8,81 @@ const MONTH_NAMES_HU = [
 ]
 
 export interface EventCalendarWidgetProps {
-  /** Az esemény napok (a hónap napjai, 1-31) amiket ki kell emelni. */
   highlightedDays: number[]
   year: number
-  month: number // 0-indexelt (JS Date konvenció)
+  month: number
 }
 
-// A valós vmk.hu főoldalán jobb oldalt egy "ESEMÉNYNAPTÁR" mini-naptár
-// widget áll, ami az aktuális hónapot mutatja, az esemény-napok
-// kiemelésével. Ez a verzió statikus (nem lapozható) - csak a jelen
-// hónapot rendereli, valós esemény-dátumok alapján kiemelve.
 export function EventCalendarWidget({ highlightedDays, year, month }: EventCalendarWidgetProps) {
   const firstDayOfMonth = new Date(year, month, 1)
-  // JS: vasárnap=0 ... szombat=6. A magyar naptár hétfővel kezdődik, ezért eltoljuk.
   const startWeekday = (firstDayOfMonth.getDay() + 6) % 7
   const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const prevMonthDays = new Date(year, month, 0).getDate()
 
-  const cells: Array<number | null> = [
-    ...Array(startWeekday).fill(null),
-    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-  ]
+  const cells: Array<{ day: number; current: boolean }> = []
+  for (let i = startWeekday - 1; i >= 0; i--) {
+    cells.push({ day: prevMonthDays - i, current: false })
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    cells.push({ day: d, current: true })
+  }
+  const remaining = 7 - (cells.length % 7)
+  if (remaining < 7) {
+    for (let d = 1; d <= remaining; d++) {
+      cells.push({ day: d, current: false })
+    }
+  }
+
   const today = new Date()
   const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month
 
   return (
-    <div className="bg-white border border-slate-200 rounded-lg p-4">
-      <div className="flex items-center justify-between mb-3">
-        <button aria-label="Előző hónap" disabled className="p-1 text-slate-300">
-          <ChevronLeft className="w-4 h-4" />
+    <div>
+      <div className="flex items-center" style={{ backgroundColor: '#00909b' }}>
+        <button aria-label="Előző hónap" disabled className="px-[10px] py-[5px] text-white">
+          <ChevronLeft className="w-[26px] h-[26px]" />
         </button>
-        <h3 className="font-bold text-sm text-slate-800">
-          {year}. {MONTH_NAMES_HU[month]}
+        <h3 className="flex-1 text-center text-white font-normal text-[22px] py-[15px]" style={{ fontFamily: 'Roboto, sans-serif' }}>
+          {year}. {MONTH_NAMES_HU[month].toUpperCase()}
         </h3>
-        <button aria-label="Következő hónap" disabled className="p-1 text-slate-300">
-          <ChevronRight className="w-4 h-4" />
+        <button aria-label="Következő hónap" disabled className="px-[10px] py-[5px] text-white">
+          <ChevronRight className="w-[26px] h-[26px]" />
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-1 text-center text-[11px]">
-        {WEEKDAY_LABELS.map((d) => (
-          <div key={d} className="text-slate-400 font-semibold py-1">
-            {d}
-          </div>
-        ))}
-        {cells.map((day, i) => {
-          const isHighlighted = day !== null && highlightedDays.includes(day)
-          const isToday = isCurrentMonth && day === today.getDate()
-          return (
-            <div
-              key={i}
-              className={`h-7 flex items-center justify-center rounded ${
-                day === null
-                  ? ''
-                  : isHighlighted
-                    ? 'bg-[#e4b02c] text-[#1B1B1B] font-bold'
-                    : isToday
-                      ? 'bg-slate-800 text-white font-bold'
-                      : 'text-slate-600'
-              }`}
-            >
-              {day ?? ''}
-            </div>
-          )
-        })}
-      </div>
+      <table className="w-full border-collapse" style={{ fontFamily: 'Roboto, sans-serif' }}>
+        <thead>
+          <tr>
+            {WEEKDAY_LABELS.map((d) => (
+              <th key={d} className="text-center text-[14px] font-bold text-black py-2">
+                {d}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: cells.length / 7 }, (_, row) => (
+            <tr key={row}>
+              {cells.slice(row * 7, row * 7 + 7).map((cell, col) => {
+                const isHighlighted = cell.current && highlightedDays.includes(cell.day)
+                const isToday = cell.current && isCurrentMonth && cell.day === today.getDate()
+                return (
+                  <td
+                    key={col}
+                    className="text-center text-[20px] py-[10px]"
+                    style={{
+                      fontWeight: isHighlighted || isToday ? 700 : 400,
+                      backgroundColor: isHighlighted ? '#e4b02c' : isToday ? '#00909b' : 'transparent',
+                      color: !cell.current ? '#ccc' : isHighlighted || isToday ? '#fff' : '#555',
+                    }}
+                  >
+                    {cell.day}
+                  </td>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }
