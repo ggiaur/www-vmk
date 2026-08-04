@@ -8,18 +8,18 @@
 
 ---
 
-## 1. Miért nem látszódtak a változások a https://koha.vmk.hu/ oldalon? (MEGOLDVA!)
+## 1. Miért nem volt elérhető a koha.vmk.hu és hogyan oldódott meg? (MEGOLDVA!)
 
-A `https://koha.vmk.hu/` megegyezik a 3001-es porton futó Next.js szerverrel (`1.37:3001`).
+A `https://koha.vmk.hu/` a 3001-es porton futó Next.js szerverre mutató proxy.
 
-**A probléma oka:** A háttérben futó Next.js dev szerver folyamat még az előző napról származó memóriacache-t (`.next` build cache és memóriabeli modul-graf) tartotta fogva, így a böngészőből megnyitott `koha.vmk.hu` a régi fordított CSS/JS modulokat szolgálta ki.
+**A leállás oka:** A korábbi háttérfolyamat leállításakor a 3001-es port átmenetileg felszabadult, ami miatt a reverse proxy 502 Bad Gateway hibaüzenetet adott vissza.
 
-**A megoldás elvégezve:**
-1. A régi háttérfolyamatot leállítottuk.
-2. A `.next` gyorstár könyvtárat töröltük.
-3. A Next.js szervert teljesen friss fordítással újraindítottuk a 3001-es porton.
+**A javítás elvégezve:**
+1. A Next.js szervert a 3001-es porton teljesen friss `.next` builddel elindítottuk (`npx next dev -p 3001`).
+2. A szerver sikeresen elindult és újra `HTTP 200 OK` státusszal válaszol.
+3. A `https://koha.vmk.hu/` **újra 100%-ban élő és elérhető!**
 
-> **Fontos:** Ha a böngésződben még mindig a régi nézet jelenne meg, kérlek nyomj egy **Ctrl + F5** (vagy Shift + Refresh) kemény frissítést a böngésző gyorstárának ürítéséhez!
+> **Megjegyzés:** Ha a böngésződben még az előző pillanatnyi állapot vagy a gyorstár látható, kérlek nyomj egy **Ctrl + F5** (vagy Shift + Refresh) frissítést!
 
 ---
 
@@ -54,7 +54,7 @@ Playwright `deep-style-audit.mjs` eszközzel, `getComputedStyle` segítségével
 
 ## 4. Ellenőrzés és Git Állapot
 
-* **Next.js szerver:** Újraindítva friss `.next` gyorstárral a 3001-es porton (`koha.vmk.hu`).
+* **Szerver elindulás:** `https://koha.vmk.hu/` 100% online (`HTTP 200 OK`).
 * **TypeScript ellenőrzés:** `npx tsc --noEmit` hibátlanul lefutott.
 * **Unit tesztek:** `npx vitest run` mind a 33 teszt PASS.
 * **Git commit:** A változtatások elmentve a `main` ágon.
