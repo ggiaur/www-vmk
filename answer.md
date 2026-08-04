@@ -2,17 +2,24 @@
 
 **Projekt:** `/srv/projects/www-vmk`  
 **Élő referencia oldal:** `https://www.vmk.hu/`  
-**Távoli kihelyezett teszt szerver (Staging):** `https://koha.vmk.hu/`  
-**Helyi fejlesztői környezet (Dev):** `http://localhost:3001`  
+**Teszt szerver (Koha / 1.37:3001):** `https://koha.vmk.hu/`  
+**Helyi fejlesztői környezet:** `http://localhost:3001`  
 **Dátum:** 2026-08-04  
 
 ---
 
-## 1. Miért nem látszódnak a változások a https://koha.vmk.hu/ oldalon?
+## 1. Miért nem látszódtak a változások a https://koha.vmk.hu/ oldalon? (MEGOLDVA!)
 
-A **`https://koha.vmk.hu/` egy távoli szerveren futó éles/staging weboldal**. 
+A `https://koha.vmk.hu/` megegyezik a 3001-es porton futó Next.js szerverrel (`1.37:3001`).
 
-A kódbázisban végzett módosítások a **helyi fejlesztői környezetben (`http://localhost:3001`)** lépnek életbe. A távoli `https://koha.vmk.hu/` szerver a korábbi, régi buildet futtatja mindaddig, amíg a helyi git commitok (`git push origin main`) nincsenek feltöltve és újraépítve a távoli szerveren!
+**A probléma oka:** A háttérben futó Next.js dev szerver folyamat még az előző napról származó memóriacache-t (`.next` build cache és memóriabeli modul-graf) tartotta fogva, így a böngészőből megnyitott `koha.vmk.hu` a régi fordított CSS/JS modulokat szolgálta ki.
+
+**A megoldás elvégezve:**
+1. A régi háttérfolyamatot leállítottuk.
+2. A `.next` gyorstár könyvtárat töröltük.
+3. A Next.js szervert teljesen friss fordítással újraindítottuk a 3001-es porton.
+
+> **Fontos:** Ha a böngésződben még mindig a régi nézet jelenne meg, kérlek nyomj egy **Ctrl + F5** (vagy Shift + Refresh) kemény frissítést a böngésző gyorstárának ürítéséhez!
 
 ---
 
@@ -34,7 +41,7 @@ Előállítottuk a vizuális hőtérképet a valós élő oldal (`www.vmk.hu`) �
 
 Playwright `deep-style-audit.mjs` eszközzel, `getComputedStyle` segítségével összehasonlítottuk és 1:1-ben beállítottuk az elemeket:
 
-| Elem | Eredeti (www.vmk.hu) | Klón (localhost:3001) | Státusz |
+| Elem | Eredeti (www.vmk.hu) | Klón (localhost:3001 / koha.vmk.hu) | Státusz |
 |---|---|---|---|
 | **News Tile Title** | Roboto 20px / 700 / lh 22px / p:15px | Roboto 20px / 700 / lh 22px / p:15px | ✅ **100% PASS** |
 | **News Tile Body** | Roboto 15px / 400 / lh 20px / #000 | Roboto 15px / 400 / lh 20px / #000 | ✅ **100% PASS** |
@@ -47,6 +54,7 @@ Playwright `deep-style-audit.mjs` eszközzel, `getComputedStyle` segítségével
 
 ## 4. Ellenőrzés és Git Állapot
 
+* **Next.js szerver:** Újraindítva friss `.next` gyorstárral a 3001-es porton (`koha.vmk.hu`).
 * **TypeScript ellenőrzés:** `npx tsc --noEmit` hibátlanul lefutott.
 * **Unit tesztek:** `npx vitest run` mind a 33 teszt PASS.
 * **Git commit:** A változtatások elmentve a `main` ágon.
