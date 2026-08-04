@@ -43,14 +43,14 @@ export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTilePro
           </div>
         )}
       </div>
-      <div className="px-[15px] py-[15px] text-white shrink-0" style={{ backgroundColor: TITLE_BG }}>
-        <h3 className="font-bold text-[20px] leading-snug">{title}</h3>
+      <div className="p-[15px] text-white font-bold text-[20px] leading-[22px] shrink-0" style={{ backgroundColor: TITLE_BG }}>
+        <h3 className="font-bold text-[20px] leading-[22px] text-white">{title}</h3>
       </div>
       <div
-        className="relative px-[15px] py-[15px] pr-9 flex-1 text-black"
+        className="relative p-[15px] pr-9 flex-1 text-black font-normal text-[15px] leading-[20px]"
         style={{ backgroundColor: CONTENT_BG }}
       >
-        <p className="text-[13px] leading-[1.4] line-clamp-6">{summary}</p>
+        <p className="text-[15px] leading-[20px] font-normal text-black line-clamp-6">{summary}</p>
         <ChevronRight className="w-4 h-4 text-white absolute bottom-2 right-2" strokeWidth={3} />
       </div>
     </Link>

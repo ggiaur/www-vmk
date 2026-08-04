@@ -113,7 +113,9 @@ export default async function HomePage() {
         <SiteSidebar />
 
         <main className="min-w-0">
-          <h1 className="text-xl font-bold text-slate-900 mb-4">Hírek, Események</h1>
+          <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+            Hírek, Események
+          </h1>
 
           <p className="text-xs text-slate-500 leading-relaxed mb-5 text-justify">
             Rendezvényeinken kép- és hangfelvételek készülhetnek. Tiltakozása esetén törölhetjük az

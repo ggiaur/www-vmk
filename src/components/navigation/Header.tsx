@@ -213,7 +213,7 @@ export const Header: React.FC = () => {
       {/* 2. sor: FEHÉR háttér, sötétszürke szöveg */}
       <div className="hidden lg:block bg-white">
         <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px]">
-          <nav className="flex items-center gap-1 h-[45px] text-[19px] font-normal tracking-normal text-[#333333] uppercase border-b-[5px] border-[#00909B]">
+          <nav className="flex items-center gap-1 h-[45px] text-[16px] font-bold tracking-normal text-[#333333] uppercase border-b-[5px] border-[#00909B]">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div

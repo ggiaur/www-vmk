@@ -24,14 +24,14 @@ export const Footer: React.FC = () => {
             Playwright-tal getComputedStyle-lal mérve. */}
         {/* Column 1: Hírlevél */}
         <div className="space-y-3 pt-4 border-t-2 border-white">
-          <h2 className="font-sans font-bold text-white text-[24px]">Hírlevél</h2>
+          <h2 className="font-bold text-white text-[24px] leading-[26.4px]" style={{ fontFamily: 'Roboto, sans-serif' }}>Hírlevél</h2>
           <NewsletterForm />
         </div>
 
         {/* Column 2: Kapcsolat */}
         <div className="space-y-3 pt-4 border-t-2 border-white">
-          <h2 className="font-sans font-bold text-white text-[24px]">Kapcsolat</h2>
-          <div className="space-y-1.5 text-sm text-teal-50">
+          <h2 className="font-bold text-white text-[24px] leading-[26.4px]" style={{ fontFamily: 'Roboto, sans-serif' }}>Kapcsolat</h2>
+          <div className="space-y-1.5 text-sm text-teal-50" style={{ fontFamily: 'Roboto, sans-serif' }}>
             <p className="font-semibold text-white">Vörösmarty Mihály Könyvtár</p>
             <p>
               Cím: 8000 Székesfehérvár, Bartók Béla tér 1.
@@ -73,9 +73,9 @@ export const Footer: React.FC = () => {
 
       {/* Bottom Bar */}
       <div className="bg-[#33A6AF]">
-        <div className={`${REAL_CONTAINER} py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-teal-50`}>
+        <div className={`${REAL_CONTAINER} py-[10px] px-[15px] flex flex-col sm:flex-row items-center justify-between gap-2 text-[14px] leading-[20px] text-teal-50`} style={{ fontFamily: 'Roboto, sans-serif' }}>
           <p>©2015 Vörösmarty Mihály Könyvtár. Minden jog fenntartva! - NEOSOFT</p>
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center gap-4 text-[14px] leading-[20px]">
             <Link href="/nyitvatartas" className="hover:text-white transition">
               Opening hours
             </Link>

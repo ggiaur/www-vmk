@@ -181,19 +181,19 @@ export function SiteSidebar() {
       {/* Valós oldal CSS: .box { margin-bottom: 30px }, de .box.menu { margin-bottom: 0 }
           → a MENÜ header-nek nincs bottom marginaja, a submenu (nav) viszont kapja a 30px-et.
           A fejléc font-size: 18px (valós), padding: 8px 15px (valós). */}
-      <div className="bg-[#00909B] w-full" style={{ padding: '8px 15px', marginBottom: 0 }}>
-        {/* div, nem h2: a h2 Cinzel fontot örököl (globals.css), ami eltérő line-height-et ad */}
+      <div className="bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px]" style={{ padding: '8px 15px', marginBottom: 0 }}>
         <div
           style={{
             margin: 0,
             color: '#FFF',
             fontSize: '18px',
             fontWeight: 700,
-            lineHeight: '1.1',
+            lineHeight: '19.8px',
+            fontFamily: 'Roboto, sans-serif',
             textTransform: 'uppercase',
           }}
         >
-          Menü
+          MENÜ
         </div>
       </div>
       {/* valós vmk.hu: .box.submenu { background-color: #fff } — fehér háttér, nem CCE9EB */}
