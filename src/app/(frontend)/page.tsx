@@ -145,7 +145,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px] items-stretch mb-10">
             {displayNews.map((item, i) => {
               const img = 'featuredImage' in item ? item.featuredImage : undefined
               const imgUrl =

@@ -1,8 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ChevronRight } from 'lucide-react'
 
-const TILE_COLORS = ['#159097', '#8a5a3d', '#0f656a', '#e4b02c', '#1E293B', '#f16f30']
+// real.png pixel-mintavétel (2026-08-04, x=550 oszlop-szken a "Tájékoztatás"
+// kártyán): a címsáv EGYSÉGESEN #159097 (a legtöbb kártyán, típus="type1"),
+// a leírás-terület EGYSÉGESEN #1BBBC4, a szöveg ott FEKETE (nem szürke), és
+// jobb alul egy fehér ">" nyíl-ikon van. A korábbi 6-elemű TILE_COLORS
+// forgó paletta és a szürke leírás-háttér NEM létezik a valós oldalon - azt
+// tévesen találtuk ki. (Ritka kivétel: pl. "Spiró 80" class="type5", más
+// színű - ezt egyelőre nem különböztetjük meg, mert a CMS-migráció nem
+// hozza át a hír-kategória-típust.)
+const TITLE_BG = '#159097'
+const CONTENT_BG = '#1BBBC4'
 
 export interface HomeNewsTileProps {
   title: string
@@ -13,27 +23,12 @@ export interface HomeNewsTileProps {
   index: number
 }
 
-// A valós vmk.hu főoldali hír-rácsa HÁROMRÉSZES kártyákból áll (Playwright
-// screenshottal ellenőrizve): kép felül, alatta egy tömör színű címsáv
-// (fehér, félkövér cím), majd egy VILÁGOSABB leírás-terület sötét szöveggel
-// - nem egységesen színezett, sötét-szövegű blokk, ahogy korábban itt volt.
-export function HomeNewsTile({ title, summary, publishedAt, slug, imageUrl, index }: HomeNewsTileProps) {
-  const color = TILE_COLORS[index % TILE_COLORS.length]
-  const formattedDate = new Date(publishedAt).toLocaleDateString('hu-HU', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-
+export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTileProps) {
   return (
-    <Link
-      href={`/hirek/${slug}`}
-      className="group block rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-    >
-      {/* Képmagasság: h-[170px] — mérve a valós vmk.hu-n (real.png pixel-mintavétel).
-          Korábban h-36 (144px) volt, ami 26px-szel alacsonyabb a valósnál (15.3%
-          különbség — visual-audit newsCardImageHeight FAIL). */}
-      <div className="h-[170px] w-full relative bg-slate-200 overflow-hidden">
+    <Link href={`/hirek/${slug}`} className="group flex flex-col h-full">
+      {/* Képmagasság: h-[160px] — mérve a valós vmk.hu-n (real.png, kártya
+          teteje y=1133, címsáv kezdete y=1293). */}
+      <div className="h-[160px] w-full relative bg-slate-200 overflow-hidden shrink-0">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -43,19 +38,20 @@ export function HomeNewsTile({ title, summary, publishedAt, slug, imageUrl, inde
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: color }}>
+          <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: TITLE_BG }}>
             <span className="text-white/40 text-4xl font-black">VMK</span>
           </div>
         )}
       </div>
-      <div className="px-4 py-2.5 text-white" style={{ backgroundColor: color }}>
-        <div className="text-[10px] font-semibold uppercase tracking-wide opacity-80 mb-0.5">
-          {formattedDate}
-        </div>
-        <h3 className="font-bold text-sm leading-snug line-clamp-2">{title}</h3>
+      <div className="px-4 py-3 text-white shrink-0" style={{ backgroundColor: TITLE_BG }}>
+        <h3 className="font-bold text-base leading-snug">{title}</h3>
       </div>
-      <div className="px-4 py-3 bg-slate-50 border border-t-0 border-slate-100 rounded-b-lg">
-        <p className="text-xs text-slate-600 line-clamp-3">{summary}</p>
+      <div
+        className="relative px-4 py-3 pr-9 flex-1 text-black"
+        style={{ backgroundColor: CONTENT_BG }}
+      >
+        <p className="text-[13px] leading-[1.4] line-clamp-6">{summary}</p>
+        <ChevronRight className="w-4 h-4 text-white absolute bottom-2 right-2" strokeWidth={3} />
       </div>
     </Link>
   )
