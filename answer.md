@@ -24,9 +24,9 @@
 *(Szigorúan a színekre, méretekre, elrendezésekre és arányokra fókuszálva)*
 
 ### A. Fejléc és Navigáció (Header & Nav)
-1. **Kereső ikon:** Az eredeti `vmk.hu` oldalon egy tömör, vastagabb nagyító ikon szerepel a menü jobb szélén, míg a klónon egy vékonyabb körvonalas ikon.
-2. **Menü nyilak (Caret):** A gördülő menüpontoknál az eredetin kis lefelé mutató tömör háromszög (`▼`), a klónon vékony chevron nyíl (`v`) látható.
-3. **Katalógus gomb & ikon-sor:** Az eredetin a felső ikonok alatti `"ONLINE KATALÓGUS / BEIRATKOZÁS ▾"` gomb és a felette lévő közösségi ikonok függőleges távolsága és igazítása kis mértékben eltér.
+1. **Kereső ikon:** Az eredeti `vmk.hu` oldalon egy tömör, vastagabb nagyító ikon szerepel a menü jobb szélén. *(Helyileg javítva: `strokeWidth={2.75}` bold ikon).*
+2. **Menü nyilak (Caret):** A gördülő menüpontoknál az eredetin kis lefelé mutató tömör háromszög (`▼`) szerepel. *(Helyileg javítva: `▾` caret szimbólum).*
+3. **Katalógus gomb & ikon-sor:** Az ikonsor alatti `"ONLINE KATALÓGUS / BEIRATKOZÁS ▾"` gomb igazítása és a gombban lévő caret nyíl helyreállítva.
 
 ### B. Főoldali Banner (Hero Carousel)
 1. **Karusszel léptető nyilak:** 
