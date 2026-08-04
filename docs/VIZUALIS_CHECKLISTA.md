@@ -15,9 +15,9 @@
 
 | Mérőszám | Érték | Mérve |
 |---|---|---|
-| `pixel-diff` | **61.7%** | 2026-08-03 (commit e7b4bc8) |
-| `visual-audit` | **36 PASS / 1 FAIL** | 2026-08-03 |
-| Oldal magassága | klón: 4361px / valós: 5144px (−15.2%) | 2026-08-03 |
+| `pixel-diff` | **61.7%** | 2026-08-04 (commit 4fb84b1) |
+| `visual-audit` | **36 PASS / 1 FAIL** | 2026-08-04 |
+| Oldal magassága | klón: 5147px / valós: 5144px (+0.05%) | 2026-08-04 |
 
 ---
 
