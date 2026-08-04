@@ -28,7 +28,7 @@ export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTilePro
     <Link href={`/hirek/${slug}`} className="group flex flex-col h-full min-h-[350px]">
       {/* Képmagasság: h-[160px] — mérve a valós vmk.hu-n (real.png, kártya
           teteje y=1133, címsáv kezdete y=1293). */}
-      <div className="h-[160px] w-full relative bg-slate-200 overflow-hidden shrink-0">
+      <div className="w-full relative bg-slate-200 overflow-hidden shrink-0" style={{ aspectRatio: '720/465' }}>
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -47,11 +47,11 @@ export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTilePro
         <h3 className="font-bold text-[20px] leading-[22px] text-white" style={{ fontFamily: 'Roboto, sans-serif' }}>{title}</h3>
       </div>
       <div
-        className="relative p-[15px] pr-9 flex-1 text-black font-normal text-[15px] leading-[20px]"
-        style={{ backgroundColor: CONTENT_BG }}
+        className="relative p-[15px] pb-[30px] flex-1 text-black font-normal text-[15px] leading-[20px]"
+        style={{ backgroundColor: CONTENT_BG, fontFamily: 'Roboto, sans-serif' }}
       >
         <p className="text-[15px] leading-[20px] font-normal text-black line-clamp-6">{summary}</p>
-        <ChevronRight className="w-4 h-4 text-white absolute bottom-2 right-2" strokeWidth={3} />
+        <ChevronRight className="w-6 h-6 text-white absolute bottom-0 right-[15px]" strokeWidth={3} />
       </div>
     </Link>
   )
