@@ -217,7 +217,16 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
             <section>
-              <h2 className="text-lg font-bold text-slate-900 mb-4">Eseménynaptár</h2>
+              {/* real.png pixel-mérés (2026-08-04, y~3150-3172, x~460-650):
+                  24px, #333333, DE nem Cinzel - a fagyasztott bázisképen ez a
+                  cím sima fallback szerifre esik vissza (valószínűleg a Cinzel
+                  webfont még nem töltött be, amikor a böngésző ezt a
+                  lap-alsó szakaszt kirajzolta a screenshothoz), míg a lejjebbi
+                  "Galéria" cím ugyanazon a képen már Cinzel-ben jelenik meg.
+                  A globális h1-h4 Cinzel-szabályt itt explicit felülírjuk
+                  font-serif-fel, hogy pixelre kövessük a valós, befagyasztott
+                  renderelést, nem a CSS "szándékát". */}
+              <h2 className="text-2xl font-serif font-bold text-[#333333] mb-4">Eseménynaptár</h2>
               <EventCalendarWidget
                 highlightedDays={highlightedDays}
                 year={now.getFullYear()}
@@ -271,7 +280,7 @@ export default async function HomePage() {
           {cmsGalleries.length > 0 && (
             <section className="mt-10">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-slate-900">Galéria</h2>
+                <h2 className="text-2xl font-bold text-[#333333]">Galéria</h2>
                 <Link
                   href="/galeria"
                   className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
