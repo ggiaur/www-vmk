@@ -25,7 +25,7 @@ export interface HomeNewsTileProps {
 
 export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTileProps) {
   return (
-    <Link href={`/hirek/${slug}`} className="group flex flex-col h-full">
+    <Link href={`/hirek/${slug}`} className="group flex flex-col h-full min-h-[350px]">
       {/* Képmagasság: h-[160px] — mérve a valós vmk.hu-n (real.png, kártya
           teteje y=1133, címsáv kezdete y=1293). */}
       <div className="h-[160px] w-full relative bg-slate-200 overflow-hidden shrink-0">
@@ -44,7 +44,7 @@ export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTilePro
         )}
       </div>
       <div className="p-[15px] text-white font-bold text-[20px] leading-[22px] shrink-0" style={{ backgroundColor: TITLE_BG }}>
-        <h3 className="font-bold text-[20px] leading-[22px] text-white">{title}</h3>
+        <h3 className="font-bold text-[20px] leading-[22px] text-white" style={{ fontFamily: 'Roboto, sans-serif' }}>{title}</h3>
       </div>
       <div
         className="relative p-[15px] pr-9 flex-1 text-black font-normal text-[15px] leading-[20px]"

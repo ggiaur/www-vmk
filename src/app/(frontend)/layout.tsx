@@ -39,23 +39,17 @@ export default function FrontendLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        {/* Széchenyi logók: a valós vmk.hu-n fixed pozíciós elemek a </footer> után */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/brand/szechenyi2020_esza_bal.png"
-          alt="Széchenyi 2020 ESZA"
-          width={220}
-          height={154}
-          style={{ position: 'fixed', bottom: 0, left: 0, zIndex: 30, pointerEvents: 'none' }}
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/brand/szechenyi2020_erfa_jobb.png"
-          alt="Széchenyi 2020 ERFA"
-          width={220}
-          height={154}
-          style={{ position: 'fixed', bottom: 0, right: 0, zIndex: 30, pointerEvents: 'none' }}
-        />
+        {/* Széchenyi 2020 sarokjelvények — a valós vmk.hu-n position:fixed,
+            bottom:0, z-index:10000, width:270px, mindkettő kattintható <a>.
+            Itt 120px → 220px hover-átmenettel (felhasználó kérése). */}
+        <a href="http://konyvtar.vmk.hu/efop/" target="_blank" rel="noopener noreferrer">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/szechenyi2020_esza_bal.png" alt="Széchenyi 2020 ESZA" className="szlogo szlogo-left" />
+        </a>
+        <a href="https://www.vmk.hu/_upload/editor/2021/TOP-BudaiUtiKvtPalyazat.pdf" target="_blank" rel="noopener noreferrer">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/szechenyi2020_erfa_jobb.png" alt="Széchenyi 2020 ERFA" className="szlogo szlogo-right" />
+        </a>
       </body>
     </html>
   )

@@ -97,3 +97,21 @@ h1, h2, h3, h4, .font-serif-heading {
   box-shadow: 0 6px 20px rgba(200, 90, 50, 0.35);
   transform: translateY(-2px);
 }
+
+.szlogo {
+  position: fixed;
+  bottom: 0;
+  z-index: 10000;
+  width: 120px;
+  height: auto;
+  transition: width 0.3s ease;
+}
+.szlogo:hover {
+  width: 220px;
+}
+.szlogo-left {
+  left: 0;
+}
+.szlogo-right {
+  right: 0;
+}
