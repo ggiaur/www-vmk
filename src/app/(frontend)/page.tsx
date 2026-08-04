@@ -166,53 +166,64 @@ export default async function HomePage() {
             })}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_260px] gap-8">
-            <section>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-[#e4b02c]" />
-                  Eseménynaptár
-                </h2>
-                <Link
-                  href="/esemenyek"
-                  className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
-                >
-                  <span>További eseményeink</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {displayEvents.map((event) => {
-                  const loc = 'location' in event ? event.location : undefined
-                  const locationName =
-                    loc && typeof loc === 'object' && 'name' in loc
-                      ? (loc.name as string)
-                      : 'locationName' in event
-                        ? (event.locationName as string)
-                        : 'VMK Székesfehérvár'
-                  return (
-                    <EventCard
-                      key={event.id}
-                      title={event.title}
-                      startDate={
-                        typeof event.startDate === 'string' ? event.startDate : new Date().toISOString()
-                      }
-                      locationName={locationName}
-                      targetAudience={event.targetAudience}
-                      slug={event.slug}
-                      registrationUrl={'registrationUrl' in event ? event.registrationUrl ?? undefined : undefined}
-                    />
-                  )
-                })}
-              </div>
-            </section>
+          {/* A valós vmk.hu-n a "közelgő események" ugyanazzal a kártyastílussal
+              jelennek meg, mint a hírek (további sorok ugyanabban a rácsban),
+              az Eseménynaptár pedig KÜLÖN, alatta lévő szekció, kb. 50/50
+              arányban osztva a naptár és a Folyóiratok/Idegennyelvi panelek
+              között - NEM egy szűk 260px-es oldalsáv egy széles eseményrács
+              mellett, ahogy korábban itt volt (real.html + real.png
+              pixel-ellenőrzéssel mérve, 2026-08-04). */}
+          <section className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-[#e4b02c]" />
+                Események
+              </h2>
+              <Link
+                href="/esemenyek"
+                className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+              >
+                <span>További eseményeink</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {displayEvents.map((event) => {
+                const loc = 'location' in event ? event.location : undefined
+                const locationName =
+                  loc && typeof loc === 'object' && 'name' in loc
+                    ? (loc.name as string)
+                    : 'locationName' in event
+                      ? (event.locationName as string)
+                      : 'VMK Székesfehérvár'
+                return (
+                  <EventCard
+                    key={event.id}
+                    title={event.title}
+                    startDate={
+                      typeof event.startDate === 'string' ? event.startDate : new Date().toISOString()
+                    }
+                    locationName={locationName}
+                    targetAudience={event.targetAudience}
+                    slug={event.slug}
+                    registrationUrl={'registrationUrl' in event ? event.registrationUrl ?? undefined : undefined}
+                  />
+                )
+              })}
+            </div>
+          </section>
 
-            <aside className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <section>
+              <h2 className="text-lg font-bold text-slate-900 mb-4">Eseménynaptár</h2>
               <EventCalendarWidget
                 highlightedDays={highlightedDays}
                 year={now.getFullYear()}
                 month={now.getMonth()}
               />
+            </section>
+
+            <aside className="space-y-4">
               <div className="bg-green-50 border border-green-100 rounded-lg p-4 space-y-1.5">
                 <h3 className="font-bold text-sm text-slate-800 mb-1">Folyóiratok könyvtárunkban</h3>
                 <a
