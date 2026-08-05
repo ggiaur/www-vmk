@@ -20,6 +20,7 @@ export const Libraries: CollectionConfig = {
     group: 'Könyvtárak',
     useAsTitle: 'name',
     defaultColumns: ['name', 'type', 'phone', 'email'],
+    description: 'Központi könyvtár, tagkönyvtárak és részlegek adatai.',
   },
   fields: [
     {

@@ -13,6 +13,7 @@ export const Galleries: CollectionConfig = {
     group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'eventDate'],
+    description: 'Fotógalériák rendezvényekhez és könyvtári eseményekhez.',
   },
   fields: [
     {

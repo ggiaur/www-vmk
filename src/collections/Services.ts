@@ -13,6 +13,7 @@ export const Services: CollectionConfig = {
     group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'icon'],
+    description: 'Könyvtári szolgáltatások és díjtáblázatok.',
   },
   fields: [
     {

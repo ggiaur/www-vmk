@@ -13,6 +13,7 @@ export const Rooms: CollectionConfig = {
     group: 'Könyvtárak',
     useAsTitle: 'name',
     defaultColumns: ['name', 'library', 'capacity'],
+    description: 'Foglalható termek és közösségi terek.',
   },
   fields: [
     {

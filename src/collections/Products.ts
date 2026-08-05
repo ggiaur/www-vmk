@@ -16,6 +16,7 @@ export const Products: CollectionConfig = {
     group: 'Foglalások és tranzakciók',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'price', 'stockStatus'],
+    description: 'Könyvtári bolt: selejtezett könyvek, ajándéktárgyak.',
   },
   fields: [
     {

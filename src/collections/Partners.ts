@@ -13,6 +13,7 @@ export const Partners: CollectionConfig = {
     group: 'Könyvtárak',
     useAsTitle: 'name',
     defaultColumns: ['name', 'type', 'order'],
+    description: 'Támogatók és együttműködő partnerek.',
   },
   fields: [
     {

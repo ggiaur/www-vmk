@@ -13,6 +13,7 @@ export const Documents: CollectionConfig = {
     group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'year', 'downloadCount'],
+    description: 'Letölthető PDF dokumentumok: szabályzatok, beszámolók, űrlapok.',
   },
   fields: [
     {

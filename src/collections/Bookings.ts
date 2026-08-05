@@ -10,6 +10,7 @@ export const Bookings: CollectionConfig = {
     group: 'Foglalások és tranzakciók',
     useAsTitle: 'requesterName',
     defaultColumns: ['room', 'date', 'startTime', 'endTime', 'status'],
+    description: 'Beérkezett teremfoglalási kérelmek kezelése.',
   },
   fields: [
     {

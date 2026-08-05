@@ -13,6 +13,7 @@ export const Staff: CollectionConfig = {
     group: 'Könyvtárak',
     useAsTitle: 'name',
     defaultColumns: ['name', 'position', 'department', 'email', 'order'],
+    description: 'Könyvtári munkatársak és elérhetőségeik.',
   },
   fields: [
     {

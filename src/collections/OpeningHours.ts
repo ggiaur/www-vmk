@@ -13,6 +13,7 @@ export const OpeningHours: CollectionConfig = {
     group: 'Könyvtárak',
     useAsTitle: 'specialNote',
     defaultColumns: ['library', 'dayOfWeek', 'openTime', 'closeTime', 'isClosed'],
+    description: 'Nyitvatartási idők tagkönyvtáranként és naponként.',
   },
   fields: [
     {

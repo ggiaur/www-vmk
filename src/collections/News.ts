@@ -24,6 +24,14 @@ export const News: CollectionConfig = {
     group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],
+    description: 'Könyvtári hírek, közlemények és pályázati kiírások kezelése.',
+    listSearchableFields: ['title', 'summary', 'slug'],
+    livePreview: {
+      url: ({ data }) => {
+        const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
+        return `${base}/hirek/${(data as Record<string, unknown>).slug ?? ''}`
+      },
+    },
   },
   versions: {
     drafts: true,

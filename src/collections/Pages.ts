@@ -14,6 +14,13 @@ export const Pages: CollectionConfig = {
     group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
+    description: 'Egyedi oldalak szerkesztése blokk-építővel (pl. Rólunk, Beiratkozás).',
+    livePreview: {
+      url: ({ data }) => {
+        const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
+        return `${base}/${(data as Record<string, unknown>).slug ?? ''}`
+      },
+    },
   },
   versions: {
     drafts: true,

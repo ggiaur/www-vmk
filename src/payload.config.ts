@@ -36,7 +36,33 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: ' — VMK Admin',
+    },
+    components: {
+      graphics: {
+        Logo: './components/admin/Logo#Logo',
+        Icon: './components/admin/Icon#Icon',
+      },
+      beforeDashboard: ['./components/admin/DashboardBanner#DashboardBanner'],
+    },
     livePreview: {
+      collections: ['news', 'events', 'pages'],
+      url: ({ data, collectionConfig }) => {
+        const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
+        const slug = (data as Record<string, unknown>).slug as string | undefined
+        if (!slug) return base
+        switch (collectionConfig?.slug) {
+          case 'news':
+            return `${base}/hirek/${slug}`
+          case 'events':
+            return `${base}/esemenyek/${slug}`
+          case 'pages':
+            return `${base}/${slug}`
+          default:
+            return base
+        }
+      },
       breakpoints: [
         {
           label: 'Mobil',

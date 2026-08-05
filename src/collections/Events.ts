@@ -20,6 +20,14 @@ export const Events: CollectionConfig = {
     group: 'Tartalom',
     useAsTitle: 'title',
     defaultColumns: ['title', 'startDate', 'location', 'targetAudience', '_status'],
+    description: 'Rendezvények, foglalkozások és programok szervezése.',
+    listSearchableFields: ['title', 'slug'],
+    livePreview: {
+      url: ({ data }) => {
+        const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
+        return `${base}/esemenyek/${(data as Record<string, unknown>).slug ?? ''}`
+      },
+    },
   },
   versions: {
     drafts: true,
