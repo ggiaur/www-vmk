@@ -2,102 +2,84 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { MapPin, Phone } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { NewsletterForm } from '@/components/forms/NewsletterForm'
-import { REAL_CONTAINER } from '@/lib/layout'
 import { openConsentSettings } from '@/lib/cookieConsent'
 
-// A valós vmk.hu lábléce 3 oszlopos (Hírlevél | Kapcsolat | jelvények),
-// NEM 4 oszlopos - Playwright getComputedStyle-lal mérve a tényleges
-// színek: a fő láblécblokk háttere rgb(0, 144, 155) = #00909B, a legalsó
-// copyright-sáv egy árnyalattal világosabb: rgb(51, 166, 175) = #33A6AF.
-// A "Kapcsolat" oszlop a valós oldalon nem tartalmaz e-mail címet és
-// nincs önálló "Hasznos Hivatkozások" oszlop sem - ezeket korábban
-// tévesen fabrikáltuk hozzá. A jelvények (Outlook Web App, Minősített
-// Könyvtár) a valós oldalon letöltött, tényleges képek, nem szöveges
-// ikon-diszek. Közösségimédia-ikonok csak a fejlécben szerepelnek a
-// valós oldalon, a láblécben nincsenek megismételve.
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#00909B] text-teal-50 pt-10 pb-0 mt-auto">
-      <div className={`${REAL_CONTAINER} grid grid-cols-1 md:grid-cols-3 gap-8 pb-10`}>
-        {/* Column 1: Hírlevél - a valós oldalon a cím H2, 24px, félkövér
-            (700), NEM nagybetűs, és a vonal a doboz TETEJÉN van (2px
-            solid fehér border-top a wrapper divjén), nem a szöveg alatt -
-            Playwright-tal getComputedStyle-lal mérve. */}
+    <footer className="footer-biblio pt-10 pb-0 mt-auto">
+      <div className="max-w-[1200px] mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-10">
         {/* Column 1: Hírlevél */}
-        <div className="space-y-3 pt-4 border-t-2 border-white">
-          <h2 className="font-bold text-white text-[24px] leading-[26.4px]" style={{ fontFamily: 'Roboto, sans-serif' }}>Hírlevél</h2>
+        <div className="space-y-3">
+          <h2 className="font-bold text-white text-lg border-b-2 border-[#2980b9] pb-2">Hírlevél</h2>
           <NewsletterForm />
         </div>
 
         {/* Column 2: Kapcsolat */}
-        <div className="space-y-3 pt-4 border-t-2 border-white">
-          <h2 className="font-bold text-white text-[24px] leading-[26.4px]" style={{ fontFamily: 'Roboto, sans-serif' }}>Kapcsolat</h2>
-          <div className="space-y-1.5 text-sm text-teal-50" style={{ fontFamily: 'Roboto, sans-serif' }}>
+        <div className="space-y-3">
+          <h2 className="font-bold text-white text-lg border-b-2 border-[#2980b9] pb-2">Kapcsolat</h2>
+          <div className="space-y-2 text-sm">
             <p className="font-semibold text-white">Vörösmarty Mihály Könyvtár</p>
-            <p>
-              Cím: 8000 Székesfehérvár, Bartók Béla tér 1.
-              <br />
-              8001 Székesfehérvár, Pf: 65.
+            <p className="flex items-start gap-2">
+              <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-[#2980b9]" />
+              <span>8000 Székesfehérvár, Bartók Béla tér 1.<br />8001 Székesfehérvár, Pf: 65.</span>
             </p>
-            <p>
-              <a href="tel:+3622340699" className="hover:text-white transition">
-                Tel.: 22/340-699
-              </a>
+            <p className="flex items-center gap-2">
+              <Phone className="w-4 h-4 shrink-0 text-[#2980b9]" />
+              <a href="tel:+3622340699" className="hover:text-white transition">22/340-699</a>
             </p>
           </div>
-          <a
-            href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-[#e4b02c] hover:text-white transition text-sm font-medium"
-          >
-            Adatkezelési tájékoztató
-          </a>
-          <button
-            type="button"
-            onClick={() => openConsentSettings()}
-            className="block text-left text-[#e4b02c] hover:text-white transition text-sm font-medium"
-          >
-            Sütik kezelése
-          </button>
+          <div className="pt-2 space-y-1 text-sm">
+            <a
+              href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block hover:text-white transition"
+            >
+              Adatkezelési tájékoztató
+            </a>
+            <button
+              type="button"
+              onClick={() => openConsentSettings()}
+              className="block text-left hover:text-white transition text-sm"
+            >
+              Sütik kezelése
+            </button>
+          </div>
         </div>
 
-        {/* Column 3: Jelvények */}
-        <div className="flex flex-col items-center md:items-end gap-4 pt-[30px] pb-[30px]">
-          <a href="https://outlook.office365.com" target="_blank" rel="noopener noreferrer">
+        {/* Column 3: Gyors linkek + Jelvények */}
+        <div className="space-y-4">
+          <h2 className="font-bold text-white text-lg border-b-2 border-[#2980b9] pb-2">Hasznos linkek</h2>
+          <nav className="space-y-1.5 text-sm">
+            <Link href="/nyitvatartas" className="flex items-center gap-2 hover:text-white transition">
+              <Clock className="w-3.5 h-3.5 text-[#2980b9]" />Nyitvatartás
+            </Link>
+            <a href="http://tlwww.vmk.hu/tlwww" target="_blank" rel="noopener noreferrer" className="block hover:text-white transition">
+              Online Katalógus
+            </a>
+            <Link href="/kapcsolat" className="block hover:text-white transition">Beiratkozás</Link>
+            <Link href="/galeria" className="block hover:text-white transition">Galéria</Link>
+          </nav>
+          <div className="flex items-center gap-3 pt-2">
+            <a href="https://outlook.office365.com" target="_blank" rel="noopener noreferrer">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/icons/outlook_web_app.jpg" alt="Outlook Web App" width={140} height={60} className="bg-white rounded p-1 h-auto" />
+            </a>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/brand/icons/outlook_web_app.jpg"
-              alt="Outlook Web App"
-              width={205}
-              height={88}
-              className="bg-white rounded p-1 w-[267px] h-auto md:w-[205px]"
-            />
-          </a>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/icons/min_vmk.png"
-            alt="Minősített Könyvtár 2020"
-            width={205}
-            height={194}
-            className="w-[267px] h-auto md:w-[205px]"
-          />
+            <img src="/brand/icons/min_vmk.png" alt="Minősített Könyvtár 2020" width={100} height={95} className="h-auto" />
+          </div>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="bg-[#33A6AF]">
-        <div className={`${REAL_CONTAINER} py-[10px] px-[15px] flex flex-col sm:flex-row items-center justify-between gap-2 text-[14px] leading-[20px] text-teal-50`} style={{ fontFamily: 'Roboto, sans-serif' }}>
-          <p>©2015 Vörösmarty Mihály Könyvtár. Minden jog fenntartva! - NEOSOFT</p>
-          <nav className="flex items-center gap-4 text-[14px] leading-[20px]">
-            <Link href="/nyitvatartas" className="hover:text-white transition">
-              Opening hours
-            </Link>
-            <Link href="/arato-antal-emlekere" className="hover:text-white transition">
-              Dr. Arató Antal (1942-2025)
-            </Link>
+      <div className="footer-copyright">
+        <div className="max-w-[1200px] mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
+          <p>&copy;2015 Vörösmarty Mihály Könyvtár. Minden jog fenntartva!</p>
+          <nav className="flex items-center gap-4 text-sm">
+            <Link href="/nyitvatartas" className="hover:text-white transition">Opening hours</Link>
+            <Link href="/arato-antal-emlekere" className="hover:text-white transition">Dr. Arató Antal (1942-2025)</Link>
           </nav>
         </div>
       </div>
