@@ -89,13 +89,14 @@ export async function getPaginatedNews({
   }
 }
 
-export async function getNewsBySlug(slug: string) {
+export async function getNewsBySlug(slug: string, draft = false) {
   try {
     const payload = await getPayloadClient()
     if (!payload) return null
     const result = await payload.find({
       collection: 'news',
-      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      where: draft ? { slug: { equals: slug } } : { slug: { equals: slug }, _status: { equals: 'published' } },
+      draft,
       depth: 2,
       limit: 1,
     })
@@ -146,13 +147,14 @@ export async function getUpcomingEvents(limit = 4, sortDirection: 'asc' | 'desc'
   }
 }
 
-export async function getEventBySlug(slug: string) {
+export async function getEventBySlug(slug: string, draft = false) {
   try {
     const payload = await getPayloadClient()
     if (!payload) return null
     const result = await payload.find({
       collection: 'events',
-      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      where: draft ? { slug: { equals: slug } } : { slug: { equals: slug }, _status: { equals: 'published' } },
+      draft,
       depth: 2,
       limit: 1,
     })
@@ -523,13 +525,14 @@ export async function getProductBySlug(slug: string) {
 
 // ─── Pages (generic block-based content) ───────────────────────────────────────
 
-export async function getPageBySlug(slug: string) {
+export async function getPageBySlug(slug: string, draft = false) {
   try {
     const payload = await getPayloadClient()
     if (!payload) return null
     const result = await payload.find({
       collection: 'pages',
-      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      where: draft ? { slug: { equals: slug } } : { slug: { equals: slug }, _status: { equals: 'published' } },
+      draft,
       depth: 2,
       limit: 1,
     })

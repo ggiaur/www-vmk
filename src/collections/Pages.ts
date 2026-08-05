@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { PageBlocks } from '../blocks/PageBlocks'
 import { generateSlug } from '../lib/slugify'
 import { restrictPublishToEditors } from '../lib/access'
+import { buildPreviewUrl } from '../lib/preview'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -18,11 +19,9 @@ export const Pages: CollectionConfig = {
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     description: 'Egyedi oldalak szerkesztése blokk-építővel (pl. Rólunk, Beiratkozás).',
     livePreview: {
-      url: ({ data }) => {
-        const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
-        return `${base}/${(data as Record<string, unknown>).slug ?? ''}`
-      },
+      url: ({ data }) => buildPreviewUrl(`/${(data as Record<string, unknown>).slug ?? ''}`),
     },
+    preview: (doc) => buildPreviewUrl(`/${(doc as Record<string, unknown>).slug ?? ''}`),
   },
   versions: {
     drafts: true,

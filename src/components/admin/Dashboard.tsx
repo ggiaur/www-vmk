@@ -21,6 +21,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { DashboardBanner } from './DashboardBanner'
 
 type Stats = {
@@ -365,9 +366,9 @@ export default function AdminDashboard() {
       >
         <strong>💡 Tipp:</strong> Ha rendkívüli nyitvatartási változást (ünnepnap, szünet) kell
         közzétenni, menj a bal oldalsávban a{' '}
-        <a href="/admin/globals/opening-hours-global" style={{ color: '#b45309', fontWeight: 600 }}>
+        <Link href="/admin/globals/opening-hours-global" style={{ color: '#b45309', fontWeight: 600 }}>
           Rendkívüli Nyitvatartás
-        </a>{' '}
+        </Link>{' '}
         Global-hoz — ott a banner üzenet az összes oldalon megjelenik.
       </div>
     </div>

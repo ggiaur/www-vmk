@@ -30,6 +30,7 @@ import { HeaderSettings } from './globals/HeaderSettings'
 import { FooterSettings } from './globals/FooterSettings'
 import { SiteMetadata } from './globals/SiteMetadata'
 import { OpeningHoursGlobal } from './globals/OpeningHoursGlobal'
+import { buildPreviewUrl } from './lib/preview'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,11 +66,11 @@ export default buildConfig({
         if (!slug) return base
         switch (collectionConfig?.slug) {
           case 'news':
-            return `${base}/hirek/${slug}`
+            return buildPreviewUrl(`/hirek/${slug}`)
           case 'events':
-            return `${base}/esemenyek/${slug}`
+            return buildPreviewUrl(`/esemenyek/${slug}`)
           case 'pages':
-            return `${base}/${slug}`
+            return buildPreviewUrl(`/${slug}`)
           default:
             return base
         }

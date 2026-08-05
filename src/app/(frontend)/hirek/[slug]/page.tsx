@@ -1,10 +1,12 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { draftMode } from 'next/headers'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import { getNewsBySlug } from '@/lib/payload'
+import { DraftModeBanner } from '@/components/ui/DraftModeBanner'
 import { Calendar, User, ArrowLeft, Share2 } from 'lucide-react'
 
 export async function generateMetadata({
@@ -26,7 +28,8 @@ export default async function NewsDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const article = await getNewsBySlug(slug).catch(() => null)
+  const { isEnabled: isDraftMode } = await draftMode()
+  const article = await getNewsBySlug(slug, isDraftMode).catch(() => null)
 
   const title = article?.title ?? 'Nyári olvasójáték és könyvajánló fiataloknak'
   const summary =
@@ -48,6 +51,7 @@ export default async function NewsDetailPage({
 
   return (
     <PageWithSidebar>
+      {isDraftMode && <DraftModeBanner path={`/hirek/${slug}`} />}
       <article className="max-w-4xl space-y-8">
       <Breadcrumb
         items={[

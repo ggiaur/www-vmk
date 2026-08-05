@@ -1,11 +1,13 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { draftMode } from 'next/headers'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import { RsvpForm } from '@/components/forms/RsvpForm'
 import { getEventBySlug, getRegistrationCountForEvent } from '@/lib/payload'
+import { DraftModeBanner } from '@/components/ui/DraftModeBanner'
 import { Calendar, MapPin, Users, ArrowLeft, ExternalLink } from 'lucide-react'
 
 export async function generateMetadata({
@@ -14,7 +16,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const event = await getEventBySlug(slug).catch(() => null)
+  const { isEnabled: isDraftMode } = await draftMode()
+  const event = await getEventBySlug(slug, isDraftMode).catch(() => null)
   return {
     title: event ? `${event.title} – VMK Esemény` : 'Rendezvény – Vörösmarty Mihály Könyvtár',
     description: 'Rendezvény részletei',
@@ -27,7 +30,8 @@ export default async function EventDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const event = await getEventBySlug(slug).catch(() => null)
+  const { isEnabled: isDraftMode } = await draftMode()
+  const event = await getEventBySlug(slug, isDraftMode).catch(() => null)
 
   const title = event?.title ?? 'Kortárs Könyvklub: Nyári Könyvmustra'
   const startDate = event?.startDate ?? '2026-08-05T17:00:00.000Z'
@@ -53,6 +57,7 @@ export default async function EventDetailPage({
 
   return (
     <PageWithSidebar>
+      {isDraftMode && <DraftModeBanner path={`/esemenyek/${slug}`} />}
       <article className="max-w-4xl space-y-8">
       <Breadcrumb
         items={[

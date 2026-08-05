@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisearch'
 import { scopedToOwnLibrary, restrictPublishToEditors } from '../lib/access'
 import { generateSlug } from '../lib/slugify'
+import { buildPreviewUrl } from '../lib/preview'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -24,11 +25,9 @@ export const Events: CollectionConfig = {
     description: 'Rendezvények, foglalkozások és programok szervezése.',
     listSearchableFields: ['title', 'slug'],
     livePreview: {
-      url: ({ data }) => {
-        const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
-        return `${base}/esemenyek/${(data as Record<string, unknown>).slug ?? ''}`
-      },
+      url: ({ data }) => buildPreviewUrl(`/esemenyek/${(data as Record<string, unknown>).slug ?? ''}`),
     },
+    preview: (doc) => buildPreviewUrl(`/esemenyek/${(doc as Record<string, unknown>).slug ?? ''}`),
   },
   versions: {
     drafts: true,
