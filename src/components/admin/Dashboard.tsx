@@ -21,6 +21,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
+import { DashboardBanner } from './DashboardBanner'
 
 type Stats = {
   publishedNews: number
@@ -207,22 +208,7 @@ export default function AdminDashboard() {
           "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       }}
     >
-      {/* Fejléc */}
-      <div style={{ marginBottom: '2.5rem' }}>
-        <h1
-          style={{
-            fontSize: '1.75rem',
-            fontWeight: 700,
-            color: '#0f172a',
-            margin: '0 0 0.5rem',
-          }}
-        >
-          📚 VMK Admin Vezérlőpult
-        </h1>
-        <p style={{ color: '#64748b', margin: 0 }}>
-          Vörösmarty Mihály Könyvtár — Tartalomkezelő rendszer
-        </p>
-      </div>
+      <DashboardBanner />
 
       {/* Statisztikák */}
       <div style={{ marginBottom: '2.5rem' }}>
