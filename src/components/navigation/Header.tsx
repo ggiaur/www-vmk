@@ -72,20 +72,20 @@ const ICON_LINKS: Array<{ href: string; label: string; img: string; w: number; h
   { href: 'https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos', label: 'YouTube', img: '/brand/icons/vmk_youtube.jpg', w: 39, h: 28 },
   { href: 'https://www.facebook.com/vmk13', label: 'Facebook', img: '/brand/icons/vmk_facebook.png', w: 28, h: 28 },
   { href: 'https://www.instagram.com/vmkszekesfehervar/', label: 'Instagram', img: '/brand/icons/instagram_vmk.png', w: 28, h: 28 },
-  { href: 'https://www.vmk.hu/page/menu/156/preview/1', label: 'Wifi elérhetőség', img: '/brand/icons/icon_wifi.png', w: 28, h: 28 },
+  { href: '/szolgaltatasok', label: 'Wifi elérhetőség', img: '/brand/icons/icon_wifi.png', w: 28, h: 28 },
 ]
 
 const LANG_FLAGS: Array<{ href: string; label: string; img: string; active?: boolean }> = [
-  { href: 'https://www.vmk.hu/start/index/lang/hu', label: 'Magyar', img: '/brand/icons/flag_hu.png', active: true },
-  { href: 'https://www.vmk.hu/start/index/lang/en', label: 'English', img: '/brand/icons/flag_en.png' },
-  { href: 'https://www.vmk.hu/start/index/lang/de', label: 'Deutsch', img: '/brand/icons/flag_de.png' },
+  { href: '/', label: 'Magyar', img: '/brand/icons/flag_hu.png', active: true },
+  { href: '/', label: 'English', img: '/brand/icons/flag_en.png' },
+  { href: '/', label: 'Deutsch', img: '/brand/icons/flag_de.png' },
 ]
 
 const CATALOG_MENU: Array<{ href: string; label: string }> = [
   { href: 'http://tlwww.vmk.hu/tlwww', label: 'Belépés a katalógusba' },
   { href: 'http://tlwww.vmk.hu/tlwww/olvall.htm', label: 'Bejelentkezés olvasóknak' },
   { href: 'http://tlwww.vmk.hu/tlwww/partner.htm', label: 'Bejelentkezés partner könyvtáraknak' },
-  { href: 'https://www.vmk.hu/regiszracios-lap', label: 'Beiratkozás' },
+  { href: '/kapcsolat', label: 'Beiratkozás' },
 ]
 
 export const Header: React.FC = () => {
@@ -129,7 +129,7 @@ export const Header: React.FC = () => {
                 aria-label="E-mail"
                 className="flex items-center justify-center shrink-0 text-[#159097] hover:opacity-70 transition-opacity"
               >
-                <Mail className="w-[26px] h-[26px]" strokeWidth={1.75} />
+                <Mail className="w-[30px] h-[30px]" strokeWidth={1.75} />
               </a>
               {ICON_LINKS.map((icon) => (
                 <a
@@ -158,7 +158,7 @@ export const Header: React.FC = () => {
                 </a>
               ))}
               <a
-                href="https://www.vmk.hu/page/blind"
+                href="/szolgaltatasok"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Akadálymentes (vakok és gyengénlátók) nézet"
@@ -205,8 +205,55 @@ export const Header: React.FC = () => {
             className="lg:hidden p-2 rounded text-slate-700 hover:bg-slate-100 focus:outline-none"
             aria-label="Menü megnyitása"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-[50px] h-[50px]" /> : <Menu className="w-[50px] h-[50px]" />}
           </button>
+        </div>
+
+        {/* Mobil ikonsor — logó alatt, a valós vmk.hu mobilnézetének megfelelően */}
+        <div className="md:hidden flex flex-wrap items-center justify-center gap-[10px] px-[15px] pb-[8px]">
+          <a
+            href="mailto:kolcsonzo@vmk.hu"
+            aria-label="E-mail"
+            className="flex items-center justify-center text-[#159097]"
+          >
+            <Mail className="w-[26px] h-[26px]" strokeWidth={1.75} />
+          </a>
+          {ICON_LINKS.map((icon) => (
+            <a
+              key={icon.label}
+              href={icon.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={icon.label}
+              className="flex items-center justify-center"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={icon.img} alt={icon.label} width={icon.w} height={icon.h} className="object-contain" />
+            </a>
+          ))}
+          {LANG_FLAGS.map((flag) => (
+            <a
+              key={flag.label}
+              href={flag.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={flag.label}
+              className={`flex items-center justify-center ${flag.active ? 'opacity-100' : 'opacity-60'}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={flag.img} alt={flag.label} width={31} height={22} className="object-contain rounded-sm" />
+            </a>
+          ))}
+          <a
+            href="/szolgaltatasok"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Akadálymentes nézet"
+            className="flex items-center justify-center"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={31} height={22} className="object-contain rounded-sm" />
+          </a>
         </div>
       </div>
 

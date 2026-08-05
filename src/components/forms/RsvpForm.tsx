@@ -38,7 +38,7 @@ export function RsvpForm({
   }
 
   return (
-    <form action={formAction} className="space-y-3 bg-white border border-slate-200 rounded-xl p-5">
+    <form action={formAction} className="space-y-3 bg-white border border-slate-200 rounded p-5">
       <input type="hidden" name="eventId" value={eventId} />
       <input type="hidden" name="eventSlug" value={eventSlug} />
       <h3 className="font-bold text-slate-900">Jelentkezés a rendezvényre</h3>

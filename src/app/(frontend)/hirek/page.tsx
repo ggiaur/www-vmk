@@ -71,11 +71,8 @@ export default async function HirekPage({
       <div className="space-y-8">
       <Breadcrumb items={[{ label: 'Hírek & Közlemények' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900">Hírek & Közlemények</h1>
-        <p className="text-slate-600 mt-2">
-          Kövesse figyelemmel könyvtárunk legfrissebb közleményeit, hirdetményeit és pályázatait.
-        </p>
+      <div className="pb-4">
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">Hírek</h1>
 
         {/* Kategória szűrő gombok */}
         <div className="flex flex-wrap gap-2 mt-6">
@@ -89,7 +86,7 @@ export default async function HirekPage({
             <Link
               key={cat.value}
               href={cat.value === 'all' ? '/hirek' : `/hirek?category=${cat.value}`}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors ${
+              className={`px-4 py-2 rounded text-[13px] font-bold transition-colors ${
                 activeCategory === cat.value
                   ? 'bg-[#159097] text-white shadow-sm'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'

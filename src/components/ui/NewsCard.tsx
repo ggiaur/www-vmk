@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Calendar, ArrowRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 
 export interface NewsCardProps {
   title: string
@@ -12,11 +12,14 @@ export interface NewsCardProps {
   imageUrl?: string
 }
 
-const categoryLabels: Record<string, { label: string; color: string }> = {
-  general: { label: 'Friss Hír', color: 'bg-amber-100 text-amber-800' },
-  announcement: { label: 'Közlemény', color: 'bg-red-100 text-red-800' },
-  grant: { label: 'Pályázat', color: 'bg-emerald-100 text-emerald-800' },
-  archive: { label: 'Archívum', color: 'bg-slate-200 text-slate-700' },
+const TITLE_BG = '#159097'
+const CONTENT_BG = '#1BBBC4'
+
+const categoryLabels: Record<string, string> = {
+  general: 'Friss Hír',
+  announcement: 'Közlemény',
+  grant: 'Pályázat',
+  archive: 'Archívum',
 }
 
 export const NewsCard: React.FC<NewsCardProps> = ({
@@ -27,7 +30,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
   slug,
   imageUrl,
 }) => {
-  const catInfo = categoryLabels[category] || { label: 'Hír', color: 'bg-slate-100 text-slate-800' }
+  const catLabel = categoryLabels[category] || 'Hír'
   const formattedDate = new Date(publishedAt).toLocaleDateString('hu-HU', {
     year: 'numeric',
     month: 'long',
@@ -35,46 +38,42 @@ export const NewsCard: React.FC<NewsCardProps> = ({
   })
 
   return (
-    <article className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm card-hover-effect flex flex-col h-full">
-      {imageUrl && (
-        <div className="h-48 w-full overflow-hidden bg-slate-100 relative">
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            className="object-cover transition-transform duration-300 hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
+    <article className="flex flex-col h-full min-h-[440px]">
+      <Link href={`/hirek/${slug}`} className="group flex flex-col h-full">
+        <div className="w-full relative bg-slate-200 overflow-hidden shrink-0" style={{ aspectRatio: '720/465' }}>
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: TITLE_BG }}>
+              <span className="text-white/40 text-4xl font-black">VMK</span>
+            </div>
+          )}
+          <div className="absolute top-0 left-0 flex items-center gap-2 p-2">
+            <span className="text-[11px] px-2 py-0.5 font-bold text-white rounded-sm" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              {catLabel}
+            </span>
+            <span className="text-[11px] px-2 py-0.5 text-white rounded-sm" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+              {formattedDate}
+            </span>
+          </div>
         </div>
-      )}
-
-      <div className="p-5 flex flex-col flex-1">
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${catInfo.color}`}>
-            {catInfo.label}
-          </span>
-          <span className="text-xs text-slate-400 flex items-center gap-1">
-            <Calendar className="w-3.5 h-3.5" />
-            {formattedDate}
-          </span>
+        <div className="p-[15px] text-white font-bold text-[20px] leading-[22px] shrink-0" style={{ backgroundColor: TITLE_BG }}>
+          <h3 className="font-bold text-[20px] leading-[22px] text-white" style={{ fontFamily: 'Roboto, sans-serif' }}>{title}</h3>
         </div>
-
-        <h3 className="font-bold text-slate-900 text-lg leading-snug mb-2 line-clamp-2 hover:text-[#159097] transition-colors">
-          <Link href={`/hirek/${slug}`}>{title}</Link>
-        </h3>
-
-        <p className="text-sm text-slate-600 line-clamp-3 mb-4 flex-1">{summary}</p>
-
-        <div className="pt-3 border-t border-slate-100 mt-auto">
-          <Link
-            href={`/hirek/${slug}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#159097] hover:text-[#0f656a] transition-colors group"
-          >
-            <span>Tovább a cikkhez</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+        <div
+          className="relative p-[15px] pb-[30px] flex-1 text-black font-normal text-[15px] leading-[20px]"
+          style={{ backgroundColor: CONTENT_BG, fontFamily: 'Roboto, sans-serif' }}
+        >
+          <p className="text-[15px] leading-[20px] font-normal text-black line-clamp-6">{summary}</p>
+          <ChevronRight className="w-6 h-6 text-white absolute bottom-0 right-[15px]" strokeWidth={3} />
         </div>
-      </div>
+      </Link>
     </article>
   )
 }

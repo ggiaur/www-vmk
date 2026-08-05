@@ -30,7 +30,7 @@ export default async function GenericPage({ params }: Args) {
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
       <Breadcrumb items={[{ label: page.title }]} />
-      <h1 className="text-3xl font-black text-slate-900">{page.title}</h1>
+      <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">{page.title}</h1>
       <PageBlockRenderer blocks={page.layout as unknown as PageBlock[]} />
     </div>
   )

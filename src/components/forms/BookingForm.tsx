@@ -22,7 +22,7 @@ export function BookingForm({ roomId, openFrom, openTo }: { roomId: string; open
   }
 
   return (
-    <form action={formAction} className="space-y-3 bg-white border border-slate-200 rounded-xl p-5">
+    <form action={formAction} className="space-y-3 bg-white border border-slate-200 rounded p-5">
       <input type="hidden" name="roomId" value={roomId} />
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <input

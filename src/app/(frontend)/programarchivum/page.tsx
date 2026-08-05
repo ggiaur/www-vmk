@@ -24,8 +24,8 @@ export default async function ProgramarchivumPage() {
       <div className="space-y-8">
       <Breadcrumb items={[{ label: 'Programarchívum' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
+      <div className="pb-4">
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
           <Archive className="w-8 h-8 text-[#159097]" />
           <span>Programarchívum</span>
         </h1>

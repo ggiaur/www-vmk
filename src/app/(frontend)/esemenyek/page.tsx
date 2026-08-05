@@ -60,11 +60,8 @@ export default async function EsemenyekPage({
       <div className="space-y-8">
       <Breadcrumb items={[{ label: 'Rendezvények' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900">Rendezvények & Programajánló</h1>
-        <p className="text-slate-600 mt-2">
-          Könyvtárunk gazdag kulturális és közösségi programokkal várja az érdeklődőket.
-        </p>
+      <div className="pb-4">
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">Rendezvények</h1>
 
         {/* Célcsoport szűrők + dátum-rendezés - a valós vmk.hu esemény-listája
             is szűrő legördülőkkel és dátum növekvő/csökkenő rendezéssel
@@ -86,7 +83,7 @@ export default async function EsemenyekPage({
                 <Link
                   key={aud.value}
                   href={href}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                  className={`px-4 py-2 rounded text-[13px] font-bold transition-colors ${
                     activeAudience === aud.value
                       ? 'bg-[#e4b02c] text-white shadow-sm'
                       : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'

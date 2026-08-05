@@ -33,7 +33,7 @@ export default async function ProductDetailPage({ params }: Args) {
       <Breadcrumb items={[{ label: 'Bolt', href: '/bolt' }, { label: product.title }]} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        <div className="aspect-square bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
+        <div className="aspect-square bg-slate-100 rounded flex items-center justify-center overflow-hidden">
           {imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={imageUrl} alt={product.title} className="w-full h-full object-cover" />
@@ -42,7 +42,7 @@ export default async function ProductDetailPage({ params }: Args) {
           )}
         </div>
         <div className="space-y-4">
-          <h1 className="text-2xl font-black text-slate-900">{product.title}</h1>
+          <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase leading-[26.4px]">{product.title}</h1>
           <p className="text-xl font-bold text-[#159097]">{product.price.toLocaleString('hu-HU')} Ft</p>
           {product.description && <p className="text-sm text-slate-600 leading-relaxed">{product.description}</p>}
           <Link

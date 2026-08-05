@@ -29,15 +29,8 @@ export default async function BoltPage() {
       <div className="space-y-8">
       <Breadcrumb items={[{ label: 'Bolt' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
-          <ShoppingBag className="w-8 h-8 text-[#159097]" />
-          <span>Bolt</span>
-        </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl">
-          Selejtezett könyvek és könyvtári ajándéktárgyak — a vásárláshoz keresse fel személyesen a
-          Központi Könyvtárat, vagy érdeklődjön elérhetőségeinken.
-        </p>
+      <div className="pb-4">
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">Bolt</h1>
       </div>
 
       {products.length === 0 ? (
@@ -52,7 +45,7 @@ export default async function BoltPage() {
               <Link
                 key={product.id}
                 href={`/bolt/${product.slug}`}
-                className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm card-hover-effect block"
+                className="bg-white rounded border border-slate-200 overflow-hidden shadow-sm card-hover-effect block"
               >
                 <div className="aspect-square bg-slate-100 flex items-center justify-center overflow-hidden">
                   {imageUrl ? (

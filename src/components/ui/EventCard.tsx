@@ -33,9 +33,9 @@ export const EventCard: React.FC<EventCardProps> = ({
   const timeStr = dateObj.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm card-hover-effect flex gap-4">
+    <div className="bg-white rounded border border-slate-200 p-5 flex gap-4">
       {/* Date badge */}
-      <div className="shrink-0 w-16 h-20 rounded-lg bg-[#159097] text-white flex flex-col items-center justify-center shadow-md">
+      <div className="shrink-0 w-16 h-20 rounded bg-[#159097] text-white flex flex-col items-center justify-center">
         <span className="text-2xl font-black leading-none">{dayStr}</span>
         <span className="text-xs font-semibold tracking-wider mt-1">{monthStr}</span>
         <span className="text-[10px] text-amber-200 mt-0.5">{timeStr}</span>

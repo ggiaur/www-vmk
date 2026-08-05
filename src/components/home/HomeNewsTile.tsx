@@ -25,7 +25,7 @@ export interface HomeNewsTileProps {
 
 export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTileProps) {
   return (
-    <Link href={`/hirek/${slug}`} className="group flex flex-col h-full min-h-[350px]">
+    <Link href={`/hirek/${slug}`} className="group flex flex-col h-full min-h-[440px]">
       {/* Képmagasság: h-[160px] — mérve a valós vmk.hu-n (real.png, kártya
           teteje y=1133, címsáv kezdete y=1293). */}
       <div className="w-full relative bg-slate-200 overflow-hidden shrink-0" style={{ aspectRatio: '720/465' }}>

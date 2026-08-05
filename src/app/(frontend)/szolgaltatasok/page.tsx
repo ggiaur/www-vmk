@@ -28,8 +28,8 @@ export default async function SzolgaltatasokPage() {
       <div className="space-y-10">
       <Breadcrumb items={[{ label: 'Szolgáltatások & Díjszabás' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900">Szolgáltatások & Díjszabás</h1>
+      <div className="pb-4">
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">Szolgáltatások & Díjszabás</h1>
         <p className="text-slate-600 mt-2 max-w-3xl">
           Ismerje meg a Vörösmarty Mihály Könyvtár által kínált kölcsönzési, digitális és közösségi szolgáltatásokat, valamint az érvényben lévő tételeket.
         </p>
@@ -37,7 +37,7 @@ export default async function SzolgaltatasokPage() {
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+        <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
           <BookOpen className="w-8 h-8 text-[#159097]" />
           <h2 className="text-xl font-bold text-slate-900">Dokumentumkölcsönzés & Olvasóterem</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
@@ -55,7 +55,7 @@ export default async function SzolgaltatasokPage() {
           </ul>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+        <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
           <FileText className="w-8 h-8 text-[#e4b02c]" />
           <h2 className="text-xl font-bold text-slate-900">E-Könyvek & NAVA Pont</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
@@ -73,7 +73,7 @@ export default async function SzolgaltatasokPage() {
           </ul>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+        <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
           <Bookmark className="w-8 h-8 text-[#159097]" />
           <h2 className="text-xl font-bold text-slate-900">Helyismereti Kutatószolgálat</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
@@ -81,7 +81,7 @@ export default async function SzolgaltatasokPage() {
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+        <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
           <Users className="w-8 h-8 text-[#e4b02c]" />
           <h2 className="text-xl font-bold text-slate-900">Terembérlet & Rendezvényszervezés</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
@@ -91,7 +91,7 @@ export default async function SzolgaltatasokPage() {
       </div>
 
       {/* Díjtáblázat */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden space-y-4 p-6">
+      <div className="bg-white rounded border border-slate-200 shadow-sm overflow-hidden space-y-4 p-6">
         <h2 className="text-xl font-bold text-slate-900">Hivatalos Díjszabás (2026)</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-slate-700">

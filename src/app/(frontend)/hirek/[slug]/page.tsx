@@ -65,7 +65,7 @@ export default async function NewsDetailPage({
           <span>Vissza a hírekhez</span>
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           {title}
         </h1>
 
@@ -82,7 +82,7 @@ export default async function NewsDetailPage({
       </div>
 
       {featuredImageUrl && (
-        <div className="rounded-xl overflow-hidden bg-slate-100">
+        <div className="rounded overflow-hidden bg-slate-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={featuredImageUrl} alt={featuredImageAlt} className="w-full h-auto object-cover" />
         </div>

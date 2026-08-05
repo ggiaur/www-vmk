@@ -70,12 +70,12 @@ export default async function EventDetailPage({
           <span>Vissza a rendezvényekhez</span>
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           {title}
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-amber-50/80 p-5 rounded-xl border border-amber-200 text-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-amber-50/80 p-5 rounded border border-amber-200 text-sm">
         <div className="flex items-center gap-3">
           <Calendar className="w-5 h-5 text-[#159097] shrink-0" />
           <div>
@@ -119,7 +119,7 @@ export default async function EventDetailPage({
       )}
 
       {event?.registrationUrl && (
-        <div className="p-6 bg-slate-900 text-white rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+        <div className="p-6 bg-slate-900 text-white rounded flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
           <div>
             <h3 className="font-bold text-lg">Regisztráció a rendezvényre</h3>
             <p className="text-xs text-slate-300">Biztosítsa helyét időben az ingyenes alkalmon!</p>

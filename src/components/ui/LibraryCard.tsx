@@ -29,7 +29,7 @@ export const LibraryCard: React.FC<LibraryCardProps> = ({
 }) => {
   const linkHref = href ?? `/nyitvatartas#${slug}`
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm card-hover-effect flex flex-col justify-between">
+    <div className="bg-white rounded border border-slate-200 p-5 flex flex-col justify-between">
       <div>
         <span className="text-xs px-2.5 py-1 rounded font-medium bg-amber-50 text-[#159097] border border-amber-200/60 inline-block mb-3">
           {typeLabels[type] || 'Tagkönyvtár'}

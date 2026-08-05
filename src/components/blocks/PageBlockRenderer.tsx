@@ -91,7 +91,7 @@ export function PageBlockRenderer({ blocks }: { blocks: PageBlock[] | null | und
                   />
                 )}
                 <div className="relative px-6 py-16 sm:py-24 text-center space-y-4 max-w-3xl mx-auto">
-                  <h1 className="text-3xl sm:text-4xl font-black">{block.heading}</h1>
+                  <h1 className="font-serif text-[24px] font-bold text-white uppercase leading-[26.4px]">{block.heading}</h1>
                   {block.subheading && (
                     <p className="text-slate-200 text-lg">{block.subheading}</p>
                   )}
@@ -113,7 +113,7 @@ export function PageBlockRenderer({ blocks }: { blocks: PageBlock[] | null | und
             return (
               <section
                 key={block.id}
-                className="bg-white rounded-xl border border-slate-200 p-6 space-y-4"
+                className="bg-white rounded border border-slate-200 p-6 space-y-4"
               >
                 {block.title && (
                   <h2 className="text-xl font-bold text-slate-900">{block.title}</h2>
@@ -160,7 +160,7 @@ export function PageBlockRenderer({ blocks }: { blocks: PageBlock[] | null | und
                 {block.title && (
                   <h2 className="text-xl font-bold text-slate-900">{block.title}</h2>
                 )}
-                <ul className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
+                <ul className="divide-y divide-slate-100 border border-slate-200 rounded overflow-hidden">
                   {(block.documents ?? []).map((doc) => {
                     if (typeof doc !== 'object') return null
                     const fileUrl = isMediaObject(doc.file) ? doc.file.url : undefined
