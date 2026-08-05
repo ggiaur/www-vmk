@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Roboto, Cinzel } from 'next/font/google'
 import { Header } from '@/components/navigation/Header'
 import { Footer } from '@/components/navigation/Footer'
+import { CookieConsent } from '@/components/CookieConsent'
 import './globals.css'
 
 // Matches the real, live www.vmk.hu exactly (Roboto body text, Cinzel
@@ -50,6 +51,7 @@ export default function FrontendLayout({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/szechenyi2020_erfa_jobb.png" alt="Széchenyi 2020 ERFA" className="szlogo szlogo-right" />
         </a>
+        <CookieConsent />
       </body>
     </html>
   )
