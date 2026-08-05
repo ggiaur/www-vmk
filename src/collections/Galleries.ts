@@ -15,6 +15,7 @@ export const Galleries: CollectionConfig = {
     defaultColumns: ['title', 'slug', 'eventDate'],
     description: 'Fotógalériák rendezvényekhez és könyvtári eseményekhez.',
   },
+  folders: true,
   fields: [
     {
       name: 'title',

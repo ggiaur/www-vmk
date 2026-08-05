@@ -51,6 +51,20 @@ export const Libraries: CollectionConfig = {
       label: 'Könyvtár Típusa',
     },
     {
+      name: 'color',
+      type: 'text',
+      label: 'Megjelenítési Szín (hex)',
+      admin: {
+        description:
+          'A munkatársak oldalon ez a szín jelenik meg a részleg/tagkönyvtár fejlécén, pl. #159097.',
+        position: 'sidebar',
+      },
+      validate: (value: unknown) => {
+        if (!value) return true
+        return /^#[0-9a-fA-F]{6}$/.test(String(value)) || 'Érvénytelen hex szín (pl. #159097).'
+      },
+    },
+    {
       name: 'address',
       type: 'text',
       required: true,

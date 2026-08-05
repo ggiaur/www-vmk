@@ -152,6 +152,10 @@ const STAFF_DATA: StaffCategory[] = [
   },
 ]
 
+// Magyar ábécé szerinti rendezés, ahol az ékezetes/ékezet nélküli
+// magánhangzó-párok (a≈á, e≈é, i≈í, o≈ó/ö/ő, u≈ú/ü/ű) egyenértékűek.
+const huCollator = new Intl.Collator('hu', { sensitivity: 'base' })
+
 export default async function MunkatarsakPage() {
   const staffMembers = await getAllStaff().catch(() => [])
 
@@ -164,8 +168,12 @@ export default async function MunkatarsakPage() {
         s.department && typeof s.department === 'object' && 'name' in s.department
           ? (s.department.name as string)
           : 'Egyéb'
+      const deptColor =
+        s.department && typeof s.department === 'object' && 'color' in s.department && s.department.color
+          ? (s.department.color as string)
+          : '#159097'
       if (!grouped.has(deptName)) {
-        grouped.set(deptName, { color: '#159097', members: [] })
+        grouped.set(deptName, { color: deptColor, members: [] })
       }
       grouped.get(deptName)!.members.push({
         name: s.name,
@@ -174,11 +182,13 @@ export default async function MunkatarsakPage() {
         email: s.email || undefined,
       })
     }
-    categories = Array.from(grouped.entries()).map(([title, data]) => ({
-      title,
-      color: data.color,
-      members: data.members,
-    }))
+    categories = Array.from(grouped.entries())
+      .map(([title, data]) => ({
+        title,
+        color: data.color,
+        members: [...data.members].sort((a, b) => huCollator.compare(a.name, b.name)),
+      }))
+      .sort((a, b) => huCollator.compare(a.title, b.title))
   }
 
   return (

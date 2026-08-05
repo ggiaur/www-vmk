@@ -15,6 +15,7 @@ export const Media: CollectionConfig = {
     group: 'Médiatár',
     useAsTitle: 'filename',
   },
+  folders: true,
   upload: {
     staticDir: 'media',
     imageSizes: [
