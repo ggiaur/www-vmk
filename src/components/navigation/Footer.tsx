@@ -1,8 +1,11 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import { MapPin, Phone } from 'lucide-react'
 import { NewsletterForm } from '@/components/forms/NewsletterForm'
 import { REAL_CONTAINER } from '@/lib/layout'
+import { openConsentSettings } from '@/lib/cookieConsent'
 
 // A valós vmk.hu lábléce 3 oszlopos (Hírlevél | Kapcsolat | jelvények),
 // NEM 4 oszlopos - Playwright getComputedStyle-lal mérve a tényleges
@@ -52,10 +55,17 @@ export const Footer: React.FC = () => {
           >
             Adatkezelési tájékoztató
           </a>
+          <button
+            type="button"
+            onClick={() => openConsentSettings()}
+            className="block text-left text-[#e4b02c] hover:text-white transition text-sm font-medium"
+          >
+            Sütik kezelése
+          </button>
         </div>
 
         {/* Column 3: Jelvények */}
-        <div className="flex flex-col items-start md:items-end gap-4 pt-[30px] pb-[30px]">
+        <div className="flex flex-col items-center md:items-end gap-4 pt-[30px] pb-[30px]">
           <a href="https://outlook.office365.com" target="_blank" rel="noopener noreferrer">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -63,11 +73,17 @@ export const Footer: React.FC = () => {
               alt="Outlook Web App"
               width={205}
               height={88}
-              className="bg-white rounded p-1"
+              className="bg-white rounded p-1 w-[267px] h-auto md:w-[205px]"
             />
           </a>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/icons/min_vmk.png" alt="Minősített Könyvtár 2020" width={205} height={194} />
+          <img
+            src="/brand/icons/min_vmk.png"
+            alt="Minősített Könyvtár 2020"
+            width={205}
+            height={194}
+            className="w-[267px] h-auto md:w-[205px]"
+          />
         </div>
       </div>
 
