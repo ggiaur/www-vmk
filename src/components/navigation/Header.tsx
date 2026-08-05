@@ -2,20 +2,13 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { Search, Menu, X, Mail, ChevronDown } from 'lucide-react'
+import { Search, Menu, X, ChevronDown, Clock, HelpCircle, Calendar, User, Globe } from 'lucide-react'
 
-// A valós www.vmk.hu fejléce KÉT sorból áll (ellenőrizve valós
-// képernyőkép-összevetéssel, Playwright screenshottal):
-//   1. Fehér sor: logó (valódi VMK címer + felirat kép) + közösségi ikonok +
-//      "Online Katalógus / Beiratkozás" gomb.
-//   2. Teal sor: fő navigáció (Nyitvatartás / Elérhetőségeink / Központi
-//      Könyvtár / Tagkönyvtárak / Megyei Ellátás / Galéria) + keresés ikon.
-// Korábban ez egyetlen teal sorba volt összevonva - ez javítva.
 interface NavChild {
   label: string
   href: string
   external?: boolean
+  divider?: boolean
 }
 
 interface NavItem {
@@ -24,271 +17,191 @@ interface NavItem {
   children?: NavChild[]
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Nyitvatartás', href: '/nyitvatartas' },
-  { label: 'Elérhetőségeink', href: '/kapcsolat' },
+const LPL_NAV: NavItem[] = [
   {
-    label: 'Központi Könyvtár',
+    label: 'Könyvek & Média',
     href: '/reszlegek',
     children: [
-      { label: 'Felnőtt kölcsönző részleg', href: '/reszlegek/felnott-kolcsonzo' },
+      { label: 'Új könyvek a polcon', href: '/hirek' },
+      { label: 'Munkatársaink ajánlják', href: '/galeria' },
+      { label: 'Online Katalógus', href: 'http://tlwww.vmk.hu/tlwww', external: true },
+      { label: '', href: '#', divider: true },
       { label: 'Gyermekrészleg', href: 'http://gyerek.vmk.hu/', external: true },
-      { label: 'Helyismeret', href: 'http://helyismeret.vmk.hu', external: true },
-      { label: 'Olvasóterem', href: '/reszlegek/olvasoterem' },
-      { label: 'Pedagógiai részleg', href: '/reszlegek/pedagogiai-reszleg' },
-      { label: 'Zenei és számítógépes részleg', href: 'http://av.vmk.hu', external: true },
-      { label: 'Kötészet', href: '/reszlegek/koteszet' },
+      { label: 'Zenei részleg', href: 'http://av.vmk.hu', external: true },
+      { label: 'Helyismereti gyűjtemény', href: 'http://helyismeret.vmk.hu', external: true },
     ],
   },
   {
-    label: 'Tagkönyvtárak',
-    href: '/tagkonyvtarak',
+    label: 'Szolgáltatások & Terek',
+    href: '/szolgaltatasok',
     children: [
+      { label: 'Beiratkozás', href: '/kapcsolat' },
+      { label: 'Teremfoglalás', href: '/teremfoglalas' },
+      { label: 'Kötészet', href: '/reszlegek/koteszet' },
+      { label: 'WiFi elérhetőség', href: '/szolgaltatasok' },
+      { label: '', href: '#', divider: true },
       { label: 'Budai Úti Tagkönyvtár', href: '/tagkonyvtarak/budai-ut' },
-      { label: 'Mészöly Géza Utcai Tagkönyvtár', href: '/tagkonyvtarak/meszoly-geza' },
+      { label: 'Mészöly G. Tagkönyvtár', href: '/tagkonyvtarak/meszoly-geza' },
       { label: 'Széna Téri Tagkönyvtár', href: '/tagkonyvtarak/szena-ter' },
-      { label: 'Tolnai Utcai Tagkönyvtár', href: '/tagkonyvtarak/tolnai-ut' },
-      { label: 'Zsolt Utcai Tagkönyvtár', href: '/tagkonyvtarak/zsolt-ut' },
+      { label: 'Tolnai Úti Tagkönyvtár', href: '/tagkonyvtarak/tolnai-ut' },
+      { label: 'Zsolt Úti Tagkönyvtár', href: '/tagkonyvtarak/zsolt-ut' },
     ],
   },
-  // Valós, élő oldalról lekérdezve: külső link a KSZR (Könyvtárellátási
-  // Szolgáltató Rendszer) saját oldalára, NEM belső aloldal.
-  { label: 'Megyei Ellátás', href: 'http://www.fejerkszr.hu/' },
-  { label: 'Galéria', href: '/galeria' },
-]
-
-// A valós fejléc jobb oldali ikonsora (nyers HTML-ből, 1:1 letöltött
-// képekkel): e-mail, YouTube, Facebook, Instagram, Wifi, nyelvi zászlók
-// (HU/EN/DE), akadálymentes ("vakok és gyengénlátók") ikon - ebből a
-// nyelvi/akadálymentes linkek a valós, élő vmk.hu megfelelő aloldalára
-// mutatnak, mert ezeket a funkciókat (nyelvváltás, vakbarát mód) itt nem
-// építettük ki.
-// Méretek a valós oldal nyers HTML-jéből (img width/height attribútumok) és
-// Playwright-tal mért pixel-bbox-okkal ellenőrizve: a YouTube ikon NEM
-// négyzet (39x28), a többi pedig 28x28. Korábban mindegyik egy egységes
-// 28x28-as négyzet dobozba volt kényszerítve object-contain-nel, ami a
-// szélesebb YouTube ikont összenyomta/kicsinyítette a valóshoz képest.
-const ICON_LINKS: Array<{ href: string; label: string; img: string; w: number; h: number }> = [
-  { href: 'https://www.youtube.com/channel/UCteOpYySj_ik3xoR5ID5vBQ/videos', label: 'YouTube', img: '/brand/icons/vmk_youtube.jpg', w: 39, h: 28 },
-  { href: 'https://www.facebook.com/vmk13', label: 'Facebook', img: '/brand/icons/vmk_facebook.png', w: 28, h: 28 },
-  { href: 'https://www.instagram.com/vmkszekesfehervar/', label: 'Instagram', img: '/brand/icons/instagram_vmk.png', w: 28, h: 28 },
-  { href: '/szolgaltatasok', label: 'Wifi elérhetőség', img: '/brand/icons/icon_wifi.png', w: 28, h: 28 },
-]
-
-const LANG_FLAGS: Array<{ href: string; label: string; img: string; active?: boolean }> = [
-  { href: '/', label: 'Magyar', img: '/brand/icons/flag_hu.png', active: true },
-  { href: '/', label: 'English', img: '/brand/icons/flag_en.png' },
-  { href: '/', label: 'Deutsch', img: '/brand/icons/flag_de.png' },
-]
-
-const CATALOG_MENU: Array<{ href: string; label: string }> = [
-  { href: 'http://tlwww.vmk.hu/tlwww', label: 'Belépés a katalógusba' },
-  { href: 'http://tlwww.vmk.hu/tlwww/olvall.htm', label: 'Bejelentkezés olvasóknak' },
-  { href: 'http://tlwww.vmk.hu/tlwww/partner.htm', label: 'Bejelentkezés partner könyvtáraknak' },
-  { href: '/kapcsolat', label: 'Beiratkozás' },
+  {
+    label: 'Kutatás & Tanulás',
+    href: '/reszlegek',
+    children: [
+      { label: 'Olvasóterem', href: '/reszlegek/olvasoterem' },
+      { label: 'Digitális könyvtár', href: '/hirek' },
+      { label: 'Megyei Ellátás (KSZR)', href: 'http://www.fejerkszr.hu/', external: true },
+    ],
+  },
+  { label: 'Hírek', href: '/hirek' },
 ]
 
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-  const [catalogOpen, setCatalogOpen] = useState(false)
+  const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchScope, setSearchScope] = useState('Katalógus')
+  const [searchBy, setSearchBy] = useState('Kulcsszó')
 
   return (
     <header className="relative z-50">
-      {/* 1. sor: fehér, logó + közösségi ikonok (felül) + katalógus gomb (alul,
-          külön sorban az ikonok alatt - Playwright getBoundingClientRect-tel
-          mérve: a valós oldalon a gomb kb. 35-40px-szel LEJJEBB kezdődik, mint
-          az ikonsor, nem egy vonalban van vele). A konténer max-szélessége és
-          vízszintes belső margója (px-6 lg:px-10, max-w-[1200px]) a valós
-          Bootstrap .container (1170px) méretéhez igazítva, hogy keskenyebb
-          böngészőablakban se tapadjon a tartalom a képernyő szélére. */}
-      <div className="bg-white">
-        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px] py-[7px] flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center shrink-0">
-            <Image
-              src="/brand/vmk-logo.png"
-              alt="Vörösmarty Mihály Könyvtár"
-              width={200}
-              height={80}
-              className="h-[90px] w-auto"
-              priority
-            />
+      {/* Row 1: Utility bar */}
+      <div className="utility-bar">
+        <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between h-[38px] text-[13px]">
+          <div className="hidden sm:flex items-center gap-1.5">
+            <Globe className="w-3.5 h-3.5" />
+            <span>Nyelv kiválasztása</span>
+            <ChevronDown className="w-3 h-3 opacity-60" />
+          </div>
+          <div className="flex items-center gap-4 ml-auto">
+            <Link href="/nyitvatartas" className="hidden sm:flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" />
+              <span>Nyitvatartás és helyszínek</span>
+            </Link>
+            <Link href="/kapcsolat" className="hidden md:flex items-center gap-1">
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Segítség</span>
+              <ChevronDown className="w-3 h-3 opacity-60" />
+            </Link>
+            <a
+              href="http://tlwww.vmk.hu/tlwww/olvall.htm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="utility-bar-loginbtn"
+            >
+              <User className="w-3.5 h-3.5" />
+              Bejelentkezés / Fiókom
+              <ChevronDown className="w-3 h-3 opacity-80" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="utility-bar-divider" />
+
+      {/* Row 2: Logo + Search */}
+      <div className="logo-row">
+        <div className="max-w-[1200px] mx-auto px-4 py-4 flex items-center justify-between gap-6">
+          <Link href="/" className="flex items-center gap-3 shrink-0">
+            <div className="lpl-logo-mark" />
+            <div className="lpl-logo-text hidden sm:block">
+              <div className="line1">VÖRÖSMARTY MIHÁLY</div>
+              <div className="line2">KÖNYVTÁR</div>
+            </div>
           </Link>
 
-          <div className="hidden md:flex flex-col items-end gap-2 shrink-0">
-            {/* A valós fejlécen az e-mail ikon egy sima, teal színű Font
-                Awesome glyph, SEMMILYEN háttér-dobozzal - nyers HTML:
-                <em style="color:#159097" class="fa fa-envelope">. Korábban
-                tévesen egy tömör teal jelvény-dobozba raktam, mint a többi
-                (kép-alapú) ikont. Az ikon-közök is mérve: a valós oldalon
-                minden ikon között egységesen ~13px a rés, nem 8px. */}
-            <div className="flex items-center gap-[13px]">
-              <a
-                href="mailto:kolcsonzo@vmk.hu"
-                aria-label="E-mail"
-                className="flex items-center justify-center shrink-0 text-[#159097] hover:opacity-70 transition-opacity"
-              >
-                <Mail className="w-[30px] h-[30px]" strokeWidth={1.75} />
-              </a>
-              {ICON_LINKS.map((icon) => (
-                <a
-                  key={icon.label}
-                  href={icon.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={icon.label}
-                  className="flex items-center justify-center shrink-0"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={icon.img} alt={icon.label} width={icon.w} height={icon.h} className="object-contain" />
-                </a>
-              ))}
-              {LANG_FLAGS.map((flag) => (
-                <a
-                  key={flag.label}
-                  href={flag.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={flag.label}
-                  className={`flex items-center justify-center shrink-0 ${flag.active ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-opacity'}`}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={flag.img} alt={flag.label} width={31} height={22} className="object-contain rounded-sm" />
-                </a>
-              ))}
-              <a
-                href="/szolgaltatasok"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Akadálymentes (vakok és gyengénlátók) nézet"
-                className="flex items-center justify-center shrink-0"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={31} height={22} className="object-contain rounded-sm" />
-              </a>
-            </div>
-
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setCatalogOpen((v) => !v)}
-                onBlur={() => setTimeout(() => setCatalogOpen(false), 150)}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded bg-[#159097] hover:bg-[#0f656a] text-white text-[14px] font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
-                aria-haspopup="true"
-                aria-expanded={catalogOpen}
-              >
-                <span>Online Katalógus / Beiratkozás</span>
-                <span className="text-[10px] ml-1">▾</span>
+          <form
+            action="/kereses"
+            method="get"
+            className="hidden lg:flex items-center flex-wrap gap-2"
+            onSubmit={(e) => {
+              if (!searchQuery.trim()) e.preventDefault()
+            }}
+          >
+            <span className="text-sm font-bold text-[var(--text-main)]">Keresés a</span>
+            <select
+              value={searchScope}
+              onChange={(e) => setSearchScope(e.target.value)}
+              className="search-select"
+              aria-label="Keresési kör"
+            >
+              <option>Katalógus</option>
+              <option>Honlap</option>
+              <option>Galéria</option>
+            </select>
+            <span className="text-sm font-bold text-[var(--text-main)]">szerint</span>
+            <select
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+              className="search-select"
+              aria-label="Keresési mező"
+            >
+              <option>Kulcsszó</option>
+              <option>Cím</option>
+              <option>Szerző</option>
+            </select>
+            <span className="flex">
+              <input
+                type="text"
+                name="q"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Keresés..."
+                className="search-input w-[220px]"
+              />
+              <button type="submit" className="search-btn">
+                <Search className="w-4 h-4" />
               </button>
-              {catalogOpen && (
-                <div className="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-2 z-50 normal-case">
-                  {CATALOG_MENU.map((item) => (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#159097]"
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+            </span>
+          </form>
 
-          {/* Mobil menü gomb */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded text-slate-700 hover:bg-slate-100 focus:outline-none"
-            aria-label="Menü megnyitása"
+            className="lg:hidden p-2 rounded text-slate-700 hover:bg-slate-100"
+            aria-label="Menü"
           >
-            {mobileMenuOpen ? <X className="w-[50px] h-[50px]" /> : <Menu className="w-[50px] h-[50px]" />}
+            {mobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
           </button>
         </div>
-
-        {/* Mobil ikonsor — logó alatt, a valós vmk.hu mobilnézetének megfelelően */}
-        <div className="md:hidden flex flex-wrap items-center justify-center gap-[10px] px-[15px] pb-[8px]">
-          <a
-            href="mailto:kolcsonzo@vmk.hu"
-            aria-label="E-mail"
-            className="flex items-center justify-center text-[#159097]"
-          >
-            <Mail className="w-[26px] h-[26px]" strokeWidth={1.75} />
-          </a>
-          {ICON_LINKS.map((icon) => (
-            <a
-              key={icon.label}
-              href={icon.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={icon.label}
-              className="flex items-center justify-center"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={icon.img} alt={icon.label} width={icon.w} height={icon.h} className="object-contain" />
-            </a>
-          ))}
-          {LANG_FLAGS.map((flag) => (
-            <a
-              key={flag.label}
-              href={flag.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={flag.label}
-              className={`flex items-center justify-center ${flag.active ? 'opacity-100' : 'opacity-60'}`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={flag.img} alt={flag.label} width={31} height={22} className="object-contain rounded-sm" />
-            </a>
-          ))}
-          <a
-            href="/szolgaltatasok"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Akadálymentes nézet"
-            className="flex items-center justify-center"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/icons/icon_vb.png" alt="Akadálymentes nézet" width={31} height={22} className="object-contain rounded-sm" />
-          </a>
+        <div className="max-w-[1200px] mx-auto px-4 pb-2 hidden lg:block">
+          <Link href="/kereses" className="text-xs text-[var(--secondary)] hover:underline font-semibold">
+            Részletes keresés
+          </Link>
         </div>
       </div>
 
-      {/* 2. sor: FEHÉR háttér, sötétszürke szöveg */}
-      <div className="hidden lg:block bg-white">
-        <div className="max-w-[750px] min-[992px]:max-w-[970px] min-[1200px]:max-w-[1170px] mx-auto px-[15px]">
-          <nav className="flex items-center gap-1 h-[45px] text-[16px] font-bold tracking-normal text-[#333333] uppercase border-b-[5px] border-[#00909B]">
-            {NAV_ITEMS.map((item) =>
+      {/* Row 3: Navigation */}
+      <div className="nav-row hidden lg:block">
+        <div className="max-w-[1200px] mx-auto px-4">
+          <nav className="flex items-center">
+            {LPL_NAV.map((item) =>
               item.children ? (
                 <div
-                  key={item.href}
-                  className="relative h-full flex items-center"
+                  key={item.label}
+                  className="relative"
                   onMouseEnter={() => setOpenDropdown(item.label)}
                   onMouseLeave={() => setOpenDropdown(null)}
                 >
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
-                    aria-expanded={openDropdown === item.label}
-                    aria-haspopup="true"
-                  >
+                  <Link href={item.href} className="nav-link flex items-center gap-1">
                     {item.label}
-                    <span className="text-[10px] ml-1">▾</span>
+                    <ChevronDown className="w-3.5 h-3.5 opacity-50" />
                   </Link>
                   {openDropdown === item.label && (
                     <div className="absolute left-0 top-full w-64 z-50">
-                      <div className="bg-white rounded-b-lg shadow-xl border border-slate-200 py-2 normal-case">
-                        {item.children.map((child) =>
-                          child.external ? (
+                      <div className="bg-white rounded-b-md shadow-lg border border-[var(--border-light)] py-1">
+                        {item.children.map((child, ci) =>
+                          child.divider ? (
+                            <div key={ci} className="border-t border-[var(--border-light)] my-1" />
+                          ) : child.external ? (
                             <a
                               key={child.href}
                               href={child.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#159097]"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-[var(--bg-pale-blue)] hover:text-[var(--secondary)]"
                             >
                               {child.label}
                             </a>
@@ -296,7 +209,7 @@ export const Header: React.FC = () => {
                             <Link
                               key={child.href}
                               href={child.href}
-                              className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#159097]"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-[var(--bg-pale-blue)] hover:text-[var(--secondary)]"
                             >
                               {child.label}
                             </Link>
@@ -306,96 +219,63 @@ export const Header: React.FC = () => {
                     </div>
                   )}
                 </div>
-              ) : item.href.startsWith('http') ? (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
-                >
-                  {item.label}
-                </a>
               ) : (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
-                >
+                <Link key={item.label} href={item.href} className="nav-link">
                   {item.label}
                 </Link>
               ),
             )}
-
-            <Link
-              href="/kereses"
-              aria-label="Keresés a honlapon"
-              title="Keresés a honlapon"
-              className="ml-auto p-2 rounded text-slate-600 hover:text-[#159097] hover:bg-slate-50 transition-colors"
-            >
-              <Search className="w-[18px] h-[18px]" strokeWidth={2.75} />
+            <Link href="/esemenyek" className="nav-link flex items-center gap-1.5">
+              <Calendar className="w-4 h-4" />
+              Események
             </Link>
           </nav>
         </div>
       </div>
 
-      {/* Mobil legördülő menü */}
+      {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
-          <nav className="flex flex-col text-sm font-medium text-slate-800">
-            {NAV_ITEMS.map((item) => (
-              <div key={item.href}>
+        <div className="lg:hidden bg-white border-t border-[var(--border-light)] max-h-[80vh] overflow-y-auto">
+          <form action="/kereses" method="get" className="p-4 border-b border-gray-100">
+            <div className="flex">
+              <input type="text" name="q" placeholder="Keresés..." className="search-input flex-1" />
+              <button type="submit" className="search-btn">
+                <Search className="w-4 h-4" />
+              </button>
+            </div>
+          </form>
+
+          <nav className="py-2">
+            {LPL_NAV.map((item) => (
+              <div key={item.label}>
                 <div className="flex items-center">
-                  {item.href.startsWith('http') ? (
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 px-3 py-2 rounded-md hover:bg-slate-100"
-                    >
-                      {item.label}
-                    </a>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      onClick={() => !item.children && setMobileMenuOpen(false)}
-                      className="flex-1 px-3 py-2 rounded-md hover:bg-slate-100"
-                    >
-                      {item.label}
-                    </Link>
-                  )}
+                  <Link
+                    href={item.href}
+                    onClick={() => !item.children && setMobileMenuOpen(false)}
+                    className="flex-1 px-4 py-2.5 text-sm font-bold text-gray-800 hover:bg-gray-50"
+                  >
+                    {item.label}
+                  </Link>
                   {item.children && (
                     <button
                       onClick={() => setMobileSubmenu(mobileSubmenu === item.label ? null : item.label)}
-                      aria-label={`${item.label} almenü`}
-                      className="p-2 text-slate-500"
+                      className="p-2 pr-4 text-gray-400"
                     >
-                      <ChevronDown
-                        className={`w-4 h-4 transition-transform ${mobileSubmenu === item.label ? 'rotate-180' : ''}`}
-                      />
+                      <ChevronDown className={`w-4 h-4 transition-transform ${mobileSubmenu === item.label ? 'rotate-180' : ''}`} />
                     </button>
                   )}
                 </div>
                 {item.children && mobileSubmenu === item.label && (
-                  <div className="pl-4 border-l-2 border-slate-100 ml-3 space-y-0.5 mb-1">
-                    {item.children.map((child) =>
-                      child.external ? (
-                        <a
-                          key={child.href}
-                          href={child.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100 rounded"
-                        >
+                  <div className="bg-gray-50 py-1">
+                    {item.children.map((child, ci) =>
+                      child.divider ? (
+                        <div key={ci} className="border-t border-gray-200 my-1 mx-4" />
+                      ) : child.external ? (
+                        <a key={child.href} href={child.href} target="_blank" rel="noopener noreferrer" className="block px-8 py-2 text-sm text-gray-600 hover:text-[var(--secondary)]">
                           {child.label}
                         </a>
                       ) : (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100 rounded"
-                        >
+                        <Link key={child.href} href={child.href} onClick={() => setMobileMenuOpen(false)} className="block px-8 py-2 text-sm text-gray-600 hover:text-[var(--secondary)]">
                           {child.label}
                         </Link>
                       ),
@@ -404,24 +284,18 @@ export const Header: React.FC = () => {
                 )}
               </div>
             ))}
-            <Link
-              href="/kereses"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg-slate-100 flex items-center gap-2"
-            >
-              <Search className="w-4 h-4" />
-              <span>Keresés</span>
+            <Link href="/esemenyek" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-gray-800 hover:bg-gray-50">
+              <Calendar className="w-4 h-4" />
+              Események
             </Link>
           </nav>
-          <div className="pt-2">
-            <a
-              href="http://tlwww.vmk.hu/tlwww"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-catalog w-full justify-center text-sm"
-            >
-              <Search className="w-4 h-4" />
-              <span>Online Katalógus / Beiratkozás</span>
+
+          <div className="p-4 border-t border-gray-100 space-y-2">
+            <Link href="/nyitvatartas" className="block text-sm text-gray-600 hover:text-[var(--secondary)] py-1">
+              <Clock className="w-4 h-4 inline mr-1.5" />Nyitvatartás és helyszínek
+            </Link>
+            <a href="http://tlwww.vmk.hu/tlwww" target="_blank" rel="noopener noreferrer" className="btn-primary w-full justify-center mt-2">
+              Online Katalógus
             </a>
           </div>
         </div>
