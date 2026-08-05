@@ -3,133 +3,206 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
-import { MapPin, Phone, Mail, Clock, Building2 } from 'lucide-react'
 import { ContactForm } from '@/components/forms/ContactForm'
 import { getAllLibraries } from '@/lib/payload'
 
 export const metadata: Metadata = {
-  title: 'Kapcsolat – Vörösmarty Mihály Könyvtár',
-  description: 'A Vörösmarty Mihály Könyvtár elérhetőségei, megközelíthetősége és kapcsolatfelvételi űrlapja.',
+  title: 'Elérhetőségeink – Vörösmarty Mihály Könyvtár',
+  description: 'A Vörösmarty Mihály Könyvtár elérhetőségei és munkatársaink.',
 }
 
-// A valós www.vmk.hu "Elérhetőségeink" oldala elsősorban egy munkatárs- és
-// tagkönyvtár-elérhetőségi jegyzék (vezetőség, osztályok, majd mind az 5
-// tagkönyvtár saját címe/telefonja), NEM egy általános üzenetküldő űrlap -
-// ezt lekérdezve derült ki. A felhasználó ugyanakkor explicit kérte, hogy a
-// kapcsolatfelvételi űrlap MŰKÖDJÖN (korábban ma javítva) - ezért az űrlapot
-// megtartjuk, és kiegészítjük a hiányzó, valós tagkönyvtár-jegyzékkel.
+const KIEMELT = [
+  { position: 'igazgató', name: 'Horváth Adrienn', email: 'igazgato@vmk.hu' },
+  { position: 'Szakmai igazgatóhelyettes', name: 'Kálmánné Heim Ágnes', email: 'kalmanne.agi@vmk.hu' },
+  { position: 'Titkárság és ügyviteli osztályvezető', name: 'Fülöp Andrea', email: '' },
+  { position: 'Olvasószolgálati osztályvezető', name: 'Darvas Veronika Judit', email: '' },
+  { position: 'Gyűjteményszervezési osztályvezető', name: 'Kaltenecker Klára', email: 'kaltenecker.klara@vmk.hu' },
+  { position: 'Módszertani és településfejlesztési osztályvezető', name: 'Izsák Ferencné', email: 'izsak.ferencne@vmk.hu' },
+  { position: 'Informatikai és tartalomszolgáltatási osztályvezető', name: 'Bebreczki János', email: 'bebreczki.janos@vmk.hu' },
+]
+
+const KOZPONTI = [
+  { dept: 'Központi telefonszámok', phone: '(22) 312-684', email: '(22) 312-845' },
+  { dept: 'igazgató', phone: '(22) 513-933', email: 'horvath.adrienn@vmk.hu' },
+  { dept: 'Szakmai igazgatóhelyettes', phone: '(22) 340-698', email: 'kalmanne.agi@vmk.hu' },
+  { dept: 'Állományalakítási, feldolgozó és metaadatszolg. csoport', phone: '(22) 340-698', email: 'kaltenecker.klara@vmk.hu' },
+  { dept: 'Helytörténeti, digitalizáló és webarchívum csoport', phone: '(22) 312-684', email: 'helytortenet@vmk.hu' },
+  { dept: 'Informatikai és tartalomszolgáltatási osztály', phone: '(22) 385-241', email: 'tartalom@vmk.hu' },
+  { dept: 'Módszertani és településfejlesztési osztály', phone: '(22) 311-434', email: 'modszertan@vmk.hu' },
+  { dept: 'Központi olvasószolgálat', phone: '(70) 412-1984', email: 'kolcsonzo@vmk.hu' },
+  { dept: 'Gyermek és kamasz VR', phone: '(22) 513-931', email: 'gyerek@vmk.hu' },
+  { dept: 'Pedagógiai Szaktanácsadó', phone: '(22) 310-589', email: 'ps@vmk.hu' },
+  { dept: 'Olvasóterem', phone: '(22) 312-845', email: 'ol@vmk.hu' },
+  { dept: 'Zenei és olvasótermi részleg', phone: '(22) 312-684', email: 'zene@vmk.hu' },
+  { dept: 'Közzét', phone: '(22) 312-484', email: 'kozzet@vmk.hu' },
+  { dept: 'Titkárság és ügyviteli osztály', phone: '(22) 513-933', email: 'titkarsag@vmk.hu' },
+  { dept: 'Könyvtárközi kölcsönzés', phone: '(22) 340-699', email: 'kkcs@vmk.hu' },
+]
+
+const TAGKONYVTARAK = [
+  { name: 'Budai Úti Tagkönyvtár', phone: '(22) 329-436', email: 'budai@vmk.hu' },
+  { name: 'Mészöly Géza Utcai Tagkönyvtár', phone: '(22) 315-603', email: 'meszoly@vmk.hu' },
+  { name: 'Széna Téri Tagkönyvtár', phone: '(22) 313-643', email: 'szena@vmk.hu' },
+  { name: 'Tolnai Utcai Tagkönyvtár', phone: '(22) 329-437', email: 'tolnai@vmk.hu' },
+  { name: 'Zsolt Utcai Tagkönyvtár', phone: '(22) 329-458', email: 'zsolt@vmk.hu' },
+]
+
+const POSTACIMEK = [
+  { name: 'Postafiók', address: '8000 Székesfehérvár, Pf. 65.' },
+  { name: 'Központi Könyvtár', address: '8000 Székesfehérvár, Bartók Béla tér 1.' },
+  { name: 'Állományalakítási, feldolgozó és metaadatszolg. csoport', address: '8000 Székesfehérvár, Tolnai utca 41.' },
+  { name: 'Budai Úti Tagkönyvtár', address: '8000 Székesfehérvár, Budai út 44-46.' },
+  { name: 'Mészöly Géza Utcai Tagkönyvtár', address: '8000 Székesfehérvár, Mészöly Géza utca 1.' },
+  { name: 'Széna Téri Tagkönyvtár', address: '8000 Székesfehérvár, Széna tér 16.' },
+  { name: 'Tolnai Utcai Tagkönyvtár', address: '8000 Székesfehérvár, Tolnai utca 30.' },
+  { name: 'Zsolt Utcai Tagkönyvtár', address: '8000 Székesfehérvár, Zsolt utca 54.' },
+]
+
+const TABLE_STYLE = 'w-full border-collapse mb-8 text-[14px]'
+const TH_STYLE = 'text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase'
+const TD_STYLE = 'py-[8px] px-[15px] border border-[#ddd] align-top'
+
+function rowBg(i: number) {
+  return i % 2 === 0 ? '#ffffff' : '#f9f9f9'
+}
+
 export default async function KapcsolatPage() {
-  const libraries = await getAllLibraries()
-  const branches = libraries.filter((l) => l.type === 'branch')
+  let branches = TAGKONYVTARAK
+  try {
+    const libraries = await getAllLibraries()
+    const dbBranches = libraries.filter((l) => l.type === 'branch')
+    if (dbBranches.length > 0) {
+      branches = dbBranches.map((b) => ({
+        name: b.name,
+        phone: b.phone || '',
+        email: b.email || '',
+      }))
+    }
+  } catch {
+    // CMS nem elérhető
+  }
+
   return (
     <PageWithSidebar>
-      <div className="space-y-10">
-      <Breadcrumb items={[{ label: 'Kapcsolat' }]} />
+      <div>
+        <Breadcrumb items={[{ label: 'Elérhetőségeink' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900">Kapcsolat & Megközelíthetőség</h1>
-        <p className="text-slate-600 mt-2 max-w-3xl">
-          Kérdése, észrevétele van? Lépjen kapcsolatba velünk telefonon, e-mailben vagy az alábbi űrlap segítségével!
-        </p>
-      </div>
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+          Elérhetőségeink
+        </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Bal oszlop: Elérhetőségek */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
-            <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">Központi Elérhetőségek</h2>
+        {/* Kiemelt elérhetőségeink */}
+        <h2 className="text-[18px] font-bold text-[#333] mb-4 text-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
+          Kiemelt elérhetőségeink
+        </h2>
 
-            <div className="space-y-4 text-sm text-slate-700">
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#159097] flex items-center justify-center shrink-0 mt-0.5">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="block text-slate-900">Címünk</strong>
-                  <span>8000 Székesfehérvár, Bartók Béla tér 1.</span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#e4b02c] flex items-center justify-center shrink-0 mt-0.5">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="block text-slate-900">Telefon / Kölcsönzőpult</strong>
-                  <a href="tel:+3622312845" className="hover:underline">+36 22 312 845</a>
-                  <span className="mx-1">·</span>
-                  <a href="tel:+3622312684" className="hover:underline">+36 22 312 684</a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-[#159097] flex items-center justify-center shrink-0 mt-0.5">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="block text-slate-900">E-mail cím</strong>
-                  <a href="mailto:kolcsonzo@vmk.hu" className="hover:underline">kolcsonzo@vmk.hu</a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <strong className="block text-slate-900">Központi Nyitvatartás</strong>
-                  <span>Kedd – Péntek: 09:00 - 19:00</span> <br />
-                  <span>Szombat: 09:00 - 16:00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Jobb oszlop: Üzenetküldő űrlap */}
-        <div className="lg:col-span-7">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
-            <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">Írjon nekünk üzenetet!</h2>
-
-            <ContactForm />
-          </div>
-        </div>
-      </div>
-
-      {branches.length > 0 && (
-        <div className="border-t border-slate-200 pt-8">
-          <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-[#159097]" />
-            Tagkönyvtáraink Elérhetőségei
-          </h2>
-          <p className="text-sm text-slate-500 mb-6">
-            Keresse fel az Önhöz legközelebbi tagkönyvtárunkat közvetlenül is.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {branches.map((branch) => (
-              <Link
-                key={branch.id}
-                href={`/tagkonyvtarak/${branch.slug}`}
-                className="block bg-white p-4 rounded-lg border border-slate-200 hover:border-[#159097] hover:shadow-sm transition-all"
-              >
-                <h3 className="font-bold text-slate-900 text-sm mb-2">{branch.name}</h3>
-                <div className="space-y-1 text-xs text-slate-600">
-                  <div className="flex items-start gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#e4b02c] shrink-0 mt-0.5" />
-                    <span>{branch.address}</span>
-                  </div>
-                  {branch.phone && (
-                    <div className="flex items-center gap-1.5">
-                      <Phone className="w-3.5 h-3.5 text-[#e4b02c] shrink-0" />
-                      <span>{branch.phone}</span>
-                    </div>
-                  )}
-                </div>
-              </Link>
+        <table className={TABLE_STYLE} style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <tbody>
+            {KIEMELT.map((row, i) => (
+              <tr key={i}>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.position}
+                </td>
+                <td className={`${TD_STYLE} font-semibold`} style={{ backgroundColor: rowBg(i) }}>
+                  {row.name}
+                </td>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.email && <a href={`mailto:${row.email}`} className="text-[#159097] hover:underline">{row.email}</a>}
+                </td>
+              </tr>
             ))}
-          </div>
+          </tbody>
+        </table>
+
+        {/* Központi Könyvtár elérhetőségei */}
+        <h2 className="text-[18px] font-bold text-[#333] mb-4 text-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
+          Központi Könyvtár elérhetőségei
+        </h2>
+
+        <table className={TABLE_STYLE} style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <tbody>
+            {KOZPONTI.map((row, i) => (
+              <tr key={i}>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.dept}
+                </td>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.phone}
+                </td>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.email.includes('@') ? (
+                    <a href={`mailto:${row.email}`} className="text-[#159097] hover:underline">{row.email}</a>
+                  ) : row.email}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Tagkönyvtárak elérhetőségei */}
+        <h2 className="text-[18px] font-bold text-[#333] mb-4 text-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
+          Tagkönyvtárak elérhetőségei
+        </h2>
+
+        <table className={TABLE_STYLE} style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <tbody>
+            {branches.map((row, i) => (
+              <tr key={i}>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.name}
+                </td>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.phone}
+                </td>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.email && (
+                    <a href={`mailto:${row.email}`} className="text-[#159097] hover:underline">{row.email}</a>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Postacímeink */}
+        <h2 className="text-[18px] font-bold text-[#333] mb-4 text-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
+          Postacímeink
+        </h2>
+
+        <table className={TABLE_STYLE} style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <tbody>
+            {POSTACIMEK.map((row, i) => (
+              <tr key={i}>
+                <td className={`${TD_STYLE} font-semibold`} style={{ backgroundColor: rowBg(i) }}>
+                  {row.name}
+                </td>
+                <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
+                  {row.address}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Munkatársaink link */}
+        <div className="text-center mb-8">
+          <Link
+            href="/munkatarsak"
+            className="inline-flex items-center gap-2 text-white font-bold py-[8px] px-[20px] rounded text-[14px]"
+            style={{ backgroundColor: '#159097' }}
+          >
+            Munkatársaink
+            <span className="text-[18px]">&gt;</span>
+          </Link>
         </div>
-      )}
+
+        {/* Kapcsolatfelvételi űrlap */}
+        <div className="border-t border-[#ddd] pt-8">
+          <h2 className="text-[18px] font-bold text-[#333] mb-4" style={{ fontFamily: 'Roboto, sans-serif' }}>
+            Írjon nekünk üzenetet!
+          </h2>
+          <ContactForm />
+        </div>
       </div>
     </PageWithSidebar>
   )

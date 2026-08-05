@@ -63,23 +63,19 @@ const nextConfig: NextConfig = {
       { source: '/olvasoterem', destination: '/reszlegek/olvasoterem', permanent: true },
       { source: '/koteszet', destination: '/reszlegek/koteszet', permanent: true },
       { source: '/pedagogiai-reszleg', destination: '/reszlegek/pedagogia', permanent: true },
-      // Rólunk / intézményi oldalak
-      { source: '/alapdokumentumok', destination: '/rolunk/alapdokumentumok', permanent: true },
-      { source: '/allaspalyazatok', destination: '/rolunk/allaspalyazatok', permanent: true },
-      { source: '/kozerdeku-adatok', destination: '/rolunk/kozerdeku-adatok', permanent: true },
-      { source: '/projektek', destination: '/rolunk/projektek', permanent: true },
-      { source: '/nka-palyazatok', destination: '/rolunk/projektek', permanent: true },
-      { source: '/tamogatok-2022', destination: '/rolunk/tamogatok', permanent: true },
-      { source: '/partnerkonyvtarunk', destination: '/rolunk/tamogatok', permanent: true },
+      // Rólunk / intézményi oldalak — régi URL-ek átirányítása az új belső oldalakra
+      { source: '/alapdokumentumok', destination: '/dokumentumok', permanent: true },
+      { source: '/projektek', destination: '/nka-palyazatok', permanent: true },
+      { source: '/tamogatok-2022', destination: '/tamogatas', permanent: true },
+      { source: '/partnerkonyvtarunk', destination: '/tamogatas', permanent: true },
       {
         source: '/tamogatok-egyuttmukodo-partnerek',
-        destination: '/rolunk/tamogatok',
+        destination: '/tamogatas',
         permanent: true,
       },
-      { source: '/egyuttmukodo-partnereink', destination: '/rolunk/tamogatok', permanent: true },
-      { source: '/egyuttmukodo-partnerek-2022', destination: '/rolunk/tamogatok', permanent: true },
-      { source: '/konyvtarunkrol', destination: '/rolunk/tortenet', permanent: true },
-      { source: '/konyvtarunk-rovid-tortenete', destination: '/rolunk/tortenet', permanent: true },
+      { source: '/egyuttmukodo-partnereink', destination: '/tamogatas', permanent: true },
+      { source: '/egyuttmukodo-partnerek-2022', destination: '/tamogatas', permanent: true },
+      { source: '/konyvtarunk-rovid-tortenete', destination: '/konyvtarunkrol', permanent: true },
       // Használat
       {
         source: '/konyvtarkozi-kolcsonzes',

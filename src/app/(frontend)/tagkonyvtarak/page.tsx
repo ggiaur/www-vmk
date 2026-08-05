@@ -1,10 +1,9 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
-import { LibraryCard } from '@/components/ui/LibraryCard'
 import { getLibrariesByType } from '@/lib/payload'
-import { Building2 } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Tagkönyvtárak – Vörösmarty Mihály Könyvtár',
@@ -12,46 +11,78 @@ export const metadata: Metadata = {
 }
 
 const FALLBACK_BRANCHES = [
-  { id: 'b1', name: 'Budai Úti Tagkönyvtár', slug: 'budai-ut', address: 'Budai út 44-46.', type: 'branch' },
-  { id: 'b2', name: 'Mészöly Géza Utcai Tagkönyvtár', slug: 'meszoly-geza', address: 'Mészöly Géza u. 4.', type: 'branch' },
-  { id: 'b3', name: 'Széna Téri Tagkönyvtár', slug: 'szena-ter', address: 'Széna tér 3.', type: 'branch' },
-  { id: 'b4', name: 'Tolnai Utcai Tagkönyvtár', slug: 'tolnai-ut', address: 'Tolnai u. 24.', type: 'branch' },
-  { id: 'b5', name: 'Zsolt Utcai Tagkönyvtár', slug: 'zsolt-ut', address: 'Zsolt u. 6.', type: 'branch' },
+  { id: 'b1', name: 'Budai Úti Tagkönyvtár', slug: 'budai-ut', address: '8000 Székesfehérvár, Budai út 44-46.', phone: '(22) 329-436' },
+  { id: 'b2', name: 'Mészöly Géza Utcai Tagkönyvtár', slug: 'meszoly-geza', address: '8000 Székesfehérvár, Mészöly Géza utca 1.', phone: '(22) 315-603' },
+  { id: 'b3', name: 'Széna Téri Tagkönyvtár', slug: 'szena-ter', address: '8000 Székesfehérvár, Széna tér 16.', phone: '(22) 313-643' },
+  { id: 'b4', name: 'Tolnai Utcai Tagkönyvtár', slug: 'tolnai-ut', address: '8000 Székesfehérvár, Tolnai utca 30.', phone: '(22) 329-437' },
+  { id: 'b5', name: 'Zsolt Utcai Tagkönyvtár', slug: 'zsolt-ut', address: '8000 Székesfehérvár, Zsolt utca 54.', phone: '(22) 329-458' },
 ]
 
 export default async function TagkonyvtarakPage() {
   const branches = await getLibrariesByType('branch').catch(() => [])
-  const displayBranches = branches.length > 0 ? branches : FALLBACK_BRANCHES
+  const displayBranches = branches.length > 0
+    ? branches.map((b) => ({
+        id: b.id,
+        name: b.name,
+        slug: b.slug,
+        address: b.address,
+        phone: b.phone || '',
+      }))
+    : FALLBACK_BRANCHES
 
   return (
     <PageWithSidebar>
-      <div className="space-y-8">
-      <Breadcrumb items={[{ label: 'Tagkönyvtárak' }]} />
+      <div>
+        <Breadcrumb items={[{ label: 'Tagkönyvtárak' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
-          <Building2 className="w-8 h-8 text-[#159097]" />
-          <span>Tagkönyvtárak</span>
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+          Tagkönyvtárak
         </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl">
-          Öt székesfehérvári városrészben — mindenhol elérhető közelségben.
-        </p>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {displayBranches.map((branch) => (
-          <LibraryCard
-            key={branch.id}
-            name={branch.name}
-            slug={branch.slug}
-            address={branch.address}
-            phone={'phone' in branch ? (branch.phone ?? undefined) : undefined}
-            email={'email' in branch ? (branch.email ?? undefined) : undefined}
-            type={branch.type}
-            href={`/tagkonyvtarak/${branch.slug}`}
-          />
-        ))}
-      </div>
+        <table className="w-full border-collapse text-[14px]" style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <thead>
+            <tr>
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold">
+                Tagkönyvtár neve
+              </th>
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold">
+                Cím
+              </th>
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold w-[120px]">
+                Telefon
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {displayBranches.map((branch, i) => (
+              <tr key={branch.id}>
+                <td
+                  className="py-[8px] px-[15px] border border-[#ddd] font-semibold"
+                  style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9f9f9' }}
+                >
+                  <Link
+                    href={`/tagkonyvtarak/${branch.slug}`}
+                    className="text-[#159097] hover:underline"
+                  >
+                    {branch.name}
+                  </Link>
+                </td>
+                <td
+                  className="py-[8px] px-[15px] border border-[#ddd] text-[#666]"
+                  style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9f9f9' }}
+                >
+                  {branch.address}
+                </td>
+                <td
+                  className="py-[8px] px-[15px] border border-[#ddd] text-[#666]"
+                  style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9f9f9' }}
+                >
+                  {branch.phone}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </PageWithSidebar>
   )

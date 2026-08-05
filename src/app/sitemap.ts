@@ -6,20 +6,26 @@ const SITE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'https://www.vmk.hu'
 const STATIC_ROUTES = [
   '',
   '/nyitvatartas',
-  '/elerhetosegeink',
+  '/kapcsolat',
   '/hirek',
   '/esemenyek',
   '/galeria',
   '/programarchivum',
   '/dokumentumok',
   '/munkatarsak',
-  '/kapcsolat',
   '/szolgaltatasok',
   '/reszlegek',
   '/tagkonyvtarak',
   '/teremfoglalas',
   '/tamogatas',
   '/bolt',
+  '/konyvtarunkrol',
+  '/kozerdeku-adatok',
+  '/allaspalyazatok',
+  '/ado-1',
+  '/nka-palyazatok',
+  '/foglalkozaskereso',
+  '/kereses',
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

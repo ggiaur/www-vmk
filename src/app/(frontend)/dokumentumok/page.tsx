@@ -4,15 +4,23 @@ import Link from 'next/link'
 import { Breadcrumb } from '@/components/navigation/Breadcrumb'
 import { PageWithSidebar } from '@/components/layout/PageWithSidebar'
 import { getAllDocuments } from '@/lib/payload'
-import { FileText, Download, Filter } from 'lucide-react'
+import { Download } from 'lucide-react'
 
 function isMediaObject(media: unknown): media is { url?: string | null } {
   return typeof media === 'object' && media !== null
 }
 
 export const metadata: Metadata = {
-  title: 'Hivatalos Dokumentumok & Letöltések – Vörösmarty Mihály Könyvtár',
-  description: 'SZMSZ, Éves beszámolók, Pályázati kiírások és letölthető űrlapok.',
+  title: 'Dokumentumtár – Vörösmarty Mihály Könyvtár',
+  description: 'A Vörösmarty Mihály Könyvtár közérdekű dokumentumai, szabályzatai és letölthető nyomtatványai.',
+}
+
+const catLabels: Record<string, string> = {
+  szmsz: 'SZMSZ & Szabályzat',
+  report: 'Éves Beszámoló',
+  grant: 'Pályázati Kiírás',
+  form: 'Űrlap',
+  other: 'Egyéb',
 }
 
 export default async function DokumentumokPage({
@@ -26,126 +34,110 @@ export default async function DokumentumokPage({
   const docs = await getAllDocuments(activeCategory).catch(() => [])
 
   const defaultDocs = [
-    {
-      id: 'd1',
-      title: 'VMK Szervezeti és Működési Szabályzata (SZMSZ 2026)',
-      category: 'szmsz',
-      year: 2026,
-      downloadCount: 142,
-    },
-    {
-      id: 'd2',
-      title: 'Könyvtárhasználati és Szolgáltatási Szabályzat',
-      category: 'szmsz',
-      year: 2026,
-      downloadCount: 298,
-    },
-    {
-      id: 'd3',
-      title: 'VMK Éves Szakmai es Pénzügyi Beszámoló 2025',
-      category: 'report',
-      year: 2025,
-      downloadCount: 87,
-    },
-    {
-      id: 'd4',
-      title: 'Beiratkozási és Adatkezelési Nyilatkozat Űrlap (PDF)',
-      category: 'form',
-      year: 2026,
-      downloadCount: 512,
-    },
+    { id: 'd1', title: 'VMK Szervezeti és Működési Szabályzata (SZMSZ 2026)', category: 'szmsz', year: 2026 },
+    { id: 'd2', title: 'Könyvtárhasználati és Szolgáltatási Szabályzat', category: 'szmsz', year: 2026 },
+    { id: 'd3', title: 'VMK Éves Szakmai és Pénzügyi Beszámoló 2025', category: 'report', year: 2025 },
+    { id: 'd4', title: 'Beiratkozási és Adatkezelési Nyilatkozat Űrlap (PDF)', category: 'form', year: 2026 },
   ]
 
   const displayDocs = docs.length > 0 ? docs : defaultDocs
 
-  const catLabels: Record<string, string> = {
-    szmsz: 'SZMSZ & Szabályzat',
-    report: 'Éves Beszámoló',
-    grant: 'Pályázati Kiírás',
-    form: 'Űrlap',
-    other: 'Egyéb',
-  }
-
   return (
     <PageWithSidebar>
-      <div className="space-y-8">
-      <Breadcrumb items={[{ label: 'Dokumentumok' }]} />
+      <div>
+        <Breadcrumb items={[{ label: 'Dokumentumtár' }]} />
 
-      <div className="border-b border-slate-200 pb-6">
-        <h1 className="text-3xl font-black text-slate-900">Hivatalos Dokumentumok & Letöltési Tár</h1>
-        <p className="text-slate-600 mt-2">
-          A Vörösmarty Mihály Könyvtár közérdekű adatai, beszámolói, szabályzatai és letölthető nyomtatványai.
-        </p>
+        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+          Dokumentumtár
+        </h1>
 
         {/* Category filters */}
-        <div className="flex flex-wrap gap-2 mt-6">
+        <div className="flex flex-wrap gap-2 mb-6" style={{ fontFamily: 'Roboto, sans-serif' }}>
           {[
-            { label: 'Összes Dokumentum', value: undefined },
-            { label: 'SZMSZ & Szabályzatok', value: 'szmsz' },
-            { label: 'Éves Beszámolók', value: 'report' },
+            { label: 'Összes', value: undefined },
+            { label: 'SZMSZ', value: 'szmsz' },
+            { label: 'Beszámolók', value: 'report' },
             { label: 'Pályázatok', value: 'grant' },
-            { label: 'Letölthető Űrlapok', value: 'form' },
+            { label: 'Űrlapok', value: 'form' },
           ].map((cat, idx) => (
             <Link
               key={idx}
               href={cat.value ? `/dokumentumok?category=${cat.value}` : '/dokumentumok'}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+              className={`px-[12px] py-[6px] rounded text-[13px] font-bold transition-colors ${
                 activeCategory === cat.value
-                  ? 'bg-[#159097] text-white shadow-sm'
-                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                  ? 'bg-[#159097] text-white'
+                  : 'bg-white border border-[#ddd] text-[#333] hover:bg-[#f5f5f5]'
               }`}
             >
-              <Filter className="w-3.5 h-3.5" />
-              <span>{cat.label}</span>
+              {cat.label}
             </Link>
           ))}
         </div>
-      </div>
 
-      {/* Document table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="divide-y divide-slate-100">
-          {displayDocs.map((doc) => {
-            const fileUrl = 'file' in doc && isMediaObject(doc.file) ? doc.file.url ?? undefined : undefined
-            return (
-              <div
-                key={doc.id}
-                className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-amber-50 text-[#159097] flex items-center justify-center shrink-0 mt-0.5">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[11px] px-2 py-0.5 rounded font-semibold bg-slate-100 text-slate-700 inline-block mb-1">
-                      {catLabels[doc.category] ?? doc.category}
-                    </span>
-                    <h3 className="font-bold text-slate-900 text-base">{doc.title}</h3>
-                    <span className="text-xs text-slate-400">
-                      Vonatkozó év: {doc.year ?? 2026} • Letöltve: {doc.downloadCount ?? 0} alkalommal
-                    </span>
-                  </div>
-                </div>
-
-                {fileUrl ? (
-                  <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs shrink-0 justify-center">
-                    <Download className="w-4 h-4" />
-                    <span>Letöltés (PDF)</span>
-                  </a>
-                ) : (
-                  <span
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-slate-100 text-slate-400 shrink-0 justify-center cursor-not-allowed"
-                    title="A fájl még nincs feltöltve"
+        {/* Document table */}
+        <table className="w-full border-collapse text-[14px]" style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <thead>
+            <tr>
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold">
+                Dokumentum neve
+              </th>
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold w-[120px]">
+                Kategória
+              </th>
+              <th className="text-center py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold w-[60px]">
+                Év
+              </th>
+              <th className="text-center py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold w-[100px]">
+                Letöltés
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {displayDocs.map((doc, i) => {
+              const fileUrl = 'file' in doc && isMediaObject(doc.file) ? doc.file.url ?? undefined : undefined
+              return (
+                <tr key={doc.id}>
+                  <td
+                    className="py-[8px] px-[15px] border border-[#ddd]"
+                    style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9f9f9' }}
                   >
-                    <Download className="w-4 h-4" />
-                    <span>Nincs feltöltve</span>
-                  </span>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
+                    {doc.title}
+                  </td>
+                  <td
+                    className="py-[8px] px-[15px] border border-[#ddd] text-[#666]"
+                    style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9f9f9' }}
+                  >
+                    {catLabels[doc.category] ?? doc.category}
+                  </td>
+                  <td
+                    className="py-[8px] px-[15px] border border-[#ddd] text-center"
+                    style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9f9f9' }}
+                  >
+                    {doc.year ?? ''}
+                  </td>
+                  <td
+                    className="py-[8px] px-[15px] border border-[#ddd] text-center"
+                    style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9f9f9' }}
+                  >
+                    {fileUrl ? (
+                      <a
+                        href={fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[#159097] hover:underline font-semibold"
+                      >
+                        <Download className="w-[14px] h-[14px]" />
+                        PDF
+                      </a>
+                    ) : (
+                      <span className="text-[#999]">—</span>
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
     </PageWithSidebar>
   )
