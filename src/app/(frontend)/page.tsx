@@ -106,12 +106,14 @@ export default async function HomePage() {
 
   return (
     <div>
-      <LocationBanner locations={locations} />
+      <div className="hidden md:block">
+        <LocationBanner locations={locations} />
+      </div>
 
-      <div className={`${REAL_CONTAINER} py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start`}>
+      <div className={`${REAL_CONTAINER} pt-0 pb-8 lg:pt-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start`}>
         <SiteSidebar />
 
-        <main className="min-w-0">
+        <main className="min-w-0 order-first lg:order-none">
           <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
             Hírek, Események
           </h1>

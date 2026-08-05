@@ -11,9 +11,9 @@ import { REAL_CONTAINER } from '@/lib/layout'
 // mellett.
 export function PageWithSidebar({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${REAL_CONTAINER} py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start`}>
+    <div className={`${REAL_CONTAINER} pt-0 pb-8 lg:pt-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start`}>
       <SiteSidebar />
-      <main className="min-w-0">{children}</main>
+      <main className="min-w-0 order-first lg:order-none">{children}</main>
     </div>
   )
 }

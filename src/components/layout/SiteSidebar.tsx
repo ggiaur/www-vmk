@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Menu, X } from 'lucide-react'
 
 // A valós vmk.hu főoldalán a bal oldali sáv egy függőleges widget-torony,
 // VALÓS PROMÓCIÓS KÉPEKKEL (nem ikon+alcím szöveggel, ahogy korábban itt
@@ -52,13 +52,13 @@ const WIDGETS: Array<{
   },
   {
     label: 'Hallgasson ránk!',
-    href: 'https://www.vmk.hu/uj-konyvajanlo',
+    href: '/hirek',
     img: '/brand/widgets/hallgasson-rank.png',
     imgAlt: 'Hallgasson ránk',
   },
   {
     label: 'Smartlibrary - Okoskönyvtár',
-    href: 'https://www.vmk.hu/okos-konyvtar-avagy-nyitott-ter-program-a-vorosmarty-mihaly-konyvtarban',
+    href: '/szolgaltatasok',
     img: '/brand/widgets/smartlibrary.png',
     imgAlt: 'Smartlibrary Okoskönyvtár',
   },
@@ -70,7 +70,7 @@ const WIDGETS: Array<{
   },
   {
     label: 'Kívánságkosár',
-    href: 'http://www.vmk.hu/wishbasket',
+    href: '/kapcsolat',
     img: '/brand/widgets/kivansagkosar.jpg',
     imgAlt: 'Kívánságkosár',
   },
@@ -86,14 +86,13 @@ const WIDGETS: Array<{
   },
   {
     label: 'Online könyvtár',
-    href: 'https://www.vmk.hu/adatbazisok-1',
+    href: '/szolgaltatasok',
     type: 'img-buttons',
     img: '/brand/widgets/online-konyvtar.jpg',
     imgAlt: 'Online könyvtár',
-    // Valós oldalon 2 Bootstrap btn-info gomb van a kép alatt – vmk.hu/adatbazisok-1 oldal linkek
     buttons: [
-      { label: 'Adatbázisok', href: 'https://www.vmk.hu/adatbazisok-1' },
-      { label: 'Adatbázisok', href: 'https://www.vmk.hu/adatbazisok' },
+      { label: 'Adatbázisok', href: '/szolgaltatasok' },
+      { label: 'Adatbázisok', href: '/szolgaltatasok' },
     ],
   },
   {
@@ -122,66 +121,58 @@ interface MenuItem {
   children?: MenuChild[]
 }
 
-// A valós oldalon ezek a menüpontok saját, tartalmi oldalakra mutatnak,
-// amiket ITT (a klónban) nem építettünk ki - ezekhez a valós, élő vmk.hu
-// megfelelő aloldalára mutatunk (ugyanaz a minta, mint a fejléc
-// "Megyei Ellátás" / "Gyermekrészleg" külső linkjeinél), nem fabrikálunk
-// üres/hamis belső oldalt. A hreflistát a valós oldal HTML-jéből kérdeztük
-// le, nem találtuk ki. A "Könyvtárunkról" és "A könyvtár használata"
-// valós legördülő almenük - a valós al-linkek is a nyers HTML-ből.
 const MENU_ITEMS: MenuItem[] = [
   {
     label: 'Könyvtárunkról',
-    href: 'https://www.vmk.hu/konyvtarunkrol',
-    external: true,
+    href: '/konyvtarunkrol',
     children: [
       { label: 'Munkatársaink', href: '/munkatarsak' },
-      { label: 'Alapdokumentumok', href: 'https://www.vmk.hu/alapdokumentumok' },
-      { label: 'Számlaszámunk', href: 'https://www.vmk.hu/szamlaszamunk' },
-      { label: 'Könyvtárunk rövid története', href: 'https://www.vmk.hu/konyvtarunk-rovid-tortenete' },
-      { label: 'Projektek', href: 'https://www.vmk.hu/projektek' },
+      { label: 'Alapdokumentumok', href: '/dokumentumok' },
+      { label: 'Elérhetőségeink', href: '/kapcsolat' },
     ],
   },
   {
     label: 'A könyvtár használata',
     href: '/reszlegek',
     children: [
-      {
-        label: 'Kölcsönzési politika',
-        href: 'https://www.vmk.hu/_upload/editor/Alapdokumentumok/Kolcsonzesi_politika_260601.pdf',
-      },
-      {
-        label: 'Számítógép-használati szabályzat',
-        href: 'https://www.vmk.hu/_upload/editor/Alapdokumentumok/Informatikai_es_biztonsagi_szabalyzat_VMK_20180801.pdf',
-      },
-      { label: 'Könyvtárközi kölcsönzés', href: 'https://www.vmk.hu/konyvtarkozi-kolcsonzes' },
+      { label: 'Nyitvatartás', href: '/nyitvatartas' },
+      { label: 'Tagkönyvtárak', href: '/tagkonyvtarak' },
+      { label: 'Szolgáltatások', href: '/szolgaltatasok' },
     ],
   },
-  { label: 'Közérdekű adatok', href: 'https://www.vmk.hu/kozerdeku-adatok', external: true },
-  { label: 'Álláspályázatok', href: 'https://www.vmk.hu/allaspalyazatok', external: true },
-  { label: 'Iskolai Közösségi Szolgálat', href: 'https://www.vmk.hu/iskolai-kozossegi-szolgalat', external: true },
-  { label: 'Adó 1%', href: 'https://www.vmk.hu/ado-1', external: true },
+  { label: 'Közérdekű adatok', href: '/kozerdeku-adatok' },
+  { label: 'Álláspályázatok', href: '/allaspalyazatok' },
+  { label: 'Iskolai Közösségi Szolgálat', href: '/szolgaltatasok' },
+  { label: 'Adó 1%', href: '/ado-1' },
   { label: 'MKE Fejér Megyei Szervezete', href: 'https://konyvtar.vmk.hu/mke/', external: true },
-  { label: 'Támogatók, együttműködő partnerek', href: 'https://www.vmk.hu/tamogatok-egyuttmukodo-partnerek', external: true },
-  { label: 'NKA pályázatok', href: 'https://www.vmk.hu/nka-palyazatok', external: true },
+  { label: 'Támogatók, együttműködő partnerek', href: '/tamogatas' },
+  { label: 'NKA pályázatok', href: '/nka-palyazatok' },
   { label: 'Programarchívum', href: '/programarchivum' },
-  {
-    label: 'Virtuális postaláda',
-    href: 'https://docs.google.com/forms/d/e/1FAIpQLSdm7QtWAWoX1SdD1DGP6M6iOx9Out1gEYkARVqldtWcP3p4Sg/viewform',
-    external: true,
-  },
-  { label: 'Foglalkozáskereső', href: 'https://www.vmk.hu/foglalkozaskereso', external: true },
+  { label: 'Virtuális postaláda', href: '/kapcsolat' },
+  { label: 'Foglalkozáskereső', href: '/foglalkozaskereso' },
 ]
 
 export function SiteSidebar() {
   const [openItem, setOpenItem] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <aside>
       {/* Valós oldal CSS: .box { margin-bottom: 30px }, de .box.menu { margin-bottom: 0 }
           → a MENÜ header-nek nincs bottom marginaja, a submenu (nav) viszont kapja a 30px-et.
           A fejléc font-size: 18px (valós), padding: 8px 15px (valós). */}
-      <div className="bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px]" style={{ padding: '8px 15px', marginBottom: 0 }}>
+      <button
+        type="button"
+        onClick={() => setSidebarOpen((v) => !v)}
+        className="lg:hidden bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px] flex items-center justify-between"
+        style={{ padding: '8px 15px', marginBottom: sidebarOpen ? 0 : '15px' }}
+        aria-expanded={sidebarOpen}
+        aria-label="Menü megnyitása"
+      >
+        <span style={{ fontFamily: 'Roboto, sans-serif' }}>MENÜ</span>
+        {sidebarOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+      </button>
+      <div className="hidden lg:block bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px]" style={{ padding: '8px 15px', marginBottom: 0 }}>
         <div
           style={{
             margin: 0,
@@ -196,8 +187,7 @@ export function SiteSidebar() {
           MENÜ
         </div>
       </div>
-      {/* valós vmk.hu: .box.submenu { background-color: #fff } — fehér háttér, nem CCE9EB */}
-      <nav className="text-[16px] px-[15px] pt-[10px] pb-[15px] bg-white mb-[30px]">
+      <nav className={`text-[16px] px-[15px] pt-[10px] pb-[15px] bg-white mb-[30px] ${sidebarOpen ? 'block' : 'hidden'} lg:block`}>
         {MENU_ITEMS.map((item) => (
           <div key={item.href}>
             {item.children ? (
@@ -216,15 +206,13 @@ export function SiteSidebar() {
                 {openItem === item.label && (
                   <div className="pl-3 border-l-2 border-slate-100 ml-0.5 mb-1 space-y-0.5">
                     {item.children.map((child) => (
-                      <a
+                      <Link
                         key={child.href}
                         href={child.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="block py-1.5 text-sm text-slate-600 hover:text-[#159097]"
                       >
                         {child.label}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -247,9 +235,7 @@ export function SiteSidebar() {
         ))}
       </nav>
 
-      {/* A valós widgetek kétrészesek: színes fejléc-sáv a névvel, alatta
-          világos tartalom-terület a jellemző ikonnal/logóval - nem
-          egységesen színezett dobozok, ahogy korábban itt volt. */}
+      <div>
       {WIDGETS.map((w) => (
         /* Valós CSS: .box { margin-bottom: 30px; background-color: #cce9eb; width: 100%; }
            .box h1 { padding: 8px 15px; font-size: 18px; font-weight: 700; color: #FFF; background: #00909b; margin: 0; }
@@ -349,6 +335,7 @@ export function SiteSidebar() {
           )}
         </div>
       ))}
+      </div>
     </aside>
   )
 }
