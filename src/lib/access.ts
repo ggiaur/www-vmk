@@ -1,4 +1,5 @@
-import type { Access, FieldAccess } from 'payload'
+import type { Access, CollectionBeforeChangeHook, FieldAccess } from 'payload'
+import { APIError } from 'payload'
 
 // A "Könyvtáros Szerkesztő" szerepkör a Users.ts-ben mindig is definiálva
 // volt "Saját tagkönyvtár tartalmai" leírással és assignedLibrary mezővel,
@@ -46,3 +47,21 @@ export const adminOrEditorOnly: Access = ({ req: { user } }) =>
 // mezőn keresztül admin-jogot szerezzen.
 export const adminOrEditorFieldAccess: FieldAccess = ({ req: { user } }) =>
   !!user && (user.role === 'admin' || user.role === 'editor')
+
+// Publikálás jóváhagyás: a szerkesztő (author/Könyvtáros) menthet vázlatot,
+// de a "Publikálás" gomb (data._status === 'published') csak admin vagy
+// editor (Főszerkesztő) számára engedélyezett. Default-deny: bármi, ami
+// nem kifejezetten admin/editor (beleértve a hiányzó/anonim felhasználót
+// is), publikálási kísérletnél hibát kap. A collection update access-e
+// enged szerkesztést az author számára is - ez a hook csak a publikált
+// állapotba váltást zárja le, a vázlat-mentést nem.
+export const restrictPublishToEditors: CollectionBeforeChangeHook = ({ data, req }) => {
+  const role = req.user?.role
+  if (data?._status === 'published' && role !== 'admin' && role !== 'editor') {
+    throw new APIError(
+      'Nincs jogosultságod tartalom publikálásához — mentsd vázlatként, admin vagy szerkesztő fogja jóváhagyni és publikálni.',
+      403,
+    )
+  }
+  return data
+}

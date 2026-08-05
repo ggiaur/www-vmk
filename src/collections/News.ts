@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { syncToMeiliIndex, removeFromMeiliIndex, INDEXES } from '../lib/meilisearch'
-import { scopedToOwnLibrary } from '../lib/access'
+import { scopedToOwnLibrary, restrictPublishToEditors } from '../lib/access'
 import { generateSlug } from '../lib/slugify'
 
 export const News: CollectionConfig = {
@@ -48,6 +48,7 @@ export const News: CollectionConfig = {
         }
         return data
       },
+      restrictPublishToEditors,
     ],
     afterChange: [
       async ({ doc }) => {

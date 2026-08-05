@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { PageBlocks } from '../blocks/PageBlocks'
 import { generateSlug } from '../lib/slugify'
+import { restrictPublishToEditors } from '../lib/access'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -37,6 +38,7 @@ export const Pages: CollectionConfig = {
         }
         return data
       },
+      restrictPublishToEditors,
     ],
   },
   fields: [
