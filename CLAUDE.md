@@ -48,30 +48,6 @@ automatically as context. Adjust freely — this is a starting point, not a law.
    and reviewed. Only commit when there's a real diff; don't batch unrelated
    changes into one commit.
 
-## VMK clone visual work — mandatory Oracle workflow
-
-The `main` branch is first and foremost a technically modern clone of the
-current `www.vmk.hu`. For clone work, visual completeness is a measured
-acceptance criterion, not a subjective judgement.
-
-- Read `docs/VISUAL_CLONE_ORACLE.md` before changing clone layout or styling.
-- Use the Visual Clone Oracle (`npm run visual:oracle` or a targeted
-  `node tools/visual-oracle.mjs live --route=...`) as the source of truth.
-- Never declare a page visually complete because it "looks close", because a
-  screenshot review seems plausible, or because one hand-written audit passes.
-- Work from the Oracle's ranked defect regions. Prefer fixing the highest
-  ranked defect first and keep the change scoped to the relevant component.
-- Re-run the Oracle after each meaningful visual change. Record before/after
-  metrics. A change that makes the measured result worse is a regression and
-  must be reverted or corrected unless there is an explicitly documented
-  reason to accept it.
-- Do not regress an already-PASS route while fixing another route.
-- Milestone 1 scope is the home page plus every relevant internal page linked
-  directly from the home page (first-hop crawl), on desktop and mobile. Do not
-  treat first-hop coverage as complete if route discovery reports truncation.
-- Pixel threshold must not be raised merely to improve the score. Any tolerance
-  change requires measured evidence and explicit justification.
-
 ## The second human gate
 
 8. **Confirm before pushing/committing anything with real, hard-to-reverse
