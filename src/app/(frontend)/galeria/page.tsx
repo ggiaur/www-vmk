@@ -24,7 +24,7 @@ const FALLBACK_CATEGORIES = [
   { label: 'Pályázatok', slug: 'palyazatok' },
 ]
 
-const TEAL = '#159097'
+const TEAL = '#f59e0b'
 
 export default async function GaleriaPage() {
   const galleries = await getAllGalleries().catch(() => [])
@@ -38,7 +38,7 @@ export default async function GaleriaPage() {
       <div>
         <Breadcrumb items={[{ label: 'Galéria' }]} />
 
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           Galéria
         </h1>
 

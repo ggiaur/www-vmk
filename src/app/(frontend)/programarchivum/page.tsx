@@ -25,14 +25,14 @@ export default async function ProgramarchivumPage() {
       <Breadcrumb items={[{ label: 'Programarchívum' }]} />
 
       <div className="pb-4">
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
-          <Archive className="w-8 h-8 text-[#159097]" />
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
+          <Archive className="w-8 h-8 text-[#f59e0b]" />
           <span>Programarchívum</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">
           Korábbi évek lezárult programjai, rendezvényei és híranyagai — történeti gyűjtemény, nem
           aktuális esemény. Aktuális, közelgő programokért lásd az{' '}
-          <Link href="/esemenyek" className="text-[#159097] font-semibold hover:underline">
+          <Link href="/esemenyek" className="text-[#f59e0b] font-semibold hover:underline">
             Eseménykalendáriumot
           </Link>
           .

@@ -24,8 +24,8 @@ export default async function TamogatasPage() {
       <Breadcrumb items={[{ label: 'Támogatás' }]} />
 
       <div className="pb-4">
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
-          <Heart className="w-8 h-8 text-[#159097]" />
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
+          <Heart className="w-8 h-8 text-[#f59e0b]" />
           <span>Támogassa a Könyvtárat</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">

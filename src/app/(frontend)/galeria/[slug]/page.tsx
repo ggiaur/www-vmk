@@ -35,7 +35,7 @@ export default async function GaleriaDetailPage({ params }: Args) {
     <article className="max-w-6xl mx-auto px-4 py-6 space-y-8">
       <Breadcrumb items={[{ label: 'Galéria', href: '/galeria' }, { label: gallery.title }]} />
 
-      <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">{gallery.title}</h1>
+      <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">{gallery.title}</h1>
 
       {images.length === 0 ? (
         <p className="text-sm text-slate-400 italic flex items-center gap-2">

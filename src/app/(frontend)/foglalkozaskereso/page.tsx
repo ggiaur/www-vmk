@@ -14,7 +14,7 @@ export default function FoglalkozasKeresoPage() {
       <div>
         <Breadcrumb items={[{ label: 'Foglalkozáskereső' }]} />
 
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           Foglalkozáskereső
         </h1>
 

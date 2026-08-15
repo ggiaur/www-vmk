@@ -4,14 +4,14 @@ import Image from 'next/image'
 import { ChevronRight } from 'lucide-react'
 
 // real.png pixel-mintavétel (2026-08-04, x=550 oszlop-szken a "Tájékoztatás"
-// kártyán): a címsáv EGYSÉGESEN #159097 (a legtöbb kártyán, típus="type1"),
+// kártyán): a címsáv EGYSÉGESEN #f59e0b (a legtöbb kártyán, típus="type1"),
 // a leírás-terület EGYSÉGESEN #1BBBC4, a szöveg ott FEKETE (nem szürke), és
 // jobb alul egy fehér ">" nyíl-ikon van. A korábbi 6-elemű TILE_COLORS
 // forgó paletta és a szürke leírás-háttér NEM létezik a valós oldalon - azt
 // tévesen találtuk ki. (Ritka kivétel: pl. "Spiró 80" class="type5", más
 // színű - ezt egyelőre nem különböztetjük meg, mert a CMS-migráció nem
 // hozza át a hír-kategória-típust.)
-const TITLE_BG = '#159097'
+const TITLE_BG = '#f59e0b'
 const CONTENT_BG = '#1BBBC4'
 
 export interface HomeNewsTileProps {

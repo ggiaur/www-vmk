@@ -87,7 +87,7 @@ export default async function KapcsolatPage() {
       <div>
         <Breadcrumb items={[{ label: 'Elérhetőségeink' }]} />
 
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           Elérhetőségeink
         </h1>
 
@@ -107,7 +107,7 @@ export default async function KapcsolatPage() {
                   {row.name}
                 </td>
                 <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
-                  {row.email && <a href={`mailto:${row.email}`} className="text-[#159097] hover:underline">{row.email}</a>}
+                  {row.email && <a href={`mailto:${row.email}`} className="text-[#f59e0b] hover:underline">{row.email}</a>}
                 </td>
               </tr>
             ))}
@@ -131,7 +131,7 @@ export default async function KapcsolatPage() {
                 </td>
                 <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
                   {row.email.includes('@') ? (
-                    <a href={`mailto:${row.email}`} className="text-[#159097] hover:underline">{row.email}</a>
+                    <a href={`mailto:${row.email}`} className="text-[#f59e0b] hover:underline">{row.email}</a>
                   ) : row.email}
                 </td>
               </tr>
@@ -156,7 +156,7 @@ export default async function KapcsolatPage() {
                 </td>
                 <td className={TD_STYLE} style={{ backgroundColor: rowBg(i) }}>
                   {row.email && (
-                    <a href={`mailto:${row.email}`} className="text-[#159097] hover:underline">{row.email}</a>
+                    <a href={`mailto:${row.email}`} className="text-[#f59e0b] hover:underline">{row.email}</a>
                   )}
                 </td>
               </tr>
@@ -189,7 +189,7 @@ export default async function KapcsolatPage() {
           <Link
             href="/munkatarsak"
             className="inline-flex items-center gap-2 text-white font-bold py-[8px] px-[20px] rounded text-[14px]"
-            style={{ backgroundColor: '#159097' }}
+            style={{ backgroundColor: '#f59e0b' }}
           >
             Munkatársaink
             <span className="text-[18px]">&gt;</span>

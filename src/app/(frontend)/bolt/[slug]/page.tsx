@@ -42,8 +42,8 @@ export default async function ProductDetailPage({ params }: Args) {
           )}
         </div>
         <div className="space-y-4">
-          <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase leading-[26.4px]">{product.title}</h1>
-          <p className="text-xl font-bold text-[#159097]">{product.price.toLocaleString('hu-HU')} Ft</p>
+          <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase leading-[26.4px]">{product.title}</h1>
+          <p className="text-xl font-bold text-[#f59e0b]">{product.price.toLocaleString('hu-HU')} Ft</p>
           {product.description && <p className="text-sm text-slate-600 leading-relaxed">{product.description}</p>}
           <Link
             href="/kapcsolat"

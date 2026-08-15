@@ -14,7 +14,7 @@ export default function KeresesPage() {
     <PageWithSidebar>
       <div className="max-w-3xl space-y-8">
         <Breadcrumb items={[{ label: 'Keresés' }]} />
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">Keresés</h1>
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">Keresés</h1>
         <SearchClient />
       </div>
     </PageWithSidebar>

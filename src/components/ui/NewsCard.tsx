@@ -12,7 +12,7 @@ export interface NewsCardProps {
   imageUrl?: string
 }
 
-const TITLE_BG = '#159097'
+const TITLE_BG = '#f59e0b'
 const CONTENT_BG = '#1BBBC4'
 
 const categoryLabels: Record<string, string> = {

@@ -29,7 +29,7 @@ export default async function ReszlegekPage() {
       <div>
         <Breadcrumb items={[{ label: 'Központi Könyvtár' }]} />
 
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           Központi Könyvtár
         </h1>
 
@@ -39,7 +39,7 @@ export default async function ReszlegekPage() {
               <th
                 colSpan={2}
                 className="text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase"
-                style={{ backgroundColor: '#159097' }}
+                style={{ backgroundColor: '#f59e0b' }}
               >
                 Részlegek
               </th>
@@ -54,7 +54,7 @@ export default async function ReszlegekPage() {
                 >
                   <Link
                     href={`/reszlegek/${dept.slug}`}
-                    className="text-[#159097] hover:underline font-semibold"
+                    className="text-[#f59e0b] hover:underline font-semibold"
                   >
                     {dept.name}
                   </Link>

@@ -35,20 +35,20 @@ export default async function TagkonyvtarakPage() {
       <div>
         <Breadcrumb items={[{ label: 'Tagkönyvtárak' }]} />
 
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           Tagkönyvtárak
         </h1>
 
         <table className="w-full border-collapse text-[14px]" style={{ fontFamily: 'Roboto, sans-serif' }}>
           <thead>
             <tr>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#818cf8] text-white font-bold">
                 Tagkönyvtár neve
               </th>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#818cf8] text-white font-bold">
                 Cím
               </th>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold w-[120px]">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#818cf8] text-white font-bold w-[120px]">
                 Telefon
               </th>
             </tr>
@@ -62,7 +62,7 @@ export default async function TagkonyvtarakPage() {
                 >
                   <Link
                     href={`/tagkonyvtarak/${branch.slug}`}
-                    className="text-[#159097] hover:underline"
+                    className="text-[#f59e0b] hover:underline"
                   >
                     {branch.name}
                   </Link>

@@ -20,8 +20,8 @@ export default async function TeremfoglalasPage() {
       <Breadcrumb items={[{ label: 'Teremfoglalás' }]} />
 
       <div className="pb-4">
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
-          <DoorOpen className="w-8 h-8 text-[#159097]" />
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
+          <DoorOpen className="w-8 h-8 text-[#f59e0b]" />
           <span>Teremfoglalás</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">

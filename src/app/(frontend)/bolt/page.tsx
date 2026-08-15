@@ -30,7 +30,7 @@ export default async function BoltPage() {
       <Breadcrumb items={[{ label: 'Bolt' }]} />
 
       <div className="pb-4">
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">Bolt</h1>
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">Bolt</h1>
       </div>
 
       {products.length === 0 ? (
@@ -56,7 +56,7 @@ export default async function BoltPage() {
                   )}
                 </div>
                 <div className="p-4">
-                  <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-[#159097] font-semibold">
+                  <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-[#f59e0b] font-semibold">
                     {categoryLabels[product.category] ?? product.category}
                   </span>
                   <h3 className="font-bold text-slate-900 mt-1.5">{product.title}</h3>

@@ -64,7 +64,7 @@ export default async function NyitvatartasPage() {
       <div>
         <Breadcrumb items={[{ label: 'Nyitvatartás' }]} />
 
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           Nyitvatartás
         </h1>
 
@@ -120,7 +120,7 @@ export default async function NyitvatartasPage() {
               <th
                 colSpan={2}
                 className="text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase"
-                style={{ backgroundColor: '#e4b02c' }}
+                style={{ backgroundColor: '#818cf8' }}
               >
                 Tagkönyvtárak
               </th>

@@ -195,7 +195,7 @@ export function SiteSidebar() {
                 <button
                   type="button"
                   onClick={() => setOpenItem(openItem === item.label ? null : item.label)}
-                  className="w-full flex items-center justify-between gap-2 py-[8px] text-left text-[#161616] hover:text-[#159097] transition-colors"
+                  className="w-full flex items-center justify-between gap-2 py-[8px] text-left text-[#161616] hover:text-[#f59e0b] transition-colors"
                   aria-expanded={openItem === item.label}
                 >
                   <span>{item.label}</span>
@@ -209,7 +209,7 @@ export function SiteSidebar() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block py-1.5 text-sm text-slate-600 hover:text-[#159097]"
+                        className="block py-1.5 text-sm text-slate-600 hover:text-[#f59e0b]"
                       >
                         {child.label}
                       </Link>
@@ -222,12 +222,12 @@ export function SiteSidebar() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block py-[8px] text-[#161616] hover:text-[#159097] transition-colors"
+                className="block py-[8px] text-[#161616] hover:text-[#f59e0b] transition-colors"
               >
                 {item.label}
               </a>
             ) : (
-              <Link href={item.href} className="block py-[8px] text-[#161616] hover:text-[#159097] transition-colors">
+              <Link href={item.href} className="block py-[8px] text-[#161616] hover:text-[#f59e0b] transition-colors">
                 {item.label}
               </Link>
             )}
@@ -238,7 +238,7 @@ export function SiteSidebar() {
       <div>
       {WIDGETS.map((w) => (
         /* Valós CSS: .box { margin-bottom: 30px; background-color: #cce9eb; width: 100%; }
-           .box h1 { padding: 8px 15px; font-size: 18px; font-weight: 700; color: #FFF; background: #00909b; margin: 0; }
+           .box h1 { padding: 8px 15px; font-size: 18px; font-weight: 700; color: #FFF; background: #f59e0b; margin: 0; }
            .box .content { padding: 15px; }
            MEGJEGYZÉS: a külső keret div (nem a), mert egyes widgetek (Filmes-téka, Online könyvtár)
            beágyazott <a> elemeket tartalmaznak → <a> nem lehet <a> gyereke (HTML szabály + hydration error). */
@@ -252,7 +252,7 @@ export function SiteSidebar() {
             href={w.href}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: 'block', backgroundColor: '#00909b', padding: '8px 15px' }}
+            style={{ display: 'block', backgroundColor: '#f59e0b', padding: '8px 15px' }}
           >
             <div
               style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700, textTransform: 'uppercase' }}
@@ -285,7 +285,7 @@ export function SiteSidebar() {
                 href={w.textLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ fontSize: '11px', color: '#159097' }}
+                style={{ fontSize: '11px', color: '#f59e0b' }}
               >
                 {w.textLinkLabel}
               </a>

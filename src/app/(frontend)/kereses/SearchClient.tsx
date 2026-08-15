@@ -51,7 +51,7 @@ export function SearchClient() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Keressen hírek és rendezvények között..."
           autoFocus
-          className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 text-base focus:outline-none focus:ring-2 focus:ring-[#159097] focus:border-transparent"
+          className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 text-base focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-transparent"
         />
       </div>
 
@@ -73,7 +73,7 @@ export function SearchClient() {
                   href={`/hirek/${hit.slug}`}
                   className="flex items-center gap-3 px-4 py-3 bg-white hover:bg-slate-50 transition-colors"
                 >
-                  <Newspaper className="w-4 h-4 text-[#159097] shrink-0" />
+                  <Newspaper className="w-4 h-4 text-[#f59e0b] shrink-0" />
                   <span className="text-sm text-slate-800">{hit.title as string}</span>
                 </Link>
               </li>
@@ -92,7 +92,7 @@ export function SearchClient() {
                   href={`/esemenyek/${hit.slug}`}
                   className="flex items-center gap-3 px-4 py-3 bg-white hover:bg-slate-50 transition-colors"
                 >
-                  <Calendar className="w-4 h-4 text-[#159097] shrink-0" />
+                  <Calendar className="w-4 h-4 text-[#f59e0b] shrink-0" />
                   <span className="text-sm text-slate-800">{hit.title as string}</span>
                 </Link>
               </li>

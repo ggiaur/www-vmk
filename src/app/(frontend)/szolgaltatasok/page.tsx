@@ -29,7 +29,7 @@ export default async function SzolgaltatasokPage() {
       <Breadcrumb items={[{ label: 'Szolgáltatások & Díjszabás' }]} />
 
       <div className="pb-4">
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">Szolgáltatások & Díjszabás</h1>
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">Szolgáltatások & Díjszabás</h1>
         <p className="text-slate-600 mt-2 max-w-3xl">
           Ismerje meg a Vörösmarty Mihály Könyvtár által kínált kölcsönzési, digitális és közösségi szolgáltatásokat, valamint az érvényben lévő tételeket.
         </p>
@@ -38,7 +38,7 @@ export default async function SzolgaltatasokPage() {
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
-          <BookOpen className="w-8 h-8 text-[#159097]" />
+          <BookOpen className="w-8 h-8 text-[#f59e0b]" />
           <h2 className="text-xl font-bold text-slate-900">Dokumentumkölcsönzés & Olvasóterem</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Könyvek, folyóiratok, kotta- és hanganyagok kölcsönzése, valamint a helyben használható olvasótermi állomány böngészése.
@@ -56,7 +56,7 @@ export default async function SzolgaltatasokPage() {
         </div>
 
         <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
-          <FileText className="w-8 h-8 text-[#e4b02c]" />
+          <FileText className="w-8 h-8 text-[#818cf8]" />
           <h2 className="text-xl font-bold text-slate-900">E-Könyvek & NAVA Pont</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Hozzáférés a Nemzeti Audiovizuális Archívum (NAVA) tartalmához, adatbázis-használat és e-könyv kölcsönzés olvasójeggyel.
@@ -74,7 +74,7 @@ export default async function SzolgaltatasokPage() {
         </div>
 
         <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
-          <Bookmark className="w-8 h-8 text-[#159097]" />
+          <Bookmark className="w-8 h-8 text-[#f59e0b]" />
           <h2 className="text-xl font-bold text-slate-900">Helyismereti Kutatószolgálat</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Székesfehérvár és Fejér vármegye helytörténeti dokumentumainak, régi fotóinak és sajtóanyagának kutatási lehetősége szakértői segítséggel.
@@ -82,7 +82,7 @@ export default async function SzolgaltatasokPage() {
         </div>
 
         <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
-          <Users className="w-8 h-8 text-[#e4b02c]" />
+          <Users className="w-8 h-8 text-[#818cf8]" />
           <h2 className="text-xl font-bold text-slate-900">Terembérlet & Rendezvényszervezés</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Modern előadótermeink és közösségi tereink bérlése előadásokhoz, céges képzésekhez és kulturális programokhoz.
@@ -107,14 +107,14 @@ export default async function SzolgaltatasokPage() {
                     ((s.pricingTable as Array<{ serviceItem: string; price: string }>) ?? []).map((p, idx) => (
                       <tr key={idx} className="hover:bg-slate-50">
                         <td className="py-3 px-4 font-medium">{p.serviceItem}</td>
-                        <td className="py-3 px-4 text-right font-bold text-[#159097]">{p.price}</td>
+                        <td className="py-3 px-4 text-right font-bold text-[#f59e0b]">{p.price}</td>
                       </tr>
                     ))
                   )
                 : defaultPricing.map((item, idx) => (
                     <tr key={idx} className="hover:bg-slate-50">
                       <td className="py-3 px-4 font-medium">{item.item}</td>
-                      <td className="py-3 px-4 text-right font-bold text-[#159097]">{item.price}</td>
+                      <td className="py-3 px-4 text-right font-bold text-[#f59e0b]">{item.price}</td>
                     </tr>
                   ))}
             </tbody>

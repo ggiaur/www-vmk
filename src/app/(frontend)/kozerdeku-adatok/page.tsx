@@ -27,7 +27,7 @@ export default function KozerdekulAdatokPage() {
       <div>
         <Breadcrumb items={[{ label: 'Közérdekű adatok' }]} />
 
-        <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">
+        <h1 className="font-serif text-[24px] font-bold text-slate-100 uppercase pt-[10px] pb-[15px] leading-[26.4px]">
           Közérdekű adatok
         </h1>
 
@@ -37,7 +37,7 @@ export default function KozerdekulAdatokPage() {
               <th
                 colSpan={2}
                 className="text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase"
-                style={{ backgroundColor: '#159097' }}
+                style={{ backgroundColor: '#f59e0b' }}
               >
                 Alapadatok
               </th>
@@ -70,14 +70,14 @@ export default function KozerdekulAdatokPage() {
               href="https://kozadat.hu/kereso/kozfeladatot-ellato-szervek/adatlap/8159"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#159097] hover:underline"
+              className="text-[#f59e0b] hover:underline"
             >
               Közadatkereső
             </a>{' '}
             felületén érhetők el.
           </p>
           <p>
-            <Link href="/dokumentumok" className="text-[#159097] hover:underline">
+            <Link href="/dokumentumok" className="text-[#f59e0b] hover:underline">
               Dokumentumtár (SZMSZ, beszámolók, szabályzatok) →
             </Link>
           </p>
