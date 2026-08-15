@@ -37,7 +37,7 @@ export default function KozerdekulAdatokPage() {
               <th
                 colSpan={2}
                 className="text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase"
-                style={{ backgroundColor: '#159097' }}
+                style={{ backgroundColor: '#2563eb' }}
               >
                 Alapadatok
               </th>
@@ -70,14 +70,14 @@ export default function KozerdekulAdatokPage() {
               href="https://kozadat.hu/kereso/kozfeladatot-ellato-szervek/adatlap/8159"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#159097] hover:underline"
+              className="text-[#2563eb] hover:underline"
             >
               Közadatkereső
             </a>{' '}
             felületén érhetők el.
           </p>
           <p>
-            <Link href="/dokumentumok" className="text-[#159097] hover:underline">
+            <Link href="/dokumentumok" className="text-[#2563eb] hover:underline">
               Dokumentumtár (SZMSZ, beszámolók, szabályzatok) →
             </Link>
           </p>

@@ -38,7 +38,7 @@ export function EventCalendarWidget({ highlightedDays, year, month }: EventCalen
 
   return (
     <div>
-      <div className="flex items-center" style={{ backgroundColor: '#00909b' }}>
+      <div className="flex items-center" style={{ backgroundColor: '#2563eb' }}>
         <button aria-label="Előző hónap" disabled className="px-[10px] py-[5px] text-white">
           <ChevronLeft className="w-[26px] h-[26px]" />
         </button>
@@ -71,7 +71,7 @@ export function EventCalendarWidget({ highlightedDays, year, month }: EventCalen
                     className="text-center text-[20px] py-[10px]"
                     style={{
                       fontWeight: isHighlighted || isToday ? 700 : 400,
-                      backgroundColor: isHighlighted ? '#e4b02c' : isToday ? '#00909b' : 'transparent',
+                      backgroundColor: isHighlighted ? '#7c3aed' : isToday ? '#2563eb' : 'transparent',
                       color: !cell.current ? '#ccc' : isHighlighted || isToday ? '#fff' : '#555',
                     }}
                   >

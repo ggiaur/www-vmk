@@ -120,7 +120,7 @@ export default async function NyitvatartasPage() {
               <th
                 colSpan={2}
                 className="text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase"
-                style={{ backgroundColor: '#e4b02c' }}
+                style={{ backgroundColor: '#7c3aed' }}
               >
                 Tagkönyvtárak
               </th>

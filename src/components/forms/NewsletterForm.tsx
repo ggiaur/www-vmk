@@ -32,7 +32,7 @@ export function NewsletterForm() {
           name="email"
           type="email"
           required
-          className="w-full px-3 py-2 rounded bg-white border border-slate-300 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#e4b02c]"
+          className="w-full px-3 py-2 rounded bg-white border border-slate-300 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
         />
       </div>
       <div>
@@ -43,7 +43,7 @@ export function NewsletterForm() {
           id="newsletter-name"
           name="name"
           type="text"
-          className="w-full px-3 py-2 rounded bg-white border border-slate-300 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#e4b02c]"
+          className="w-full px-3 py-2 rounded bg-white border border-slate-300 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
         />
       </div>
       <label className="flex items-start gap-2 text-sm text-teal-50">

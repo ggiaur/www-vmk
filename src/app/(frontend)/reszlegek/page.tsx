@@ -39,7 +39,7 @@ export default async function ReszlegekPage() {
               <th
                 colSpan={2}
                 className="text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase"
-                style={{ backgroundColor: '#159097' }}
+                style={{ backgroundColor: '#2563eb' }}
               >
                 Részlegek
               </th>
@@ -54,7 +54,7 @@ export default async function ReszlegekPage() {
                 >
                   <Link
                     href={`/reszlegek/${dept.slug}`}
-                    className="text-[#159097] hover:underline font-semibold"
+                    className="text-[#2563eb] hover:underline font-semibold"
                   >
                     {dept.name}
                   </Link>

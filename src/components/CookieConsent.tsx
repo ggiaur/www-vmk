@@ -59,7 +59,7 @@ export function CookieConsent() {
                 href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-[#e4b02c] hover:text-white"
+                className="underline text-[#7c3aed] hover:text-white"
               >
                 Adatkezelési tájékoztató
               </a>
@@ -83,7 +83,7 @@ export function CookieConsent() {
                 type="button"
                 onClick={acceptAll}
                 className="px-4 py-2 text-sm font-bold rounded text-[#1B1B1B] hover:brightness-95 transition"
-                style={{ backgroundColor: '#e4b02c' }}
+                style={{ backgroundColor: '#7c3aed' }}
               >
                 Elfogadom
               </button>
@@ -133,7 +133,7 @@ export function CookieConsent() {
                 type="button"
                 onClick={saveSelection}
                 className="px-4 py-2 text-sm font-bold rounded text-[#1B1B1B] hover:brightness-95 transition"
-                style={{ backgroundColor: '#e4b02c' }}
+                style={{ backgroundColor: '#7c3aed' }}
               >
                 Kiválasztottak mentése
               </button>

@@ -40,7 +40,7 @@ export function ContactForm() {
             type="text"
             required
             placeholder="Minta János"
-            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]"
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
           />
         </div>
         <div>
@@ -53,7 +53,7 @@ export function ContactForm() {
             type="email"
             required
             placeholder="janos@example.com"
-            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]"
+            className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
           />
         </div>
       </div>
@@ -68,7 +68,7 @@ export function ContactForm() {
           id="contact-subject"
           name="subject"
           defaultValue="general"
-          className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]"
+          className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
         >
           <option value="general">Általános érdeklődés</option>
           <option value="lending">Könyvhosszabbítás / Kölcsönzés</option>
@@ -88,7 +88,7 @@ export function ContactForm() {
           rows={5}
           required
           placeholder="Írja le kérdését vagy észrevételét..."
-          className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#159097]"
+          className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
         />
       </div>
 

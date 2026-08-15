@@ -56,12 +56,12 @@ export const Libraries: CollectionConfig = {
       label: 'Megjelenítési Szín (hex)',
       admin: {
         description:
-          'A munkatársak oldalon ez a szín jelenik meg a részleg/tagkönyvtár fejlécén, pl. #159097.',
+          'A munkatársak oldalon ez a szín jelenik meg a részleg/tagkönyvtár fejlécén, pl. #2563eb.',
         position: 'sidebar',
       },
       validate: (value: unknown) => {
         if (!value) return true
-        return /^#[0-9a-fA-F]{6}$/.test(String(value)) || 'Érvénytelen hex szín (pl. #159097).'
+        return /^#[0-9a-fA-F]{6}$/.test(String(value)) || 'Érvénytelen hex szín (pl. #2563eb).'
       },
     },
     {

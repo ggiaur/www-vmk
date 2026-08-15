@@ -59,7 +59,7 @@ export default async function NewsDetailPage({
       <div className="space-y-4">
         <Link
           href="/hirek"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#159097] hover:underline"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563eb] hover:underline"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Vissza a hírekhez</span>
@@ -71,11 +71,11 @@ export default async function NewsDetailPage({
 
         <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 border-b border-slate-200 pb-4">
           <span className="flex items-center gap-1">
-            <Calendar className="w-4 h-4 text-[#e4b02c]" />
+            <Calendar className="w-4 h-4 text-[#7c3aed]" />
             {formattedDate}
           </span>
           <span className="flex items-center gap-1">
-            <User className="w-4 h-4 text-[#e4b02c]" />
+            <User className="w-4 h-4 text-[#7c3aed]" />
             VMK Szerkesztőség
           </span>
         </div>
@@ -88,7 +88,7 @@ export default async function NewsDetailPage({
         </div>
       )}
 
-      <div className="bg-amber-50/60 border-l-4 border-[#159097] p-4 rounded-r-lg text-slate-800 text-base leading-relaxed font-medium">
+      <div className="bg-amber-50/60 border-l-4 border-[#2563eb] p-4 rounded-r-lg text-slate-800 text-base leading-relaxed font-medium">
         {summary}
       </div>
 

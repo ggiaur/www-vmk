@@ -88,7 +88,7 @@ export default async function HirekPage({
               href={cat.value === 'all' ? '/hirek' : `/hirek?category=${cat.value}`}
               className={`px-4 py-2 rounded text-[13px] font-bold transition-colors ${
                 activeCategory === cat.value
-                  ? 'bg-[#159097] text-white shadow-sm'
+                  ? 'bg-[#2563eb] text-white shadow-sm'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >

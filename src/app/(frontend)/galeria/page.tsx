@@ -24,7 +24,7 @@ const FALLBACK_CATEGORIES = [
   { label: 'Pályázatok', slug: 'palyazatok' },
 ]
 
-const TEAL = '#159097'
+const TEAL = '#2563eb'
 
 export default async function GaleriaPage() {
   const galleries = await getAllGalleries().catch(() => [])

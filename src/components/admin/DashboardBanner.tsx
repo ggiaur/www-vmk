@@ -5,7 +5,7 @@ import React from 'react'
 export const DashboardBanner: React.FC = () => (
   <div
     style={{
-      background: 'linear-gradient(135deg, #00909b 0%, #159097 100%)',
+      background: 'linear-gradient(135deg, #2563eb 0%, #2563eb 100%)',
       color: '#fff',
       borderRadius: '8px',
       padding: '24px 32px',

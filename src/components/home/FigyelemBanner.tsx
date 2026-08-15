@@ -22,7 +22,7 @@ export function FigyelemBanner() {
           sizes="(max-width: 640px) 100vw, 69vw"
         />
       </div>
-      <div className="bg-[#0f656a] text-white px-5 py-4 flex flex-col justify-center">
+      <div className="bg-[#1d4ed8] text-white px-5 py-4 flex flex-col justify-center">
         <p className="font-bold text-sm mb-1">Tájékoztatás</p>
         <p className="font-semibold text-sm">Kedves Olvasóink!</p>
         <p className="text-sm text-teal-50 mt-1">

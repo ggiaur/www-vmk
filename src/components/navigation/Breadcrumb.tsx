@@ -40,7 +40,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
       <nav aria-label="Breadcrumb" className="py-3 text-xs text-slate-500">
         <ol className="flex items-center gap-1.5 flex-wrap">
           <li className="flex items-center gap-1">
-            <Link href="/" className="hover:text-[#159097] transition-colors flex items-center gap-1">
+            <Link href="/" className="hover:text-[#2563eb] transition-colors flex items-center gap-1">
               <Home className="w-3.5 h-3.5" />
               <span>Főoldal</span>
             </Link>
@@ -49,7 +49,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
             <li key={index} className="flex items-center gap-1.5">
               <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
               {item.href && index < items.length - 1 ? (
-                <Link href={item.href} className="hover:text-[#159097] transition-colors">
+                <Link href={item.href} className="hover:text-[#2563eb] transition-colors">
                   {item.label}
                 </Link>
               ) : (

@@ -25,7 +25,7 @@ type StaffCategory = {
 const STAFF_DATA: StaffCategory[] = [
   {
     title: 'Igazgatóság',
-    color: '#159097',
+    color: '#2563eb',
     members: [
       { name: 'Horváth Adrienn', position: 'igazgató', phone: '(22) 513-933', email: 'igazgato@vmk.hu' },
       { name: 'Kálmánné Heim Ágnes', position: 'Szakmai igazgatóhelyettes', phone: '(22) 340-698', email: 'kalmanne.agi@vmk.hu' },
@@ -33,14 +33,14 @@ const STAFF_DATA: StaffCategory[] = [
   },
   {
     title: 'Titkárság és ügyviteli osztály',
-    color: '#159097',
+    color: '#2563eb',
     members: [
       { name: 'Fülöp Andrea', position: 'osztályvezető', email: 'fulop.andrea@vmk.hu' },
     ],
   },
   {
     title: 'Gyűjteményszervezési osztály',
-    color: '#159097',
+    color: '#2563eb',
     members: [
       { name: 'Kaltenecker Klára', position: 'osztályvezető', phone: '(22) 340-698', email: 'kaltenecker.klara@vmk.hu' },
     ],
@@ -54,7 +54,7 @@ const STAFF_DATA: StaffCategory[] = [
   },
   {
     title: 'Olvasószolgálati osztály',
-    color: '#159097',
+    color: '#2563eb',
     members: [
       { name: 'Darvas Veronika Judit', position: 'osztályvezető', email: 'darvas.veronika@vmk.hu' },
     ],
@@ -89,7 +89,7 @@ const STAFF_DATA: StaffCategory[] = [
   },
   {
     title: 'Informatikai és tartalomszolgáltatási osztály',
-    color: '#159097',
+    color: '#2563eb',
     members: [
       { name: 'Bebreczki János', position: 'osztályvezető', phone: '(22) 385-241', email: 'bebreczki.janos@vmk.hu' },
     ],
@@ -103,7 +103,7 @@ const STAFF_DATA: StaffCategory[] = [
   },
   {
     title: 'Módszertani és településfejlesztési osztály',
-    color: '#159097',
+    color: '#2563eb',
     members: [
       { name: 'Izsák Ferencné', position: 'osztályvezető', phone: '(22) 311-434', email: 'izsak.ferencne@vmk.hu' },
     ],
@@ -117,35 +117,35 @@ const STAFF_DATA: StaffCategory[] = [
   },
   {
     title: 'Budai Úti Tagkönyvtár',
-    color: '#e4b02c',
+    color: '#7c3aed',
     members: [
       { name: 'Budai Úti Tagkönyvtár', position: '', phone: '(22) 329-436', email: 'budai@vmk.hu' },
     ],
   },
   {
     title: 'Mészöly Géza Utcai Tagkönyvtár',
-    color: '#e4b02c',
+    color: '#7c3aed',
     members: [
       { name: 'Mészöly Géza Utcai Tagkönyvtár', position: '', phone: '(22) 315-603', email: 'meszoly@vmk.hu' },
     ],
   },
   {
     title: 'Széna Téri Tagkönyvtár',
-    color: '#e4b02c',
+    color: '#7c3aed',
     members: [
       { name: 'Széna Téri Tagkönyvtár', position: '', phone: '(22) 313-643', email: 'szena@vmk.hu' },
     ],
   },
   {
     title: 'Tolnai Utcai Tagkönyvtár',
-    color: '#e4b02c',
+    color: '#7c3aed',
     members: [
       { name: 'Tolnai Utcai Tagkönyvtár', position: '', phone: '(22) 329-437', email: 'tolnai@vmk.hu' },
     ],
   },
   {
     title: 'Zsolt Utcai Tagkönyvtár',
-    color: '#e4b02c',
+    color: '#7c3aed',
     members: [
       { name: 'Zsolt Utcai Tagkönyvtár', position: '', phone: '(22) 329-458', email: 'zsolt@vmk.hu' },
     ],
@@ -171,7 +171,7 @@ export default async function MunkatarsakPage() {
       const deptColor =
         s.department && typeof s.department === 'object' && 'color' in s.department && s.department.color
           ? (s.department.color as string)
-          : '#159097'
+          : '#2563eb'
       if (!grouped.has(deptName)) {
         grouped.set(deptName, { color: deptColor, members: [] })
       }
@@ -229,7 +229,7 @@ export default async function MunkatarsakPage() {
                   </div>
                   <div>
                     {member.email && (
-                      <a href={`mailto:${member.email}`} className="text-[#159097] hover:underline">
+                      <a href={`mailto:${member.email}`} className="text-[#2563eb] hover:underline">
                         {member.email}
                       </a>
                     )}

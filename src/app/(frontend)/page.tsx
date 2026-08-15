@@ -89,11 +89,11 @@ export default async function HomePage() {
       {/* Hero Banner */}
       <div className="hero-banner">
         <div className="max-w-[1200px] mx-auto px-4">
-          <div className="py-3 md:py-5">
-            <h1 className="text-2xl md:text-4xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-cardo), system-ui, sans-serif' }}>
+          <div className="py-2 md:py-3">
+            <h1 className="text-xl md:text-2xl font-bold text-white mb-1.5" style={{ fontFamily: 'var(--font-cardo), system-ui, sans-serif' }}>
               Üdvözöljük a Vörösmarty Mihály Könyvtárban
             </h1>
-            <p className="text-blue-100 text-base md:text-lg max-w-2xl mb-5">
+            <p className="text-blue-100 text-sm max-w-2xl mb-3">
               Székesfehérvár legnagyobb közkönyvtára — {locations.length} helyszín, több ezer könyv, rendszeres programok minden korosztálynak.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -111,8 +111,8 @@ export default async function HomePage() {
       </div>
 
       {/* Main Content: 3-column grid */}
-      <div className="max-w-[1200px] mx-auto px-4 py-5">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_300px] gap-6">
+      <div className="max-w-[1200px] mx-auto px-4 py-3">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_280px] gap-4">
 
           {/* Column 1: Featured / Kiemelt */}
           <div>
@@ -205,9 +205,9 @@ export default async function HomePage() {
         </div>
 
         {/* Services row */}
-        <div className="mt-6 pt-5 border-t border-gray-200">
+        <div className="mt-3 pt-3 border-t border-gray-200">
           <h2 className="section-heading">Szolgáltatások</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { icon: Search, label: 'Online Katalógus', desc: 'Könyvek és médiatartalmak keresése', href: 'http://tlwww.vmk.hu/tlwww', external: true },
               { icon: BookOpen, label: 'Beiratkozás', desc: 'Iratkozz be könyvtárunkba', href: '/kapcsolat', external: false },
@@ -216,9 +216,9 @@ export default async function HomePage() {
             ].map((svc) => {
               const Icon = svc.icon
               const inner = (
-                <div className="card-flat p-5 text-center h-full flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-[#2980b9]">
-                    <Icon className="w-5 h-5" />
+                <div className="card-flat p-3 text-center h-full flex flex-col items-center gap-1.5">
+                  <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-[#2980b9]">
+                    <Icon className="w-4 h-4" />
                   </div>
                   <h3 className="text-sm font-bold text-[#1a5276]">{svc.label}</h3>
                   <p className="text-xs text-gray-500">{svc.desc}</p>
@@ -235,10 +235,10 @@ export default async function HomePage() {
       </div>
 
       {/* ============ AJÁNLOTT KÖNYVEK ============ */}
-      <div className="section-alt-v2 py-6">
+      <div className="section-alt-v2 py-3">
         <div className="max-w-[1200px] mx-auto px-4">
           <h2 className="section-heading">Munkatársaink ajánlásával</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1">
             {RECOMMENDED_BOOKS.map((book) => (
               <div key={book.title} className="book-card-v2 group cursor-pointer">
                 <div className="book-cover-v2" style={{ background: `linear-gradient(160deg, ${book.color} 0%, ${book.color}cc 100%)` }}>
@@ -275,17 +275,17 @@ export default async function HomePage() {
       </div>
 
       {/* ============ KIEMELT GYŰJTEMÉNY ============ */}
-      <div className="max-w-[1200px] mx-auto px-4 py-6">
+      <div className="max-w-[1200px] mx-auto px-4 py-3">
         <div className="collection-v2 grid grid-cols-1 md:grid-cols-2">
-          <div className="p-8 md:p-10 flex flex-col justify-center">
-            <div className="text-xs font-bold uppercase tracking-widest text-blue-200 mb-3">Kiemelt gyűjtemény</div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-cardo), system-ui, sans-serif' }}>
+          <div className="p-6 md:p-8 flex flex-col justify-center">
+            <div className="text-xs font-bold uppercase tracking-widest text-blue-200 mb-2">Kiemelt gyűjtemény</div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ fontFamily: 'var(--font-cardo), system-ui, sans-serif' }}>
               Nyári olvasmányok 2026
             </h2>
-            <p className="text-blue-100 text-sm leading-relaxed mb-4">
+            <p className="text-blue-100 text-sm leading-relaxed mb-3">
               Válogatás munkatársaink kedvenc nyári olvasmányaiból — könnyű regények, izgalmas krimik, útikönyvek és természetjáró kalauzok.
             </p>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {COLLECTION_BOOKS.map((b) => (
                 <div key={b.title} className="flex items-center gap-2 text-sm text-white/80">
                   <BookOpen className="w-3.5 h-3.5 text-blue-300 shrink-0" />
@@ -294,14 +294,14 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="mt-6">
+            <div className="mt-4">
               <Link href="/hirek" className="inline-flex items-center gap-2 bg-white text-[#1a5276] px-5 py-2.5 rounded font-semibold text-sm hover:bg-blue-50 transition-colors">
                 Felfedezés <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
-          <div className="hidden md:flex items-center justify-center p-10">
-            <div className="grid grid-cols-2 gap-3 max-w-[260px]">
+          <div className="hidden md:flex items-center justify-center p-6">
+            <div className="grid grid-cols-2 gap-2 max-w-[260px]">
               {COLLECTION_BOOKS.map((b, i) => (
                 <div key={i} className="aspect-[2/3] rounded bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center p-3">
                   <span className="text-white/60 text-[10px] font-bold text-center leading-tight">{b.title}</span>
@@ -313,10 +313,10 @@ export default async function HomePage() {
       </div>
 
       {/* ============ DIGITÁLIS KÖNYVTÁR ============ */}
-      <div className="section-alt-v2 py-6">
+      <div className="section-alt-v2 py-3">
         <div className="max-w-[1200px] mx-auto px-4">
           <h2 className="section-heading">Digitális könyvtár</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {DIGITAL_LIBRARY.map((item) => {
               const Icon = item.icon
               return (
@@ -334,9 +334,9 @@ export default async function HomePage() {
       </div>
 
       {/* ============ OLVASÓI VÉLEMÉNYEK ============ */}
-      <div className="max-w-[1200px] mx-auto px-4 py-6">
+      <div className="max-w-[1200px] mx-auto px-4 py-3">
         <h2 className="section-heading">Olvasóink mondták</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {TESTIMONIALS.map((t, i) => (
             <div key={i} className="testimonial-v2">
               <Quote className="w-5 h-5 text-[#2980b9]/30 mb-2" />
@@ -355,17 +355,17 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-4 pb-6">
+      <div className="max-w-[1200px] mx-auto px-4 pb-4">
         {/* Locations row */}
         {locations.length > 0 && (
-          <div className="pt-8 border-t border-gray-200">
+          <div className="pt-5 border-t border-gray-200">
             <h2 className="section-heading">Helyszíneink</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {locations.map((loc) => (
                 <Link
                   key={loc.slug}
                   href={loc.type === 'central' ? `/reszlegek` : `/tagkonyvtarak/${loc.slug}`}
-                  className="card-flat p-4 flex items-start gap-3 group"
+                  className="card-flat p-3 flex items-start gap-3 group"
                 >
                   <div className="w-10 h-10 rounded bg-[#1a5276] flex items-center justify-center text-white shrink-0">
                     <MapPin className="w-4 h-4" />
@@ -382,9 +382,9 @@ export default async function HomePage() {
 
         {/* Gallery */}
         {cmsGalleries.length > 0 && (
-          <div className="mt-6 pt-5 border-t border-gray-200">
+          <div className="mt-3 pt-3 border-t border-gray-200">
             <h2 className="section-heading">Galéria</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {cmsGalleries.map((g) => {
                 const cover = g.coverImage && typeof g.coverImage === 'object' && 'url' in g.coverImage ? (g.coverImage.url as string) : undefined
                 return (

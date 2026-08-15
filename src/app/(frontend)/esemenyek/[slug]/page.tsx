@@ -64,7 +64,7 @@ export default async function EventDetailPage({
       <div className="space-y-4">
         <Link
           href="/esemenyek"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#159097] hover:underline"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563eb] hover:underline"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Vissza a rendezvényekhez</span>
@@ -77,7 +77,7 @@ export default async function EventDetailPage({
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-amber-50/80 p-5 rounded border border-amber-200 text-sm">
         <div className="flex items-center gap-3">
-          <Calendar className="w-5 h-5 text-[#159097] shrink-0" />
+          <Calendar className="w-5 h-5 text-[#2563eb] shrink-0" />
           <div>
             <span className="block text-xs text-slate-500 font-medium">Időpont</span>
             <strong className="text-slate-900">{formattedDate} ({formattedTime})</strong>
@@ -85,7 +85,7 @@ export default async function EventDetailPage({
         </div>
 
         <div className="flex items-center gap-3">
-          <MapPin className="w-5 h-5 text-[#e4b02c] shrink-0" />
+          <MapPin className="w-5 h-5 text-[#7c3aed] shrink-0" />
           <div>
             <span className="block text-xs text-slate-500 font-medium">Helyszín</span>
             <strong className="text-slate-900">{locationName}</strong>
@@ -93,7 +93,7 @@ export default async function EventDetailPage({
         </div>
 
         <div className="flex items-center gap-3">
-          <Users className="w-5 h-5 text-[#159097] shrink-0" />
+          <Users className="w-5 h-5 text-[#2563eb] shrink-0" />
           <div>
             <span className="block text-xs text-slate-500 font-medium">Célcsoport</span>
             <strong className="text-slate-900">Minden érdeklődő</strong>

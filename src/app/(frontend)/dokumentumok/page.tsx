@@ -65,7 +65,7 @@ export default async function DokumentumokPage({
               href={cat.value ? `/dokumentumok?category=${cat.value}` : '/dokumentumok'}
               className={`px-[12px] py-[6px] rounded text-[13px] font-bold transition-colors ${
                 activeCategory === cat.value
-                  ? 'bg-[#159097] text-white'
+                  ? 'bg-[#2563eb] text-white'
                   : 'bg-white border border-[#ddd] text-[#333] hover:bg-[#f5f5f5]'
               }`}
             >
@@ -78,16 +78,16 @@ export default async function DokumentumokPage({
         <table className="w-full border-collapse text-[14px]" style={{ fontFamily: 'Roboto, sans-serif' }}>
           <thead>
             <tr>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#2563eb] text-white font-bold">
                 Dokumentum neve
               </th>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold w-[120px]">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#2563eb] text-white font-bold w-[120px]">
                 Kategória
               </th>
-              <th className="text-center py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold w-[60px]">
+              <th className="text-center py-[8px] px-[15px] border border-[#ddd] bg-[#2563eb] text-white font-bold w-[60px]">
                 Év
               </th>
-              <th className="text-center py-[8px] px-[15px] border border-[#ddd] bg-[#159097] text-white font-bold w-[100px]">
+              <th className="text-center py-[8px] px-[15px] border border-[#ddd] bg-[#2563eb] text-white font-bold w-[100px]">
                 Letöltés
               </th>
             </tr>
@@ -124,7 +124,7 @@ export default async function DokumentumokPage({
                         href={fileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-[#159097] hover:underline font-semibold"
+                        className="inline-flex items-center gap-1 text-[#2563eb] hover:underline font-semibold"
                       >
                         <Download className="w-[14px] h-[14px]" />
                         PDF

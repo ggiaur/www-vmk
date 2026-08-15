@@ -37,18 +37,18 @@ export default async function TagkonyvtarDetailPage({ params }: Args) {
         <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">{branch.name}</h1>
         <div className="flex flex-wrap gap-4 mt-3 text-sm text-slate-600">
           <span className="flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 text-[#e4b02c]" />
+            <MapPin className="w-4 h-4 text-[#7c3aed]" />
             {branch.address}
           </span>
           {branch.phone && (
             <a href={`tel:${branch.phone}`} className="flex items-center gap-1.5 hover:underline">
-              <Phone className="w-4 h-4 text-[#e4b02c]" />
+              <Phone className="w-4 h-4 text-[#7c3aed]" />
               {branch.phone}
             </a>
           )}
           {branch.email && (
             <a href={`mailto:${branch.email}`} className="flex items-center gap-1.5 hover:underline">
-              <Mail className="w-4 h-4 text-[#e4b02c]" />
+              <Mail className="w-4 h-4 text-[#7c3aed]" />
               {branch.email}
             </a>
           )}
@@ -60,7 +60,7 @@ export default async function TagkonyvtarDetailPage({ params }: Args) {
       {schedule.length > 0 && (
         <div className="bg-white rounded border border-slate-200 p-6 space-y-3">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-[#159097]" />
+            <Clock className="w-5 h-5 text-[#2563eb]" />
             Nyitvatartás
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center text-xs">

@@ -38,16 +38,16 @@ export default function KonyvtarunkrolPage() {
           <h2 className="font-serif text-[20px] font-bold text-[#333] uppercase pt-[15px]">Kapcsolódó oldalak</h2>
           <ul className="list-none space-y-2 pl-0">
             <li>
-              <Link href="/munkatarsak" className="text-[#159097] hover:underline">Munkatársaink</Link>
+              <Link href="/munkatarsak" className="text-[#2563eb] hover:underline">Munkatársaink</Link>
             </li>
             <li>
-              <Link href="/dokumentumok" className="text-[#159097] hover:underline">Alapdokumentumok</Link>
+              <Link href="/dokumentumok" className="text-[#2563eb] hover:underline">Alapdokumentumok</Link>
             </li>
             <li>
-              <Link href="/kapcsolat" className="text-[#159097] hover:underline">Elérhetőségeink</Link>
+              <Link href="/kapcsolat" className="text-[#2563eb] hover:underline">Elérhetőségeink</Link>
             </li>
             <li>
-              <Link href="/nyitvatartas" className="text-[#159097] hover:underline">Nyitvatartás</Link>
+              <Link href="/nyitvatartas" className="text-[#2563eb] hover:underline">Nyitvatartás</Link>
             </li>
           </ul>
         </div>
