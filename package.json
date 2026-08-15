@@ -11,6 +11,10 @@
     "type-check": "tsc --noEmit",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
+    "visual:oracle": "node tools/visual-oracle.mjs live",
+    "visual:oracle:discover": "node tools/visual-oracle.mjs discover",
+    "visual:oracle:capture": "node tools/visual-oracle.mjs capture",
+    "visual:oracle:compare": "node tools/visual-oracle.mjs compare",
     "payload": "payload"
   },
   "dependencies": {
