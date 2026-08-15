@@ -132,7 +132,12 @@ function isCrawlableUrl(href) {
   } catch {
     return false
   }
-  if (url.origin !== REFERENCE_BASE.origin) return false
+  // Compare hostname, not full origin: the live site links to some of its
+  // own pages with a stale http:// scheme (server 301s to https). Comparing
+  // origin (scheme+host) silently dropped those same-site pages from the
+  // crawl; subdomains (konyvtar./helyismeret./tlwww.vmk.hu) still differ by
+  // hostname and stay excluded.
+  if (url.hostname !== REFERENCE_BASE.hostname) return false
   if (assetExtension.test(url.pathname)) return false
   const normalized = normalizePath(url.toString())
   if (excludePatterns.some((pattern) => pattern.test(normalized))) return false
@@ -391,6 +396,28 @@ function geometryComparison(reference, local) {
   }
 }
 
+// Pads `buffer` (whose own metadata is `meta`) up to width x height with a
+// white background, materializing the extended image to its own buffer
+// before returning it. This sharp/libvips build (0.35.3 / 8.18.3) fails
+// with "extract_area: bad extract area" when .extend() and .extract() are
+// chained in a single lazy pipeline and the extract region falls inside the
+// newly padded area -- reproduced in isolation outside this codebase.
+// Materializing the extend step first (a real toBuffer() round-trip) avoids
+// the fused pipeline and lets a later .extract() reach the padded pixels.
+async function padToCanvas(buffer, meta, width, height) {
+  return sharp(buffer)
+    .flatten({ background: '#ffffff' })
+    .extend({
+      top: 0,
+      left: 0,
+      right: Math.max(0, width - (meta.width ?? width)),
+      bottom: Math.max(0, height - (meta.height ?? height)),
+      background: '#ffffff',
+    })
+    .png()
+    .toBuffer()
+}
+
 async function imageComparison(referenceBuffer, localBuffer, dir) {
   const refMeta = await sharp(referenceBuffer).metadata()
   const localMeta = await sharp(localBuffer).metadata()
@@ -445,27 +472,11 @@ async function imageComparison(referenceBuffer, localBuffer, dir) {
       width: region.width,
       height: region.height,
     }
-    await sharp(referenceBuffer)
-      .flatten({ background: '#ffffff' })
-      .extend({
-        top: 0,
-        left: 0,
-        right: Math.max(0, width - (refMeta.width ?? width)),
-        bottom: Math.max(0, height - (refMeta.height ?? height)),
-        background: '#ffffff',
-      })
+    await sharp(await padToCanvas(referenceBuffer, refMeta, width, height))
       .extract(crop)
       .png()
       .toFile(path.join(cropDir, `${String(index + 1).padStart(2, '0')}-reference.png`))
-    await sharp(localBuffer)
-      .flatten({ background: '#ffffff' })
-      .extend({
-        top: 0,
-        left: 0,
-        right: Math.max(0, width - (localMeta.width ?? width)),
-        bottom: Math.max(0, height - (localMeta.height ?? height)),
-        background: '#ffffff',
-      })
+    await sharp(await padToCanvas(localBuffer, localMeta, width, height))
       .extract(crop)
       .png()
       .toFile(path.join(cropDir, `${String(index + 1).padStart(2, '0')}-local.png`))
