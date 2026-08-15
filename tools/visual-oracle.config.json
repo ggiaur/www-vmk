@@ -2,7 +2,7 @@
   "referenceBaseUrl": "https://www.vmk.hu/",
   "localBaseUrl": "http://localhost:3001/",
   "depth": 1,
-  "maxRoutes": 200,
+  "maxRoutes": 1000,
   "viewports": [
     { "name": "desktop-1440", "width": 1440, "height": 1000 },
     { "name": "mobile-390", "width": 390, "height": 844 }
