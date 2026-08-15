@@ -90,6 +90,24 @@ const nextConfig: NextConfig = {
       // Old site's accessibility-mode toggle stub (itself a redirect on
       // vmk.hu, not a distinct page); no equivalent feature on the clone.
       { source: '/page/blind', destination: '/', permanent: false },
+      // A2b legacy closure: these yearly program-archive stub URLs are
+      // themselves empty on the live reference site now (verified: 0 chars
+      // of real body text under the page title, for every one of them) --
+      // there is no content left to migrate. /programarchivum is the site's
+      // current equivalent for browsing the program archive, so redirect
+      // there rather than leaving a real 404 or fabricating page content
+      // for a page the source site itself no longer has.
+      { source: '/programok-2012', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2013', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2014', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2015', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2016', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2017', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2018', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2019-1', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2020', destination: '/programarchivum', permanent: true },
+      { source: '/programok-2022', destination: '/programarchivum', permanent: true },
+      { source: '/muzeumok-ejszakaja-2018', destination: '/programarchivum', permanent: true },
     ]
   },
 }

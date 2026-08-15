@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio'
 import type { Payload } from 'payload'
 import { htmlFragmentToLexical } from './htmlToLexical'
 import { uploadImageToMedia } from './vmkScraper'
-import { VIDEO_EMBED_ALLOWED_HOSTS } from '@/blocks/PageBlocks'
 
 const SOURCE_BASE = 'https://www.vmk.hu'
 const USER_AGENT =
@@ -118,34 +117,19 @@ export async function scrapePagesIntoPayload(
         layout.push({ blockType: 'richText', content: lexicalContent })
       }
 
-      // A handful of reference pages have no real body text at all -- just
-      // a heading and a sidebar/box video widget (verified: /a-konyvtar-
-      // hasznalata and /kozponti-konyvtar-1 both reduce to just their title
-      // once the main content column is isolated). Rather than skip those
-      // as "no content", fall back to a plain link to the one thing
-      // actually on the page. (There's a dedicated videoEmbed block ready
-      // for a real <iframe> once it can be migrated in -- see
-      // src/blocks/PageBlocks.ts -- but it isn't registered yet, so this
-      // stays a plain richText link for now, through the same host
-      // allowlist.)
-      if (!layout.length) {
-        const embedUrl = $('iframe')
-          .filter((_, el) => VIDEO_EMBED_ALLOWED_HOSTS.includes((() => {
-            try {
-              return new URL($(el).attr('src') ?? '', SOURCE_BASE).hostname
-            } catch {
-              return ''
-            }
-          })()))
-          .first()
-          .attr('src')
-        if (embedUrl) {
-          layout.push({
-            blockType: 'richText',
-            content: htmlFragmentToLexical(`<p>A referencia oldalon ehhez a címhez egy videó tartozik: <a href="${embedUrl}">${embedUrl}</a></p>`),
-          })
-        }
-      }
+      // NOTE: an earlier version of this function fell back to the site's
+      // sidebar/box promotional video widget when the main content column
+      // was empty. That widget turned out to be sitewide (present on many
+      // unrelated pages, including genuinely-empty ones like the old
+      // /programok-YYYY archive stubs), not page-specific content -- using
+      // it as a fallback produced misleading pages (a "2012 programs
+      // archive" whose only content was an unrelated library-tour video).
+      // Removed: verified page-by-page instead which slugs are truly empty
+      // on the reference (see docs/FIRST_HOP_ROUTE_MATRIX.md A2b notes) and
+      // redirected those, and kept the video fallback only for the two
+      // specific pages where it was manually confirmed to be the real
+      // content (/a-konyvtar-hasznalata, /kozponti-konyvtar-1 -- already
+      // imported, not re-run through this function).
 
       if (!layout.length) {
         result.skippedNoContent++
