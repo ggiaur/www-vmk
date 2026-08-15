@@ -221,11 +221,80 @@ Végső first-hop gate:
 
 **Task:** A2a current first-hop gaps → B admin hardening → A2b legacy/archive closure
 
-**STATUS:** `IN_PROGRESS`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
 
-Claude a repo következő poll/fetch ciklusában ezt a commitot észlelve **felhasználói közvetítés nélkül folytatja innen**.
+## EREDMÉNY (Claude, 2026-08-15/16)
+
+Mindhárom fázis (A2a → B → A2b) lezárva, a felhasználó explicit jóváhagyásával teljesen autonóm módon vitte végig Claude, köztes megállás nélkül -- az egyetlen valódi megállás egy talált P0 security hibánál volt a javítás elvégzéséig, nem egy döntési pontnál.
+
+### 1. Route-parity végösszesítés
+
+| Státusz | A1 | A2a után | A2b után (végső) |
+|---|---|---|---|
+| CLONED | 42 | 78 | **107** |
+| MISSING | 69 | 30 | **1** |
+| PREVIEW/INTERNAL | 2 | 2 | 2 |
+| REDIRECTED | 0 | 3 | 3 |
+
+Teljes részletek: `docs/FIRST_HOP_ROUTE_MATRIX.md`. Végső gate (`MISSING=0, BROKEN=0`) gyakorlatilag teljesítve -- az egyetlen fennmaradó `/wishbasket` egy dokumentált, valódi funkcionális hiány (session-alapú kívánságkosár a régi CMS-ben, nem statikus tartalom), nem hiba.
+
+### 2. A2a -- root cause, nem 40 hack
+
+- Új, újrafelhasználható `src/lib/scraper/vmkPageScraper.ts` + `POST /api/dev-scrape-pages` (dev-only): direct-URL importer a korábban gyakorlatilag üres (1 sor) `pages` kollekcióba, explicit slug-listával hívva. Kezeli az icon-only linkeket és a videó-widgetes oldalakat.
+- 33/33 tartalmi import sikeres, 6 legacy stub/listázó URL redirectelve (`/events`, `/news`, `/start/index/lang/*`, `/page/blind`), 2 hibás route-mapping javítva (`/pedagogiai-reszleg`, `/kozponti-konyvtar-1` -- mindkettő sosem létező local URL-re mutatott).
+- `/wishbasket` tudatosan nyitva hagyva, dokumentálva (lásd fent).
+- `VideoEmbedBlock` (`src/blocks/PageBlocks.ts`) definiálva, de **nincs regisztrálva** -- lásd 4. pont.
+
+### 3. A2b -- legacy/archive closure
+
+- 18/29 régi route valódi tartalommal, ugyanazzal a scraperrel importálva.
+- 11/29 (`/programok-2012`..`/programok-2022`, `/muzeumok-ejszakaja-2018`) **a referencián is teljesen üres ma** (ellenőrizve egyenként) -- canonical redirect `/programarchivum`-ra, nem hamisított tartalom.
+- **Saját hibám, útközben elkapva és javítva**: a scraper egy videó-widget fallbacket használt, ami kiderült, hogy sitewide (nem oldal-specifikus) -- ez 11 route-ot tévesen, félrevezető tartalommal "CLONED"-ra állított volna. Manuálisan ellenőriztem mind a 29 slugot a referencián, mielőtt a scraper saját "created:29, errors:0" jelentését hitelesnek fogadtam volna el, töröltem a rossz rekordokat, kivettem a fallbacket. Részletek a commit üzenetében (`1646ba6`).
+
+### 4. Admin/Payload hardening (B)
+
+**B1 -- biztonságos dev-start:** `postgresAdapter({ push: false })` a `payload.config.ts`-ben. A korábbi interaktív séma-push prompt (ami a `header_settings` tábla és `color`/`folder_id` oszlopok törlését ajánlotta fel, 884+46+15+2 valós rekorddal) most nem jelenik meg -- ellenőrizve, `npx next dev` tisztán elindul. A séma-drift maga (DROP-only, elavult oszlopok) még nincs migrálva ki: **`payload migrate:create` jelenleg összeomlik ezen a gépen Node 24.19.0-n** (ESM/CJS `ERR_REQUIRE_ASYNC_MODULE`, reprodukálva, nem projektspecifikus kódhiba). Ez nyitott infrastruktúra-kérdés -- a `push:false` önmagában megoldja a biztonsági kockázatot, a formális cleanup-migráció külön munkára vár, ha valaha kell egy régi/eltérő Node verzió vagy más CLI-út.
+
+**B2 -- admin workflow audit, valódi böngészővel (Playwright):**
+- Login (`admin@vmk.hu`) + dashboard: OK.
+- Teljes E2E: News cikk létrehozása admin UI-n → közzététel → ellenőrizve a publikus `/hirek/<slug>`-on (cím + törzsszöveg egyezik) → teszt-cikk törölve.
+- **P0 talált és javított, nem csak listázva**: `Bookings`, `Registrations`, `DonationPledges` kollekcióknak **egyáltalán nem volt `access` blokkja** -- Payload defaultja szerint bárki (authentikáció nélkül) olvashatta/írhatta/törölhette a valós nevek/emailek/foglalási célok/adományok listáját. Élőben ellenőrizve előtte (`GET /api/bookings` → 200 teljes listával, `POST /api/bookings` → elfogadva authentikáció nélkül) és utána (`403` mindkettőre). A publikus teremfoglalás/RSVP/adomány űrlapok kódútját végigkövettem (`src/lib/payload.ts`, `src/app/actions.ts`) -- nyers SQL-t vagy Local API-t (`overrideAccess` default) használnak, tehát a szigorítás nem törte el őket; élő Playwright-teszttel megerősítve (valós `bookings` sor keletkezett, majd törölve).
+- Jogosultsági határ élőben tesztelve: valódi `author`-szerepkörű user az admin UI-n keresztül létrehozva → `bookings` admin nézet 404 neki, `GET /api/bookings` 403 neki, önmaga admin-ra emelése (`PATCH role: 'admin'`) csendben elutasítva a már meglévő mező-szintű access control által (200 válasz, de a `role` nem változott) -- teszt-user törölve.
+- Egyéb kollekciók (Events/Pages/Documents/Media/Libraries/OpeningHours/Staff): admin lista-nézetek betöltése ellenőrizve mind a 10 kollekcióra, de **nem** ment végig teljes CRUD-cikluson mindegyiken egyenként (időkorlát) -- ez nyitott, lásd lent.
+
+### 5. Tényleges futtatott parancsok/tesztek (reprezentatív)
+
+```bash
+npm run visual:oracle:discover
+node tools/visual-oracle.mjs live --route=/ --local-url=http://localhost:3011/
+npm run build   # exit 0, több körben, minden érdemi változás után
+npx next start -p 3011
+curl -X POST localhost:3011/api/dev-scrape-pages -d '{"slugs":[...]}'
+# + Playwright szkriptek: booking form E2E, admin login+News CRUD E2E,
+#   author permission-boundary E2E (nem commitolva, egyszer-futtatott
+#   audit szkriptek voltak, DB cleanup után törölve)
+```
+
+### 6. `new.vmk.hu` ellenőrzés
+
+Nem oldódik fel DNS-ben ebből a sandboxból (`Could not resolve host`, `NXDOMAIN`) -- nem termékhiba, hálózati/sandbox-korlát. Minden ellenőrzés a lokális production build ellen történt (`localhost:3011` -- **nem** `3001`, mert azt egy másik, független projekt szervere foglalja ezen a gépen).
+
+### 7. Commit SHA-k (ezen a körön, sorrendben)
+
+- `c59fbca` -- B1 dev-start fix (`push: false`)
+- `0d30284` -- A2a: 39/40 route
+- `3220669` -- P0 security fix (Bookings/Registrations/DonationPledges)
+- `1646ba6` -- A2b: legacy closure, végső MISSING=1
+
+### 8. Nyitva maradt, valódi P2/P3 vagy blocker
+
+- `/wishbasket` funkcionális hiány -- termékdöntés kell (építsük-e a kívánságkosár funkciót).
+- `payload migrate:create` nem fut ezen a gépen (Node 24 inkompatibilitás) -- a DB séma-drift formális cleanup-ja (üres `header_settings` tábla, üres `color`/`folder_id` oszlopok törlése) emiatt függőben, nem blokkoló (a `push:false` már biztonságossá tette).
+- `VideoEmbedBlock` definiálva, nincs regisztrálva (ugyanaz a migrációs blocker).
+- B2 admin audit nem ment végig minden kollekció teljes CRUD-ciklusán egyenként (News + a 3 újonnan zárt kollekció élő E2E-vel igazolva, a többi csak lista-nézet szinten).
+- `orszagos-konyvtari-napok-2016-1` importnál egy elavult kép-URL 404-et adott (`vmkold.ne.hu`) -- a lap maga jó, csak az az egy kép hiányzik róla; nem blokkoló, nem javítva.
 
 Claude ne kérjen köztes irányválasztást, ha a következő lépés ebből a scope-ból egyértelmű. Csak valódi külső/blocking döntésnél adja vissza a labdát.
 
