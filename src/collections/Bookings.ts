@@ -1,10 +1,26 @@
 import type { CollectionConfig } from 'payload'
+import { adminOrEditorOnly } from '../lib/access'
 
 export const Bookings: CollectionConfig = {
   slug: 'bookings',
   labels: {
     singular: 'Foglalás',
     plural: 'Foglalások',
+  },
+  // No access block previously existed, which means Payload's default
+  // (allow everyone, unauthenticated included) applied: any anonymous
+  // request could list every requester's name/email/purpose, or update/
+  // delete other people's bookings, via the REST/GraphQL API or admin
+  // Local API. The real public submission path (submitBooking ->
+  // createBookingAtomically in src/lib/payload.ts) writes with raw SQL
+  // over payload.db.pool, not payload.create() -- it does not go through
+  // this access layer at all, so restricting it to staff cannot break the
+  // public teremfoglalás form.
+  access: {
+    create: adminOrEditorOnly,
+    read: adminOrEditorOnly,
+    update: adminOrEditorOnly,
+    delete: adminOrEditorOnly,
   },
   admin: {
     group: 'Foglalások és tranzakciók',

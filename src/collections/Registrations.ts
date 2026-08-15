@@ -1,10 +1,22 @@
 import type { CollectionConfig } from 'payload'
+import { adminOrEditorOnly } from '../lib/access'
 
 export const Registrations: CollectionConfig = {
   slug: 'registrations',
   labels: {
     singular: 'Jelentkezés',
     plural: 'Jelentkezések',
+  },
+  // See Bookings.ts for why this was unrestricted before (no access block
+  // = Payload's public-by-default access) and why staff-only is safe: the
+  // public RSVP path (submitRsvp -> createRegistrationAtomically) writes
+  // with raw SQL, not payload.create(), so it never goes through this
+  // access layer.
+  access: {
+    create: adminOrEditorOnly,
+    read: adminOrEditorOnly,
+    update: adminOrEditorOnly,
+    delete: adminOrEditorOnly,
   },
   admin: {
     group: 'Foglalások és tranzakciók',
