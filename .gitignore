@@ -29,6 +29,9 @@ node_modules
 # see .ai/context/current_state.md "known gap")
 /media
 
+# Visual Clone Oracle generated baselines and reports
+/.visual-oracle/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
