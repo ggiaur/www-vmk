@@ -1022,7 +1022,14 @@ async function main() {
     } else {
       routes = await discoverRoutes(browser)
     }
-    writeRouteManifest(routes)
+    // A --route=... selection is a targeted one-off comparison, not a fresh
+    // site crawl. Overwriting route-manifest.json with just the selected
+    // path(s) here used to silently destroy the real discovery output the
+    // next time anyone ran e.g. `live --route=/` -- reproduced: a full
+    // 113-route manifest from `discover` was clobbered down to 1 route by a
+    // single targeted `live` run. Only a real crawl (no explicit selection)
+    // should update the manifest.
+    if (!selectedRoutes.length) writeRouteManifest(routes)
     console.log(`Routes: ${routes.length}`)
 
     if (mode === 'discover') {
