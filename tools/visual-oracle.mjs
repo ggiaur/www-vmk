@@ -59,7 +59,7 @@ const config = JSON.parse(readFileSync(configPath, 'utf8'))
 const REFERENCE_BASE = new URL(String(args['reference-url'] ?? config.referenceBaseUrl ?? 'https://www.vmk.hu/'))
 const LOCAL_BASE = new URL(String(args['local-url'] ?? config.localBaseUrl ?? 'http://localhost:3001/'))
 const DEPTH = Number(args.depth ?? config.depth ?? 1)
-const MAX_ROUTES = Number(args['max-routes'] ?? config.maxRoutes ?? 200)
+const MAX_ROUTES = Number(args['max-routes'] ?? config.maxRoutes ?? 1000)
 const TOP_REGIONS = Number(args['top-regions'] ?? config.topRegions ?? 8)
 const PIXEL_THRESHOLD = Number(args.threshold ?? config.pixelThreshold ?? 0)
 const MAX_PIXEL_DIFF = Number(args['max-pixel-diff'] ?? config.maxPixelDiffPercent ?? 5)
@@ -592,7 +592,7 @@ function detectRegions(mask, width, height, limit) {
       height: y2 - y,
       tileCount: tiles,
       densityPercent: (score / tiles) * 100,
-      score: score * tiles,
+      score,
     })
   }
 
@@ -643,6 +643,9 @@ async function discoverRoutes(browser) {
   }
 
   await context.close()
+  if (seen.size >= MAX_ROUTES) {
+    console.warn(`WARN route discovery reached maxRoutes=${MAX_ROUTES}; raise the limit before treating coverage as complete.`)
+  }
   return [...seen.values()].sort((a, b) => a.depth - b.depth || a.path.localeCompare(b.path, 'hu'))
 }
 
