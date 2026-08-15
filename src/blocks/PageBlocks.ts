@@ -77,6 +77,37 @@ export const PartnersGridBlock: Block = {
   ],
 }
 
+// Allowlisted embed hosts only -- this field is populated by the migration
+// scraper from external HTML (src/lib/scraper/vmkPageScraper.ts), so unlike
+// ContactInfoBlock's admin-authored mapEmbedUrl, its value isn't purely
+// admin-trusted input. The renderer re-validates against this same list
+// before emitting an <iframe> (see PageBlockRenderer.tsx).
+export const VIDEO_EMBED_ALLOWED_HOSTS = ['fehervartv.hu', 'www.fehervartv.hu']
+
+export const VideoEmbedBlock: Block = {
+  slug: 'videoEmbed',
+  labels: { singular: 'Videó Beágyazás', plural: 'Videó Beágyazások' },
+  fields: [
+    { name: 'title', type: 'text', label: 'Cím' },
+    {
+      name: 'embedUrl',
+      type: 'text',
+      required: true,
+      label: 'Beágyazási URL (iframe src)',
+      admin: { description: `Csak engedélyezett forrás: ${VIDEO_EMBED_ALLOWED_HOSTS.join(', ')}` },
+      validate: (value: unknown) => {
+        if (typeof value !== 'string' || !value) return 'Kötelező mező'
+        try {
+          const host = new URL(value).hostname
+          return VIDEO_EMBED_ALLOWED_HOSTS.includes(host) || `Nem engedélyezett host: ${host}`
+        } catch {
+          return 'Érvénytelen URL'
+        }
+      },
+    },
+  ],
+}
+
 export const PageBlocks: Block[] = [
   HeroBlock,
   RichTextBlock,
@@ -84,4 +115,12 @@ export const PageBlocks: Block[] = [
   DownloadsBlock,
   AccordionBlock,
   PartnersGridBlock,
+  // VideoEmbedBlock is defined but NOT registered here yet: registering it
+  // makes every `pages` collection query LEFT JOIN a `pages_blocks_video_
+  // embed` table that only exists once a migration creates it, and with
+  // push:false that table is never auto-created -- reproduced live: every
+  // pages-collection route 404'd immediately after adding it here, with no
+  // working `payload migrate:create` in this environment to fix it forward
+  // (Node 24 / tsx ESM incompatibility, see COLLAB.md Phase B notes).
+  // Re-add once a real migration lands.
 ]

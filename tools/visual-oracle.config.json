@@ -29,7 +29,6 @@
   ],
   "routeOverrides": {
     "/elerhetosegeink": "/kapcsolat",
-    "/kozponti-konyvtar-1": "/reszlegek/kozponti-konyvtar",
     "/felnott-kolcsonzo-reszleg": "/reszlegek/felnott-kolcsonzo",
     "/olvasoterem": "/reszlegek/olvasoterem",
     "/pedagogiai-reszleg": "/reszlegek/pedagogiai-reszleg",

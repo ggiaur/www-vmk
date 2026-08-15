@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { FileText, Download, MapPin, Phone, Mail } from 'lucide-react'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { VIDEO_EMBED_ALLOWED_HOSTS } from '@/blocks/PageBlocks'
 
 type MediaDoc = { url?: string | null; alt?: string | null } | string | null | undefined
 type DocumentDoc = {
@@ -52,6 +53,12 @@ export type PageBlock =
       id: string
       title?: string | null
       partners?: PartnerDoc[] | null
+    }
+  | {
+      blockType: 'videoEmbed'
+      id: string
+      title?: string | null
+      embedUrl: string
     }
 
 type PartnerDoc =
@@ -245,6 +252,29 @@ export function PageBlockRenderer({ blocks }: { blocks: PageBlock[] | null | und
                 </div>
               </section>
             )
+          case 'videoEmbed': {
+            let allowed = false
+            try {
+              allowed = VIDEO_EMBED_ALLOWED_HOSTS.includes(new URL(block.embedUrl).hostname)
+            } catch {
+              allowed = false
+            }
+            if (!allowed) return null
+            return (
+              <section key={block.id} className="space-y-3">
+                {block.title && (
+                  <h2 className="text-xl font-bold text-slate-900">{block.title}</h2>
+                )}
+                <iframe
+                  src={block.embedUrl}
+                  title={block.title ?? 'Videó'}
+                  className="w-full aspect-video rounded-lg border-0"
+                  loading="lazy"
+                  allowFullScreen
+                />
+              </section>
+            )
+          }
           default:
             return null
         }

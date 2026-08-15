@@ -62,7 +62,7 @@ const nextConfig: NextConfig = {
       },
       { source: '/olvasoterem', destination: '/reszlegek/olvasoterem', permanent: true },
       { source: '/koteszet', destination: '/reszlegek/koteszet', permanent: true },
-      { source: '/pedagogiai-reszleg', destination: '/reszlegek/pedagogia', permanent: true },
+      { source: '/pedagogiai-reszleg', destination: '/reszlegek/pedagogiai-reszleg', permanent: true },
       // Rólunk / intézményi oldalak — régi URL-ek átirányítása az új belső oldalakra
       { source: '/alapdokumentumok', destination: '/dokumentumok', permanent: true },
       { source: '/projektek', destination: '/nka-palyazatok', permanent: true },
@@ -76,16 +76,20 @@ const nextConfig: NextConfig = {
       { source: '/egyuttmukodo-partnereink', destination: '/tamogatas', permanent: true },
       { source: '/egyuttmukodo-partnerek-2022', destination: '/tamogatas', permanent: true },
       { source: '/konyvtarunk-rovid-tortenete', destination: '/konyvtarunkrol', permanent: true },
-      // Használat
-      {
-        source: '/konyvtarkozi-kolcsonzes',
-        destination: '/hasznalat/konyvtarkozi-kolcsonzes',
-        permanent: true,
-      },
       // Egyéb
       { source: '/gallery', destination: '/galeria', permanent: true },
       { source: '/opening-hours', destination: '/nyitvatartas', permanent: true },
       { source: '/page/menu/336', destination: '/programarchivum', permanent: true },
+      // Legacy CMS listing/stub URLs -- same content family as an existing
+      // route, no dedicated page needed. See docs/FIRST_HOP_ROUTE_MATRIX.md.
+      { source: '/events', destination: '/esemenyek', permanent: true },
+      { source: '/news', destination: '/hirek', permanent: true },
+      { source: '/start/index/lang/hu', destination: '/', permanent: true },
+      { source: '/start/index/lang/en', destination: '/', permanent: true },
+      { source: '/start/index/lang/de', destination: '/', permanent: true },
+      // Old site's accessibility-mode toggle stub (itself a redirect on
+      // vmk.hu, not a distinct page); no equivalent feature on the clone.
+      { source: '/page/blind', destination: '/', permanent: false },
     ]
   },
 }
