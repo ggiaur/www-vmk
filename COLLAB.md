@@ -1,50 +1,90 @@
 # COLLAB.md — www-vmk együttműködési protokoll
 
-Ez a fájl a www-vmk projekt **ChatGPT ↔ Claude** együttműködésének operatív forrása.
+Ez a fájl a www-vmk projekt **ChatGPT ↔ Claude** együttműködésének egyetlen operatív forrása.
 
-> **Alapszabály:** aki implementál, nem nyilváníthatja saját munkáját függetlenül ellenőrzöttnek. Egy időben pontosan egy szereplőnél van a `BALL`.
+> **Alapszabály:** a felhasználó NEM közvetítő ChatGPT és Claude között. A két AI a GitHub repón keresztül adja át egymásnak a munkát. Egy időben pontosan egy szereplőnél van a `BALL`.
 
-## 1. Szerepek
+## 1. Automatikus repo-alapú együttműködés — KÖTELEZŐ
+
+A rutin átadásokhoz **nem kell felhasználói üzenet, copy/paste vagy külön prompt**.
+
+### Claude kötelessége
+
+Claude saját működésének részeként figyeli a repository/branch változásait. Amikor új remote commitot észlel:
+
+1. fetch/pull;
+2. elolvassa a legfrissebb `COLLAB.md`-t;
+3. ha `BALL: CLAUDE`, azonnal folytatja a benne rögzített aktív feladatot;
+4. nem kér a felhasználótól rutin jóváhagyást vagy irányválasztást, ha a következő lépés a `COLLAB.md` alapján egyértelmű;
+5. ha kész vagy review szükséges, commit + push után `BALL: CHATGPT` és `STATUS: READY_FOR_REVIEW` állapotot rögzít.
+
+### ChatGPT kötelessége
+
+ChatGPT a GitHub branch és `COLLAB.md` változását figyeli. Amikor `BALL: CHATGPT` állapotot észlel:
+
+1. lekéri a friss `COLLAB.md`-t és releváns commitokat;
+2. független review-t végez;
+3. elfogadás esetén meghatározza a következő konkrét feladatot;
+4. frissíti és commitolja a `COLLAB.md`-t;
+5. `BALL: CLAUDE` értékkel visszaadja a munkát.
+
+ChatGPT-oldalon külön automatikus GitHub-ellenőrzés is fut; ez nem helyettesíti a `COLLAB.md`-t, csak észleli az átadást.
+
+### Felhasználó szerepe
+
+A felhasználót csak akkor kell bevonni, ha valódi termék-/scope-/prioritásdöntés szükséges, amit az AI-k nem dönthetnek el a meglévő szabályokból.
+
+Ilyenkor:
+
+`BALL: USER`
+
+**TILOS** a felhasználót rutin átadásra használni olyan mondatokkal, mint:
+
+- „küldd ezt Claude-nak”;
+- „szólj ChatGPT-nek”;
+- „másold át ezt a promptot”;
+- „indítsd újra a másik AI-t”.
+
+Ha a másik AI a repót figyeli, a GitHub commit maga az átadás.
+
+---
+
+## 2. Szerepek
 
 ### ChatGPT
+
 - scope és acceptance criteria;
 - repo-, diff- és architektúra-review;
 - Claude implementációjának független ellenőrzése;
-- publikus clone ellenőrzése, amikor a környezetből elérhető;
 - mérési eredmények és bizonyítékok értékelése;
-- következő feladat és `BALL` átadása.
+- következő feladat meghatározása;
+- `COLLAB.md` + `BALL` frissítése saját átadáskor.
 
 ### Claude
+
 - elsődleges lokális implementáció a teljes futó stackben;
 - first-hop route/content/layout javítás;
 - Payload/admin workflow-k vizsgálata és javítása;
 - Playwright/Oracle/test futtatás;
-- tényleges eredmények, commitok és nyitott hibák rögzítése;
-- átadáskor `BALL: CHATGPT`.
+- tényleges eredmények és commitok rögzítése;
+- `COLLAB.md` + `BALL` frissítése saját átadáskor.
 
 ### Felhasználó
-- végső termékprioritás és scope-döntés;
+
+- végső termékprioritás és scope-döntés, amikor valóban szükséges;
 - merge/release jóváhagyás, amikor szükséges.
 
-## 2. Labda-szabály
+---
 
-Értékek:
+## 3. BALL és státusz
+
+Megengedett BALL értékek:
 
 - `BALL: CHATGPT`
 - `BALL: CLAUDE`
 - `BALL: USER`
 
-Átadáskor kötelező:
-
-1. cél;
-2. mi változott;
-3. ténylegesen futtatott ellenőrzések;
-4. eredmény;
-5. nyitott hibák/kockázatok;
-6. commit SHA;
-7. következő szereplő konkrét feladata.
-
-## 3. Státuszok
+Státuszok:
 
 - `SCOPE`
 - `READY`
@@ -55,14 +95,28 @@ Ez a fájl a www-vmk projekt **ChatGPT ↔ Claude** együttműködésének opera
 - `BLOCKED`
 - `DONE`
 
-`DONE` nem használható azért, mert valami csak „jónak tűnik”.
+Átadás csak commit + push után tekinthető megtörténtnek.
+
+Átadáskor kötelező rögzíteni:
+
+1. cél;
+2. mi változott;
+3. ténylegesen futtatott ellenőrzések;
+4. eredmény;
+5. nyitott hibák/kockázatok;
+6. commit SHA;
+7. következő szereplő konkrét feladata.
+
+Az implementáló saját munkáját nem nyilváníthatja függetlenül `VERIFIED`-nek.
+
+---
 
 ## 4. Bizonyíték-alapú review
 
 Elfogadható bizonyíték:
 
 - commit SHA / PR;
-- ténylegesen futtatott parancs és kimenet;
+- tényleges parancs és kimenet;
 - teszt/Oracle report;
 - reprodukálható publikus vagy lokális URL;
 - screenshot/diff;
@@ -71,34 +125,44 @@ Elfogadható bizonyíték:
 Tilos:
 
 - nem futtatott tesztet sikeresnek állítani;
-- vizuális egyezést csak AI-szemrevételezéssel lezárni;
+- vizuális egyezést kizárólag AI-szemrevételezéssel lezárni;
 - threshold lazítással PASS-t gyártani;
 - saját implementációt független review nélkül `VERIFIED`-nek nevezni.
+
+---
 
 ## 5. Git-szabályok
 
 - `main` közvetlen módosítása kerülendő;
-- koherens feature branch / PR;
+- érdemi munka feature branch / PR;
 - unrelated változás ne kerüljön ugyanabba a commitba;
-- merge review után.
+- merge review után;
+- a collaboration state ugyanazon a munkabranchen legyen naprakész.
 
-## 6. VMK termékcél
+Aktív branch:
+
+`agent/visual-clone-oracle`
+
+Draft PR:
+
+`#1`
+
+---
+
+## 6. VMK termékcél és prioritás
 
 A `main` célja a jelenlegi `https://www.vmk.hu/` **tartalmilag, funkcionálisan és vizuálisan teljes, technikailag modern klónja**.
 
 - **Reference:** `https://www.vmk.hu/`
 - **Publikus clone:** `https://new.vmk.hu/`
 
-A `new.vmk.hu` DNS/fetch hiba egy AI sandboxban önmagában **nem bizonyít termékhibát**. Claude lokális ellenőrzésre használhatja a saját futó buildjét (`localhost:3011` vagy az aktuális biztonságos portot); a publikus URL-t külön review-körben kell ellenőrizni, amikor elérhető.
+A `new.vmk.hu` DNS/fetch hiba egy AI sandboxban önmagában nem bizonyít termékhibát. Claude használhatja a saját lokális buildjét tényleges futtatásra; a publikus URL-t külön kell ellenőrizni, amikor az adott környezetből elérhető.
 
-## 7. Felhasználói prioritás — 2026-08-15
+### Felhasználói prioritás — 2026-08-15
 
-A főoldal a felhasználó megítélése szerint **elérte a jelenleg megfelelő szintet**.
+A főoldal jelenlegi állapota elfogadott baseline.
 
-Ezért:
-
-- a főoldal további pixel-perfect csiszolása **NEM prioritás**;
-- a `/` jelenlegi állapota elfogadott baseline/regresszióőr;
+- a `/` további pixel-perfect csiszolása **NEM prioritás**;
 - magas Oracle mismatch önmagában nem blokkol;
 - a főoldalhoz csak regresszió vagy konkrét funkcionális hiba esetén nyúlunk.
 
@@ -109,21 +173,23 @@ Prioritás:
 3. mélyebb site-szintek
 4. főoldal további vizuális finomítása csak explicit igény esetén
 
-## 8. Oracle állapot
+---
 
-### Elfogadott Oracle fixek
+## 7. Lezárt / elfogadott előzmények
+
+### Visual Clone Oracle
+
+Elfogadott fixek:
 
 - `6d2009289b077218800fdd0d27e3b87e3a4f896b`
   - same-host `http://` linkek discovery-javítása;
   - Sharp padded crop crash javítása.
 - `3b5b5ba3544f15ba20dae4ad0260281691a0947b`
-  - targeted `--route=...` futás többé nem írja felül a teljes `route-manifest.json`-t.
+  - targeted `--route=...` futás nem írja felül a teljes route manifestet.
 
-ChatGPT függetlenül ellenőrizte a `3b5b5ba` patchet: a manifest írása csak `!selectedRoutes.length` esetén fut, ezért a `discover -> live --route=/` sorrend nem clobbereli a teljes discovery eredményt.
+Oracle infrastruktúra-validáció: **ELFOGADVA**.
 
-Az Oracle infrastruktúra-validáció lezárva; innen termékmunka következik.
-
-## 9. A1 FIRST-HOP ROUTE-PARITY — REVIEW
+### A1 first-hop route parity
 
 Claude commit:
 
@@ -139,25 +205,19 @@ Eredmény:
 - `CLONED`: **42**
 - `MISSING`: **69**
 - `PREVIEW/INTERNAL`: **2**
-- jelenlegi CLONED 200-as halmazban automatikus tartalmi ellenőrzés szerint thin/generic jelölt: **0**
 
-Továbbá javítva az Oracle `/pedagogiai-reszleg` override; a termékkódban lévő hibás redirect A2 feladat.
+ChatGPT review: **A1 ELFOGADVA**.
 
-### ChatGPT review döntés
+A régi route-ok sem tűnhetnek el automatikusan: minden current-reference first-hop URL kontrollált clone viselkedést kap (`CLONED`, `REDIRECTED`, vagy indokolt elérhető `ARCHIVED/LEGACY`).
 
-**A1 ELFOGADVA.**
+Végső first-hop gate:
 
-Fontos termékdöntés: a 69 MISSING-ből a régi route-ok sem tűnhetnek el automatikusan. Mivel ezek a jelenlegi referenciaoldal first-hop körében ténylegesen elérhető URL-ek, mindegyiknek kontrollált clone viselkedést kell kapnia:
-
-- `CLONED`, vagy
-- `REDIRECTED`, vagy
-- indokolt `ARCHIVED/LEGACY` cél, amely nem 404.
-
-**First-hop acceptance végül: `MISSING = 0`, `BROKEN = 0`.**
+- `MISSING = 0`
+- `BROKEN = 0`
 
 ---
 
-# 10. AKTÍV FELADAT
+# 8. AKTÍV FELADAT
 
 **Task:** A2a current first-hop gaps → B admin hardening → A2b legacy/archive closure
 
@@ -165,11 +225,13 @@ Fontos termékdöntés: a 69 MISSING-ből a régi route-ok sem tűnhetnek el aut
 
 **BALL:** `CLAUDE`
 
-Claude **ne kérjen köztes irányválasztást**, ha a következő lépés a lent rögzített scope-ból egyértelmű. Haladjon a sorrend szerint, és csak valódi külső/blocking döntésnél adja vissza a labdát.
+Claude a repo következő poll/fetch ciklusában ezt a commitot észlelve **felhasználói közvetítés nélkül folytatja innen**.
+
+Claude ne kérjen köztes irányválasztást, ha a következő lépés ebből a scope-ból egyértelmű. Csak valódi külső/blocking döntésnél adja vissza a labdát.
 
 ## PHASE A2a — aktuális/funkcionális first-hop hiányok
 
-Elsőként a mátrix kb. **40 friss/dátum nélküli** MISSING route-ját rendezd, különösen:
+Elsőként a mátrix kb. **40 friss/dátum nélküli** MISSING route-ját rendezni:
 
 - intézményi/static oldalak;
 - könyvtárhasználat és könyvtárközi kölcsönzés;
@@ -181,18 +243,18 @@ Elsőként a mátrix kb. **40 friss/dátum nélküli** MISSING route-ját rendez
 - `/wishbasket` és más valódi funkcionális/form oldalak;
 - hibás redirect/mapping, köztük `/pedagogiai-reszleg`.
 
-### Kötelező megvalósítási elv
+### Megvalósítási elv
 
-**Ne 40 egyedi hardcoded oldalt gyárts, ha közös page-family/data-import megoldással lefedhetők.**
+Ne 40 egyedi hardcoded oldalt készíts, ha közös page-family/data-import megoldással lefedhetők.
 
 Preferált sorrend:
 
-1. azonosítsd, hogy a hiány oka adat-import, route mapping, catch-all resolver vagy hiányzó page-family template;
-2. javítsd a közös okot;
-3. importáld/migráld a referencia tartalmát, ahol szükséges;
-4. csak valóban egyedi funkcionális oldalhoz legyen egyedi implementáció.
+1. root cause: adat-import / route mapping / catch-all resolver / page-family template;
+2. közös ok javítása;
+3. referencia tartalom import/migráció;
+4. egyedi implementáció csak valóban egyedi funkcióhoz.
 
-A tartalmi parity-be tartozik legalább:
+Tartalmi parity legalább:
 
 - cím;
 - teljes lényegi szöveg;
@@ -206,22 +268,20 @@ A tartalmi parity-be tartozik legalább:
 
 ### A2a gate
 
-Mielőtt Adminra mész:
+Admin előtt:
 
-- a friss/dátum nélküli P0/P1 `MISSING` route-ok legyenek rendezve;
+- friss/dátum nélküli P0/P1 `MISSING` route-ok rendezve;
 - nincs P0/P1 `BROKEN`;
-- `/pedagogiai-reszleg` kontrollált helyes célra megy;
-- page-family megoldások legyenek újrahasznosíthatók az A2b archív körhöz;
+- `/pedagogiai-reszleg` helyes célra megy;
+- page-family megoldások újrahasznosíthatók;
 - production build működik;
 - főoldal nem regresszál.
-
-Nem követelmény még, hogy a 29 régi archive route egyenként kész legyen — az A2b-ben zárjuk őket.
 
 ---
 
 ## PHASE B — ADMIN / PAYLOAD HARDENING
 
-A2a gate után **azonnal** térj át az adminra; ne várj új felhasználói/ChatGPT jóváhagyásra.
+A2a gate után **automatikusan**, új ChatGPT/felhasználói jóváhagyás nélkül folytasd az adminnal.
 
 ### B1. Biztonságos dev-start — HARD GATE
 
@@ -231,15 +291,15 @@ Korábbi megfigyelés: `npm run dev` destruktív Payload schema-push promptot k�
 
 Feladat:
 
-- derítsd ki a schema drift okát;
-- alakíts ki biztonságos dev-startot;
-- implicit/destruktív schema push helyett explicit, review-zható migrációs út legyen;
-- dokumentáld a helyes dev/admin indítást;
-- ha migráció szükséges, adatmegőrző és visszagörgethető tervvel dolgozz.
+- schema drift root cause;
+- biztonságos dev-start;
+- implicit/destruktív schema push helyett explicit, review-zható migrációs út;
+- helyes dev/admin indítás dokumentálása;
+- szükséges migráció csak adatmegőrző és visszagörgethető módon.
 
 ### B2. Admin workflow audit + P0/P1 javítás
 
-Tényleges böngészős használattal ellenőrizd és a javítható P0/P1 hibákat **javítsd is**:
+Tényleges böngészős használattal ellenőrizd és javítsd:
 
 - `/admin` betölt;
 - login/auth;
@@ -257,37 +317,35 @@ Tényleges böngészős használattal ellenőrizd és a javítható P0/P1 hibák
 
 ### B acceptance
 
-Legalább:
-
 - nincs kontrollálatlan/destruktív dev-start;
 - `/admin` elérhető és autentikálható;
 - kulcs collectionök szerkeszthetők;
-- legalább egy bizonyított E2E workflow: `create/edit → save/publish → public frontend result`;
+- legalább egy bizonyított E2E: `create/edit → save/publish → public frontend result`;
 - jogosultsági P0/P1 hibák javítva;
-- tényleges tesztevidencia rögzítve.
+- tesztevidencia rögzítve.
 
 ---
 
 ## PHASE A2b — legacy/archive first-hop closure
 
-Admin hardening után ugyanebben a munkafolyamban térj vissza a kb. **29 régi, dátumos first-hop route-ra**.
+Admin hardening után **automatikusan**, új jóváhagyás nélkül folytasd a kb. 29 régi, dátumos first-hop route-tal.
 
-Cél: egyetlen jelenlegi reference first-hop URL se maradjon 404 a klónban.
+Cél: egyetlen current reference first-hop URL se maradjon 404.
 
 Preferált megoldás:
 
 - adatvezérelt archive/news/event resolver/import;
-- canonical redirect, ha a klón új információarchitektúrája más URL-t használ;
-- `ARCHIVED/LEGACY` csak akkor, ha ténylegesen kontrollált, elérhető archív cél van.
+- canonical redirect, ha az új információarchitektúra más URL-t használ;
+- `ARCHIVED/LEGACY` csak kontrollált, elérhető archív céllal.
 
-Ne készíts 29 egymástól független kézi CSS/route hack-et.
+Ne készíts 29 egymástól független route/CSS hack-et.
 
-### A2 végső gate
+### Végső gate
 
 - `MISSING = 0`
 - `BROKEN = 0`
-- minden 113 first-hop route kontrollált státuszban;
-- a két preview/internal route szemantikája dokumentált és helyesen kezelve;
+- mind a 113 first-hop route kontrollált státuszban;
+- preview/internal route-ok szemantikája dokumentált;
 - fontos page-family-kből desktop + mobil reprodukálható ellenőrzés;
 - működő internal linkek;
 - production build zöld;
@@ -295,7 +353,7 @@ Ne készíts 29 egymástól független kézi CSS/route hack-et.
 
 ---
 
-## 11. REGRESSION GUARD
+## 9. REGRESSION GUARD
 
 Nem romolhat:
 
@@ -306,24 +364,30 @@ Nem romolhat:
 - auth/security;
 - Oracle 113-route discovery stabilitása.
 
-## 12. CLAUDE ÁTADÁSI KÖVETELMÉNY
+---
 
-Ne add vissza a labdát pusztán auditlistával, ha a talált P0/P1 hibák javíthatók a scope-on belül.
+## 10. CLAUDE → CHATGPT átadás
 
-Átadáskor rögzítsd:
+Ne add vissza a labdát pusztán auditlistával, ha a talált P0/P1 hibák a scope-on belül javíthatók.
+
+Átadáskor a `COLLAB.md`-ben rögzítsd:
 
 1. route-parity új összesítés;
-2. A2a-ban javított route-ok/page-family-k és root cause-ok;
+2. A2a javítások/page-family-k/root cause-ok;
 3. admin audit + javítások;
 4. biztonságos dev/migráció eredmény;
 5. A2b archive/legacy megoldás;
 6. tényleges parancsok/tesztek;
-7. publikus `new.vmk.hu` ellenőrzés, ha a környezetből elérhető; ha nem, pontosan jelöld sandbox/network limitationként;
+7. `new.vmk.hu` ellenőrzés, ha elérhető; ha nem, sandbox/network limitation;
 8. commit SHA-k;
 9. fennmaradó P2/P3 vagy valódi blocker;
 10. `STATUS: READY_FOR_REVIEW`;
 11. `BALL: CHATGPT`.
 
-## 13. Frissítési szabály
+Commit + push után Claude nem kérheti a felhasználót, hogy szóljon ChatGPT-nek. A ChatGPT-oldali repo-figyelés feladata az átadás észlelése.
+
+---
+
+## 11. Frissítési szabály
 
 A `COLLAB.md` nem részletes napló. Csak az aktuális scope, állapot, bizonyíték, döntés és átadás legyen naprakész.
