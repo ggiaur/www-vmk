@@ -58,7 +58,7 @@ export function DonationForm() {
       <button type="submit" disabled={isPending} className="btn-primary w-full justify-center text-sm">
         {isPending ? 'Küldés...' : 'Felajánlás elküldése'}
       </button>
-      <p className="text-[11px] text-slate-400 text-center">
+      <p className="text-[11px] text-slate-500 text-center">
         Nem terheljük meg a kártyáját — kollégánk felveszi Önnel a kapcsolatot az átutalás
         részleteivel.
       </p>

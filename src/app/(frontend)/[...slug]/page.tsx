@@ -85,18 +85,18 @@ export default async function GenericPage({ params }: Args) {
               <p className="text-slate-600">{staff.position as string}</p>
               {departmentName && (
                 <p className="flex items-center gap-1.5 text-sm text-slate-600">
-                  <Building2 className="w-4 h-4 text-[#159097]" />
+                  <Building2 className="w-4 h-4 text-[#137F85]" />
                   {departmentName}
                 </p>
               )}
               {staff.phone ? (
                 <a href={`tel:${staff.phone}`} className="flex items-center gap-1.5 text-sm hover:underline">
-                  <Phone className="w-4 h-4 text-[#159097]" />
+                  <Phone className="w-4 h-4 text-[#137F85]" />
                   {staff.phone as string}
                 </a>
               ) : null}
               {staff.email ? (
-                <a href={`mailto:${staff.email}`} className="flex items-center gap-1.5 text-sm text-[#159097] hover:underline">
+                <a href={`mailto:${staff.email}`} className="flex items-center gap-1.5 text-sm text-[#137F85] hover:underline">
                   <Mail className="w-4 h-4" />
                   {staff.email as string}
                 </a>

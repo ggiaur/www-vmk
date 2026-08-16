@@ -38,7 +38,7 @@ export default async function SzolgaltatasokPage() {
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
-          <BookOpen className="w-8 h-8 text-[#159097]" />
+          <BookOpen className="w-8 h-8 text-[#137F85]" />
           <h2 className="text-xl font-bold text-slate-900">Dokumentumkölcsönzés & Olvasóterem</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Könyvek, folyóiratok, kotta- és hanganyagok kölcsönzése, valamint a helyben használható olvasótermi állomány böngészése.
@@ -74,7 +74,7 @@ export default async function SzolgaltatasokPage() {
         </div>
 
         <div className="bg-white p-6 rounded border border-slate-200 shadow-sm space-y-3">
-          <Bookmark className="w-8 h-8 text-[#159097]" />
+          <Bookmark className="w-8 h-8 text-[#137F85]" />
           <h2 className="text-xl font-bold text-slate-900">Helyismereti Kutatószolgálat</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Székesfehérvár és Fejér vármegye helytörténeti dokumentumainak, régi fotóinak és sajtóanyagának kutatási lehetősége szakértői segítséggel.
@@ -107,14 +107,14 @@ export default async function SzolgaltatasokPage() {
                     ((s.pricingTable as Array<{ serviceItem: string; price: string }>) ?? []).map((p, idx) => (
                       <tr key={idx} className="hover:bg-slate-50">
                         <td className="py-3 px-4 font-medium">{p.serviceItem}</td>
-                        <td className="py-3 px-4 text-right font-bold text-[#159097]">{p.price}</td>
+                        <td className="py-3 px-4 text-right font-bold text-[#137F85]">{p.price}</td>
                       </tr>
                     ))
                   )
                 : defaultPricing.map((item, idx) => (
                     <tr key={idx} className="hover:bg-slate-50">
                       <td className="py-3 px-4 font-medium">{item.item}</td>
-                      <td className="py-3 px-4 text-right font-bold text-[#159097]">{item.price}</td>
+                      <td className="py-3 px-4 text-right font-bold text-[#137F85]">{item.price}</td>
                     </tr>
                   ))}
             </tbody>

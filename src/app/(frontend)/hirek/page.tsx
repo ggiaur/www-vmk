@@ -88,7 +88,7 @@ export default async function HirekPage({
               href={cat.value === 'all' ? '/hirek' : `/hirek?category=${cat.value}`}
               className={`px-4 py-2 rounded text-[13px] font-bold transition-colors ${
                 activeCategory === cat.value
-                  ? 'bg-[#159097] text-white shadow-sm'
+                  ? 'bg-[#137F85] text-white shadow-sm'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >
@@ -127,7 +127,7 @@ export default async function HirekPage({
             aria-disabled={currentPage <= 1}
             className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold border ${
               currentPage <= 1
-                ? 'pointer-events-none opacity-40 border-slate-200 text-slate-400'
+                ? 'pointer-events-none opacity-40 border-slate-200 text-slate-500'
                 : 'border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >
@@ -142,7 +142,7 @@ export default async function HirekPage({
             aria-disabled={currentPage >= totalPages}
             className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold border ${
               currentPage >= totalPages
-                ? 'pointer-events-none opacity-40 border-slate-200 text-slate-400'
+                ? 'pointer-events-none opacity-40 border-slate-200 text-slate-500'
                 : 'border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >

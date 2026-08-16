@@ -35,10 +35,10 @@ export const EventCard: React.FC<EventCardProps> = ({
   return (
     <div className="bg-white rounded border border-slate-200 p-5 flex gap-4">
       {/* Date badge */}
-      <div className="shrink-0 w-16 h-20 rounded bg-[#159097] text-white flex flex-col items-center justify-center">
+      <div className="shrink-0 w-16 h-20 rounded bg-[#137F85] text-white flex flex-col items-center justify-center">
         <span className="text-2xl font-black leading-none">{dayStr}</span>
         <span className="text-xs font-semibold tracking-wider mt-1">{monthStr}</span>
-        <span className="text-[10px] text-amber-200 mt-0.5">{timeStr}</span>
+        <span className="text-[10px] text-amber-50 mt-0.5">{timeStr}</span>
       </div>
 
       {/* Details */}
@@ -50,7 +50,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           </span>
         </div>
 
-        <h3 className="font-bold text-slate-900 text-base leading-snug line-clamp-2 hover:text-[#159097] transition-colors mb-2">
+        <h3 className="font-bold text-slate-900 text-base leading-snug line-clamp-2 hover:text-[#137F85] transition-colors mb-2">
           <Link href={`/esemenyek/${slug}`}>{title}</Link>
         </h3>
 
@@ -60,7 +60,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         </div>
 
         <div className="mt-auto flex items-center justify-between pt-2 border-t border-slate-100 text-xs font-semibold">
-          <Link href={`/esemenyek/${slug}`} className="text-[#159097] hover:underline flex items-center gap-1">
+          <Link href={`/esemenyek/${slug}`} className="text-[#137F85] hover:underline flex items-center gap-1">
             <span>Részletek</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -69,7 +69,7 @@ export const EventCard: React.FC<EventCardProps> = ({
               href={registrationUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#e4b02c] hover:bg-[#b04b26] text-white px-2.5 py-1 rounded text-[11px] transition-colors"
+              className="bg-[#e4b02c] hover:bg-[#b04b26] text-[#1B1B1B] hover:text-white px-2.5 py-1 rounded text-[11px] transition-colors"
             >
               Regisztráció
             </a>

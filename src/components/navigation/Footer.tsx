@@ -51,14 +51,14 @@ export const Footer: React.FC = () => {
             href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-[#e4b02c] hover:text-white transition text-sm font-medium"
+            className="inline-block text-white hover:text-white transition text-sm font-medium"
           >
             Adatkezelési tájékoztató
           </a>
           <button
             type="button"
             onClick={() => openConsentSettings()}
-            className="block text-left text-[#e4b02c] hover:text-white transition text-sm font-medium"
+            className="block text-left text-white hover:text-white transition text-sm font-medium"
           >
             Sütik kezelése
           </button>
@@ -88,7 +88,7 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="bg-[#33A6AF]">
+      <div style={{ backgroundColor: 'var(--accent-fill-a11y)' }}>
         <div className={`${REAL_CONTAINER} py-[10px] px-[15px] flex flex-col sm:flex-row items-center justify-between gap-2 text-[14px] leading-[20px] text-teal-50`} style={{ fontFamily: 'Roboto, sans-serif' }}>
           <p>©2015 Vörösmarty Mihály Könyvtár. Minden jog fenntartva! - NEOSOFT</p>
           <nav className="flex items-center gap-4 text-[14px] leading-[20px]">

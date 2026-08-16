@@ -39,6 +39,19 @@
      ~12%-darker variant (contrast ratio ~4.78:1 with white) used ONLY for
      those text-bearing fills -- border/accent usage is untouched. */
   --accent-fill-a11y: #007F88;
+  /* WCAG 2.2 AA fix (J3.2, ChatGPT decision, COLLAB.md section 6): the
+     verified reference primary teal (#159097, see comment above -- real
+     live-site CSS, `a{color:#159097}` / `.btn-primary{background-color:
+     #159097}`) only reaches 3.84:1 as body/link text on white, or as a
+     white-text button fill -- same underlying pair, same failing ratio.
+     ChatGPT's explicit ruling: keep #159097 for brand/accent/border/
+     non-text use (Header nav border, homepage dividers, decorative
+     boxes), but body/link text and text-bearing button fills need a
+     separate, visually-close, AA-passing variant. This token (~12%
+     darker, ~4.77:1 with white, same contrast math applies to white
+     text ON this fill too) replaces #159097 everywhere it was used as
+     text color or as a fill with white text on it. */
+  --link-text-a11y: #137F85;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
@@ -77,7 +90,7 @@ h1, h2, h3, h4, .font-serif-heading {
 }
 
 .btn-primary {
-  background-color: var(--primary);
+  background-color: var(--link-text-a11y);
   color: #FFFFFF;
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-sm);

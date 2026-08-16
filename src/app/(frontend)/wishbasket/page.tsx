@@ -22,7 +22,7 @@ export default async function WishbasketPage() {
 
         <div className="pb-4">
           <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
-            <Gift className="w-8 h-8 text-[#159097]" />
+            <Gift className="w-8 h-8 text-[#137F85]" />
             <span>Kívánságkosár</span>
           </h1>
           <p className="text-slate-600 mt-2 max-w-3xl">
@@ -37,14 +37,14 @@ export default async function WishbasketPage() {
         <div className="space-y-3">
           <h2 className="text-lg font-bold text-slate-900">Eddig beküldött kívánságok</h2>
           {wishes.length === 0 ? (
-            <p className="text-sm text-slate-400 italic">Még nincs jóváhagyott kívánság.</p>
+            <p className="text-sm text-slate-500 italic">Még nincs jóváhagyott kívánság.</p>
           ) : (
             <ul className="divide-y divide-slate-100 border border-slate-200 rounded overflow-hidden bg-white">
               {wishes.map((w) => (
                 <li key={w.id} className="px-4 py-3">
                   <div className="flex items-baseline justify-between gap-3">
                     <span className="text-sm font-semibold text-slate-800">{w.shownName || 'Olvasónk'}</span>
-                    <time className="text-xs text-slate-400">
+                    <time className="text-xs text-slate-500">
                       {new Date(w.createdAt).toLocaleDateString('hu-HU')}
                     </time>
                   </div>
@@ -60,7 +60,7 @@ export default async function WishbasketPage() {
 
         <div className="pt-4 space-y-3">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <MessageCircle className="w-5 h-5 text-[#159097]" />
+            <MessageCircle className="w-5 h-5 text-[#137F85]" />
             Hozzászólások
           </h2>
           <p className="text-sm text-slate-600">Kérjük, írja meg véleményét, tapasztalatát! Köszönjük.</p>
@@ -71,7 +71,7 @@ export default async function WishbasketPage() {
                 <li key={c.id} className="px-4 py-3">
                   <div className="flex items-baseline justify-between gap-3">
                     <span className="text-sm font-semibold text-slate-800">{c.shownName || 'Olvasónk'}</span>
-                    <time className="text-xs text-slate-400">
+                    <time className="text-xs text-slate-500">
                       {new Date(c.createdAt).toLocaleDateString('hu-HU')}
                     </time>
                   </div>

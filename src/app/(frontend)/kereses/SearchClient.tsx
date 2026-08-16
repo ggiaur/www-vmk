@@ -44,7 +44,7 @@ export function SearchClient() {
   return (
     <div className="space-y-6">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
         <input
           type="search"
           value={query}
@@ -55,12 +55,12 @@ export function SearchClient() {
         />
       </div>
 
-      {isLoading && <p className="text-sm text-slate-400">Keresés...</p>}
+      {isLoading && <p className="text-sm text-slate-500">Keresés...</p>}
 
       {results?.error && <p className="text-sm text-red-600">{results.error}</p>}
 
       {!isLoading && query.trim() && !hasResults && !results?.error && (
-        <p className="text-sm text-slate-400 italic">Nincs találat erre: &quot;{query}&quot;</p>
+        <p className="text-sm text-slate-500 italic">Nincs találat erre: &quot;{query}&quot;</p>
       )}
 
       {results && results.news.length > 0 && (
@@ -73,7 +73,7 @@ export function SearchClient() {
                   href={`/hirek/${hit.slug}`}
                   className="flex items-center gap-3 px-4 py-3 bg-white hover:bg-slate-50 transition-colors"
                 >
-                  <Newspaper className="w-4 h-4 text-[#159097] shrink-0" />
+                  <Newspaper className="w-4 h-4 text-[#137F85] shrink-0" />
                   <span className="text-sm text-slate-800">{hit.title as string}</span>
                 </Link>
               </li>
@@ -92,7 +92,7 @@ export function SearchClient() {
                   href={`/esemenyek/${hit.slug}`}
                   className="flex items-center gap-3 px-4 py-3 bg-white hover:bg-slate-50 transition-colors"
                 >
-                  <Calendar className="w-4 h-4 text-[#159097] shrink-0" />
+                  <Calendar className="w-4 h-4 text-[#137F85] shrink-0" />
                   <span className="text-sm text-slate-800">{hit.title as string}</span>
                 </Link>
               </li>

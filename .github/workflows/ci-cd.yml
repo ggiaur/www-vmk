@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '22'
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - name: Type Check
         run: npm run type-check
 
@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '22'
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - name: Run Unit Tests
         run: npm run test:unit
 
@@ -47,6 +47,19 @@ jobs:
     # local dev (Postgres/MinIO/Meilisearch), builds and starts the real
     # production app against them, and waits on real HTTP readiness checks
     # (never a fixed sleep) before handing off to Playwright.
+    #
+    # J3.1 (COLLAB.md): this job's env block used to also set
+    # NODE_ENV=production, which applies to every step including
+    # `npm install` -- npm skips devDependencies under NODE_ENV=production
+    # unless told otherwise, and `tailwindcss` (needed by `next build`, a
+    # PostCSS build-time plugin) is a devDependency, so the real remote CI
+    # run (GitHub Actions run #103) failed at the build step with "Cannot
+    # find module 'tailwindcss'" before Playwright ever ran. NODE_ENV isn't
+    # needed here at all: verified locally that `next build`/`next start`
+    # already force production behavior internally regardless of the
+    # ambient NODE_ENV (confirmed via a build+start with NODE_ENV fully
+    # unset -- identical output, and the dev-only API route guards, which
+    # check `!== 'development'`, still correctly return 404).
     env:
       DATABASE_URI: postgres://vmk_user:vmk_password@localhost:5432/vmk_db
       PAYLOAD_SECRET: vmk_ci_ephemeral_secret_not_used_outside_ci
@@ -60,7 +73,6 @@ jobs:
       MINIO_ROOT_PASSWORD: minio_password
       MINIO_BUCKET: vmk-media
       MINIO_USE_SSL: 'false'
-      NODE_ENV: production
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -68,7 +80,7 @@ jobs:
         with:
           node-version: '22'
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 

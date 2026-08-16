@@ -29,7 +29,7 @@ export default function Ado1Page() {
                 <td className="py-[10px] px-[15px] border border-[#ddd] font-semibold bg-[#f5f5f5] w-[200px]">
                   Kedvezményezett neve
                 </td>
-                <td className="py-[10px] px-[15px] border border-[#ddd] font-bold text-[#159097]">
+                <td className="py-[10px] px-[15px] border border-[#ddd] font-bold text-[#137F85]">
                   Vörösmarty Mihály Könyvtár
                 </td>
               </tr>
@@ -37,7 +37,7 @@ export default function Ado1Page() {
                 <td className="py-[10px] px-[15px] border border-[#ddd] font-semibold bg-[#f9f9f9] w-[200px]">
                   Adószám
                 </td>
-                <td className="py-[10px] px-[15px] border border-[#ddd] font-bold text-[#159097] text-[18px]">
+                <td className="py-[10px] px-[15px] border border-[#ddd] font-bold text-[#137F85] text-[18px]">
                   15361428-2-07
                 </td>
               </tr>

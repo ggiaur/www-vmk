@@ -11,7 +11,7 @@ import { ChevronRight } from 'lucide-react'
 // tévesen találtuk ki. (Ritka kivétel: pl. "Spiró 80" class="type5", más
 // színű - ezt egyelőre nem különböztetjük meg, mert a CMS-migráció nem
 // hozza át a hír-kategória-típust.)
-const TITLE_BG = '#159097'
+const TITLE_BG = '#137F85'
 const CONTENT_BG = '#1BBBC4'
 
 export interface HomeNewsTileProps {
@@ -39,7 +39,7 @@ export function HomeNewsTile({ title, summary, slug, imageUrl }: HomeNewsTilePro
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: TITLE_BG }}>
-            <span className="text-white/40 text-4xl font-black">VMK</span>
+            <span className="text-white text-4xl font-black" aria-hidden="true">VMK</span>
           </div>
         )}
       </div>

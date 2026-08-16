@@ -85,7 +85,7 @@ export default async function EsemenyekPage({
                   href={href}
                   className={`px-4 py-2 rounded text-[13px] font-bold transition-colors ${
                     activeAudience === aud.value
-                      ? 'bg-[#e4b02c] text-white shadow-sm'
+                      ? 'bg-[#e4b02c] text-[#1B1B1B] shadow-sm'
                       : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                   }`}
                 >
@@ -107,7 +107,7 @@ export default async function EsemenyekPage({
                   href={href}
                   className={`px-3 py-1.5 rounded-lg transition-colors ${
                     sortDirection === dir
-                      ? 'bg-[#159097] text-white'
+                      ? 'bg-[#137F85] text-white'
                       : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
                   }`}
                 >

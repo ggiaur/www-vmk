@@ -12,7 +12,7 @@ export interface NewsCardProps {
   imageUrl?: string
 }
 
-const TITLE_BG = '#159097'
+const TITLE_BG = '#137F85'
 const CONTENT_BG = '#1BBBC4'
 
 const categoryLabels: Record<string, string> = {
@@ -51,7 +51,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: TITLE_BG }}>
-              <span className="text-white/40 text-4xl font-black">VMK</span>
+              <span className="text-white text-4xl font-black" aria-hidden="true">VMK</span>
             </div>
           )}
           <div className="absolute top-0 left-0 flex items-center gap-2 p-2">

@@ -59,7 +59,7 @@ export function CookieConsent() {
                 href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-white/90 hover:text-white"
+                className="underline text-white hover:text-white"
               >
                 Adatkezelési tájékoztató
               </a>

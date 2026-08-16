@@ -105,7 +105,7 @@ export function PageBlockRenderer({ blocks }: { blocks: PageBlock[] | null | und
                   {block.ctaLabel && block.ctaHref && (
                     <Link
                       href={block.ctaHref}
-                      className="inline-block mt-2 px-5 py-2.5 rounded-lg bg-[#159097] hover:bg-[#0f656a] font-semibold text-sm"
+                      className="inline-block mt-2 px-5 py-2.5 rounded-lg bg-[#137F85] hover:bg-[#0f656a] font-semibold text-sm"
                     >
                       {block.ctaLabel}
                     </Link>
@@ -174,13 +174,13 @@ export function PageBlockRenderer({ blocks }: { blocks: PageBlock[] | null | und
                     return (
                       <li key={doc.id} className="flex items-center justify-between px-4 py-3 bg-white hover:bg-slate-50">
                         <span className="flex items-center gap-2 text-sm text-slate-800">
-                          <FileText className="w-4 h-4 text-[#159097]" />
+                          <FileText className="w-4 h-4 text-[#137F85]" />
                           {doc.title}
                         </span>
                         {fileUrl && (
                           <a
                             href={fileUrl}
-                            className="flex items-center gap-1 text-xs font-semibold text-[#159097] hover:underline"
+                            className="flex items-center gap-1 text-xs font-semibold text-[#137F85] hover:underline"
                           >
                             <Download className="w-3.5 h-3.5" />
                             Letöltés
