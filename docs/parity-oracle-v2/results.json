@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T18:27:45.833Z",
+  "generatedAt": "2026-08-16T18:40:56.624Z",
   "refBase": "https://www.vmk.hu",
   "cloneBase": "http://localhost:3011",
   "results": [
@@ -34,11 +34,83 @@
       "media": {
         "refCount": 20,
         "cloneCount": 16,
-        "countDeficit": 4,
-        "altOverlap": 1,
+        "sampledRef": 20,
+        "sampledClone": 16,
+        "matchedCount": 1,
+        "missingCount": 19,
+        "identityCoverage": 0.05,
+        "matched": [
+          {
+            "refSrc": "/_upload/news_pic/600x600/4_5787.png",
+            "cloneSrc": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fnyari-nyitvatartas-2026.png&w=3840&q=75",
+            "distance": 1
+          }
+        ],
+        "missing": [
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 25
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
-        "status": "PARTIAL"
+        "status": "FAIL"
       },
       "links": {
         "refInternalCount": 31,
@@ -206,8 +278,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -265,11 +337,29 @@
       "media": {
         "refCount": 2,
         "cloneCount": 1,
-        "countDeficit": 1,
-        "altOverlap": 1,
+        "sampledRef": 2,
+        "sampledClone": 1,
+        "matchedCount": 0,
+        "missingCount": 2,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/2026/hirek/20260618_strandkonyvtar/Strandkonyvtar-001.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 16
+          },
+          {
+            "src": "/_upload/editor/2026/hirek/20260618_strandkonyvtar/Strandkonyvtar-002.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 14
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
-        "status": "PARTIAL"
+        "status": "FAIL"
       },
       "links": {
         "refInternalCount": 10,
@@ -345,8 +435,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -404,11 +494,23 @@
       "media": {
         "refCount": 1,
         "cloneCount": 1,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 1,
+        "sampledClone": 1,
+        "matchedCount": 0,
+        "missingCount": 1,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/2026/altalanos/Egyszer___es_letisztult_plakat_hetf__vel.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 33
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
-        "status": "PASS"
+        "status": "FAIL"
       },
       "links": {
         "refInternalCount": 10,
@@ -484,8 +586,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -543,11 +645,77 @@
       "media": {
         "refCount": 66,
         "cloneCount": 1,
-        "countDeficit": 65,
-        "altOverlap": 1,
+        "sampledRef": 20,
+        "sampledClone": 1,
+        "matchedCount": 0,
+        "missingCount": 20,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/OlvasasMania_2026_plakat.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 40
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Arany_Toldi_esteje.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 36
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Arnold_A_virrasztas_ejszakaja.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 33
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Bakonyi_A_mikrofontol_a_keresztig.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 45
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Bauer_A_fekete_rozsa.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 30
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Bauer_Ketszaz_eves_szerelem.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 29
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Bischoff_Id__jaras.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 31
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Boszormenyi_A_hullahazi_skandalum.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 40
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Braun_A_Fold.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 31
+          },
+          {
+            "src": "/_upload/editor/2026/OlvasasMania2026/Budai_Haboru.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 31
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
-        "status": "PARTIAL"
+        "status": "FAIL"
       },
       "links": {
         "refInternalCount": 12,
@@ -699,8 +867,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -758,11 +926,23 @@
       "media": {
         "refCount": 1,
         "cloneCount": 1,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 1,
+        "sampledClone": 1,
+        "matchedCount": 0,
+        "missingCount": 1,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/2026/hirek/20260602_tarsas/Tarsasjatek-kolcsonzes_junius_2-t__l_Plakatterv_2.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": 35
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
-        "status": "PASS"
+        "status": "FAIL"
       },
       "links": {
         "refInternalCount": 11,
@@ -843,8 +1023,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -902,8 +1082,19 @@
       "media": {
         "refCount": 1,
         "cloneCount": 1,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 1,
+        "sampledClone": 1,
+        "matchedCount": 1,
+        "missingCount": 0,
+        "identityCoverage": 1,
+        "matched": [
+          {
+            "refSrc": "/_upload/editor/2026/szena/202608_Spiro80/Spiro_80_uj-plakat.png",
+            "cloneSrc": "/api/media/file/Spiro_80_plakat-2.png",
+            "distance": 8
+          }
+        ],
+        "missing": [],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "PASS"
@@ -982,8 +1173,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -1041,8 +1232,20 @@
       "media": {
         "refCount": 1,
         "cloneCount": 0,
-        "countDeficit": 1,
-        "altOverlap": 1,
+        "sampledRef": 1,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 1,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/2026/OT/202608_Kiralyi_napok/202608_Kiralyi_Napok_plakat_Jak_kesz_01.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"
@@ -1121,8 +1324,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -1180,8 +1383,20 @@
       "media": {
         "refCount": 1,
         "cloneCount": 0,
-        "countDeficit": 1,
-        "altOverlap": 1,
+        "sampledRef": 1,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 1,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/2026/szena/20260812_Netrevalok/Netrevalok_augusztus.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"
@@ -1260,8 +1475,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -1313,8 +1528,13 @@
       "media": {
         "refCount": 0,
         "cloneCount": 0,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 0,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 0,
+        "identityCoverage": 1,
+        "matched": [],
+        "missing": [],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "PASS"
@@ -1349,8 +1569,8 @@
         "status": "PASS"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -1408,8 +1628,74 @@
       "media": {
         "refCount": 53,
         "cloneCount": 0,
-        "countDeficit": 53,
-        "altOverlap": 1,
+        "sampledRef": 20,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 20,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/pdf-ikon.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"
@@ -1675,8 +1961,8 @@
         "status": "PASS"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -1730,8 +2016,13 @@
       "media": {
         "refCount": 0,
         "cloneCount": 0,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 0,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 0,
+        "identityCoverage": 1,
+        "matched": [],
+        "missing": [],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "PASS"
@@ -2511,8 +2802,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -2570,8 +2861,13 @@
       "media": {
         "refCount": 0,
         "cloneCount": 0,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 0,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 0,
+        "identityCoverage": 1,
+        "matched": [],
+        "missing": [],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "PASS"
@@ -2608,8 +2904,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -2667,8 +2963,13 @@
       "media": {
         "refCount": 0,
         "cloneCount": 0,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 0,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 0,
+        "identityCoverage": 1,
+        "matched": [],
+        "missing": [],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "PASS"
@@ -2816,8 +3117,20 @@
       "media": {
         "refCount": 1,
         "cloneCount": 0,
-        "countDeficit": 1,
-        "altOverlap": 1,
+        "sampledRef": 1,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 1,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/FK/slide04_felnott.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"
@@ -2869,8 +3182,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -2928,8 +3241,20 @@
       "media": {
         "refCount": 1,
         "cloneCount": 0,
-        "countDeficit": 1,
-        "altOverlap": 1,
+        "sampledRef": 1,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 1,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/OLVASOTEREM/slide05_olvasoterem.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"
@@ -2967,8 +3292,8 @@
         "status": "FAIL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -3026,8 +3351,32 @@
       "media": {
         "refCount": 3,
         "cloneCount": 0,
-        "countDeficit": 3,
-        "altOverlap": 1,
+        "sampledRef": 3,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 3,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/_free-icons_png_2133_281090.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/icons8-event-accepted-80.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/art-gallery-icon-20.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"
@@ -3090,8 +3439,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -3145,8 +3494,74 @@
       "media": {
         "refCount": 11,
         "cloneCount": 46,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 11,
+        "sampledClone": 20,
+        "matchedCount": 0,
+        "missingCount": 11,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 46,
         "brokenImageSample": [
           "http://localhost:3011/brand/logos/vmk-logo.png",
@@ -3234,8 +3649,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -3289,8 +3704,74 @@
       "media": {
         "refCount": 11,
         "cloneCount": 46,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 11,
+        "sampledClone": 20,
+        "matchedCount": 0,
+        "missingCount": 11,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 46,
         "brokenImageSample": [
           "http://localhost:3011/brand/logos/vmk-logo.png",
@@ -3378,8 +3859,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -3433,8 +3914,56 @@
       "media": {
         "refCount": 7,
         "cloneCount": 0,
-        "countDeficit": 7,
-        "altOverlap": 1,
+        "sampledRef": 7,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 7,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"
@@ -3500,8 +4029,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -3559,8 +4088,74 @@
       "media": {
         "refCount": 16,
         "cloneCount": 46,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 16,
+        "sampledClone": 20,
+        "matchedCount": 0,
+        "missingCount": 16,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 46,
         "brokenImageSample": [
           "http://localhost:3011/brand/logos/vmk-logo.png",
@@ -3668,8 +4263,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -3724,8 +4319,74 @@
       "media": {
         "refCount": 18,
         "cloneCount": 46,
-        "countDeficit": 0,
-        "altOverlap": 1,
+        "sampledRef": 18,
+        "sampledClone": 20,
+        "matchedCount": 0,
+        "missingCount": 18,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/assets/images/img_news.png",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 46,
         "brokenImageSample": [
           "http://localhost:3011/brand/logos/vmk-logo.png",
@@ -3841,8 +4502,8 @@
         "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "NOT_APPLICABLE",
+        "reason": "no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one"
       },
       "visual": {
         "status": "FAIL",
@@ -3900,8 +4561,38 @@
       "media": {
         "refCount": 4,
         "cloneCount": 0,
-        "countDeficit": 4,
-        "altOverlap": 1,
+        "sampledRef": 4,
+        "sampledClone": 0,
+        "matchedCount": 0,
+        "missingCount": 4,
+        "identityCoverage": 0,
+        "matched": [],
+        "missing": [
+          {
+            "src": "/_upload/editor/a-kivansagkosar/kivansagkosar-felirat-nelkul.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/2026/kivansagkosar/07/BakRobert-ameddig-elhiszem.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/2026/kivansagkosar/07/BrigetWagner-elvagyodas.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/editor/2026/kivansagkosar/07/NickThorpe-utazas-a-karpatokban.jpg",
+            "alt": "",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          }
+        ],
         "brokenImageCount": 0,
         "brokenImageSample": [],
         "status": "FAIL"

@@ -14,13 +14,17 @@ per COLLAB.md K1, the canary's job is to surface what the old model missed.
 
 | Overall | Count |
 |---|---|
+| Scored routes | 22 / 22 (0 excluded as `CANARY_MAPPING_ERROR`) |
 | PARITY_PASS | 1 / 22 |
 | PARITY_PARTIAL | 0 / 22 |
 | PARITY_FAIL | 21 / 22 |
 
 Only `/konyvtarunkrol` fully passes all four evaluated dimensions (URL/TEXT/MEDIA/LINKS
 at 100%/PASS/PASS/PASS). Every other canary route fails on at least one real,
-evidenced dimension.
+evidenced dimension. All 22 canary routes' reference paths resolved correctly this
+round (the `/kapcsolat` → `/elerhetosegeink` mapping fix from the first pass holds);
+`CANARY_MAPPING_ERROR` is implemented and would exclude a route from these totals
+if its reference path were wrong, but none triggered it here.
 
 ## Methodology note: two real bugs found and fixed while building this tool
 
@@ -94,25 +98,57 @@ root causes found, not one blanket "text is missing":
    resolved in this K1 pass; each is listed with its coverage % and a sample of
    missing reference lines in `docs/parity-oracle-v2/results.json`.
 
-### MEDIA
+### MEDIA (content-identity matching, K1 review round 2)
 
-- `/konyvtarunkrol`, `/hirek/20260824_...`, `/hirek/20260602_...`,
-  `/hirek/202608_spiro-80...`, `/munkatarsak`, `/nyitvatartas`: PASS or no
-  meaningful deficit.
-- Gallery-family routes (`/gallery`, `/galeria`, `/gallery/folder/1023`,
-  `/a-mi-vilagunk-...`): **FAIL with 46 broken images each** — all four
-  independently point at the same root cause, confirmed by direct `curl`:
-  `http://localhost:3011/brand/logos/vmk-logo.png` returns **404**. This is the
-  `/galeria` fallback page's own watermark placeholder image (used once per
-  gallery card as a stand-in when no real photo is set) — a genuine, real,
-  fixable bug, found by this tool, that the old count-only media check could
-  never have caught (it only ever compared counts, never checked whether images
-  actually load).
-- `/dokumentumok`, `/reszlegek/felnott-kolcsonzo`, `/reszlegek/olvasoterem`,
-  `/tagkonyvtarak/meszoly-geza`, `/esemenyek/a-jaki-templomok-...`,
-  `/esemenyek/2026_08_12_netrevalok`, `/galeria/vizcsepp-2026-03-09`: real
-  image-count deficits (clone shows fewer content images than the reference),
-  magnitude and specifics in the raw JSON per route.
+The first K1 pass only compared image *counts* and alt-text overlap, which
+the K1 review correctly flagged as able to pass the wrong images (a rehosted
+reference photo has a different URL on the clone, so URL/count comparison
+alone can't tell "same photo, different host" from "no photo at all," and
+can't tell "count matches" from "these are actually the right images").
+
+Replaced with real content-identity matching (`compareMediaByIdentity` in
+`tools/clone-parity-oracle.mjs`): downloads up to 20 sampled images per side,
+computes a perceptual hash (8x8 grayscale average-hash via `sharp`, already
+a project dependency) for each, and matches reference images to clone images
+by Hamming distance (≤10 bits of 64 counts as a match) rather than URL or
+position. **Verified this actually works, not just runs**: on the homepage,
+it correctly matched a reference image at `/_upload/news_pic/600x600/
+4_5787.png` to the clone's `/_next/image?url=%2Fapi%2Fmedia%2Ffile%2F
+nyari-nyitvatartas-2026.png` (distance 1/64) — a completely different URL,
+host, and encoding, exactly the rehosting scenario the review named — while
+correctly rejecting the reference's own generic fallback icon
+(`/assets/images/img_news.png`, repeated many times in the "related news"
+sidebar) as unmatched (distance 25/64, well past the threshold), since that
+icon isn't real page content the clone needs to replicate.
+
+Result across the canary: **5/22 MEDIA PASS** — `/hirek/202608_spiro-80-...`
+(1/1 sampled images matched, real identity coverage, not just a vacuous
+zero-vs-zero case), plus `/konyvtarunkrol`, `/munkatarsak`, `/nyitvatartas`,
+`/kapcsolat` (no images on either side, vacuously consistent). The remaining
+17/22 are FAIL with 0% identity coverage on their sampled images — either a
+genuine content gap or, for the gallery-archive family specifically, the
+extraction limitation noted below. Full per-route matched/missing image
+lists (not just counts) are in `docs/parity-oracle-v2/results.json`.
+
+- **Broken images**: gallery-family routes (`/gallery`, `/galeria`,
+  `/gallery/folder/1023`, `/a-mi-vilagunk-...`) still show **46 broken
+  images each** — confirmed by direct `curl`,
+  `http://localhost:3011/brand/logos/vmk-logo.png` returns **404**. Same
+  root cause across all four, a genuine bug this tool found (not fixed in
+  K1, per the "no product remediation" rule — recorded for K2/K3).
+- **Discovered methodology limitation, gallery-archive family specifically**:
+  the individual album page's `.col-content` genuinely lists 18 named photo
+  files in its *text/links* (`Mi-vilagunk-20161205--01.jpg` etc., confirmed
+  in the raw reference HTML), but the actual `<img>` elements sampled from
+  that same content area are dominated by the "related news" sidebar's
+  repeated generic icon, not the gallery's own photos — meaning this
+  page-family's real thumbnails likely render via CSS background-image or a
+  JS-driven lightbox rather than plain `<img src>` tags, which this
+  dimension can't currently see. Documented rather than silently producing
+  a falsely-optimistic or falsely-pessimistic MEDIA score for this specific
+  family; a targeted extraction fix (matching thumbnails via the anchor
+  hrefs already captured in LINKS, not just `<img>`) is a reasonable K1
+  follow-up or K2 item.
 
 ### LINKS
 
@@ -172,12 +208,20 @@ static 200/H1 check:
 
 Test data from all three checks was deleted immediately after
 verification (contact_messages / wish_requests rows), confirmed via
-`users` table row count unchanged (1 real row). Other FUNCTION-relevant
-workflows COLLAB.md lists (hírlevél, teremfoglalás, registration, gallery
-browse/detail, admin publish→public, PDF download) were already proven
-with real E2E evidence in earlier rounds (C1/C2/D1/D2/H4/I1 -- see
-COLLAB.md history) rather than re-run here; not re-verified as part of
-this specific K1 canary pass.
+`users` table row count unchanged (1 real row).
+
+**K1 review correction**: earlier drafts of this report cited prior rounds'
+(C1/C2/D1/D2/H4/I1) E2E evidence for hírlevél/teremfoglalás/registration/
+gallery-detail/admin-publish/PDF-download as if it satisfied K1's FUNCTION
+requirement for those workflows. It does not -- that evidence is from a
+different point in the branch's history, not this K1 canary, and citing it
+here risked being read as a current PASS. Corrected: every canary route
+without a workflow re-verified in *this* K1 pass is explicitly
+`NOT_APPLICABLE` (no distinct interactive workflow on that specific route)
+in `docs/parity-oracle-v2/results.json`, and the workflows listed above are
+**not claimed as K1 FUNCTION evidence** — re-verifying them with fresh,
+dated evidence is K2/K3 scope, same as everything else not directly
+covered by this round's 3 checks.
 
 ## Gallery/Archive family quantification (COLLAB.md K1 item 7)
 

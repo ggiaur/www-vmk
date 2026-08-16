@@ -1,5 +1,8 @@
 {
   "total": 22,
+  "scoredTotal": 22,
+  "CANARY_MAPPING_ERROR": 0,
+  "canaryMappingErrorRoutes": [],
   "PARITY_PASS": 1,
   "PARITY_PARTIAL": 0,
   "PARITY_FAIL": 21,

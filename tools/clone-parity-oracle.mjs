@@ -20,6 +20,7 @@
 //     --out=docs/parity-oracle-v2
 
 import { chromium } from 'playwright'
+import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
 
@@ -218,23 +219,115 @@ function compareLinks(refLinks, refBase, cloneLinks, cloneBase) {
   }
 }
 
-function compareMedia(refImages, cloneImages) {
-  // Content-identity matching (perceptual hash) is a separate, heavier
-  // pass -- see docs/CLONE_PARITY_GAP_REPORT.md FUTURE WORK. This level
-  // compares counts and alt-text overlap, which is already strictly
-  // more than the old tool's bare imageCount, and flags a clear FAIL
-  // when the clone has visibly fewer content images than the reference.
-  const refCount = refImages.length
-  const cloneCount = cloneImages.length
-  const refAlts = new Set(refImages.map((i) => normalize(i.alt)).filter((a) => a.length > 2))
-  const cloneAlts = new Set(cloneImages.map((i) => normalize(i.alt)).filter((a) => a.length > 2))
-  let altMatches = 0
-  for (const a of refAlts) if (cloneAlts.has(a)) altMatches++
+// Perceptual hash (average hash / aHash): resize to 8x8 grayscale, compare
+// each pixel to the mean -> 64-bit fingerprint. Cheap, dependency-free
+// (sharp is already a project dependency for Payload's own media
+// pipeline), and robust to re-encoding/resizing/rehosting -- exactly the
+// K1 review's concern: the clone may legitimately serve a re-encoded or
+// differently-sized copy of the same reference photo at a different URL,
+// which plain URL/count comparison can never detect.
+async function perceptualHash(buffer) {
+  try {
+    const { data } = await sharp(buffer)
+      .resize(8, 8, { fit: 'fill' })
+      .grayscale()
+      .raw()
+      .toBuffer({ resolveWithObject: true })
+    const mean = data.reduce((a, b) => a + b, 0) / data.length
+    let hash = 0n
+    for (let i = 0; i < data.length; i++) {
+      hash = (hash << 1n) | (data[i] >= mean ? 1n : 0n)
+    }
+    return hash
+  } catch {
+    return null
+  }
+}
+
+function hammingDistance(a, b) {
+  let x = a ^ b
+  let count = 0n
+  while (x > 0n) {
+    count += x & 1n
+    x >>= 1n
+  }
+  return Number(count)
+}
+
+async function fetchImageBuffer(request, url) {
+  try {
+    const res = await request.get(url, { timeout: 10000 })
+    if (!res.ok()) return null
+    const ct = res.headers()['content-type'] || ''
+    if (!ct.startsWith('image/')) return null
+    return await res.body()
+  } catch {
+    return null
+  }
+}
+
+// Caps how many images per side get downloaded+hashed, to keep a 22-route
+// canary run bounded -- pages with large photo galleries (the exact family
+// this check matters most for) are sampled, not exhaustively hashed here;
+// full-scale identity matching across all 1626 gallery routes is K2 scope.
+const MEDIA_HASH_LIMIT = 20
+const MEDIA_HASH_MATCH_THRESHOLD = 10 // Hamming distance out of 64 bits
+
+async function compareMediaByIdentity(refImages, cloneImages, refBase, cloneBase, refRequest, cloneRequest) {
+  const refSample = refImages.slice(0, MEDIA_HASH_LIMIT)
+  const cloneSample = cloneImages.slice(0, MEDIA_HASH_LIMIT)
+
+  const refHashes = []
+  for (const img of refSample) {
+    const url = new URL(img.src, refBase).toString()
+    const buf = await fetchImageBuffer(refRequest, url)
+    const hash = buf ? await perceptualHash(buf) : null
+    refHashes.push({ src: img.src, alt: img.alt, hash })
+  }
+  const cloneHashes = []
+  for (const img of cloneSample) {
+    const url = new URL(img.src, cloneBase).toString()
+    const buf = await fetchImageBuffer(cloneRequest, url)
+    const hash = buf ? await perceptualHash(buf) : null
+    cloneHashes.push({ src: img.src, alt: img.alt, hash })
+  }
+
+  const matched = []
+  const missing = []
+  const usedClone = new Set()
+  for (const r of refHashes) {
+    if (r.hash === null) {
+      missing.push({ src: r.src, alt: r.alt, reason: 'reference image could not be downloaded/decoded' })
+      continue
+    }
+    let best = null
+    let bestDist = Infinity
+    for (let i = 0; i < cloneHashes.length; i++) {
+      if (usedClone.has(i) || cloneHashes[i].hash === null) continue
+      const d = hammingDistance(r.hash, cloneHashes[i].hash)
+      if (d < bestDist) {
+        bestDist = d
+        best = i
+      }
+    }
+    if (best !== null && bestDist <= MEDIA_HASH_MATCH_THRESHOLD) {
+      usedClone.add(best)
+      matched.push({ refSrc: r.src, cloneSrc: cloneHashes[best].src, distance: bestDist })
+    } else {
+      missing.push({ src: r.src, alt: r.alt, reason: 'no perceptually-matching image found in clone sample', closestDistance: bestDist === Infinity ? null : bestDist })
+    }
+  }
+
   return {
-    refCount,
-    cloneCount,
-    countDeficit: Math.max(0, refCount - cloneCount),
-    altOverlap: refAlts.size ? altMatches / refAlts.size : 1,
+    refCount: refImages.length,
+    cloneCount: cloneImages.length,
+    sampledRef: refSample.length,
+    sampledClone: cloneSample.length,
+    matchedCount: matched.length,
+    missingCount: missing.length,
+    identityCoverage: refSample.length ? matched.length / refSample.length : 1,
+    matched: matched.slice(0, 10),
+    missing: missing.slice(0, 10),
   }
 }
 
@@ -305,7 +398,7 @@ async function auditRoute(browser, route) {
     const cloneData = await extractPageData(clonePage, { contentSelector: CLONE_CONTENT_SELECTOR })
 
     const text = textCoverage(refData.text, cloneData.text)
-    const media = compareMedia(refData.images, cloneData.images)
+    const media = await compareMediaByIdentity(refData.images, cloneData.images, refUrl, cloneUrl, refPage.request, clonePage.request)
     const links = compareLinks(refData.links, refUrl, cloneData.links, cloneUrl)
     const brokenImages = await checkBrokenImages(clonePage)
     const brokenLinks = await checkBrokenLinks(clonePage, cloneData.links, cloneUrl)
@@ -321,7 +414,11 @@ async function auditRoute(browser, route) {
       ...media,
       brokenImageCount: brokenImages.length,
       brokenImageSample: brokenImages.slice(0, 5),
-      status: brokenImages.length > 0 ? 'FAIL' : media.refCount > 0 && media.cloneCount === 0 ? 'FAIL' : media.countDeficit > 0 ? 'PARTIAL' : 'PASS',
+      // Identity coverage, not equal counts, per K1 review: a route only
+      // passes MEDIA if the reference's actual photos (sampled, matched by
+      // perceptual hash, not just present-somewhere) are present in the
+      // clone, and nothing on the clone is broken.
+      status: brokenImages.length > 0 ? 'FAIL' : media.refCount === 0 ? 'PASS' : media.identityCoverage >= 0.95 ? 'PASS' : media.identityCoverage >= 0.5 ? 'PARTIAL' : 'FAIL',
     }
     result.links = {
       ...links,
@@ -348,19 +445,35 @@ async function auditRoute(browser, route) {
     result.urlDimension.status = cloneRedirected && (route.family === 'gallery-archive' || route.family === 'gallery') && text.coverage < 0.3
       ? 'FAIL_GENERIC_REDIRECT'
       : 'PASS'
+  } else if (result.refStatus && result.refStatus >= 400) {
+    // K1 review (ChatGPT, commit a7b25db): a broken *reference* path is a
+    // canary-list authoring mistake, not evidence the clone lacks parity --
+    // scoring it PARITY_FAIL conflates "our route list is wrong" with "the
+    // clone is missing content." Flag distinctly and exclude from parity
+    // totals until the canary list itself is fixed (see the earlier
+    // /kapcsolat -> /elerhetosegeink correction for a real example).
+    result.urlDimension.status = 'CANARY_MAPPING_ERROR'
+    result.text = { status: 'NOT_EVALUATED', reason: 'reference route did not resolve -- likely a wrong refPath in the canary list, not a clone content gap' }
+    result.media = { status: 'NOT_EVALUATED' }
+    result.links = { status: 'NOT_EVALUATED' }
+    result.structure = { status: 'NOT_EVALUATED' }
   } else {
     result.urlDimension.status = 'FAIL'
-    result.text = { status: 'NOT_EVALUATED', reason: 'page load failed' }
+    result.text = { status: 'NOT_EVALUATED', reason: 'clone page load failed' }
     result.media = { status: 'NOT_EVALUATED' }
     result.links = { status: 'NOT_EVALUATED' }
     result.structure = { status: 'NOT_EVALUATED' }
   }
 
-  result.function = { status: 'NOT_EVALUATED', note: 'separate E2E pass, see CLONE_PARITY_GAP_REPORT.md' }
+  result.function = { status: 'NOT_APPLICABLE', reason: 'no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one' }
   result.visual = { status: 'NOT_EVALUATED', note: 'separate screenshot-diff pass, see clone-parity-visual.mjs' }
 
-  const dims = [result.urlDimension.status === 'PASS' ? 'PASS' : 'FAIL', result.text.status, result.media.status, result.links.status]
-  result.overall = dims.every((d) => d === 'PASS') ? 'PARITY_PASS' : dims.some((d) => d === 'FAIL' || d === 'FAIL_GENERIC_REDIRECT') ? 'PARITY_FAIL' : 'PARITY_PARTIAL'
+  if (result.urlDimension.status === 'CANARY_MAPPING_ERROR') {
+    result.overall = 'CANARY_MAPPING_ERROR'
+  } else {
+    const dims = [result.urlDimension.status === 'PASS' ? 'PASS' : 'FAIL', result.text.status, result.media.status, result.links.status]
+    result.overall = dims.every((d) => d === 'PASS') ? 'PARITY_PASS' : dims.some((d) => d === 'FAIL' || d === 'FAIL_GENERIC_REDIRECT') ? 'PARITY_FAIL' : 'PARITY_PARTIAL'
+  }
 
   await refCtx.close()
   await cloneCtx.close()
@@ -396,16 +509,24 @@ async function main() {
   for (const r of results) {
     const prior = existingByPath.get(r.path)
     if (prior?.visual) r.visual = prior.visual
-    if (prior?.function && prior.function.status !== 'NOT_EVALUATED') r.function = prior.function
+    if (prior?.function && ['PASS', 'FAIL', 'PARTIAL'].includes(prior.function.status)) r.function = prior.function
   }
   fs.writeFileSync(jsonPath, JSON.stringify({ generatedAt: new Date().toISOString(), refBase: REF_BASE, cloneBase: CLONE_BASE, results, visualGeneratedAt: existing?.visualGeneratedAt, functionChecks: existing?.functionChecks }, null, 2))
 
+  // K1 review (ChatGPT, commit a7b25db): canary-list mapping errors (a
+  // wrong reference path) must not count toward parity totals -- they
+  // measure a mistake in tools/parity-canary-routes.json, not the clone.
+  const canaryErrors = results.filter((r) => r.overall === 'CANARY_MAPPING_ERROR')
+  const scored = results.filter((r) => r.overall !== 'CANARY_MAPPING_ERROR')
   const summary = {
     total: results.length,
-    PARITY_PASS: results.filter((r) => r.overall === 'PARITY_PASS').length,
-    PARITY_PARTIAL: results.filter((r) => r.overall === 'PARITY_PARTIAL').length,
-    PARITY_FAIL: results.filter((r) => r.overall === 'PARITY_FAIL').length,
-    ERROR: results.filter((r) => r.overall === 'ERROR').length,
+    scoredTotal: scored.length,
+    CANARY_MAPPING_ERROR: canaryErrors.length,
+    canaryMappingErrorRoutes: canaryErrors.map((r) => r.path),
+    PARITY_PASS: scored.filter((r) => r.overall === 'PARITY_PASS').length,
+    PARITY_PARTIAL: scored.filter((r) => r.overall === 'PARITY_PARTIAL').length,
+    PARITY_FAIL: scored.filter((r) => r.overall === 'PARITY_FAIL').length,
+    ERROR: scored.filter((r) => r.overall === 'ERROR').length,
   }
   console.log('SUMMARY', JSON.stringify(summary))
   fs.writeFileSync(path.join(OUT_DIR, 'summary.json'), JSON.stringify(summary, null, 2))

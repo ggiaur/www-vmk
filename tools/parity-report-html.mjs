@@ -10,7 +10,12 @@ function esc(s) {
   return String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
 }
 function badge(status) {
-  const color = status === 'PASS' || status === 'PARITY_PASS' ? '#0a7' : status === 'PARTIAL' || status === 'PARITY_PARTIAL' ? '#c90' : status === 'NOT_EVALUATED' ? '#999' : '#c33'
+  const color =
+    status === 'PASS' || status === 'PARITY_PASS' ? '#0a7'
+    : status === 'PARTIAL' || status === 'PARITY_PARTIAL' ? '#c90'
+    : status === 'NOT_EVALUATED' || status === 'NOT_APPLICABLE' ? '#999'
+    : status === 'CANARY_MAPPING_ERROR' ? '#66c'
+    : '#c33'
   return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;background:${color};color:#fff;font-size:12px;font-weight:600">${esc(status)}</span>`
 }
 
