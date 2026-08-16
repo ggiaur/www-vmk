@@ -92,9 +92,68 @@ A Node 24 `payload migrate:create` / `generate:types` hibája infrastruktúra-te
 
 # 4. AKTÍV FELADAT — ADMIN FINAL CLOSURE
 
-**STATUS:** `IN_PROGRESS`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
+
+## EREDMÉNY (Claude, D1-D4, 2026-08-16)
+
+### D1 — Libraries/OpeningHours publikus propagáció: **root cause javítva**
+
+Valódi ok: `/`, `/kapcsolat`, `/nyitvatartas`, `/reszlegek`, `/tagkonyvtarak`-nak nincs dinamikus route-szegmense (ellentétben pl. `/hirek/[slug]`-lel, amit a Next `generateStaticParams` hiányában per-request renderel) -- ezért build-időben statikusan generálódnak. Admin szerkesztés a Postgres-t és a REST API-t azonnal frissítette, a publikus oldal build-időbeli HTML-t szolgált ki tovább.
+
+Javítás: `src/lib/revalidateLibraryPages.ts` + `afterChange`/`afterDelete` hook mindkét kollekción, Next on-demand revalidation-nel (nem `force-dynamic`, hogy a cache-előny megmaradjon, csak adatváltozáskor törlődjön).
+
+Első tesztem rossz célt vett (library id=1 `type=central`, aminek a `/kapcsolat` telefonszáma valójában hardcode-olt konstansból jön, nem CMS-ből) -- helyes `branch` típusú könyvtárral (id=3) megismételve:
+- **Libraries → `/kapcsolat`**: baseline telefonszám látszik → admin szerkesztés → új szám azonnal látszik → restore → eredeti szám látszik, új eltűnik.
+- **OpeningHours → `/nyitvatartas`**: baseline záróra látszik → admin szerkesztés → új érték azonnal látszik → restore → eredeti látszik.
+
+**Mellékesen talált P0**: `OpeningHours`-nak csak `access.read` volt definiálva -- create/update/delete Payload-defaulttal bárkinek nyitva állt (ugyanaz a hibaosztály, mint Phase B Bookings/Registrations/DonationPledges-nél). Élőben igazolva előtte (anon POST → 201) és utána (→ 403). Read publikus marad (helyesen, ez nyilvános tartalom).
+
+### D2 — `editor` szerepkör élő E2E: **PASS**
+
+Eldobható `editor` user, valódi böngészővel:
+- admin belépés + dashboard OK;
+- News create → publish → publikus `/hirek/<slug>` 200, cím+tartalom egyezik;
+- `bookings`/`registrations`/`donation-pledges`/`wish-requests`/`wish-comments` mind 200 editornak (`adminOrEditorOnly` helyesen enged);
+- self-promote `role: admin` PATCH → 200 válasz, de a `role` mező ténylegesen nem változott (mező-szintű access blokkolt, ugyanaz a minta mint author-nál);
+- logout után ugyanaz a session `GET /api/bookings` → 403 (tiszta határ).
+- teszt user + teszt News cikk törölve.
+
+### D3 — Node/CLI tooling: **pontosabb diagnózis, nem Node-verzió kérdés**
+
+`payload migrate:create`/`generate:types` hibáját **nem** a Node 24 okozza -- reprodukálva user-space telepített Node 20.20.2 LTS alatt (nvm, rendszer node-ot nem érintve) **azonos hibával**. `tsx`-verzió sem oka: legfrissebb `tsx@4.23.12`-re frissítve (előbb csak gyökér-szinten, majd `overrides`-szal a Payload beágyazott saját `tsx@4.22.4`-ét is felülírva) **ugyanaz a hiba** marad.
+
+**Valódi ok**: a `@payloadcms/richtext-lexical` csomag `dist/index.js`-e top-level `await`-et használó ESM modul; a Payload CLI konfiga-betöltése szinkron `require()`-t használ erre -- ez Node.js-szintű, verzió-független korlátozás (`ERR_REQUIRE_ASYNC_MODULE`), nem tsx/Node kompatibilitási kérdés. Upstream Payload/richtext-lexical csomagolási probléma.
+
+**Következmény**: `.nvmrc`/Node-pinnelés **nem oldaná meg** -- ezt nem is tettem meg (téves megoldás lenne). Minden ideiglenes változtatás (tsx upgrade, `overrides`, nvm Node 20) visszaállítva, `package.json`/`package-lock.json` diff nélkül, `npm run build` zöld a revert után. `push:false` érintetlen. Marad dokumentált P2: kézi migráció szükséges minden jövőbeli séma-változtatáshoz, amíg ez upstream nem javul.
+
+### D4 — Végső regresszió
+
+```
+npm run build                    # exit 0
+npm run visual:oracle:discover   # 113 route
+```
+
+| | |
+|---|---|
+| First-hop | CLONED 108, PREVIEW/INTERNAL 2, REDIRECTED 3, **MISSING 0**, **BROKEN 0** |
+| Anon: bookings/registrations/donation-pledges/opening-hours write | 403 |
+| Anon: opening-hours/wish-*/news/events/pages read | 200 (szándékosan publikus, szűrve) |
+| Valós adat | news=334, pages=52 (1 eredeti + 33 A2a + 18 A2b), users=1 (csak admin@vmk.hu) -- nincs teszt-maradvány |
+| Homepage | 200, nincs regresszió |
+
+### Commit SHA-k (ezen a körön)
+
+- `39a3ccd` -- D1 (Libraries/OpeningHours propagáció + OpeningHours P0 fix)
+- D2/D3: nincs kód-változás (D2 tisztán teszt, D3 diagnózis + visszaállított kísérlet)
+
+### Fennmaradó valódi P2/P3
+
+- `payload migrate:create`/`generate:types` upstream ESM/CJS hiba (`@payloadcms/richtext-lexical`) -- kézi migráció marad szükséges.
+- A két videó-linkes oldal (`/a-konyvtar-hasznalata`, `/kozponti-konyvtar-1`) nem lett visszamenőleg iframe-re frissítve (esztétikai).
+- `/wishbasket` nem replikálja a referencia "aktuálisan beszerzett könyvek" havi galériáját (döntés: a forma+lista+moderáció a lényegi funkcionális parity, a havi photo-galéria dekoratív kiegészítés volt).
+
 
 Claude a következő repo-poll/fetch ciklusban felhasználói közvetítés nélkül folytatja.
 
