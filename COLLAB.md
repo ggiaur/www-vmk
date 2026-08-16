@@ -137,8 +137,60 @@ Claude a javítások után rögzítse:
 
 **Task:** F1 Users least-privilege + F2 depth-2 broken-link closure + F3 staff slug closure
 
-**STATUS:** `IN_PROGRESS`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
+
+## EREDMÉNY (Claude, F1-F3, 2026-08-16)
+
+### F1 — Users least-privilege: **kész**
+
+`author` mostantól csak a saját rekordját olvashatja (`read` egy query-constraint objektumot ad vissza `{id: {equals: user.id}}`, ugyanaz a minta, mint `scopedToOwnLibrary`). `admin`/`editor` változatlanul teljes listát lát.
+
+Élő E2E bizonyíték: anon 403; author saját rekord GET → 200; author `GET /api/users` lista → 1 dokumentumra szűrve (csak önmaga); author más user (`id=1`, admin) GET → **404** (nem csak 403 -- a létezés sincs elárulva); admin listája változatlanul teljes; author self-promote kísérlet változatlanul blokkolt (mező-szintű gate nem változott). Teszt-user törölve.
+
+### F2 — Depth-2 BROKEN route-ok: **kész, BROKEN=0**
+
+Mindkét route valós kontextusát megvizsgáltam a referencián, nem találgattam:
+
+- `/pedagogiai-szakkonyvtar`: egy "vissza az oldal tetejére" link a `/pedagogiai-reszleg`-en -- nyilvánvalóan a részleg korábbi URL-je átnevezés előtt. Redirect a valós jelenlegi route-ra (`/reszlegek/pedagogiai-reszleg`).
+- `/kozott-kiallitas`: kép-only link (szöveg nélkül) a `/unnepi-konyvhet-2022`-n egy 2022-es kiállítás-programhoz, aminek a referencián sincs már önálló oldala. Redirect a linkelő eseményoldalra (`/unnepi-konyvhet-2022`), az A2b precedenst követve.
+
+**Inbound link ellenőrzés**: egyik holt href sem jelenik meg ténylegesen a saját klónunk renderelt tartalmában (mindkét fogyasztó oldalt átgrepeltem, 0 találat -- a scrape pipeline sosem vitte át őket). A redirectek tehát védőháló (bookmark/keresőindex/kézi beírás ellen), nem tartalom-javítás.
+
+Depth-2 újrafutás: `BROKEN 2 → 0`.
+
+### F3 — Staff slug: **kész, de más megoldással, mint elsőre gondoltam**
+
+A "hiányzó párosítás" újra-vizsgálva **nem** párosítási hiba volt: `Huszárné Mátés Mónika` (meglévő rekordunk: takarító/üzemviteli) **egyáltalán nem szerepel** a jelenlegi `/munkatarsak` referencia-listán -- neki nincs is depth-2 hiánya (nincs mihez linkelni, a rekord marad, valós történeti adat, nem törlendő teszt-adat).
+
+Az általam elsőre téves fuzzy-matchcsel hozzá rendelt "Nagy Mónika" (href: `kissne-nagy-monika`) ellenőrzés után **kiderült, hogy valódi, de teljesen más, korábban sosem importált személy** (zenei könyvtáros, más beosztás/osztály/email) -- valósan felvéve admin UI-n, ugyanúgy mint korábban Szabó Eszter. `/kissne-nagy-monika` most 200.
+
+### Végső regresszió
+
+```
+npm run build                         # exit 0
+npm run visual:oracle:discover        # first-hop: 113 route változatlan
+node tools/visual-oracle.mjs discover --depth=2 --out=.visual-oracle-depth2
+```
+
+| | |
+|---|---|
+| First-hop | 108 CLONED, 2 PREVIEW/INTERNAL, 3 REDIRECTED, **0 MISSING, 0 BROKEN** (változatlan) |
+| Depth-2 | 304 CLONED, 20 PREVIEW/INTERNAL, 52 ARCHIVED/LEGACY, 14 DOWNLOAD/ASSET, **0 MISSING, 0 BROKEN** |
+| E0 access sweep | mind a 16 auditált collection anon POST → 403 |
+| Homepage | 200 |
+| Users | 1 valós sor (`admin@vmk.hu`), nulla teszt-maradvány |
+
+### Commit SHA
+
+- `426f09b` -- F1 (Users least-privilege) + F2 (2 redirect) + F3 (Nagy Mónika staff)
+
+### Fennmaradó valódi P2/P3
+
+- Payload CLI upstream hibája (D3-ból) változatlanul fennáll.
+- `.visual-oracle-depth2/` a jelenlegi crawl pillanatképe, `.gitignore`-olt.
+- `Huszárné Mátés Mónika` rekord megmaradt (valós történeti adat), de nincs hozzá aktív referencia-oldal -- nem hiba, dokumentált állapot.
+
 
 Claude a következő repo poll/fetch ciklusban felhasználói közvetítés nélkül folytatja.
