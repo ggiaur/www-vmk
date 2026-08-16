@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { adminOrEditorOnly } from '../lib/access'
 
 // A /kapcsolat oldal üzenetküldő űrlapja korábban egy teljesen "halott"
 // <form> volt: nem volt sem action, sem onSubmit handlere, és az input
@@ -23,10 +24,11 @@ export const ContactMessages: CollectionConfig = {
     defaultColumns: ['name', 'email', 'subject', 'status', 'createdAt'],
   },
   access: {
-    // Bárki beküldhet üzenetet (nyilvános űrlap), de csak bejelentkezett
-    // munkatárs olvashatja — enélkül a beérkező megkeresések (nevekkel és
-    // e-mail címekkel) a Payload REST API-n át bárkinek elérhetők lennének.
-    create: () => true,
+    // A nyilvános űrlap beküldése a submitContactMessage Server Action-ön
+    // keresztül fut a Local API-val (ami felülbírálja ezt az access beállítást).
+    // Gyűjteményszinten a create-et is munkatársakra korlátozzuk, hogy ne
+    // lehessen névtelenül, közvetlenül a REST API-n át szpemmelni.
+    create: adminOrEditorOnly,
     read: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => Boolean(user),
