@@ -1,69 +1,148 @@
-# GEMINI CLONE PARITY CANARY AUDIT — ESCALATED FOR REAL EVIDENCE
+# GEMINI LEAD TASK — VMK K2 FULL CLONE PARITY INVENTORY
 
-Branch: `agent/gemini-final-audit`  
-Primary under audit: `agent/visual-clone-oracle`
+Branch currently receiving this handoff: `agent/gemini-final-audit`  
+Source implementation baseline: current `origin/agent/visual-clone-oracle`
 
 ## STATUS
 
-**CHECKPOINT FAILED — `ce4b591` WAS TASK PROSE, NOT AUDIT EVIDENCE**
+**YOU ARE NOW THE LEAD IMPLEMENTER. START K2 NOW.**
 
-The branch has still not produced route-level independent parity evidence. The latest commit `ce4b5911072ffc98bbbeca455c68cd9009bc6deb` only rewrote this task file. That does not satisfy K1 independent validation.
+Claude is temporarily unavailable due to exhausted usage credit for approximately 11 hours. Do not wait for Claude.
 
-**Do not push another task/status/escalation-only commit. The next Gemini commit must contain actual audit output.**
+ChatGPT is supervisor/reviewer. Claude returns later as secondary reviewer/specialist unless explicitly reassigned.
 
-## CURRENT PRIMARY CONTEXT
+## FIRST ACTION — ISOLATED IMPLEMENTATION BRANCH
 
-Primary K1 round 3 implementation is commit `426b16ee3e5d776e444512e8648b5dc6fd1b90f1` with handoff `b72c1735975fab3f484de5904eb9e8be17593fa0`.
+Do not implement K2 inside Claude's branch/worktree and do not reuse any shared checkout.
 
-Claude now reports, with concrete tool evidence:
+In your own dedicated worktree:
 
-- 7-dimension final scoring: URL/TEXT/MEDIA/LINKS/STRUCTURE/FUNCTION/VISUAL;
-- gallery/archive media extraction includes CSS `background-image`, `srcset`, and lazy-load sources;
-- fresh 22-route canary: 0 `PARITY_PASS`, 22 `PARITY_FAIL`;
-- FUNCTION persistence/cleanup verified against Postgres for contact + wishbasket;
-- falsification unit tests prevent STRUCTURE/VISUAL/FUNCTION failures from resolving to overall PASS.
+1. fetch `origin/agent/visual-clone-oracle`;
+2. create a new branch from its current HEAD, preferably `agent/gemini-k2-lead`;
+3. use a dedicated Gemini worktree for that branch;
+4. push the branch;
+5. continue all K2 implementation there.
 
-The primary branch is temporarily `BALL: CLAUDE` for a separate P0 preview outage (`new.vmk.hu` / port 3011). **That does not excuse Gemini from producing independent evidence from the current primary code/results.** If live clone access is temporarily unavailable, audit all dimensions that can be verified from saved K1 artifacts/code and mark only genuinely live-dependent checks `BLOCKED_BY_PREVIEW_OUTAGE` with exact reason; do not fabricate PASS.
+Hard rule: **1 agent = 1 branch = 1 worktree**.
 
-## IMMEDIATE CHECKPOINT — NEXT COMMIT
+The old `agent/gemini-final-audit` branch is now only the handoff/audit-history branch.
 
-Produce `docs/GEMINI_FINAL_AUDIT.md` with **at least 5 real overlapping canary routes**. The next commit is invalid unless it includes route-level evidence.
+## PRODUCT GOAL
 
-Required routes/checks in the first checkpoint:
+Faithful modern clone of current `https://www.vmk.hu/`.
 
-1. `/konyvtarunkrol` — independently verify the previous false-PASS candidate and the corrected VISUAL failure.
-2. `/wishbasket` — verify FUNCTION semantics/persistence evidence as far as independently executable; otherwise exact live blocker.
-3. `/gallery/folder/1023` or another concrete gallery/archive detail — verify generic redirect/content mismatch and actual album media extraction.
-4. One route where STRUCTURE is non-PASS.
-5. One PDF/document-heavy route — verify anchor target/type/health, not link count.
+Do not accept HTTP 200, H1 existence, similar word count, image/link counts, placeholders, or generic list-page redirects as clone parity.
 
-For each route record all seven dimensions:
+For every reference page preserve, as applicable:
 
-- URL/final URL/redirect validity;
-- ordered meaningful TEXT gaps;
-- MEDIA identity/missing/broken assets, including CSS/lightbox/gallery media;
-- LINKS/DOCS anchor + target + type + target health;
-- STRUCTURE gaps;
-- FUNCTION fresh status or `NOT_APPLICABLE`/`BLOCKED` with route-specific reason;
-- VISUAL desktop + mobile evidence/observation.
+- URL/canonical mapping;
+- ordered meaningful content;
+- actual images/gallery media;
+- internal/external link destinations;
+- PDFs/downloads;
+- lists/tables/contacts/dates;
+- forms/functions;
+- desktop/mobile visual structure.
 
-Then continue to **>=20 routes**.
+## VERIFIED STARTING POINT
 
-## FALSIFICATION DUTY
+K1 Oracle v2 canary on primary implementation commit `426b16e`:
 
-The independent audit is not a second copy of Claude's report. It must try to disprove the Oracle:
+- 22/22 overall FAIL
+- TEXT 21/22 FAIL
+- MEDIA 17/22 FAIL
+- LINKS 19/22 FAIL
+- VISUAL 21/22 FAIL
 
-- Oracle says PASS but direct evidence shows applicable non-PASS → `ORACLE_FALSE_NEGATIVE`.
-- Oracle says FAIL but direct evidence proves PASS → `ORACLE_FALSE_POSITIVE`.
-- Oracle cannot measure a dimension reliably → `METHODOLOGY_BLOCKED`.
+This is the real starting condition. Historical `MISSING=0`, `BROKEN=0`, `VERIFIED`, and RC-GO route labels are not parity evidence.
 
-No PASS claim is allowed for a check not actually executed or independently evidenced.
+## K2 DELIVERABLE
 
-## HARD RULES
+### 1. Freeze the complete reference
 
-- One agent = one branch = one worktree.
-- Do not modify Claude's branch.
-- Use current primary HEAD/read-only artifacts as audit target.
-- No product fixes on this branch; diagnostic helper code is allowed here.
-- Do not ask the user to relay prompts, run commands, manage worktrees, or resolve routine coordination.
-- **Next commit must be technical evidence, not prose-only task management.**
+Create a timestamped machine-readable snapshot of the full relevant Hungarian `www.vmk.hu` scope. Per route capture:
+
+- reference URL + final URL/status/redirect chain;
+- family;
+- title/H1/headings;
+- ordered meaningful main-content blocks;
+- actual content media + identity fingerprints;
+- gallery CSS/background/srcset/lazy/lightbox media;
+- internal/external links;
+- PDFs/downloads + health;
+- lists/tables/contacts/dates;
+- forms/function presence;
+- deterministic desktop/mobile screenshot references.
+
+Do not rely on counts alone.
+
+### 2. Compare every reference route to clone
+
+Per route output:
+
+`URL | TEXT | MEDIA | LINKS_DOCS | STRUCTURE | FUNCTION | VISUAL | OVERALL`
+
+Allowed terminal statuses only:
+
+- `PASS`
+- `FAIL`
+- `NOT_APPLICABLE` with route-specific reason
+- `METHODOLOGY_BLOCKED` with exact reason
+- `ERROR` with exact reason
+
+Overall PASS requires every applicable dimension PASS.
+
+### 3. Produce full inventory artifacts
+
+Create:
+
+- `docs/CLONE_PARITY_FULL_INVENTORY.md`
+- machine-readable JSON and/or CSV
+
+Include exact totals and route-level evidence for:
+
+- total reference URLs;
+- scored clone URLs;
+- PASS/FAIL;
+- wrong/missing text;
+- missing/wrong/broken media;
+- wrong/missing internal links;
+- wrong/missing external links;
+- missing/broken PDFs/downloads;
+- invalid generic redirects;
+- structural mismatches;
+- functional mismatches;
+- major desktop/mobile visual mismatches;
+- methodology-blocked routes.
+
+### 4. Root-cause groups
+
+Group deficits into reusable repair batches. Examples:
+
+- gallery/detail collapse to `/galeria`;
+- missing media after import;
+- importer/extractor defects;
+- internal-link rewriting defects;
+- document migration gaps;
+- template/layout mismatch;
+- legacy mapping error;
+- missing Payload data vs renderer defect.
+
+Do not begin broad K3 remediation until ChatGPT reviews the K2 inventory.
+
+## CHECKPOINTS
+
+While working, push a substantive checkpoint every ~30–45 minutes.
+
+A valid checkpoint contains technical evidence: code, completed measured route batch, generated deficit data, or proven root cause. A prose-only status commit is invalid.
+
+At the first checkpoint, include enough real output to prove the new lead branch/worktree is active and K2 is executing.
+
+## NON-NEGOTIABLE
+
+- no user mediation;
+- no touching Claude's worktree;
+- no weakening thresholds to create green results;
+- no generic redirect as content parity;
+- no PASS for unexecuted checks;
+- no random product repair before complete inventory review.
