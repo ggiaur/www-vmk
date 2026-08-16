@@ -4,6 +4,20 @@ Branch: `agent/gemini-final-audit`
 Base: `agent/visual-clone-oracle`
 Mode: **FINALIZATION ONLY — no new scope**
 
+## MANDATORY WORKTREE ISOLATION
+
+**One agent = one branch = one worktree.**
+
+Gemini must NOT run `git checkout`, `git switch`, edit files, reset, stash, or otherwise change branch state inside the shared `/srv/projects/www-vmk` working tree while Claude is active.
+
+Use a dedicated Gemini worktree, preferably:
+
+```text
+/srv/projects/www-vmk-gemini -> agent/gemini-final-audit
+```
+
+Any other physically/Git-isolated worktree is acceptable. If Gemini detects that it is inside the shared checkout, it must move to/create its own worktree before editing. Do not ask the user to arbitrate a branch/worktree collision.
+
 ## Goal
 
 Run one independent, repo-wide final audit while Claude fixes the critical-path CI problem on `agent/visual-clone-oracle`.
