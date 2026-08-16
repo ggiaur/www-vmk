@@ -31,6 +31,7 @@ node_modules
 
 # Visual Clone Oracle generated baselines and reports
 /.visual-oracle/
+/.visual-oracle-depth2/
 
 # Logs
 npm-debug.log*

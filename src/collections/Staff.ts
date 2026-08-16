@@ -34,6 +34,16 @@ export const Staff: CollectionConfig = {
       label: 'Munkatárs Neve',
     },
     {
+      name: 'slug',
+      type: 'text',
+      unique: true,
+      label: 'URL Slug (egyéni profiloldalhoz)',
+      admin: {
+        position: 'sidebar',
+        description: 'Ha üres, nincs egyéni profiloldala (csak a listában szerepel).',
+      },
+    },
+    {
       name: 'position',
       type: 'text',
       required: true,

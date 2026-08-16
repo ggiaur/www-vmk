@@ -19,6 +19,74 @@ export type ScrapedStaffMember = {
   email?: string
 }
 
+export type StaffSlugPair = { name: string; slug: string }
+
+/** /munkatarsak's `.title a[href]` IS the individual staff detail page
+ *  slug (e.g. "Ányos Darinka" -> href="anyos-darinka") -- one fetch of
+ *  the listing gives every name/slug pair, no need to hit each of the
+ *  ~73 individual pages separately. */
+export function parseStaffSlugs(html: string): StaffSlugPair[] {
+  const $ = cheerio.load(html)
+  const pairs: StaffSlugPair[] = []
+  $('.news-index').each((_, el) => {
+    const a = $(el).find('.title a').first()
+    const name = a.text().trim()
+    const href = a.attr('href')?.replace(/^\/+/, '')
+    if (name && href) pairs.push({ name, slug: href })
+  })
+  return pairs
+}
+
+export type StaffSlugBackfillResult = {
+  found: number
+  updated: number
+  skippedNoMatch: number
+  errors: { name: string; error: string }[]
+}
+
+/** Backfills the `slug` field (src/collections/Staff.ts) on already-
+ *  imported staff records by matching name against /munkatarsak's
+ *  listing -- root-cause fix for the ~73 depth-2 MISSING individual
+ *  staff bio routes found in the E1 audit (the people/data already
+ *  exist, only the per-person route was missing). Idempotent: only
+ *  updates records whose slug isn't already set to the target value. */
+export async function backfillStaffSlugs(payload: Payload): Promise<StaffSlugBackfillResult> {
+  const result: StaffSlugBackfillResult = { found: 0, updated: 0, skippedNoMatch: 0, errors: [] }
+
+  let pairs: StaffSlugPair[]
+  try {
+    const html = await fetchHtml('/munkatarsak')
+    pairs = parseStaffSlugs(html)
+  } catch (error) {
+    result.errors.push({ name: '(listing)', error: String(error) })
+    return result
+  }
+  result.found = pairs.length
+
+  for (const { name, slug } of pairs) {
+    try {
+      const existing = await payload.find({
+        collection: 'staff',
+        where: { name: { equals: name } },
+        limit: 1,
+      })
+      const doc = existing.docs[0]
+      if (!doc) {
+        result.skippedNoMatch++
+        continue
+      }
+      if (doc.slug !== slug) {
+        await payload.update({ collection: 'staff', id: doc.id, data: { slug } })
+      }
+      result.updated++
+    } catch (error) {
+      result.errors.push({ name, error: String(error) })
+    }
+  }
+
+  return result
+}
+
 /** Parses /munkatarsak — a single-page staff directory reusing the same
  *  .news-index/.title/.news-lead markup as the news listing. */
 export function parseStaffListing(html: string): ScrapedStaffMember[] {

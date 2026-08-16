@@ -108,6 +108,12 @@ const nextConfig: NextConfig = {
       { source: '/programok-2020', destination: '/programarchivum', permanent: true },
       { source: '/programok-2022', destination: '/programarchivum', permanent: true },
       { source: '/muzeumok-ejszakaja-2018', destination: '/programarchivum', permanent: true },
+      // E1/E2 depth-2 closure: same pattern as above -- both empty on the
+      // live reference (0 chars of body text), redirected to the closest
+      // existing modern equivalent (the page that actually linked to them)
+      // instead of fabricating content for pages the source no longer has.
+      { source: '/marai-programok-a-konyvtarban', destination: '/nka-palyazatok', permanent: true },
+      { source: '/teritesi-dijak', destination: '/szolgaltatasok', permanent: true },
     ]
   },
 }

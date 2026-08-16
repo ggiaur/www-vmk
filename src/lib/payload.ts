@@ -266,6 +266,22 @@ export async function getAllStaff() {
   }
 }
 
+export async function getStaffBySlug(slug: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return null
+    const result = await payload.find({
+      collection: 'staff',
+      where: { slug: { equals: slug } },
+      depth: 1,
+      limit: 1,
+    })
+    return result.docs[0] ?? null
+  } catch {
+    return null
+  }
+}
+
 // ─── Documents ────────────────────────────────────────────────────────────────
 
 export async function getAllDocuments(category?: string) {
