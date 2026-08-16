@@ -1,209 +1,128 @@
 # COLLAB.md — www-vmk CLONE PARITY RECOVERY
 
-Ez a fájl a www-vmk projekt egyetlen operatív koordinációs forrása.
+Ez a repository egyetlen operatív koordinációs forrása.
 
-> Alapszabály: a felhasználó NEM közvetítő az AI-k között. GitHub commit/branch + ez a fájl jelenti az átadást.
+> A felhasználó NEM közvetítő az AI-k között. GitHub commit/branch + ez a fájl jelenti az átadást.
 
-# 1. Üzemmód
+## 1. AKTUÁLIS CÉL
 
 **CLONE PARITY RECOVERY: ON**
 
-A cél nem pusztán működő modern VMK-oldal, hanem a jelenlegi `https://www.vmk.hu/` nyilvános magyar oldalának tartalmilag, médiában, linkekben, funkcióban és megjelenésben veszteségmentes modern klónja.
+A cél a jelenlegi `https://www.vmk.hu/` nyilvános magyar oldalának tartalmilag, médiában, linkekben, funkcióban és megjelenésben veszteségmentes modern klónja.
 
-A korábbi „FINALIZATION / merge-readiness” prioritás FELFÜGGESZTVE addig, amíg a valódi clone-parity nincs bizonyítva.
+A korábbi FIRST-HOP / Depth-2 / Full-site `VERIFIED`, `MISSING=0`, `BROKEN=0` állítások **NEM clone-parity bizonyítékok**. Azok route-coverage történeti adatok בלבד.
 
-# 2. Korábbi parity baseline — VISSZAVONVA
+A jelenlegi branch **NEM release candidate**, amíg a valódi clone parity nincs mérve és lezárva.
 
-A korábbi állítások:
-- FIRST-HOP VERIFIED / MISSING=0 / BROKEN=0;
-- Depth-2 VERIFIED;
-- Full-site H1-H4 VERIFIED;
-
-**NEM használhatók többé clone-parity acceptance evidence-ként.**
-
-Indok:
-
-1. `docs/FIRST_HOP_ROUTE_MATRIX.md` sok `CLONED` minősítést csak ilyen evidence alapján adott: HTTP 200 + hozzávetőleges szószám + van H1. Ez nem bizonyít azonos tartalmat, képeket, linkeket, dokumentumokat vagy layoutot.
-2. `docs/FULL_SITE_ROUTE_MATRIX.md` 1626 gallery/archive route jelentős részét ARCHIVED/LEGACY kategóriával `/galeria` fallbackre irányította, és explicit leírja, hogy a tényleges fotók 1:1 migrációja nem történt meg. Ez ellentétes a teljes klón céljával.
-3. A jelenlegi `tools/visual-oracle.mjs` contentSimilarity egyedi szavak halmazának Jaccard-indexe. Nem érzékeli megbízhatóan a sorrendet, ismétlődést, hiányzó bekezdéseket/szekciókat; a sitewide chrome szavai torzíthatják az eredményt.
-4. A jelenlegi snapshot képeknél/linkeknél csak darabszámot tárol (`imageCount`, `linkCount`), nem ellenőrzi, hogy ugyanazok a képek/linkek vannak-e jelen, működnek-e, illetve ugyanarra a tartalomra mutatnak-e.
-5. A Visual Oracle pixel/content gate nem volt kötelezően összekötve a route-mátrix `CLONED` klasszifikációval. Emiatt route-parity PASS és visual/content FAIL egyszerre is létezhetett.
-
-Következmény: a jelenlegi branch **NEM release candidate** clone-parity szempontból, amíg az alábbi v2 audit nem fut le és a feltárt eltérések nincsenek lezárva.
-
-# 3. Kötelező agent-izoláció
+## 2. KÖTELEZŐ MUNKASZERVEZÉS
 
 **1 agent = 1 branch = 1 worktree.**
 
-- Claude: saját worktree, primary branch `agent/visual-clone-oracle`.
-- Gemini: saját worktree, audit branch `agent/gemini-final-audit` vagy külön új audit branch.
+- Claude: primary implementer, saját worktree, branch `agent/visual-clone-oracle`.
+- Gemini: independent auditor, saját worktree, branch `agent/gemini-final-audit`.
 - Shared `/srv/projects/www-vmk` checkoutban párhuzamos munka alatt tilos branch-váltás/szerkesztés.
-- ChatGPT csak GitHub API/connectoron keresztül koordinál/review-zik.
+- ChatGPT csak GitHub connectoron keresztül koordinál és review-zik.
+- Sem Claude, sem Gemini nem kérheti a felhasználótól, hogy promptot vigyen át, branch/worktree konfliktust oldjon meg vagy rutinszerű GitHub műveletet végezzen.
 
-# 4. Szerepek
+## 3. MIÉRT VONTUK VISSZA A KORÁBBI PARITY-T
 
-## Claude — PRIMARY IMPLEMENTER
-- építi a parity mérőt és javítja a valódi eltéréseket;
-- nem minősíti saját munkáját végleg VERIFIED-nek;
-- csak evidence-del ad vissza.
+A régi ellenőrzés hamis pozitívokat engedett át:
 
-## Gemini — INDEPENDENT PARITY AUDITOR
-- Claude implementációjától független mintavételes/reference audit;
-- kifejezetten hamis pozitív PASS-okat, hiányzó média/link/tartalom hibákat keres;
-- nem lazítja a gate-eket.
+- `HTTP 200 + H1 + szószám` alapján is lehetett `CLONED`;
+- a text similarity word-set/Jaccard alapú volt, nem sorrendtartó main-content összevetés;
+- képeknél/linkeknél csak darabszámot mért, nem identitást/célt/hibát;
+- 1626 gallery/archive route jelentős része generikus `/galeria` fallbacket kapott valódi 1:1 fotó/tartalom migráció nélkül;
+- route-mátrix PASS nem volt kötelezően összekötve visual/content/media/link PASS-szal.
 
-## ChatGPT — ORCHESTRATION / ACCEPTANCE
-- módszertant és gate-et definiál;
-- remote evidence-et ellenőriz;
-- hamis pozitív acceptance-et visszautasít;
-- `BALL: USER` csak valódi végső merge/launch döntéshez.
+Ezért a clone-parity acceptance modell újraépítendő.
 
-# 5. Clone Parity Oracle v2 — KÖTELEZŐ HARD GATE
+## 4. CLONE PARITY ORACLE v2 — HARD GATE
 
-A v2-nek referencia és klón oldalpárt kell összehasonlítania. Egy oldal csak akkor lehet `PARITY_PASS`, ha az alábbi dimenziók mind megfelelőek.
+Egy route csak akkor lehet `PARITY_PASS`, ha minden alkalmazható dimenzió PASS:
 
-## 5.1 URL / route
-- referencia HTTP/final URL rögzítve;
-- klón HTTP/final URL rögzítve;
-- kontrollálatlan 404/5xx = FAIL;
-- redirect csak akkor PASS, ha:
-  - a referencia is azonos/canonical módon redirectel, VAGY
-  - a céloldal bizonyítottan ugyanazt a tartalmat/funkciót reprezentálja;
-- generikus listaoldalra redirect nem helyettesíthet egy konkrét referencia detail/gallery oldalt.
+1. **URL** — referencia és klón státusz/final URL; generikus detail→lista redirect nem parity.
+2. **TEXT** — `main` tartalom sorrendtartó összevetése; reference meaningful text coverage >= 99%; headings/listák/táblák/metaadatok is.
+3. **MEDIA** — konkrét tartalmi képek/galériaelemek inventory + tartalom-alapú megfeleltetés; broken image FAIL; reference media coverage 100% kivéve review-zott dekoratív kivétel.
+4. **LINKS/DOCS** — anchor+href+típus semantic parity; belső/külső/mailto/tel/PDF/download; clone target health; broken link FAIL.
+5. **STRUCTURE** — headings, paragraph/list/table/form/gallery/card/document blokkok.
+6. **FUNCTION** — ahol releváns valódi E2E: search, kapcsolat, hírlevél, teremfoglalás, registration, wishbasket, galéria detail, admin publish→public, PDF download.
+7. **VISUAL** — desktop 1440 + mobile 390 reference/local screenshot diff; magas eltérés nem söpörhető félre route/content smoke miatt.
 
-## 5.2 Szöveg / tartalom
-A globális site chrome (header/nav/sidebar/footer/cookie) és az oldal fő tartalma külön kezelendő.
+A régi word-count, word-set/Jaccard, imageCount/linkCount, HTTP-200-only logika **nem acceptance evidence**.
 
-Kötelező:
-- `main`/tartalmi blokk normalizált, sorrendtartó szövegének összevetése;
-- reference-text coverage mérés: a referencia érdemi szövegének legalább 99%-a legyen jelen vagy explicit, review-zott transzformációval megfeleltetve;
-- címek/h1-h3 sorrend és szöveg összevetése;
-- bekezdések, listák, táblák és fontos metaadatok (dátum, helyszín, kontakt, szerző stb.) jelenléte;
-- puszta word-set/Jaccard nem használható acceptance gate-ként.
+## 5. K1 — CLAUDE AKTUÁLIS FELADATA
 
-## 5.3 Képek / média
-Nem elég a darabszám.
-
-Kötelező oldalanként:
-- tartalmi `img`, `picture/srcset`, releváns CSS background image és galériaelem inventory;
-- reference és clone médiák megfeleltetése vizuális hash/perceptuális hash vagy más tartalom-alapú összevetéssel, mert a clone rehostolhatja a fájlokat;
-- broken image (`naturalWidth=0`, 4xx/5xx asset) = FAIL;
-- referencia tartalmi képfedettség cél: 100%, kivéve explicit bizonyított sitewide/dekoratív kivétel;
-- galéria detailnél az album képeinek 1:1 tartalmi lefedése kötelező; `/galeria` fallback önmagában nem PASS.
-
-## 5.4 Linkek / dokumentumok
-Nem elég a linkCount.
-
-Kötelező:
-- `main` tartalmi linkek listája anchor text + href + típus szerint;
-- belső linkek canonical/routeOverride normalizálása után semantic set összevetés;
-- külső linkek, mailto, tel, PDF/download linkek jelenlétének összevetése;
-- minden clone belső/download link tényleges HTTP ellenőrzése;
-- broken link = FAIL;
-- referencia érdemi link coverage cél: 100%, kivéve explicit review-zott legacy/invalid reference link.
-
-## 5.5 Struktúra
-Kötelező összevetni:
-- headings;
-- paragraph/list/table count és kulcstartalom;
-- formok és mezők;
-- gallery/card/list elemek;
-- dokumentum/download blokkok;
-- kapcsolati/nyitvatartási adatok.
-
-## 5.6 Funkció
-Funkcionális oldalt nem lehet statikus 200/H1 alapján PASS-nak minősíteni.
-
-Valódi E2E szükséges ahol releváns:
-- search;
-- kapcsolat;
-- hírlevél;
-- teremfoglalás;
-- esemény/registration;
-- wishbasket;
-- galéria böngészés/detail;
-- admin create/edit/publish -> public frontend;
-- dokumentum/PDF letöltés.
-
-## 5.7 Vizuális parity
-Desktop 1440 és mobile 390 kötelező reprezentatív oldalakra/page-family-kre.
-
-- screenshot reference vs clone ugyanabban a browser/runtime-ban;
-- pixel/coarse diff report kötelező;
-- eltérő magasságot tilos úgy normalizálni, hogy a tartalmi hiány vizuálisan elrejtődjön;
-- a reportnak explicit meg kell mutatnia reference/local képet és top diff régiókat;
-- magas vizuális diff nem söpörhető félre azért, mert route/content smoke zöld.
-
-# 6. K1 — Oracle v2 megépítése és FALSE-POSITIVE canary audit
-
-**STATUS: IN_PROGRESS**
-
+**STATUS: IN_PROGRESS**  
 **BALL: CLAUDE**
 
-Claude következő feladata:
+### PRIORITÁS MOST
 
-1. Ne folytassa a merge-readiness/final CI lezárást fő prioritásként. A CI-fix megőrzendő, de jelenleg másodlagos.
-2. Implementálja a Clone Parity Oracle v2-t a fenti dimenziókkal. Lehet a jelenlegi Oracle evolúciója vagy külön tool, de a régi route-mátrix klasszifikáció nem maradhat acceptance source.
-3. Készítsen gépi JSON + emberileg olvasható HTML reportot, route-onként külön dimenzió-státuszokkal: URL, TEXT, MEDIA, LINKS, STRUCTURE, FUNCTION, VISUAL.
-4. Első canary futás legalább 20, tudatosan vegyes referencia oldalon:
+**Kizárólag Clone Parity Oracle v2 + false-positive canary.**
+
+A CI/WCAG korábbi javításait meg kell őrizni, de a clone-parity mérés elkészültéig **nem téríthetik el a fő munkát**. A jelenlegi remote CI külön ismert mellékszál: `npm ci` azért bukik, mert `package-lock.json` nincs szinkronban (`yaml@2.9.0` hiányzik). Ezt később gyorsan zárni kell, de NEM helyettesítheti K1-et.
+
+### Claude kötelező deliverable
+
+1. Implementáld az Oracle v2-t JSON + HTML riporttal.
+2. Minden route-nál külön státusz: `URL / TEXT / MEDIA / LINKS / STRUCTURE / FUNCTION / VISUAL`.
+3. Futtass legalább 20 tudatosan vegyes canary route-ot:
    - `/`;
-   - legalább 5 aktuális news/event detail;
-   - legalább 5 statikus/intézményi oldal;
-   - legalább 3 branch/department oldal;
-   - `/gallery` + legalább 3 konkrét referencia galéria/detail/archive route;
+   - >=5 aktuális news/event detail;
+   - >=5 static/institutional;
+   - >=3 branch/department;
+   - `/gallery` + >=3 konkrét gallery/detail/archive;
    - `/wishbasket`;
-   - legalább 1 dokumentum/PDF-heavy oldal.
-5. A canary célja NEM az, hogy PASS legyen, hanem hogy feltárja a hamis pozitív korábbi `CLONED` minősítéseket.
-6. Készítsen `docs/CLONE_PARITY_GAP_REPORT.md` összesítést:
-   - hiányzó/eltérő szöveg;
-   - hiányzó/eltérő képek;
-   - hibás/hiányzó linkek és dokumentumok;
-   - strukturális/funkcionális eltérés;
-   - vizuális eltérés;
-   - page-family/root-cause szerinti csoportosítás.
-7. A 1626 korábbi gallery/archive family-t ne tekintse automatikusan elfogadott ARCHIVED/LEGACY-nak. Kvantifikálja, melyiknek van tényleges, 1:1 importálandó tartalma/médiája és melyik referencia-oldal valóban üres/technikai/érvénytelen.
-8. Ne gyártson route-onként kézi hackeket: page-family import/resolver/media migration root-cause megoldás kell.
+   - >=1 PDF/document-heavy oldal.
+4. Készíts `docs/CLONE_PARITY_GAP_REPORT.md`-t konkrét hiányzó szövegekkel, képekkel, linkekkel/PDF-ekkel, strukturális és vizuális eltérésekkel.
+5. Kvantifikáld a korábbi 1626 gallery/archive család valódi tartalmi/média deficitjét; generikus `/galeria` redirect nem PASS.
+6. Root-cause/page-family megoldást tervezz; ne route-onként kézi hackeket.
 
-## K1 acceptance
+### EXECUTION CADENCE — KÖTELEZŐ
 
-K1 akkor adható review-ra, ha:
-- Oracle v2 konkrétan képes kimutatni olyan eltéréseket, amelyeket a régi `CLONED` logika átengedett;
-- legalább 20-route canary riport elkészült;
-- minden dimenzió külön mérhető;
-- hiányzó képek és hibás linkek ténylegesen megjelennek a riportban;
+Ez nem státuszszínház, hanem annak bizonyítása, hogy a munka ténylegesen halad.
+
+- **AZONNAL kezdd K1-et.**
+- Legfeljebb **30 percen belül** legyen az első technikai checkpoint push: Oracle v2 skeleton/részfunkció vagy legalább 5-route valódi canary output. Puszta prose/status commit nem elég.
+- Ezután minden kb. **30–45 perc aktív munka** után legyen új, tényleges evidence checkpoint, amíg K1 kész nincs.
+- Ha blocker van, ne állj meg: pushold a reprodukálható blockert, jelöld `BLOCKED`-ként, és folytasd azt a K1-részt, amely függetlenül végezhető.
+- Ne kérj felhasználói döntést technikai részlethez.
+- Ne add vissza a labdát félkész riporttal.
+
+### K1 acceptance
+
+Csak akkor:
+
+- Oracle v2 valóban kimutat korábbi hamis `CLONED` eredményeket;
+- >=20 route canary elkészült;
+- mind a 7 dimenzió külön mérhető;
+- hiányzó képek és hibás/hiányzó linkek/PDF-ek konkrétan szerepelnek;
+- `docs/CLONE_PARITY_GAP_REPORT.md` elkészült;
 - nincs gate-lazítás azért, hogy több PASS legyen.
 
-Átadás:
+Átadás csak ekkor:
 
 ```text
 STATUS: READY_FOR_REVIEW
 BALL: CHATGPT
 ```
 
-# 7. K2–K4 — utána következő lezárási terv
+## 6. GEMINI PÁRHUZAMOS SZÁL
 
-## K2 — teljes referencia inventory
-- saturation crawl + page-family inventory;
-- text/media/link/document/function deficit kvantifikálása;
-- nincs több „MISSING=0” csak HTTP státusz alapján.
+Gemini külön worktree-ben független canary parity auditot végez a `GEMINI_TASK.md` alapján. Claude nem vár Geminire az Oracle v2 megépítésével. Gemini sem vár Claude kész Oracle-jére: kézi/reference evidence-del már most képes false-positive hibákat feltárni.
 
-## K3 — root-cause parity closure
-Prioritás:
-1. current first-hop;
-2. current depth-2;
-3. aktuális news/events/static pages;
-4. gallery/media/document családok;
-5. legacy/archive, ahol a referencián tényleges tartalom van.
+## 7. CHATGPT FELADATA
 
-## K4 — final acceptance
-Csak akkor:
-- content parity bizonyított;
-- media parity bizonyított;
-- link/document parity bizonyított;
-- funkciók E2E zöldek;
-- vizuális parity page-family szinten elfogadott;
-- GitHub CI zöld;
-- security/WCAG gate zöld;
-- PR mergeable.
+`BALL: CHATGPT` esetén azonnal:
 
-Ekkor és csak ekkor lehet `BALL: USER` a merge/launch döntéshez.
+- ellenőrzi a diffet és a riportokat;
+- összeveti Claude Oracle eredményét Gemini független mintájával;
+- hamis PASS esetén `CHANGES_REQUESTED` + `BALL: CLAUDE`;
+- csak valódi parity bizonyítás után enged K2/K3/K4 felé.
+
+## 8. UTÁNA
+
+- **K2:** teljes reference inventory és deficit-kvantifikálás.
+- **K3:** page-family/root-cause parity closure, prioritás: current first-hop → depth-2 → aktuális content → gallery/media/docs → valódi legacy content.
+- **K4:** final acceptance: content/media/link/function/visual parity + CI/security/WCAG + mergeability.
+
+`BALL: USER` csak a valódi végső merge/launch döntésnél lehet.
