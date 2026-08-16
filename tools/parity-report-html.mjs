@@ -15,6 +15,7 @@ function badge(status) {
     : status === 'PARTIAL' || status === 'PARITY_PARTIAL' ? '#c90'
     : status === 'NOT_EVALUATED' || status === 'NOT_APPLICABLE' ? '#999'
     : status === 'CANARY_MAPPING_ERROR' ? '#66c'
+    : status === 'METHODOLOGY_BLOCKED' ? '#a55ba0'
     : '#c33'
   return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;background:${color};color:#fff;font-size:12px;font-weight:600">${esc(status)}</span>`
 }

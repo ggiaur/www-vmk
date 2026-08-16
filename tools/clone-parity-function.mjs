@@ -15,6 +15,7 @@
 import { chromium } from 'playwright'
 import fs from 'fs'
 import path from 'path'
+import { execFileSync } from 'child_process'
 
 function parseArgs(argv) {
   const args = {}
@@ -29,6 +30,50 @@ function parseArgs(argv) {
 const args = parseArgs(process.argv.slice(2))
 const CLONE_BASE = args['clone-base'] || 'http://localhost:3011'
 const OUT_DIR = args['out'] || 'docs/parity-oracle-v2'
+const PG_CONTAINER = args['pg-container'] || 'vmk-postgres'
+const PG_USER = args['pg-user'] || 'vmk_user'
+const PG_DB = args['pg-db'] || 'vmk_db'
+
+// K1 round 3 (ChatGPT review, commit f284c89, item 4): a UI "success"
+// message alone isn't evidence the form's persistence side effect actually
+// happened -- the request could 200 while a server-side write silently
+// fails. Query the real DB for the exact marker row via `docker exec` psql
+// against the same docker-compose Postgres the app itself writes to (see
+// docker-compose.yml `vmk-postgres`), then delete that specific test row
+// and re-query to confirm cleanup, rather than leaving test data behind or
+// just asserting "it was probably fine."
+function sqlLiteral(s) {
+  return `'${String(s).replace(/'/g, "''")}'`
+}
+
+function psql(sql) {
+  try {
+    const out = execFileSync('docker', ['exec', PG_CONTAINER, 'psql', '-U', PG_USER, '-d', PG_DB, '-tAc', sql], {
+      encoding: 'utf8',
+      timeout: 10000,
+    })
+    return out.trim()
+  } catch (e) {
+    return { error: String(e.message || e) }
+  }
+}
+
+function verifyPersistedAndCleanup(table, column, marker) {
+  const selectSql = `SELECT id FROM ${table} WHERE ${column} = ${sqlLiteral(marker)} ORDER BY id DESC LIMIT 1;`
+  const found = psql(selectSql)
+  if (typeof found !== 'string' || found === '') {
+    return { persisted: false, cleanupVerified: false, reason: typeof found === 'object' ? `DB query failed: ${found.error}` : `no row found in ${table} matching marker after submit -- form success message was not backed by a real DB write` }
+  }
+  const id = found
+  const deleteSql = `DELETE FROM ${table} WHERE id = ${id};`
+  const delResult = psql(deleteSql)
+  if (typeof delResult === 'object') {
+    return { persisted: true, persistedRowId: id, cleanupVerified: false, reason: `row persisted (id=${id}) but cleanup DELETE failed: ${delResult.error}` }
+  }
+  const recheck = psql(`SELECT id FROM ${table} WHERE id = ${id};`)
+  const cleanupVerified = recheck === ''
+  return { persisted: true, persistedRowId: id, cleanupVerified, reason: cleanupVerified ? undefined : `DELETE ran but row ${id} still present on recheck` }
+}
 
 async function checkSearch(browser) {
   const ctx = await browser.newContext()
@@ -67,10 +112,14 @@ async function checkContactForm(browser) {
     await page.waitForTimeout(1500)
     const bodyText = await page.locator('body').textContent()
     const looksSuccessful = /köszönjük|sikeres/i.test(bodyText)
+    if (!looksSuccessful) {
+      return { status: 'FAIL', reason: 'no success confirmation text after submit', evidence: { marker } }
+    }
+    const db = verifyPersistedAndCleanup('contact_messages', 'name', marker)
     return {
-      status: looksSuccessful ? 'PASS' : 'FAIL',
-      reason: looksSuccessful ? undefined : 'no success confirmation text after submit',
-      evidence: { marker },
+      status: db.persisted && db.cleanupVerified ? 'PASS' : 'FAIL',
+      reason: db.reason,
+      evidence: { marker, ...db },
     }
   } catch (e) {
     return { status: 'FAIL', reason: String(e.message || e) }
@@ -94,7 +143,12 @@ async function checkWishbasket(browser) {
     await page.locator('input[name="title"]').first().fill(marker)
     await page.locator('button[type="submit"]').first().click()
     await page.waitForSelector('text=Köszönjük', { timeout: 5000 })
-    return { status: 'PASS', evidence: { marker, note: 'submitted successfully; DB row left for manual cleanup verification, see gap report' } }
+    const db = verifyPersistedAndCleanup('wish_requests', 'title', marker)
+    return {
+      status: db.persisted && db.cleanupVerified ? 'PASS' : 'FAIL',
+      reason: db.reason,
+      evidence: { marker, ...db },
+    }
   } catch (e) {
     return { status: 'FAIL', reason: String(e.message || e) }
   } finally {

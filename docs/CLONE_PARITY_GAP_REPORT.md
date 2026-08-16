@@ -15,16 +15,47 @@ per COLLAB.md K1, the canary's job is to surface what the old model missed.
 | Overall | Count |
 |---|---|
 | Scored routes | 22 / 22 (0 excluded as `CANARY_MAPPING_ERROR`) |
-| PARITY_PASS | 1 / 22 |
+| PARITY_PASS | 0 / 22 |
 | PARITY_PARTIAL | 0 / 22 |
-| PARITY_FAIL | 21 / 22 |
+| PARITY_FAIL | 22 / 22 |
 
-Only `/konyvtarunkrol` fully passes all four evaluated dimensions (URL/TEXT/MEDIA/LINKS
-at 100%/PASS/PASS/PASS). Every other canary route fails on at least one real,
-evidenced dimension. All 22 canary routes' reference paths resolved correctly this
-round (the `/kapcsolat` → `/elerhetosegeink` mapping fix from the first pass holds);
-`CANARY_MAPPING_ERROR` is implemented and would exclude a route from these totals
-if its reference path were wrong, but none triggered it here.
+Every canary route fails on at least one real, evidenced dimension, across
+all 7 dimensions (URL, TEXT, MEDIA, LINKS, STRUCTURE, FUNCTION, VISUAL). All
+22 canary routes' reference paths resolved correctly this round (the
+`/kapcsolat` → `/elerhetosegeink` mapping fix from an earlier round holds);
+`CANARY_MAPPING_ERROR` is implemented and would exclude a route from these
+totals if its reference path were wrong, but none triggered it here.
+
+## K1 round 3: fixed a real false-positive in the scoring itself
+
+ChatGPT's round-2 review (commit `f284c89`) found a P0 bug in the tool, not
+the site: `overall`/`PARITY_PASS` was computed from only 4 of the 7 gate
+dimensions (URL/TEXT/MEDIA/LINKS) — `STRUCTURE`, `FUNCTION`, and `VISUAL`
+were never folded into the final verdict, even after `clone-parity-visual.mjs`
+and `clone-parity-function.mjs` merged real data for those dimensions into
+the same `results.json`. The round-2 report's headline "`PARITY_PASS: 1/22`"
+(`/konyvtarunkrol`) was itself a false positive by the tool's own stated
+gate: that route's VISUAL diff is 22.25% desktop / 48.58% mobile (`FAIL`
+threshold is >40%), which round 2's scoring never looked at.
+
+Fixed by extracting the decision into one shared function,
+`computeOverall()` in `tools/lib/parity-scoring.mjs`, used by both the
+initial oracle pass and a new required last pipeline step,
+`tools/clone-parity-finalize.mjs`, which recomputes `overall` for every
+route from the fully-merged URL/TEXT/MEDIA/LINKS/STRUCTURE/FUNCTION/VISUAL
+data and regenerates `summary.json`. A route is `PARITY_PASS` only if every
+*applicable* dimension is `PASS` — `NOT_APPLICABLE` (with a reason) is the
+only status excluded from the requirement; `NOT_EVALUATED`,
+`METHODOLOGY_BLOCKED`, `ERROR`, `PARTIAL`, and `FAIL` all block it. Running
+`clone-parity-finalize.mjs` on this round's data changed exactly one route's
+verdict: `/konyvtarunkrol` went from the round-2-reported `PARITY_PASS` to
+the correct `PARITY_FAIL` (VISUAL fails), which is direct proof the fix
+does what it's supposed to.
+
+A falsification self-test (`tests/clone-parity-scoring.test.ts`, 8 cases,
+run via `npm run test:unit`) asserts this can't regress: a synthetic route
+passing URL/TEXT/MEDIA/LINKS but failing STRUCTURE, VISUAL, or FUNCTION
+individually must never resolve to `PARITY_PASS`.
 
 ## Methodology note: two real bugs found and fixed while building this tool
 
@@ -65,12 +96,9 @@ make failures look smaller.
   K1 rule ("generikus listaoldalra redirect nem helyettesíthet egy konkrét
   referencia detail/gallery oldalt"), this is correctly **not** a pass — see
   Gallery/Archive Family section below for the full quantification.
-- 1/22 (`/kapcsolat`): reference 404s. **This is a canary-list mapping bug, not
-  a site issue** — the reference's real contact page is almost certainly
-  `/elerhetosegeink` (matches the reference's own nav menu, scraped in an earlier
-  round). Needs a `refPath` correction in `tools/parity-canary-routes.json`
-  before the next run; flagged rather than silently left in the FAIL count as if
-  it were a real content gap.
+- `/kapcsolat`'s `refPath` was corrected to `/elerhetosegeink` in an earlier
+  round (was 404ing under the wrong path) and resolves correctly (`PASS`) in
+  every round since — no longer an open issue.
 
 ### TEXT (ordered main-content coverage, not word-set Jaccard)
 
@@ -98,37 +126,59 @@ root causes found, not one blanket "text is missing":
    resolved in this K1 pass; each is listed with its coverage % and a sample of
    missing reference lines in `docs/parity-oracle-v2/results.json`.
 
-### MEDIA (content-identity matching, K1 review round 2)
+### MEDIA (content-identity matching + full delivery-mechanism extraction)
 
-The first K1 pass only compared image *counts* and alt-text overlap, which
-the K1 review correctly flagged as able to pass the wrong images (a rehosted
-reference photo has a different URL on the clone, so URL/count comparison
-alone can't tell "same photo, different host" from "no photo at all," and
-can't tell "count matches" from "these are actually the right images").
+The round-1 pass only compared image *counts* and alt-text overlap. Round 2
+replaced that with real content-identity matching
+(`compareMediaByIdentity` in `tools/clone-parity-oracle.mjs`): downloads up
+to 20 sampled images per side, computes a perceptual hash (8x8 grayscale
+average-hash via `sharp`, already a project dependency) for each, and
+matches reference images to clone images by Hamming distance (≤10 bits of
+64 counts as a match) rather than URL or position. **Verified this actually
+works, not just runs**: on the homepage, it correctly matched a reference
+image at `/_upload/news_pic/600x600/4_5787.png` to the clone's
+`/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fnyari-nyitvatartas-2026.png`
+(distance 1/64) — a completely different URL, host, and encoding, exactly
+the rehosting scenario the review named — while correctly rejecting the
+reference's own generic fallback icon (`/assets/images/img_news.png`,
+repeated many times in the "related news" sidebar) as unmatched (distance
+25/64, well past the threshold).
 
-Replaced with real content-identity matching (`compareMediaByIdentity` in
-`tools/clone-parity-oracle.mjs`): downloads up to 20 sampled images per side,
-computes a perceptual hash (8x8 grayscale average-hash via `sharp`, already
-a project dependency) for each, and matches reference images to clone images
-by Hamming distance (≤10 bits of 64 counts as a match) rather than URL or
-position. **Verified this actually works, not just runs**: on the homepage,
-it correctly matched a reference image at `/_upload/news_pic/600x600/
-4_5787.png` to the clone's `/_next/image?url=%2Fapi%2Fmedia%2Ffile%2F
-nyari-nyitvatartas-2026.png` (distance 1/64) — a completely different URL,
-host, and encoding, exactly the rehosting scenario the review named — while
-correctly rejecting the reference's own generic fallback icon
-(`/assets/images/img_news.png`, repeated many times in the "related news"
-sidebar) as unmatched (distance 25/64, well past the threshold), since that
-icon isn't real page content the clone needs to replicate.
+**Round 3 fix (ChatGPT review, commit `f284c89`, item 2)**: round 2 disclosed
+that the gallery-archive family's real thumbnails weren't showing up in
+extraction at all. Root cause, confirmed directly against the live
+reference (`curl https://www.vmk.hu/gallery/folder/1023`): the album grid
+renders each photo as `<figure style="background-image:url('...')"
+alt="...">`, not `<img src>` — 16 of these inside `.col-content` on that one
+page alone. Extraction (`extractPageData` in `tools/clone-parity-oracle.mjs`)
+now inventories three delivery mechanisms, not just `<img src>`:
+`[style*="background-image"]` (parsed via regex), `img[srcset]`/
+`source[srcset]`, and broader lazy-load attribute fallbacks
+(`data-src`/`data-original`/`data-lazy-src`), deduped by resolved URL. This
+is a measurable, verified fix, not a guess: reference image counts on the
+gallery-archive canary routes went from the round-2-reported near-zero to
+**12, 12, 8, 17, and 19** real extracted images across `/gallery`,
+`/galeria`, `/galeria/vizcsepp-2026-03-09`, `/gallery/folder/1023`, and
+`/a-mi-vilagunk-...` respectively. All five still correctly score MEDIA
+`FAIL` — 0% identity coverage, i.e. the clone genuinely doesn't have these
+specific reference photos, a real content gap the tool can now see and
+quantify precisely (matched/missing per photo in `results.json`), not a
+methodology blind spot.
+
+New safety net for the remaining risk (route where extraction *still* finds
+nothing on a media-heavy page): a media-heavy family (`gallery`,
+`gallery-archive`, `gallery-detail`, `gallery-hub`) reporting `refCount: 0`
+now scores `METHODOLOGY_BLOCKED`, not a vacuous `PASS` — never satisfies the
+`PARITY_PASS` gate. Not triggered on this canary (extraction now succeeds
+everywhere it's tried), but stops a future 0-vs-0 case from silently passing.
 
 Result across the canary: **5/22 MEDIA PASS** — `/hirek/202608_spiro-80-...`
-(1/1 sampled images matched, real identity coverage, not just a vacuous
-zero-vs-zero case), plus `/konyvtarunkrol`, `/munkatarsak`, `/nyitvatartas`,
-`/kapcsolat` (no images on either side, vacuously consistent). The remaining
-17/22 are FAIL with 0% identity coverage on their sampled images — either a
-genuine content gap or, for the gallery-archive family specifically, the
-extraction limitation noted below. Full per-route matched/missing image
-lists (not just counts) are in `docs/parity-oracle-v2/results.json`.
+(1/1 sampled images matched, real identity coverage), plus `/konyvtarunkrol`,
+`/munkatarsak`, `/nyitvatartas`, `/kapcsolat` (genuinely no images on either
+side for these specific routes — non-media-heavy families, so 0/0 is treated
+as a real pass, not methodology-blocked). The remaining 17/22 are FAIL with
+0% identity coverage on their sampled images, a real, now fully-explained
+content gap.
 
 - **Broken images**: gallery-family routes (`/gallery`, `/galeria`,
   `/gallery/folder/1023`, `/a-mi-vilagunk-...`) still show **46 broken
@@ -136,19 +186,6 @@ lists (not just counts) are in `docs/parity-oracle-v2/results.json`.
   `http://localhost:3011/brand/logos/vmk-logo.png` returns **404**. Same
   root cause across all four, a genuine bug this tool found (not fixed in
   K1, per the "no product remediation" rule — recorded for K2/K3).
-- **Discovered methodology limitation, gallery-archive family specifically**:
-  the individual album page's `.col-content` genuinely lists 18 named photo
-  files in its *text/links* (`Mi-vilagunk-20161205--01.jpg` etc., confirmed
-  in the raw reference HTML), but the actual `<img>` elements sampled from
-  that same content area are dominated by the "related news" sidebar's
-  repeated generic icon, not the gallery's own photos — meaning this
-  page-family's real thumbnails likely render via CSS background-image or a
-  JS-driven lightbox rather than plain `<img src>` tags, which this
-  dimension can't currently see. Documented rather than silently producing
-  a falsely-optimistic or falsely-pessimistic MEDIA score for this specific
-  family; a targeted extraction fix (matching thumbnails via the anchor
-  hrefs already captured in LINKS, not just `<img>`) is a reasonable K1
-  follow-up or K2 item.
 
 ### LINKS
 
@@ -192,23 +229,44 @@ raw JSON for exactly this check. Full per-route diff images are in the
 HTML report (`docs/parity-oracle-v2/report.html`) for visual inspection,
 not just a percentage.
 
-### FUNCTION (real E2E, not static smoke)
+This dimension is why `/konyvtarunkrol`'s overall verdict changed in round
+3 (see "K1 round 3" section above): its VISUAL diff (22.25% desktop /
+48.58% mobile) exceeds the `FAIL` threshold, and now that VISUAL is
+correctly folded into `overall`, that route is `PARITY_FAIL` like every
+other canary route -- not the `PARITY_PASS` round 2 reported.
+
+### FUNCTION (real E2E with verified DB persistence, not UI-success-text-only)
 
 Implemented (`tools/clone-parity-function.mjs`) for the three canary routes
 with real interactive workflows in scope this round -- **search, kapcsolat
-(contact form), wishbasket** -- all **PASS** with real evidence, not a
-static 200/H1 check:
+(contact form), wishbasket** -- all **PASS** with real evidence.
+
+**Round 3 fix (ChatGPT review, commit `f284c89`, item 4)**: round 2's
+contactForm/wishbasket checks only asserted a UI success message rendered,
+which the review correctly flagged as insufficient where the workflow's
+whole point is a persisted side effect -- a 200 response and a success
+toast don't prove the row was actually written. Fixed: after the UI
+confirms success, the check now queries the real Postgres DB directly
+(`docker exec vmk-postgres psql`, same database the app itself writes to)
+for a row matching the test's unique marker, then deletes that exact row
+and re-queries to confirm the delete took effect, before returning PASS.
+`PASS` now requires both `persisted: true` and `cleanupVerified: true`, not
+just a UI string match.
 
 - **search**: typed a real query into `/kereses`, got 10 real results
-  rendered, clicked through, landed on the actual article page.
-- **kapcsolat**: submitted the real contact form with a unique marker,
-  confirmed the success message renders.
-- **wishbasket**: submitted the real wish-request form with a unique
-  marker, confirmed the success message renders.
+  rendered, clicked through, landed on the actual article page
+  (`/hirek/konyvtar-a-gyermekreszlegen-tul`).
+- **kapcsolat**: submitted the real contact form with marker
+  `K1-FUNC-TEST-1786908468343`; confirmed success message, confirmed the
+  row landed in `contact_messages` (id `8`), deleted it, confirmed the
+  delete (`cleanupVerified: true`).
+- **wishbasket**: submitted the real wish-request form with marker
+  `K1-FUNC-TEST-1786908473303`; confirmed success message, confirmed the
+  row landed in `wish_requests` (id `9`), deleted it, confirmed the delete
+  (`cleanupVerified: true`).
 
-Test data from all three checks was deleted immediately after
-verification (contact_messages / wish_requests rows), confirmed via
-`users` table row count unchanged (1 real row).
+`users` table row count confirmed unchanged (1 real row) after both runs;
+no test data left behind in either table.
 
 **K1 review correction**: earlier drafts of this report cited prior rounds'
 (C1/C2/D1/D2/H4/I1) E2E evidence for hírlevél/teremfoglalás/registration/
@@ -255,8 +313,6 @@ further work.
 
 ## Known canary-list issues to fix before the next run
 
-- `/kapcsolat` refPath is wrong (reference 404s) — needs correcting to the
-  reference's actual contact page path (likely `/elerhetosegeink`).
 - TEXT coverage needs a documented low-confidence flag when the reference's
   extracted content is very short (e.g. image-only articles) rather than being
   read at face value as "0% = totally missing."
@@ -266,7 +322,10 @@ further work.
 1. Fix the `vmk-logo.png` 404 (quick, isolated, real bug this tool found).
 2. Build a "related news" component to close the LINKS gap's dominant pattern,
    rather than patching per-route.
-3. Expand FUNCTION (real E2E) and VISUAL (screenshot diff) dimensions.
-4. K2: full reference saturation crawl + per-route TEXT/MEDIA/LINKS deficit
-   quantification, focused first on current first-hop, then depth-2, then the
-   gallery/media family at full scale (not just the 2-route sample above).
+3. K2: full reference saturation crawl + per-route TEXT/MEDIA/LINKS/STRUCTURE/
+   VISUAL deficit quantification, focused first on current first-hop, then
+   depth-2, then the gallery/media family at full scale (not just the
+   2-route sample above).
+4. Independent Gemini canary evidence (`agent/gemini-final-audit`) is still
+   outstanding and out of Claude's control -- K1 acceptance is blocked on it
+   per COLLAB.md's own rule, not on anything in this tool.

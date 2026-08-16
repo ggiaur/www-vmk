@@ -23,6 +23,7 @@ import { chromium } from 'playwright'
 import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
+import { computeOverall } from './lib/parity-scoring.mjs'
 
 function parseArgs(argv) {
   const args = {}
@@ -73,6 +74,10 @@ const REF_EXTRA_CHROME = ['.sidebar', '#sidebar', '.cookie-consent', '.cookie-ba
 const REF_CONTENT_SELECTOR = '.col-content'
 const CLONE_CONTENT_SELECTOR = 'main'
 
+// Families where the page's whole point is to display photos -- a 0-image
+// extraction on these is a red flag (extraction gap), not a green light.
+const MEDIA_HEAVY_FAMILIES = new Set(['gallery', 'gallery-archive', 'gallery-detail', 'gallery-hub'])
+
 async function extractPageData(page, { extraChromeSelectors = [], contentSelector = null } = {}) {
   return page.evaluate(
     ({ chromeSelectors, extra, contentSelector }) => {
@@ -95,12 +100,40 @@ async function extractPageData(page, { extraChromeSelectors = [], contentSelecto
         text: h.textContent.trim().replace(/\s+/g, ' '),
       }))
 
-      const images = Array.from(root?.querySelectorAll('img') || [])
+      // K1 round 3 (ChatGPT review, commit f284c89, item 2): the
+      // gallery-archive family's real thumbnails don't use <img src> at
+      // all -- confirmed on the live reference (curl
+      // https://www.vmk.hu/gallery/folder/1023) they render as
+      // `<figure style="background-image:url('...')" alt="...">` inside
+      // .col-content. Plain <img> extraction silently missed all of them.
+      // Inventory three delivery mechanisms, not just <img src>:
+      const imgTagImages = Array.from(root?.querySelectorAll('img') || [])
         .map((img) => ({
-          src: img.getAttribute('src') || img.getAttribute('data-src') || '',
+          src: img.getAttribute('src') || img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('data-lazy-src') || '',
           alt: img.getAttribute('alt') || '',
+          source: 'img',
         }))
         .filter((i) => i.src && !i.src.startsWith('data:'))
+
+      const bgImages = Array.from(root?.querySelectorAll('[style*="background-image"]') || [])
+        .map((el) => {
+          const style = el.getAttribute('style') || ''
+          const m = style.match(/background-image\s*:\s*url\(\s*['"]?([^'")]+)['"]?\s*\)/i)
+          return m ? { src: m[1], alt: el.getAttribute('alt') || el.getAttribute('title') || '', source: 'css-background' } : null
+        })
+        .filter(Boolean)
+
+      const srcsetImages = Array.from(root?.querySelectorAll('img[srcset], source[srcset]') || [])
+        .flatMap((el) => (el.getAttribute('srcset') || '').split(',').map((entry) => entry.trim().split(/\s+/)[0]).filter(Boolean))
+        .filter((src) => src && !src.startsWith('data:'))
+        .map((src) => ({ src, alt: '', source: 'srcset' }))
+
+      const seenImageSrc = new Set()
+      const images = [...imgTagImages, ...bgImages, ...srcsetImages].filter((i) => {
+        if (seenImageSrc.has(i.src)) return false
+        seenImageSrc.add(i.src)
+        return true
+      })
 
       const links = Array.from(root?.querySelectorAll('a[href]') || [])
         .map((a) => ({
@@ -410,15 +443,36 @@ async function auditRoute(browser, route) {
       missingSample: text.missing.slice(0, 5),
       status: text.coverage >= 0.99 ? 'PASS' : text.coverage >= 0.7 ? 'PARTIAL' : 'FAIL',
     }
+    // K1 round 3 (ChatGPT review, commit f284c89, item 2): a media-heavy
+    // family (gallery/archive) reporting 0 reference images is much more
+    // likely an extraction gap than a genuine absence of media -- silently
+    // scoring that PASS (as round 2 did) is a vacuous pass, not measurement.
+    // Only non-media-family routes get the benefit of the doubt that 0/0 is
+    // real. Media-family routes with 0 extracted reference images are
+    // METHODOLOGY_BLOCKED instead: never PASS, and never silently misscored.
+    const mediaHeavyFamily = MEDIA_HEAVY_FAMILIES.has(route.family)
+    const vacuousZero = media.refCount === 0
     result.media = {
       ...media,
       brokenImageCount: brokenImages.length,
       brokenImageSample: brokenImages.slice(0, 5),
+      reason: vacuousZero && mediaHeavyFamily ? 'media-heavy family but 0 images extracted from reference content -- treated as an extraction gap, not a verified absence of media' : undefined,
       // Identity coverage, not equal counts, per K1 review: a route only
       // passes MEDIA if the reference's actual photos (sampled, matched by
       // perceptual hash, not just present-somewhere) are present in the
       // clone, and nothing on the clone is broken.
-      status: brokenImages.length > 0 ? 'FAIL' : media.refCount === 0 ? 'PASS' : media.identityCoverage >= 0.95 ? 'PASS' : media.identityCoverage >= 0.5 ? 'PARTIAL' : 'FAIL',
+      status:
+        brokenImages.length > 0
+          ? 'FAIL'
+          : vacuousZero
+            ? mediaHeavyFamily
+              ? 'METHODOLOGY_BLOCKED'
+              : 'PASS'
+            : media.identityCoverage >= 0.95
+              ? 'PASS'
+              : media.identityCoverage >= 0.5
+                ? 'PARTIAL'
+                : 'FAIL',
     }
     result.links = {
       ...links,
@@ -466,14 +520,15 @@ async function auditRoute(browser, route) {
   }
 
   result.function = { status: 'NOT_APPLICABLE', reason: 'no distinct interactive workflow on this route for the current K1 canary; see clone-parity-function.mjs for the routes that do have one' }
-  result.visual = { status: 'NOT_EVALUATED', note: 'separate screenshot-diff pass, see clone-parity-visual.mjs' }
+  result.visual = { status: 'NOT_EVALUATED', note: 'separate screenshot-diff pass, see clone-parity-visual.mjs; overall is not final until clone-parity-finalize.mjs recomputes it post-merge' }
 
-  if (result.urlDimension.status === 'CANARY_MAPPING_ERROR') {
-    result.overall = 'CANARY_MAPPING_ERROR'
-  } else {
-    const dims = [result.urlDimension.status === 'PASS' ? 'PASS' : 'FAIL', result.text.status, result.media.status, result.links.status]
-    result.overall = dims.every((d) => d === 'PASS') ? 'PARITY_PASS' : dims.some((d) => d === 'FAIL' || d === 'FAIL_GENERIC_REDIRECT') ? 'PARITY_FAIL' : 'PARITY_PARTIAL'
-  }
+  // K1 round 3: this is a PRELIMINARY overall only -- VISUAL and (for most
+  // routes) FUNCTION haven't been merged in yet at this point in the
+  // pipeline (clone-parity-visual.mjs and clone-parity-function.mjs run
+  // after this script and merge into the same results.json). The
+  // authoritative, all-7-dimension overall is recomputed by
+  // clone-parity-finalize.mjs once every dimension has real merged data.
+  result.overall = computeOverall(result)
 
   await refCtx.close()
   await cloneCtx.close()
@@ -528,7 +583,7 @@ async function main() {
     PARITY_FAIL: scored.filter((r) => r.overall === 'PARITY_FAIL').length,
     ERROR: scored.filter((r) => r.overall === 'ERROR').length,
   }
-  console.log('SUMMARY', JSON.stringify(summary))
+  console.log('SUMMARY (provisional -- run clone-parity-finalize.mjs after visual+function for the authoritative one)', JSON.stringify(summary))
   fs.writeFileSync(path.join(OUT_DIR, 'summary.json'), JSON.stringify(summary, null, 2))
 }
 

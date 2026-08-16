@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T18:40:56.624Z",
+  "generatedAt": "2026-08-16T19:22:58.516Z",
   "refBase": "https://www.vmk.hu",
   "cloneBase": "http://localhost:3011",
   "results": [
@@ -32,18 +32,43 @@
         "status": "FAIL"
       },
       "media": {
-        "refCount": 20,
-        "cloneCount": 16,
+        "refCount": 21,
+        "cloneCount": 158,
         "sampledRef": 20,
-        "sampledClone": 16,
-        "matchedCount": 1,
-        "missingCount": 19,
-        "identityCoverage": 0.05,
+        "sampledClone": 20,
+        "matchedCount": 6,
+        "missingCount": 14,
+        "identityCoverage": 0.3,
         "matched": [
           {
             "refSrc": "/_upload/news_pic/600x600/4_5787.png",
             "cloneSrc": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fnyari-nyitvatartas-2026.png&w=3840&q=75",
             "distance": 1
+          },
+          {
+            "refSrc": "/_upload/news_pic/600x600/4_5823.png",
+            "cloneSrc": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2F20260824_megvaltozott_nyitvatartas_zene_ped.png&w=3840&q=75",
+            "distance": 0
+          },
+          {
+            "refSrc": "/_upload/news_pic/600x600/4_5817.png",
+            "cloneSrc": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fkek-imagozz-a-nyaron-1.png&w=3840&q=75",
+            "distance": 0
+          },
+          {
+            "refSrc": "/_upload/news_pic/600x600/4_5793.png",
+            "cloneSrc": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fstrandkonyvtar.png&w=3840&q=75",
+            "distance": 0
+          },
+          {
+            "refSrc": "/_upload/news_pic/600x600/4_5726.png",
+            "cloneSrc": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2F20260602_tarsasjatek_kolcsonzes.png&w=3840&q=75",
+            "distance": 0
+          },
+          {
+            "refSrc": "http://www.vmk.hu/_upload/images/medialibrary/5809/Mészöly-1.jpg",
+            "cloneSrc": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2FM%25C3%25A9sz%25C3%25B6ly-1.jpg&w=3840&q=75",
+            "distance": 0
           }
         ],
         "missing": [
@@ -54,58 +79,58 @@
             "closestDistance": 25
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "/_upload/news_pic/600x600/4_5259.png",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 20
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "/_upload/news_pic/600x600/4_5829.png",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 21
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "/_upload/news_pic/600x600/4_5530.png",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 23
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "/_upload/news_pic/600x600/4_5814.png",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 27
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "/_upload/news_pic/600x600/4_5458.png",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 17
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "/_upload/news_pic/600x600/4_5832.png",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 21
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/5821/20260519_4.jpg",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 26
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/5811/677bd2a4-a30d-403b-b00a-2d1baed022de.jpg",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 28
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/5820/Zöld szombat_20260627_01.jpg",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": 25
+            "closestDistance": 24
           }
         ],
         "brokenImageCount": 0,
@@ -285,7 +310,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "FAIL",
-          "diffPct": 51.9,
+          "diffPct": 52.78,
           "refHeight": 5344,
           "cloneHeight": 5133,
           "heightDeltaPct": 3.95,
@@ -295,7 +320,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 60,
+          "diffPct": 60.64,
           "refHeight": 14481,
           "cloneHeight": 12840,
           "heightDeltaPct": 11.33,
@@ -442,7 +467,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "FAIL",
-          "diffPct": 44.9,
+          "diffPct": 44.82,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -452,7 +477,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 58.27,
+          "diffPct": 57.83,
           "refHeight": 8450,
           "cloneHeight": 6344,
           "heightDeltaPct": 24.92,
@@ -593,7 +618,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 36.22,
+          "diffPct": 36.13,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -603,7 +628,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 58.01,
+          "diffPct": 57.84,
           "refHeight": 7931,
           "cloneHeight": 6396,
           "heightDeltaPct": 19.35,
@@ -874,7 +899,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "FAIL",
-          "diffPct": 41.04,
+          "diffPct": 40.98,
           "refHeight": 9952,
           "cloneHeight": 4743,
           "heightDeltaPct": 52.34,
@@ -884,7 +909,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 53.56,
+          "diffPct": 53.44,
           "refHeight": 12053,
           "cloneHeight": 6656,
           "heightDeltaPct": 44.78,
@@ -1030,7 +1055,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 33.01,
+          "diffPct": 32.93,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -1040,7 +1065,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 56.21,
+          "diffPct": 56.14,
           "refHeight": 7984,
           "cloneHeight": 6318,
           "heightDeltaPct": 20.87,
@@ -1180,7 +1205,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 27.6,
+          "diffPct": 27.52,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -1190,7 +1215,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 54.62,
+          "diffPct": 54.38,
           "refHeight": 7855,
           "cloneHeight": 6651,
           "heightDeltaPct": 15.33,
@@ -1331,7 +1356,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 32.56,
+          "diffPct": 32.48,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -1341,7 +1366,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 56.4,
+          "diffPct": 56.44,
           "refHeight": 7951,
           "cloneHeight": 6109,
           "heightDeltaPct": 23.17,
@@ -1482,7 +1507,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 30.66,
+          "diffPct": 30.57,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -1492,7 +1517,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 56.25,
+          "diffPct": 56.27,
           "refHeight": 7855,
           "cloneHeight": 6014,
           "heightDeltaPct": 23.44,
@@ -1576,7 +1601,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 22.34,
+          "diffPct": 22.25,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -1586,7 +1611,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 47.65,
+          "diffPct": 48.58,
           "refHeight": 5875,
           "cloneHeight": 6059,
           "heightDeltaPct": 3.04,
@@ -1595,7 +1620,7 @@
           "diffImage": "screenshots/konyvtarunkrol-mobile-diff.png"
         }
       },
-      "overall": "PARITY_PASS"
+      "overall": "PARITY_FAIL"
     },
     {
       "path": "/dokumentumok",
@@ -1626,69 +1651,15 @@
         "status": "FAIL"
       },
       "media": {
-        "refCount": 53,
+        "refCount": 1,
         "cloneCount": 0,
-        "sampledRef": 20,
+        "sampledRef": 1,
         "sampledClone": 0,
         "matchedCount": 0,
-        "missingCount": 20,
+        "missingCount": 1,
         "identityCoverage": 0,
         "matched": [],
         "missing": [
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/_upload/editor/pdf-ikon.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
           {
             "src": "/_upload/editor/pdf-ikon.png",
             "alt": "",
@@ -1968,7 +1939,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 23.36,
+          "diffPct": 23.27,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -1978,7 +1949,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 43.08,
+          "diffPct": 42.93,
           "refHeight": 7126,
           "cloneHeight": 8584,
           "heightDeltaPct": 16.99,
@@ -2809,7 +2780,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 26.76,
+          "diffPct": 26.73,
           "refHeight": 13227,
           "cloneHeight": 4743,
           "heightDeltaPct": 64.14,
@@ -2819,7 +2790,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 41.05,
+          "diffPct": 40.84,
           "refHeight": 19387,
           "cloneHeight": 13805,
           "heightDeltaPct": 28.79,
@@ -2911,7 +2882,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 23.72,
+          "diffPct": 23.64,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -2921,7 +2892,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 55.34,
+          "diffPct": 55.08,
           "refHeight": 7117,
           "cloneHeight": 6412,
           "heightDeltaPct": 9.91,
@@ -3058,14 +3029,17 @@
       "function": {
         "status": "PASS",
         "evidence": {
-          "marker": "K1-FUNC-TEST-1786904708287"
+          "marker": "K1-FUNC-TEST-1786908468343",
+          "persisted": true,
+          "persistedRowId": "8",
+          "cleanupVerified": true
         }
       },
       "visual": {
         "status": "PARTIAL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 23.53,
+          "diffPct": 23.44,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -3075,7 +3049,7 @@
         },
         "mobile": {
           "status": "PARTIAL",
-          "diffPct": 31.37,
+          "diffPct": 31.35,
           "refHeight": 10756,
           "cloneHeight": 9194,
           "heightDeltaPct": 14.52,
@@ -3189,7 +3163,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 25.14,
+          "diffPct": 25.05,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -3199,7 +3173,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 56.31,
+          "diffPct": 56.03,
           "refHeight": 7373,
           "cloneHeight": 5656,
           "heightDeltaPct": 23.29,
@@ -3299,7 +3273,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 24.81,
+          "diffPct": 24.72,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -3309,7 +3283,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 58.93,
+          "diffPct": 58.87,
           "refHeight": 6497,
           "cloneHeight": 5656,
           "heightDeltaPct": 12.94,
@@ -3446,7 +3420,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 27.38,
+          "diffPct": 27.3,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -3456,7 +3430,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 60.37,
+          "diffPct": 60.12,
           "refHeight": 7477,
           "cloneHeight": 5741,
           "heightDeltaPct": 23.22,
@@ -3492,12 +3466,12 @@
         "status": "FAIL"
       },
       "media": {
-        "refCount": 11,
-        "cloneCount": 46,
-        "sampledRef": 11,
-        "sampledClone": 20,
+        "refCount": 12,
+        "cloneCount": 1,
+        "sampledRef": 12,
+        "sampledClone": 1,
         "matchedCount": 0,
-        "missingCount": 11,
+        "missingCount": 12,
         "identityCoverage": 0,
         "matched": [],
         "missing": [
@@ -3508,56 +3482,56 @@
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_5446.png",
+            "alt": "2026')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_4961.png",
+            "alt": "2025')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_4320.png",
+            "alt": "2024')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3936.png",
+            "alt": "2023')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3538.png",
+            "alt": "2022')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3280.png",
+            "alt": "2021')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3301.png",
+            "alt": "2010-2020')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3307.png",
+            "alt": "Rendezvénysorozatok')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3303.png",
+            "alt": "Központi Könyvtár')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           }
@@ -3656,7 +3630,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "FAIL",
-          "diffPct": 49.19,
+          "diffPct": 49.11,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -3666,7 +3640,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 51.26,
+          "diffPct": 51.25,
           "refHeight": 8763,
           "cloneHeight": 14875,
           "heightDeltaPct": 41.09,
@@ -3702,12 +3676,12 @@
         "status": "FAIL"
       },
       "media": {
-        "refCount": 11,
-        "cloneCount": 46,
-        "sampledRef": 11,
-        "sampledClone": 20,
+        "refCount": 12,
+        "cloneCount": 1,
+        "sampledRef": 12,
+        "sampledClone": 1,
         "matchedCount": 0,
-        "missingCount": 11,
+        "missingCount": 12,
         "identityCoverage": 0,
         "matched": [],
         "missing": [
@@ -3718,56 +3692,56 @@
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_5446.png",
+            "alt": "2026')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_4961.png",
+            "alt": "2025')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_4320.png",
+            "alt": "2024')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3936.png",
+            "alt": "2023')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3538.png",
+            "alt": "2022')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3280.png",
+            "alt": "2021')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3301.png",
+            "alt": "2010-2020')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3307.png",
+            "alt": "Rendezvénysorozatok')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/medialibrary_pic/640x480/4_3303.png",
+            "alt": "Központi Könyvtár')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           }
@@ -3866,7 +3840,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "FAIL",
-          "diffPct": 49.19,
+          "diffPct": 49.11,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -3876,7 +3850,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 51.26,
+          "diffPct": 51.25,
           "refHeight": 8763,
           "cloneHeight": 14875,
           "heightDeltaPct": 41.09,
@@ -3912,12 +3886,12 @@
         "status": "FAIL"
       },
       "media": {
-        "refCount": 7,
+        "refCount": 8,
         "cloneCount": 0,
-        "sampledRef": 7,
+        "sampledRef": 8,
         "sampledClone": 0,
         "matchedCount": 0,
-        "missingCount": 7,
+        "missingCount": 8,
         "identityCoverage": 0,
         "matched": [],
         "missing": [
@@ -3928,38 +3902,44 @@
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/5590/750x500/20260309-07.jpg",
+            "alt": "20260309-07.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/5590/750x500/20260309_27.jpg",
+            "alt": "20260309_27.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/5590/750x500/20260309_21.jpg",
+            "alt": "20260309_21.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/5590/750x500/20260309_17.jpg",
+            "alt": "20260309_17.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/5590/750x500/20260309_15.jpg",
+            "alt": "20260309_15.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/5590/750x500/20260309_11.jpg",
+            "alt": "20260309_11.jpg')",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "/_upload/images/medialibrary/5590/750x500/20260309_03.jpg",
+            "alt": "20260309_03.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           }
@@ -4036,7 +4016,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 26.4,
+          "diffPct": 26.36,
           "refHeight": 4986,
           "cloneHeight": 900,
           "heightDeltaPct": 81.95,
@@ -4046,7 +4026,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 54.65,
+          "diffPct": 54.58,
           "refHeight": 7733,
           "cloneHeight": 1575,
           "heightDeltaPct": 79.63,
@@ -4086,12 +4066,12 @@
         "status": "FAIL"
       },
       "media": {
-        "refCount": 16,
-        "cloneCount": 46,
-        "sampledRef": 16,
-        "sampledClone": 20,
+        "refCount": 17,
+        "cloneCount": 1,
+        "sampledRef": 17,
+        "sampledClone": 1,
         "matchedCount": 0,
-        "missingCount": 16,
+        "missingCount": 17,
         "identityCoverage": 0,
         "matched": [],
         "missing": [
@@ -4102,55 +4082,55 @@
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1042/Zengő-dallamok-20131010901.jpg",
+            "alt": "Zengő dallamok: Interaktív ének-zenei foglalkozás - 2013.10.09.')",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1025/Zöld-játszóház-20131013-01.JPG",
+            "alt": "Központi Könyvtár Gyermekrészleg - Zöld játszóház - 2013.10.13.')",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1027/Egey-Tímea-előadása-20131010-01.jpg",
+            "alt": "Zsolt utcai Tagkönyvtár - Erőszakmentes kommunikáció - Egey Tímea pszichológus előadása 2013.10.10..')",
+            "reason": "no perceptually-matching image found in clone sample",
+            "closestDistance": null
+          },
+          {
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1028/Barátok_vagyunk1.JPG",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1030/Stratégiai-játék-201310-01.jpg",
+            "alt": "Játék stratégiai játékokkal; Széna téri Tagkönyvtár - 2013.10.10.')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1031/Olvasásmánia-20131013-01.jpg",
+            "alt": "Olvasásmánia eredméynhirdetés; Gyermekrészleg - 2013.10.13.')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1032/Figyelek_Rád1.JPG",
+            "alt": "Budai úti Tagkönyvtár -Figyelek rád - Fischer Imre - 2013.10.10.')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1033/Egészségnap-20131010-02.JPG",
+            "alt": "Egészségnap: Szűrővizsgálatok, szépség-sziget; Központi Könyvtár - 2013.10.10.')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
-            "reason": "no perceptually-matching image found in clone sample",
-            "closestDistance": null
-          },
-          {
-            "src": "/assets/images/img_news.png",
+            "src": "http://www.vmk.hu/_upload/images/medialibrary/1034/Bagdy-Emőke-20131011-04.JPG",
             "alt": "",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
@@ -4270,7 +4250,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "FAIL",
-          "diffPct": 53.04,
+          "diffPct": 52.95,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -4280,7 +4260,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 63.87,
+          "diffPct": 63.86,
           "refHeight": 10115,
           "cloneHeight": 14875,
           "heightDeltaPct": 32,
@@ -4317,12 +4297,12 @@
         "status": "FAIL"
       },
       "media": {
-        "refCount": 18,
-        "cloneCount": 46,
-        "sampledRef": 18,
-        "sampledClone": 20,
+        "refCount": 19,
+        "cloneCount": 1,
+        "sampledRef": 19,
+        "sampledClone": 1,
         "matchedCount": 0,
-        "missingCount": 18,
+        "missingCount": 19,
         "identityCoverage": 0,
         "matched": [],
         "missing": [
@@ -4333,56 +4313,56 @@
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--13.jpg",
+            "alt": "Mi-vilagunk-20161205--13.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--12.jpg",
+            "alt": "Mi-vilagunk-20161205--12.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--11.jpg",
+            "alt": "Mi-vilagunk-20161205--11.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--10.jpg",
+            "alt": "Mi-vilagunk-20161205--10.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--09.jpg",
+            "alt": "Mi-vilagunk-20161205--09.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--08.jpg",
+            "alt": "Mi-vilagunk-20161205--08.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--07.jpg",
+            "alt": "Mi-vilagunk-20161205--07.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--06.jpg",
+            "alt": "Mi-vilagunk-20161205--06.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           },
           {
-            "src": "/assets/images/img_news.png",
-            "alt": "",
+            "src": "/_upload/images/medialibrary/1748/750x500/Mi-vilagunk-20161205--05.jpg",
+            "alt": "Mi-vilagunk-20161205--05.jpg')",
             "reason": "no perceptually-matching image found in clone sample",
             "closestDistance": null
           }
@@ -4509,7 +4489,7 @@
         "status": "FAIL",
         "desktop": {
           "status": "FAIL",
-          "diffPct": 54.94,
+          "diffPct": 54.85,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -4519,7 +4499,7 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 71.38,
+          "diffPct": 71.48,
           "refHeight": 10686,
           "cloneHeight": 14875,
           "heightDeltaPct": 28.16,
@@ -4640,15 +4620,17 @@
       "function": {
         "status": "PASS",
         "evidence": {
-          "marker": "K1-FUNC-TEST-1786904710962",
-          "note": "submitted successfully; DB row left for manual cleanup verification, see gap report"
+          "marker": "K1-FUNC-TEST-1786908473303",
+          "persisted": true,
+          "persistedRowId": "9",
+          "cleanupVerified": true
         }
       },
       "visual": {
         "status": "FAIL",
         "desktop": {
           "status": "PARTIAL",
-          "diffPct": 37.55,
+          "diffPct": 37.43,
           "refHeight": 4986,
           "cloneHeight": 4743,
           "heightDeltaPct": 4.87,
@@ -4658,10 +4640,10 @@
         },
         "mobile": {
           "status": "FAIL",
-          "diffPct": 60.33,
+          "diffPct": 60.75,
           "refHeight": 8703,
-          "cloneHeight": 6880,
-          "heightDeltaPct": 20.95,
+          "cloneHeight": 6830,
+          "heightDeltaPct": 21.52,
           "refImage": "screenshots/wishbasket-mobile-ref.png",
           "cloneImage": "screenshots/wishbasket-mobile-clone.png",
           "diffImage": "screenshots/wishbasket-mobile-diff.png"
@@ -4670,9 +4652,9 @@
       "overall": "PARITY_FAIL"
     }
   ],
-  "visualGeneratedAt": "2026-08-16T18:24:47.562Z",
+  "visualGeneratedAt": "2026-08-16T19:27:36.343Z",
   "functionChecks": {
-    "generatedAt": "2026-08-16T18:25:12.169Z",
+    "generatedAt": "2026-08-16T19:27:57.423Z",
     "checks": {
       "search": {
         "status": "PASS",
@@ -4685,14 +4667,19 @@
       "contactForm": {
         "status": "PASS",
         "evidence": {
-          "marker": "K1-FUNC-TEST-1786904708287"
+          "marker": "K1-FUNC-TEST-1786908468343",
+          "persisted": true,
+          "persistedRowId": "8",
+          "cleanupVerified": true
         }
       },
       "wishbasket": {
         "status": "PASS",
         "evidence": {
-          "marker": "K1-FUNC-TEST-1786904710962",
-          "note": "submitted successfully; DB row left for manual cleanup verification, see gap report"
+          "marker": "K1-FUNC-TEST-1786908473303",
+          "persisted": true,
+          "persistedRowId": "9",
+          "cleanupVerified": true
         }
       }
     }
