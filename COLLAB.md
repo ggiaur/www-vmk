@@ -2,84 +2,183 @@
 
 ## CURRENT STATE
 
-**STATUS: DIAGNOSED -- FINDING CONTRADICTS THE REPORTED PREMISE**
+**STATUS: IN_PROGRESS**  
+**BALL: CLAUDE**
 
-**BALL: CHATGPT**
+## PRIMARY PRODUCT GOAL
 
-Diagnosed on this host with hard evidence below. Two separate things, not one:
+Build a faithful modern clone of the current `https://www.vmk.hu/`.
 
-1. **This dev host's local port 3011** (used by the K1 Oracle/FUNCTION scripts) had no process listening on it -- true, and now fixed: restarted and made durable (see PREVIEW_3011 below).
-2. **The public `https://new.vmk.hu` domain** -- tested directly against its real public DNS/IP just now and **is currently returning HTTP 200 on every path checked** (homepage, `/admin`, `/api/access`), not 502. See full evidence below, including why this dev host's *own* DNS resolver gave a misleading NXDOMAIN for `new.vmk.hu` when queried the normal way -- a red herring worth understanding before trusting any future report from this same network path.
+A route is NOT complete because it returns 200, has an H1, has similar word count, or redirects somewhere non-broken.
 
-I am not disputing that a 502 was seen by whoever reported it -- I have no way to verify what they saw. I'm reporting what I can verify, right now, from a real public vantage point, with reproducible commands. If the 502 was real, it does not reproduce now; if it was a DNS-confusion artifact (see below), that would explain it without an actual outage ever having happened on the real public endpoint.
+For every reference page the clone must preserve, as applicable:
 
-## PREVIEW_3011 (this dev host)
+- correct URL/canonical mapping;
+- same meaningful page content and ordering;
+- same content images/gallery media;
+- same internal/external links and destinations;
+- same PDFs/downloads;
+- same tables/lists/contact data/dates;
+- same forms and user-visible functionality;
+- close desktop/mobile visual structure.
 
-**RESTORED.**
+Generic redirects to list pages do NOT satisfy detail/gallery parity unless the reference itself behaves that way.
 
-- Confirmed a real stop cause, not guessed: this dev worktree's `npx next start -p 3011` was a foreground/background shell process I (Claude) had started for K1 FUNCTION/Oracle testing and killed myself as routine post-test cleanup each round (visible in this session's own tool history) -- not a crash, not something GitHub Actions or another agent touched. GitHub Actions runs on port 3001 in an isolated runner and cannot reach this host at all; ruled out directly, not assumed.
-- Restored: `tmux new-session -d -s vmk-preview-3011 "npx next start -p 3011 2>&1 | tee -a <scratchpad>/vmk-preview-3011.log"` (run from the worktree root; log path is this session's own scratchpad, not repo-tracked). Verified: `curl -I http://127.0.0.1:3011/` -> `HTTP/1.1 200 OK`.
-- **Prevention (durable, narrowly scoped, matches the "no production architecture change" instruction)**: the tmux session survives shell/session exit and worktree switching -- it's a detached, named, long-running session on this host, not tied to any single agent turn. No sudo/systemd-user access is available on this host (`sudo -n true` fails, no dbus user session), so a systemd unit isn't viable here; PM2 isn't installed and installing a new global daemon for this seemed like more than the problem needs. tmux was already present.
-  - **Status check**: `tmux has-session -t vmk-preview-3011 && curl -I http://127.0.0.1:3011/`
-  - **Restart**: `tmux kill-session -t vmk-preview-3011; tmux new-session -d -s vmk-preview-3011 "cd <worktree> && npx next start -p 3011 2>&1 | tee -a <logfile>"`
-  - **Logs**: `tmux attach -t vmk-preview-3011` (detach with `Ctrl-b d`), or tail the log file directly.
-- DB/storage/search dependencies confirmed healthy: `vmk-postgres` (6 days up, healthy), `vmk-minio`, `vmk-meilisearch` all `Up`.
+## CURRENT VERIFIED REALITY
 
-## `new.vmk.hu` PUBLIC DOMAIN -- FINDING CONTRADICTS THE TASK'S PREMISE
+K1 Oracle v2 is now sufficiently falsifying to proceed with inventory work.
 
-**This dev host's own port 3011 and the public `new.vmk.hu` domain are not the same infrastructure**, and I found no evidence connecting them:
+Fresh 22-route canary result from implementation commit `426b16e`:
 
-- This host has no reverse proxy, tunnel, or web server of any kind bound to ports 80/443 (`ss -ltnp` confirms nothing listens there; a full `systemctl list-units --type=service` audit found nginx/caddy/cloudflared/traefik/haproxy/frp -- none present or running). Whatever serves `new.vmk.hu` publicly is not on this machine.
-- The public site (`new.vmk.hu` served via openresty, response headers show `x-powered-by: Next.js, Payload`) is a **separate, real deployment** I have no access to or knowledge of the architecture of.
+- overall: `PARITY_PASS 0/22`, `PARITY_FAIL 22/22`
+- URL: 20 PASS / 2 generic-redirect FAIL
+- TEXT: 1 PASS / 21 FAIL
+- MEDIA: 5 PASS / 17 FAIL
+- LINKS: 3 PASS / 19 FAIL
+- STRUCTURE: 2 PASS / 11 PARTIAL / 9 FAIL
+- FUNCTION: 2 PASS / 20 NOT_APPLICABLE
+- VISUAL: 1 PARTIAL / 21 FAIL
 
-**The reported 502 does not reproduce.** Tested directly against the domain's real public DNS/IP just now (`2026-08-16 19:50:17 UTC`), bypassing this host's own DNS entirely to rule out a local caching artifact:
+This confirms the clone is far from parity. Historical FIRST-HOP/DEPTH-2/FULL-SITE `MISSING=0`, `BROKEN=0`, `VERIFIED`, or RC-GO labels are NOT clone-parity acceptance evidence.
 
-```
-dig @1.1.1.1 new.vmk.hu A +short   -> 78.131.58.101
-curl -sk -o /dev/null -w "%{http_code}" -H "Host: new.vmk.hu" https://78.131.58.101/           --resolve new.vmk.hu:443:78.131.58.101   -> 200 (cache HIT, expected for a homepage)
-curl -sk -o /dev/null -w "%{http_code}" -H "Host: new.vmk.hu" https://78.131.58.101/admin       --resolve new.vmk.hu:443:78.131.58.101   -> 200 (cache-control: no-store -- genuinely live, not stale cache)
-curl -sk -o /dev/null -w "%{http_code}" -H "Host: new.vmk.hu" https://78.131.58.101/api/access  --resolve new.vmk.hu:443:78.131.58.101   -> 200 (live Payload API JSON response)
-```
+Local preview `127.0.0.1:3011` has been restored in a detached tmux session. Public `new.vmk.hu` was independently observed returning HTTP 200 from public DNS/IP at the last check. Preview uptime is operationally useful but does not change parity acceptance.
 
-`/admin` and `/api/access` are both explicitly non-cacheable, so this isn't a stale-cache-masking-a-dead-origin situation -- the real backend is answering live requests right now.
+## ORCHESTRATION CHANGE — EFFECTIVE NOW
 
-**Why this host's own DNS looked broken (the actual red herring)**: querying `new.vmk.hu` the normal way on this host (`dig new.vmk.hu`, via the local `127.0.0.53` stub resolver) returns **NXDOMAIN** -- not 502, a different failure class entirely. Root cause: this host's resolver answers `vmk.hu NS` with `vmk-pdc.vmmk2.local.` / `portal.vmmk2.local.` (private-LAN IPs `192.168.1.14`/`.17`) instead of the real public nameservers (`dns1.hu`/`dns2.hu`/`dns3.hu`, confirmed via `dig @8.8.8.8 vmk.hu NS`). Something on this network (an internal AD-style DNS zone, `vmmk2.local`, visible in this host's own resolver answer) is split-horizon-hijacking the entire `vmk.hu` domain locally, and that internal zone apparently has no `new` record. **This is unrelated to whether the real public site is up** -- it only affects DNS lookups made from this specific host/network.
+Gemini independent audit remains required before FINAL acceptance, but it is NO LONGER a blocker for the full deficit inventory.
 
-**Honest conclusion, not a guess dressed up as one**: I cannot confirm or deny what the original 502 report saw -- I have no way to reproduce their vantage point. What I can state with reproducible evidence: right now, from a real public resolver and IP, `new.vmk.hu` is fully operational on every path I checked, including genuinely live (non-cached) ones. If the report is trusted at face value, the most likely explanations are (a) it was transient and has since resolved on its own, or (b) whoever/whatever produced the report was itself looking through a DNS path similar to this host's own hijacked one and mistook NXDOMAIN-style local confusion for a 502 -- I flag this only as a plausible explanation for the discrepancy, not a confirmed cause, since I don't have visibility into how the original report was generated.
+Do not wait for Gemini before K2.
 
-## CLONE PARITY PHASE ORDER — STILL HARD-GATED
+Phase order:
 
 ```text
-K1 Oracle v2 + falsification canary
- -> ChatGPT + Gemini validation
-K2 full timestamped reference snapshot + complete deficit inventory
- -> ChatGPT acceptance
+K1 Oracle v2 falsification canary      DONE ENOUGH TO INVENTORY
+          |
+          +---- Gemini independent audit continues in parallel (non-blocking for K2)
+          |
+          v
+K2 FULL reference snapshot + COMPLETE deficit inventory   <-- DO THIS NOW
+          |
+          v
+ChatGPT inventory review
+          |
+          v
 K3 page-family/root-cause remediation
-K4 final parity + CI/security/WCAG/mergeability
+          |
+          v
+FULL parity rerun + Gemini independent verification
+          |
+          v
+K4 final CI/security/WCAG/mergeability
 ```
 
-**K2 MUST NOT START while K1 independent validation is incomplete.** (Preview status is no longer a blocker per the findings above -- local 3011 is restored and durable, and the public domain does not currently show the reported outage.)
+## K2 — CLAUDE REQUIRED DELIVERABLE NOW
 
-## K1 ROUND 3 — CURRENT EVIDENCE
+Do NOT start broad product remediation yet. First establish the complete measurable gap.
 
-Claude implementation commit: `426b16e`.
+### 1. Freeze the current reference
 
-- 7-dimension final scoring implemented: URL/TEXT/MEDIA/LINKS/STRUCTURE/FUNCTION/VISUAL.
-- `NOT_APPLICABLE` is the only excludable status and requires a route-specific reason; all other non-PASS/unevaluated statuses block overall PASS.
-- Gallery/archive media extraction now includes CSS `background-image`, `srcset` and lazy-load sources.
-- Real reference gallery image counts observed on canaries: 12, 12, 8, 17, 19; all five correctly failed media identity coverage.
-- FUNCTION checks for contact + wishbasket verified actual Postgres persistence and cleanup.
-- Full fresh canary result: 22/22 scored, `PARITY_PASS: 0`, `PARITY_FAIL: 22`.
-- Per-dimension result: URL 20 PASS / 2 generic-redirect fail; TEXT 1 PASS / 21 FAIL; MEDIA 5 PASS / 17 FAIL; LINKS 3 PASS / 19 FAIL; STRUCTURE 2 PASS / 11 PARTIAL / 9 FAIL; FUNCTION 2 PASS / 20 NOT_APPLICABLE; VISUAL 1 PARTIAL / 21 FAIL.
-- Falsification unit tests added for scoring; no broad product remediation done.
+Create a timestamped machine-readable reference snapshot for the full relevant Hungarian `www.vmk.hu` scope.
 
-K1 is **not accepted yet** because Gemini independent route-level parity evidence is still missing. After preview restoration, ChatGPT will complete the K1 cross-review when Gemini evidence is consumable.
+For every discovered reference URL store, as applicable:
 
-## WORKTREE / OWNERSHIP HARD RULE
+- reference URL;
+- final URL/status/redirect chain;
+- page family;
+- title/H1/headings;
+- ordered meaningful main-content blocks;
+- actual content media URLs and identity fingerprints;
+- gallery media including CSS `background-image`, `srcset`, lazy-load/lightbox sources;
+- internal links;
+- external links;
+- PDFs/downloads and target health;
+- tables/lists/contact/date structures;
+- form/function presence;
+- desktop/mobile reference screenshots or deterministic screenshot references.
+
+Do not use only counts as evidence.
+
+### 2. Compare the complete clone scope
+
+Produce one row/result per reference URL with these dimensions:
+
+`URL | TEXT | MEDIA | LINKS_DOCS | STRUCTURE | FUNCTION | VISUAL | OVERALL`
+
+Only these terminal states are allowed:
+
+- `PASS`
+- `FAIL`
+- `NOT_APPLICABLE` with route-specific reason
+- `METHODOLOGY_BLOCKED` with exact reason
+- `ERROR` with exact reason
+
+No `PARITY_PASS` if any applicable dimension is not PASS.
+
+### 3. Produce COMPLETE deficit inventory
+
+Create/update `docs/CLONE_PARITY_FULL_INVENTORY.md` plus machine-readable JSON/CSV source.
+
+Must include at minimum:
+
+- total reference URLs discovered;
+- total scored clone URLs;
+- PASS/FAIL totals;
+- routes with wrong/missing content;
+- routes with missing/wrong media;
+- total missing/broken image assets;
+- routes with missing/wrong internal links;
+- routes with missing/wrong external links;
+- missing/broken PDFs/downloads;
+- generic redirects incorrectly used as substitutes;
+- structural mismatches;
+- functional mismatches;
+- major desktop/mobile visual mismatches;
+- methodology-blocked routes;
+- root-cause grouping by page family.
+
+For every deficit include the exact route and enough concrete evidence to reproduce it.
+
+### 4. Group by root cause, not by random page
+
+The inventory must identify reusable defect families, e.g.:
+
+- gallery/detail routes collapsed to `/galeria`;
+- imported pages missing media;
+- wrong content extractor/importer behavior;
+- internal-link rewriting errors;
+- document/download migration gaps;
+- page-family template/layout mismatch;
+- legacy route mapping error;
+- missing Payload data vs frontend rendering defect.
+
+This grouping will define K3 remediation batches.
+
+## CHECKPOINT DISCIPLINE
+
+Push substantive technical checkpoints at least every ~30–45 minutes while actively working.
+
+A valid checkpoint contains at least one of:
+
+- new snapshot/inventory code;
+- a measurable route batch completed;
+- generated real deficit data;
+- a root cause proven with exact examples.
+
+Prose-only `working on it` commits do not count.
+
+## GEMINI TRACK — PARALLEL, NON-BLOCKING FOR K2
+
+Gemini remains on `agent/gemini-final-audit` and must independently audit overlapping routes and try to falsify Claude's Oracle/inventory.
+
+Gemini does not authorize or block K2 execution. Gemini evidence becomes a hard gate again before K3 inventory acceptance is converted into final parity acceptance and certainly before K4/release.
+
+## HARD RULES
 
 - 1 agent = 1 branch = 1 worktree.
-- Claude: `agent/visual-clone-oracle` dedicated worktree.
-- Gemini: `agent/gemini-final-audit` dedicated worktree.
-- No branch switching/reset in another agent's worktree.
-- ChatGPT coordinates through GitHub/COLLAB only.
-- User is not a courier and must not be asked to solve routine branch/worktree/process collisions.
+- Claude owns `agent/visual-clone-oracle` dedicated worktree.
+- Gemini owns `agent/gemini-final-audit` dedicated worktree.
+- No agent may switch/reset another agent's worktree.
+- ChatGPT coordinates through GitHub/COLLAB.
+- User is not a courier.
+- Do not optimize for green counts; optimize for exact reference parity.
+- Do not weaken thresholds or mark redirects/placeholders as PASS to make reports look better.
