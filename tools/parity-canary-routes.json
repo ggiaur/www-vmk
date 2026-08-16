@@ -11,7 +11,7 @@
   { "path": "/dokumentumok", "refPath": "/alapdokumentumok", "family": "static-institutional-pdf" },
   { "path": "/munkatarsak", "family": "static-institutional" },
   { "path": "/nyitvatartas", "refPath": "/opening-hours", "family": "static-institutional" },
-  { "path": "/kapcsolat", "family": "static-institutional" },
+  { "path": "/kapcsolat", "refPath": "/elerhetosegeink", "family": "static-institutional" },
   { "path": "/reszlegek/felnott-kolcsonzo", "refPath": "/felnott-kolcsonzo-reszleg", "family": "department" },
   { "path": "/reszlegek/olvasoterem", "refPath": "/olvasoterem", "family": "department" },
   { "path": "/tagkonyvtarak/meszoly-geza", "refPath": "/meszoly-geza-utcai-tagkonyvtar", "family": "branch" },

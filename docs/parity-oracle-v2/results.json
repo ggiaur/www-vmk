@@ -1,0 +1,3379 @@
+{
+  "generatedAt": "2026-08-16T18:15:36.008Z",
+  "refBase": "https://www.vmk.hu",
+  "cloneBase": "http://localhost:3011",
+  "results": [
+    {
+      "path": "/",
+      "refUrl": "https://www.vmk.hu/",
+      "cloneUrl": "http://localhost:3011/",
+      "family": "home",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 27.8,
+        "matched": 10,
+        "total": 36,
+        "missingSample": [
+          "Hírek, események Rendezvényeinken kép- és hangfelvételek készülhetnek.",
+          "Nyári nyitvatartás A Vörösmarty Mihály Könyvtár működési rendje 2026.",
+          "Megváltozott nyitvatartás 2026.",
+          "Misi újra két keréken Korábbi kvízünk főhőse, Misi ismét útnak indul, ezúttal a Velencei-tó környékére.",
+          "Hűsölő- és olvasósarok Kedves Olvasóink!A nagy hőségre való tekintettel a Szent István Király Múzeum Rendház épületének fogadócsarnokában (Székesfehérvár, Fő utca 6.) hűsölő- és olvasósarkot alakítottunk ki."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 20,
+        "cloneCount": 16,
+        "countDeficit": 4,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PARTIAL"
+      },
+      "links": {
+        "refInternalCount": 31,
+        "refExternalCount": 1,
+        "missingInternal": [
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK_260127.pdf",
+            "text": "Adatkezelési tájékoztató 3.9 pontja."
+          },
+          {
+            "href": "/nyari-nyitvatartas-2026",
+            "text": "Nyári nyitvatartás A Vörösmarty Mihály Könyvtár működési rendje 2026. június 13. és szeptember 5. között."
+          },
+          {
+            "href": "/20260824_megvaltozott_nyitvatartas_zene_ped",
+            "text": "Megváltozott nyitvatartás 2026. augusztus 24-től megváltozott nyitvatartással várja olvasóit, látogatóit a Pedagógiai sz"
+          },
+          {
+            "href": "/misi-ujra-ket-kereken-helyismeret-2026-nyar",
+            "text": "Misi újra két keréken Korábbi kvízünk főhőse, Misi ismét útnak indul, ezúttal a Velencei-tó környékére. Játssz velünk!"
+          },
+          {
+            "href": "/husolo-es-olvasosarok-2026",
+            "text": "Hűsölő- és olvasósarok Kedves Olvasóink!A nagy hőségre való tekintettel a Szent István Király Múzeum Rendház épületének "
+          },
+          {
+            "href": "/strandkonyvtar",
+            "text": "Strandkönyvtár Strandkönyvtárral várjuk kikapcsolódásra vágyó olvasóinkat 2026. június 27. és augusztus 22. között a szé"
+          },
+          {
+            "href": "/20260602_tarsasjatek_kolcsonzes",
+            "text": "Társasjáték-kölcsönzés 2026. június 2-től bevezetésre kerül a társasjáték-kölcsönzés Központi könyvtárunk Gyermek és kam"
+          },
+          {
+            "href": "/csaladi-olvasasmania-2026",
+            "text": "Családi OlvasásMánia 2026 Családi OlvasásMánia 2026 Nyári olvasópályázat: 2026. június 20. - szeptember 12. Eredményhird"
+          },
+          {
+            "href": "/202608_spiro-80-kiallitas-szena",
+            "text": "Spiró 80 Könyvkiállítás Spiró György születésének 80. évfordulója alkalmából a VMK Széna Téri Tagkönyvtárában.Megtekinth"
+          },
+          {
+            "href": "/laptapir_szolgaltatas_a_vorosmarty_mihaly_konyvtarban",
+            "text": "Laptapír szolgáltatás ...avagy olvass újságot könyvtári beiratkozással otthonról! További információk a hírre kattintva."
+          },
+          {
+            "href": "/news",
+            "text": "További híreink"
+          },
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": "A jáki templomok és temetőik Szent István királytól Jáki Nagy Márton nemzetségfőig – a jáki templomok és temetőikDr. Pap"
+          },
+          {
+            "href": "/events",
+            "text": "Események"
+          },
+          {
+            "href": "csendes-olvasas-a-szabadban-szena-2026-augusztustol",
+            "text": "Csendes olvasás a szabadban - Széna téri Tagkönyvtár"
+          },
+          {
+            "href": "20260806_zummogj_velunk_szena",
+            "text": "Zümmögj velünk! - Széna Téri Tagkönyvtár"
+          },
+          {
+            "href": "2026_08_12_netrevalok",
+            "text": "Netrevalók - Széna Téri Tagkönyvtár"
+          },
+          {
+            "href": "a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": "A jáki templomok és temetőik - Vörösmarty Mihály Könyvtár, Olvasóterem 8000 Székesfehérvár Oskola u. 7. I. em."
+          },
+          {
+            "href": "http://www.vmk.hu/kurrens",
+            "text": "Kurrens folyóiratok a Központi Könyvtár Olvasótermében >"
+          },
+          {
+            "href": "/folyoiratok-a-tagkonyvtarakban",
+            "text": "Kurrens folyóiratok a Tagkönyvtárakban >"
+          },
+          {
+            "href": "/gateway-uk-m",
+            "text": "Gateway UK gyűjtemény >"
+          },
+          {
+            "href": "/nemet-nyelvi-gyujtemeny",
+            "text": "Német nyelvi gyűjtemény (Goethe) >"
+          },
+          {
+            "href": "/bartok-teri-olvasokor-2026-05-19",
+            "text": "Bartók Téri Olvasókör - 2026.05.19."
+          },
+          {
+            "href": "/retro-fehervar-2026-06-22",
+            "text": "Retró Fehérvár - 2026.06.22."
+          },
+          {
+            "href": "/kreativ-otletek-levendulabol-20260625",
+            "text": "Kreatív ötletek levendulából - 2026.06.25"
+          },
+          {
+            "href": "/zold-szombat-2026-06-27",
+            "text": "Zöld szombat - 2026.06.27."
+          },
+          {
+            "href": "/egy-szal-fonal-tuske-csilla-amigurumi-kiallitasa-2026-07-01",
+            "text": "Egy szál fonál - Tüske Csilla amigurumi kiállítása - 2026.07.01"
+          },
+          {
+            "href": "/velencei-gyermektabor-2026-07-06",
+            "text": "Velencei gyermektábor - 2026.07.06."
+          },
+          {
+            "href": "/bregyo-tabor-2026-07-06",
+            "text": "Bregyó-tábor - 2026.07.06."
+          },
+          {
+            "href": "/bregyo-tabor-2026-07-13",
+            "text": "Bregyó-tábor - 2026.07.13."
+          },
+          {
+            "href": "/bartok-teri-olvasokor-2026-07-14",
+            "text": "Bartók Téri Olvasókör - 2026.07.14."
+          },
+          {
+            "href": "/gallery",
+            "text": "További Galériák"
+          }
+        ],
+        "missingExternal": [
+          "https://helyismeret.vmk.hu/kek-imagozz-a-nyaron"
+        ],
+        "internalCoverage": 0,
+        "externalCoverage": 0,
+        "brokenLinkCount": 1,
+        "brokenLinkSample": [
+          {
+            "href": "/hirek/esemenyek/a-jaki-templomok-es-temetoik-2026-08-19",
+            "status": 404
+          }
+        ],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 25,
+          "paragraphs": 20,
+          "lists": 4,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 11,
+          "paragraphs": 11,
+          "lists": 0,
+          "tables": 1,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/hirek/strandkonyvtar",
+      "refUrl": "https://www.vmk.hu/strandkonyvtar",
+      "cloneUrl": "http://localhost:3011/hirek/strandkonyvtar",
+      "family": "news-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/strandkonyvtar",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/hirek/strandkonyvtar",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 13,
+        "missingSample": [
+          "Hírek, események Strandkönyvtár További híreink A jáki templomok és temetőik Szent István királytól Jáki Nagy Márton nemzetségfőig – a jáki templomok és temetőikDr.",
+          "Pap Ildikó Katalin régész előadása a Központi Könyvtár Olvasótermében.2026.",
+          "augusztus 19.(szerda) 17:00 Anjouk az Árpádok trónján.",
+          "...ahogyan a korabeli közvélekedés erről gondolkodott.",
+          "Teiszler Éva történész (Siklósi Gyula Várostörténeti Kutatóközpont) előadása a Központi Könyvtár Olvasótermében."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 2,
+        "cloneCount": 1,
+        "countDeficit": 1,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PARTIAL"
+      },
+      "links": {
+        "refInternalCount": 10,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": "A jáki templomok és temetőik"
+          },
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": ""
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": "Anjouk az Árpádok trónján. Miért éppen ők?"
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": ""
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": "Múzeumok Éjszakája"
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": ""
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 12,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 1,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/hirek/20260824_megvaltozott_nyitvatartas_zene_ped",
+      "refUrl": "https://www.vmk.hu/20260824_megvaltozott_nyitvatartas_zene_ped",
+      "cloneUrl": "http://localhost:3011/hirek/20260824_megvaltozott_nyitvatartas_zene_ped",
+      "family": "news-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/20260824_megvaltozott_nyitvatartas_zene_ped",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/hirek/20260824_megvaltozott_nyitvatartas_zene_ped",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 13,
+        "missingSample": [
+          "Hírek, események Megváltozott nyitvatartás További híreink A jáki templomok és temetőik Szent István királytól Jáki Nagy Márton nemzetségfőig – a jáki templomok és temetőikDr.",
+          "Pap Ildikó Katalin régész előadása a Központi Könyvtár Olvasótermében.2026.",
+          "augusztus 19.(szerda) 17:00 Anjouk az Árpádok trónján.",
+          "...ahogyan a korabeli közvélekedés erről gondolkodott.",
+          "Teiszler Éva történész (Siklósi Gyula Várostörténeti Kutatóközpont) előadása a Központi Könyvtár Olvasótermében."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 1,
+        "cloneCount": 1,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PASS"
+      },
+      "links": {
+        "refInternalCount": 10,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": "A jáki templomok és temetőik"
+          },
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": ""
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": "Anjouk az Árpádok trónján. Miért éppen ők?"
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": ""
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": "Múzeumok Éjszakája"
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": ""
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 11,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 1,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/hirek/csaladi-olvasasmania-2026",
+      "refUrl": "https://www.vmk.hu/csaladi-olvasasmania-2026",
+      "cloneUrl": "http://localhost:3011/hirek/csaladi-olvasasmania-2026",
+      "family": "news-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/csaladi-olvasasmania-2026",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/hirek/csaladi-olvasasmania-2026",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 30,
+        "matched": 6,
+        "total": 20,
+        "missingSample": [
+          "Hírek, események Családi OlvasásMánia 2026 Családi OlvasásMánia 2026 nyári olvasópályázat 2026.",
+          "Column 4/12 Column 4/12 Column 4/12 További híreink A jáki templomok és temetőik Szent István királytól Jáki Nagy Márton nemzetségfőig – a jáki templomok és temetőikDr.",
+          "Pap Ildikó Katalin régész előadása a Központi Könyvtár Olvasótermében.2026.",
+          "augusztus 19.(szerda) 17:00 Anjouk az Árpádok trónján.",
+          "...ahogyan a korabeli közvélekedés erről gondolkodott."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 66,
+        "cloneCount": 1,
+        "countDeficit": 65,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PARTIAL"
+      },
+      "links": {
+        "refInternalCount": 12,
+        "refExternalCount": 67,
+        "missingInternal": [
+          {
+            "href": "/_upload/editor/2026/OlvasasMania2026/2026_Csaladi_OlvasasMania_palyazati_kiiras__1_.pdf",
+            "text": "Pályázati kiírás"
+          },
+          {
+            "href": "/_upload/editor/2026/OlvasasMania2026/OlvasasMania_2026_lista_plakat.png",
+            "text": "Letölthető könyvlista"
+          },
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": "A jáki templomok és temetőik"
+          },
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": ""
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": "Anjouk az Árpádok trónján. Miért éppen ők?"
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": ""
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": "Múzeumok Éjszakája"
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": ""
+          }
+        ],
+        "missingExternal": [
+          "mailto:zene@vmk.hu;",
+          "https://forms.office.com/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08mke9raXqFBGoDQp68g4puxUME8zTlA4MTFVMjlKS0tNMDlDRTg1VUwxRC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUOU5CTkpTVzNHR0RIS1NYRklLTVpIMkFFMy4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/7BJMGZ2HGh?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08sx4q7GJBLpArvbLEeL19pFUNlFHMktGVzdBRkVVNFYxSVlMVjBGUkdYTi4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUMlVDRU5ZSldBU0NNWU9aOTdKWERYRTNVVC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08sx4q7GJBLpArvbLEeL19pFUQ0ZDMVkyU09BSjdGN0tHRFFITjRBNk41TC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUNTgwSEFDMVVJMkExMkJUQ0pLV0xDMFQwUC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/xPcdbdnU4c?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUNEozUE5HRjVSMTRUV0dPQkJZNUE0UDE4MC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/kLpBSVRqEL?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStURU5NRkhENVUyRksyU0VZOFI2Q0Q5SlRKVS4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08sx4q7GJBLpArvbLEeL19pFURDhYUUdDMVRBMk9aMFRIOVhZSVZISEY1US4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/CdmkNu6GKW?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUM1E3MDlUUThWWEJTWUJBVVZYWjNVWkVYUy4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/N6JJn5puD6?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUMDRFTjYzRjJUUDhEV0ZYVERLMzFMUTJJRy4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/fE5ejwXRKS?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08qi_sOJaRrpKgFhRSP8O4pFUMk9IN09WRVNCSkVHOFE1OUlEWElWWDNFMC4u&route=shorturl",
+          "https://forms.cloud.microsoft/e/EAxYUfkHaj?origin=lprLink",
+          "https://forms.cloud.microsoft/e/V6tamWSvct?origin=lprLink",
+          "https://forms.cloud.microsoft/e/SrcHLJxHZm?origin=lprLink",
+          "https://forms.cloud.microsoft/e/YtCLntGH51?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08sx4q7GJBLpArvbLEeL19pFUNjVGR0VISjM1UEc0RktIVDdIUjdNT0RBMi4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08qi_sOJaRrpKgFhRSP8O4pFUQzdEUVNVVVRGR1dEMjg3T1NEREM2SU00US4u&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08qi_sOJaRrpKgFhRSP8O4pFUMEE2V1cyQVIxRFJJNFNCNEIxVzhONFNLNy4u&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUMEg1VjZOSVJTRUpPTEFJSVdZSldHTE81RC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/b2BNUTaxgM?origin=lprLink",
+          "https://forms.cloud.microsoft/e/c4nEvG1Hj4?origin=lprLink",
+          "https://forms.cloud.microsoft/e/BD3GxUedSy?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUNU1RNDdMWDRBVEhQTUNSUjRTMjFYMUVFVi4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/gKpenUXCf1?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUOUJCMVYwRFE4MEZYR1M1WTVHUUpINjQ2RC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStURjRSODJGNUVPMUpIMVlSNk9NRDRLWUZPNS4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUNEdXTFUxTzVKVkxKWjJHT0hKVDQ2T1RZSi4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/fFijSA7hZi?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUMzQzN1NCUFdOOEZWTllORjhSWEpHUU9QSi4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUM0w3MURFRERQMUNUQlRaUjU3QlpMUkxJWS4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUMVRSMjU2TUpXTVBSQTRaWE9SSTgzQUVXWC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/z7hLxXjcpr?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUOUQ4RFpDVDNBMTMwMlJIMFVEMDRDNklDUy4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/VsBqDPCdgY?origin=lprLink",
+          "https://forms.cloud.microsoft/e/bhAG20u64S?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUNlM3Q0lVSUpSWDBFVkdGQjBRSEpHU0dGQy4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/pTWMtpC9Y7?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUNzkxMDZaWUZEWkVWRTdXUzQ2SDFWVFA2RC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/pJjeAcfEjy?origin=lprLink",
+          "https://forms.cloud.microsoft/e/V2HxRKgr1M?origin=lprLink",
+          "https://forms.cloud.microsoft/e/qUGt7D5BFK?origin=lprLink",
+          "https://forms.cloud.microsoft/e/kQMZYdDHnY?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUM1VUSEc3QlozNDJBOEJNOEVVUUNFUkpWSi4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUMThNNlJJUTYyMklTSzkyNFdaOEZOOFJCNi4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUMlQyOVo5MkkzNURLMTA2UThMTUhXTDBISS4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStURjBZSE1WSTk3QlVQQU5aOUExMEo4MVJJSS4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/9hA72Vdnn4?origin=lprLink",
+          "https://forms.cloud.microsoft/e/wwb5g6WuSe?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pURTlFQzg5VkszVVVUQ1NCRVRCRDhKUVo2OC4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/s0gc0iLVvA?origin=lprLink",
+          "https://forms.cloud.microsoft/e/PmFxkBtcTp?origin=lprLink",
+          "https://forms.cloud.microsoft/e/CZ3y9dQ9RD?origin=lprLink",
+          "https://forms.cloud.microsoft/e/aCLfBiHXdX?origin=lprLink",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08iDmCIlT7FVFkpL-x9rVpStUQUY1OElHQ0VZTEsxV1NGQkpOWlMzSTZMSS4u&origin=lprLink&route=shorturl",
+          "https://forms.cloud.microsoft/e/LW54gUAbTT?origin=lprLink",
+          "https://forms.cloud.microsoft/e/xxNEhV2Zft?origin=lprLink",
+          "https://forms.cloud.microsoft/e/FdphyYVJ8V?origin=lprLink",
+          "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=N_dnMc4svkycIoEuJWU08qi_sOJaRrpKgFhRSP8O4pFUQ0tEU1BaQVVRWjNQSEpaS0IzWEIzRk1UWi4u",
+          "https://forms.cloud.microsoft/pages/responsepage.aspx?id=N_dnMc4svkycIoEuJWU08s-0IwrQQg5HnNeeZWUAA_pUMDhTN0w1MUVVN0UwSzJEMVBOVlhZVUkyTi4u&origin=lprLink&route=shorturl"
+        ],
+        "internalCoverage": 0,
+        "externalCoverage": 0,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 93,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 3,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/hirek/20260602_tarsasjatek_kolcsonzes",
+      "refUrl": "https://www.vmk.hu/20260602_tarsasjatek_kolcsonzes",
+      "cloneUrl": "http://localhost:3011/hirek/20260602_tarsasjatek_kolcsonzes",
+      "family": "news-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/20260602_tarsasjatek_kolcsonzes",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/hirek/20260602_tarsasjatek_kolcsonzes",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 14,
+        "missingSample": [
+          "Hírek, események Társasjáték-kölcsönzés A kölcsönözhető társasjátékok listája IDE kattintva érhető el.",
+          "További híreink A jáki templomok és temetőik Szent István királytól Jáki Nagy Márton nemzetségfőig – a jáki templomok és temetőikDr.",
+          "Pap Ildikó Katalin régész előadása a Központi Könyvtár Olvasótermében.2026.",
+          "augusztus 19.(szerda) 17:00 Anjouk az Árpádok trónján.",
+          "...ahogyan a korabeli közvélekedés erről gondolkodott."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 1,
+        "cloneCount": 1,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PASS"
+      },
+      "links": {
+        "refInternalCount": 11,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": "A jáki templomok és temetőik"
+          },
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": ""
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": "Anjouk az Árpádok trónján. Miért éppen ők?"
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": ""
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": "Múzeumok Éjszakája"
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": ""
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0.09090909090909091,
+        "externalCoverage": 1,
+        "brokenLinkCount": 1,
+        "brokenLinkSample": [
+          {
+            "href": "/_upload/editor/2026/hirek/20260602_tarsas/Tarsasjatekok_listaja.pdf",
+            "status": 404
+          }
+        ],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 12,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 1,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/hirek/202608_spiro-80-kiallitas-szena",
+      "refUrl": "https://www.vmk.hu/202608_spiro-80-kiallitas-szena",
+      "cloneUrl": "http://localhost:3011/hirek/202608_spiro-80-kiallitas-szena",
+      "family": "news-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/202608_spiro-80-kiallitas-szena",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/hirek/202608_spiro-80-kiallitas-szena",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 12,
+        "missingSample": [
+          "Hírek, események Spiró 80 További híreink Zümmögj velünk!",
+          "Tisztelt Látogatóink!Tájékoztatjuk Önöket, hogy a 2026.",
+          "augusztus 6-án (csütörtökön) 17:00 órára tervezett rendezvényünk a Széna Téri Tagkönyvtárban elmarad!Megértésüket köszönjük!",
+          "Kiállítás a Kossuth Kiadó könyveiből Nyaraljon kedvenc hírességével!",
+          "Júniusban megnézheti, júliusban elviheti!"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 1,
+        "cloneCount": 1,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PASS"
+      },
+      "links": {
+        "refInternalCount": 10,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/20260806_zummogj_velunk_szena",
+            "text": "Zümmögj velünk! - ELMARAD!"
+          },
+          {
+            "href": "/20260806_zummogj_velunk_szena",
+            "text": ""
+          },
+          {
+            "href": "/20260602_nyaraljon_kedvenc_hiressegevel_szena",
+            "text": "Kiállítás a Kossuth Kiadó könyveiből"
+          },
+          {
+            "href": "/20260602_nyaraljon_kedvenc_hiressegevel_szena",
+            "text": ""
+          },
+          {
+            "href": "/2026-06-05-foszerepben-a-fordito-kiss-kornelia",
+            "text": "Főszerepben a fordító - Kiss Kornélia"
+          },
+          {
+            "href": "/2026-06-05-foszerepben-a-fordito-kiss-kornelia",
+            "text": ""
+          },
+          {
+            "href": "/2026-06-04-foszerepben-a-fordito-totfalusi-agnes",
+            "text": "Főszerepben a fordító - Tótfalusi Ágnes"
+          },
+          {
+            "href": "/2026-06-04-foszerepben-a-fordito-totfalusi-agnes",
+            "text": ""
+          },
+          {
+            "href": "/2026-06-01-fiatal-koltok-bemutatkozasa-endrey-nagy-agoston",
+            "text": "Fiatal költők bemutatkozása - Endrey-Nagy Ágoston"
+          },
+          {
+            "href": "/2026-06-01-fiatal-koltok-bemutatkozasa-endrey-nagy-agoston",
+            "text": ""
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 6,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 1,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/esemenyek/a-jaki-templomok-es-temetoik-2026-08-19",
+      "refUrl": "https://www.vmk.hu/a-jaki-templomok-es-temetoik-2026-08-19",
+      "cloneUrl": "http://localhost:3011/esemenyek/a-jaki-templomok-es-temetoik-2026-08-19",
+      "family": "event-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/a-jaki-templomok-es-temetoik-2026-08-19",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/esemenyek/a-jaki-templomok-es-temetoik-2026-08-19",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 15.4,
+        "matched": 2,
+        "total": 13,
+        "missingSample": [
+          "Hírek, események A jáki templomok és temetőik További híreink A jáki templomok és temetőik Szent István királytól Jáki Nagy Márton nemzetségfőig – a jáki templomok és temetőikDr.",
+          "...ahogyan a korabeli közvélekedés erről gondolkodott.",
+          "Teiszler Éva történész (Siklósi Gyula Várostörténeti Kutatóközpont) előadása a Központi Könyvtár Olvasótermében.",
+          "(péntek) 17:00 Tájékoztatás Kedves Olvasóink és Látogatóink!",
+          "Tájékoztatjuk Önöket, hogy a Széna Téri Tagkönyvtár és a Zsolt Utcai Tagkönyvtár tervezett nyitási időpontja módosult, így ezek a részlegeink 2026."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 1,
+        "cloneCount": 0,
+        "countDeficit": 1,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 10,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": "A jáki templomok és temetőik"
+          },
+          {
+            "href": "/a-jaki-templomok-es-temetoik-2026-08-19",
+            "text": ""
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": "Anjouk az Árpádok trónján. Miért éppen ők?"
+          },
+          {
+            "href": "/kiralyi-napok-eloadas-nagy-lajos-20260821",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-2026-8-3",
+            "text": ""
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": "Tájékoztatás"
+          },
+          {
+            "href": "/tajekoztatas-kozpont-2026-08-10",
+            "text": ""
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": "Múzeumok Éjszakája"
+          },
+          {
+            "href": "/20260620_muzeumok_ejszakaja",
+            "text": ""
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 11,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 1,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/esemenyek/2026_08_12_netrevalok",
+      "refUrl": "https://www.vmk.hu/2026_08_12_netrevalok",
+      "cloneUrl": "http://localhost:3011/esemenyek/2026_08_12_netrevalok",
+      "family": "event-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/2026_08_12_netrevalok",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/esemenyek/2026_08_12_netrevalok",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 12,
+        "missingSample": [
+          "Hírek, események Netrevalók További híreink Zümmögj velünk!",
+          "Tisztelt Látogatóink!Tájékoztatjuk Önöket, hogy a 2026.",
+          "augusztus 6-án (csütörtökön) 17:00 órára tervezett rendezvényünk a Széna Téri Tagkönyvtárban elmarad!Megértésüket köszönjük!",
+          "Kiállítás a Kossuth Kiadó könyveiből Nyaraljon kedvenc hírességével!",
+          "Júniusban megnézheti, júliusban elviheti!"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 1,
+        "cloneCount": 0,
+        "countDeficit": 1,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 10,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/20260806_zummogj_velunk_szena",
+            "text": "Zümmögj velünk! - ELMARAD!"
+          },
+          {
+            "href": "/20260806_zummogj_velunk_szena",
+            "text": ""
+          },
+          {
+            "href": "/20260602_nyaraljon_kedvenc_hiressegevel_szena",
+            "text": "Kiállítás a Kossuth Kiadó könyveiből"
+          },
+          {
+            "href": "/20260602_nyaraljon_kedvenc_hiressegevel_szena",
+            "text": ""
+          },
+          {
+            "href": "/2026-06-05-foszerepben-a-fordito-kiss-kornelia",
+            "text": "Főszerepben a fordító - Kiss Kornélia"
+          },
+          {
+            "href": "/2026-06-05-foszerepben-a-fordito-kiss-kornelia",
+            "text": ""
+          },
+          {
+            "href": "/2026-06-04-foszerepben-a-fordito-totfalusi-agnes",
+            "text": "Főszerepben a fordító - Tótfalusi Ágnes"
+          },
+          {
+            "href": "/2026-06-04-foszerepben-a-fordito-totfalusi-agnes",
+            "text": ""
+          },
+          {
+            "href": "/2026-06-01-fiatal-koltok-bemutatkozasa-endrey-nagy-agoston",
+            "text": "Fiatal költők bemutatkozása - Endrey-Nagy Ágoston"
+          },
+          {
+            "href": "/2026-06-01-fiatal-koltok-bemutatkozasa-endrey-nagy-agoston",
+            "text": ""
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 6,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 1,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/konyvtarunkrol",
+      "refUrl": "https://www.vmk.hu/konyvtarunkrol",
+      "cloneUrl": "http://localhost:3011/konyvtarunkrol",
+      "family": "static-institutional",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/konyvtarunkrol",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/konyvtarunkrol",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 100,
+        "matched": 0,
+        "total": 0,
+        "missingSample": [],
+        "status": "PASS"
+      },
+      "media": {
+        "refCount": 0,
+        "cloneCount": 0,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PASS"
+      },
+      "links": {
+        "refInternalCount": 0,
+        "refExternalCount": 0,
+        "missingInternal": [],
+        "missingExternal": [],
+        "internalCoverage": 1,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "PASS"
+      },
+      "structure": {
+        "ref": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 2,
+          "paragraphs": 3,
+          "lists": 1,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_PASS"
+    },
+    {
+      "path": "/dokumentumok",
+      "refUrl": "https://www.vmk.hu/alapdokumentumok",
+      "cloneUrl": "http://localhost:3011/dokumentumok",
+      "family": "static-institutional-pdf",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/alapdokumentumok",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/dokumentumok",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 14.3,
+        "matched": 2,
+        "total": 14,
+        "missingSample": [
+          "Alapdokumentumok Szervezeti és Működési Szabályzat - 2017.07.19.",
+          "Szervezeti és Működési Szabályzat - 2025.04.14.",
+          "Adatkezelési tájékoztató - 2025.05.21.",
+          "Adatkezelési tájékoztató - 2026.01.27.",
+          "Adatkezelési tájékoztató - 2026.05.06."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 53,
+        "cloneCount": 0,
+        "countDeficit": 53,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 57,
+        "refExternalCount": 5,
+        "missingInternal": [
+          {
+            "href": "/_upload/editor/Alapdokumentumok/SZMSZ_20170719.pdf",
+            "text": "Szervezeti és Működési Szabályzat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Szervezeti_es_M__kodesi_Szabalyzat_20250414.pdf",
+            "text": "Szervezeti és Működési Szabályzat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK_2024_04.pdf",
+            "text": "Adatkezelési tájékoztató"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK_260127.pdf",
+            "text": "Adatkezelési tájékoztató"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_260506.pdf",
+            "text": "Adatkezelési tájékoztató"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/A_szemelyes_adatok_kezeleser__l_es_vedelmer__l_260506.pdf",
+            "text": "A személyes adatok kezeléséről és védelméről"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Gyujtokori_szabalyzat_20181019.pdf",
+            "text": "Gyűjtőköri Szabályzat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Kolcsonzesi_politika_260601.pdf",
+            "text": "Kölcsönzési politika - 2026.06.01."
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Tarsasjatek-kolcsonzesi_szabalyzat.pdf",
+            "text": "Társasjáték-kölcsönzés szabályzata - 2026.06.02."
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/jovokepVMK.pdf",
+            "text": "Jövőkép"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/kuldetesVMK.pdf",
+            "text": "Küldetésnyilatkozat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Min__sitett_Konyvtar_cim_palyazat_celjanak_indoklasaVMK.pdf",
+            "text": "Minősített Könyvtár cím, 2019"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/strategia-terv.pdf",
+            "text": "Stratégiai terv"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/hasznaloi-kerdoiv.pdf",
+            "text": "Használói kérdőív"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Hasznalo-elegedettsegvizsgalat-ertekeles-VMK.pdf",
+            "text": "Használói elégedettség és igényfelmérés eredménye"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Panaszkezelesi_szabalyzat_VMK_MIT_20181008.pdf",
+            "text": "Panaszkezelési szabályzat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/panaszbejelento-urlap.pdf",
+            "text": "Panaszbejelentő űrlap"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Min__segpolitikai_nyilatkozat_2017.pdf",
+            "text": "Minőségpolitikai nyilatkozat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Alapito_okirat_20250512.pdf",
+            "text": "Alapító okirat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Alapito_okirat_20230424.pdf",
+            "text": "Alapító okirat"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/MAK_Torzskonyv_20250513.pdf",
+            "text": "MÁK Törzskönyvi nyilvántartó lap"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/torzskonyvi-kivonat_231122.pdf",
+            "text": "MÁK Törzskönyvi nyilvántartó lap"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/BESZ%C3%81MOL%C3%93%20VMMK%202012.pdf",
+            "text": "Beszámoló-2012"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Besz%C3%A1mol%C3%B3%20VMK%202013.pdf",
+            "text": "Beszámoló-2013"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_beszamolo_2014.pdf",
+            "text": "Beszámoló-2014"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_Beszamolo_2015.pdf",
+            "text": "Beszámoló-2015"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_beszamolo_2016.pdf",
+            "text": "Beszámoló-2016"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_beszamolo_2017_kuldesre.pdf",
+            "text": "Beszámoló-2017"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/beszamolo-2018.pdf",
+            "text": "Beszámoló-2018"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Beszamolo-2019.pdf",
+            "text": "Beszámoló-2019"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_2020_beszamolo.pdf",
+            "text": "Beszámoló-2020"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_Beszamolo-Mutatok-2022.pdf",
+            "text": "Beszámoló-2021"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_Beszamolo-2022.pdf",
+            "text": "Beszámoló-2022"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_beszamolo_2023.pdf",
+            "text": "Beszámoló-2023"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK__Beszamolo_2024_rendben.pdf",
+            "text": "Beszámoló-2024"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_Beszamolo_Mutatok_2024_rendben.pdf",
+            "text": "Beszámoló-2024-mutatók"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/beszamolo/VMK_beszamolo_2025.pdf",
+            "text": "Beszámoló-2025"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/beszamolo/VMK_mutatok_2025.pdf",
+            "text": "Beszámoló-2025-mutatók"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Munkaterv%20VMK%202013.pdf",
+            "text": "Munkaterv-2013"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Munkaterv%20VMK%202014.pdf",
+            "text": "Munkaterv-2014"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_munkaterv_2015.pdf",
+            "text": "Munkaterv-2015"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_Munkaterv_2016.pdf",
+            "text": "Munkaterv-2016"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_munkaterv_2017.pdf",
+            "text": "Munkaterv-2017"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_munkaterv_2018_kuldesre.pdf",
+            "text": "Munkaterv-2018"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK-munkaterv2019.pdf",
+            "text": "Munkaterv-2019"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Munaterv-2020.pdf",
+            "text": "Munkaterv-2020"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_2021_munkaterv.pdf",
+            "text": "Munkaterv-2021"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Munkaterv-2022.pdf",
+            "text": "Munkaterv-2022"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_2021_munkaterv.pdf",
+            "text": ""
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/Munkaterv-2023.pdf",
+            "text": "Munkaterv-2023"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_2021_munkaterv.pdf",
+            "text": ""
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_munkaterv_2024.pdf",
+            "text": "Munkaterv-2024"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_2021_munkaterv.pdf",
+            "text": ""
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_Munkaterv_2025_rendben.pdf",
+            "text": "Munkaterv-2025"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/VMK_2021_munkaterv.pdf",
+            "text": ""
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/munkaterv/VMK_munkaterv_2026.pdf",
+            "text": "Munkaterv-2026"
+          },
+          {
+            "href": "/_upload/editor/Alapdokumentumok/jogszabalyok.pdf",
+            "text": "Jogszabályok"
+          }
+        ],
+        "missingExternal": [
+          "https://drive.google.com/file/d/1bpFeO6A4uc5AzzgbIDc7uIp7C40N6UvU/view?usp=sharing"
+        ],
+        "internalCoverage": 0,
+        "externalCoverage": 0,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 1,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/munkatarsak",
+      "refUrl": "https://www.vmk.hu/munkatarsak",
+      "cloneUrl": "http://localhost:3011/munkatarsak",
+      "family": "static-institutional",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/munkatarsak",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/munkatarsak",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 1,
+        "missingSample": [
+          "Munkatársaink VMK Központi Könyvtár és Tagkönyvtárak Központi Könyvtár Pedagógiai Szakkönyvtár Budai úti Tagkönyvtár Mészöly Géza utcai Tagkönyvtár Széna téri Tagkönyvtár Tolnai utcai Tagkönyvtár Zsolt utcai Tagkönyvtár Rendezés ABC szerint A - Z Z - A Beosztás Állományalakító és feldolgozó csoportvezető gépkocsivezető gyermekkönyvtáros Gyűjteményszervezési és Megyei Szolgáltatási Osztály osztályvezető gyűjteményszervező könyvtáros Helyismereti és digitalizálási csoportvezető helyismereti könyvtáros igazgatási szakalkalmazott igazgató igazgatóhelyettes igazgatóhelyettes, Gyűjteményszervezési és Megyei Szolgáltatási Osztály osztályvezető informatikus Kommunikációs és közönségkapcsolati referens kommunikációs munkatárs könyvkötő Könyvtárellátási és módszertani csoportvezető könyvtárkezelő könyvtáros könyvtáros asszisztens Központi könyvtár olvasószolgálati osztályvezető-helyettes módszertanos könyvtáros olvasószolgálati könyvtáros Olvasószolgálati osztályvezető raktáros ruhatáros sajtókapcsolat, Tagkönyvtári olvasószolgálati osztályvezető-helyettes segédkönyvtáros Tagkönyvtári olvasószolgálati osztályvezető-helyettes tájékoztató könyvtáros ügyviteli alkalmazott Ügyviteli és üzemeltetési csoportvezető üzemviteli alkalmazott - karbantartó üzemviteli alkalmazott - ruhatáros üzemviteli alkalmazott - takarító zenei könyvtáros Ányos Darinka olvasószolgálati könyvtáros Telefonszám: +36-22-329-438 E-mail cím: darinka@vmk.hu Bánhidi Csabáné könyvtáros asszisztens Telefonszám: +36-22-310-589 E-mail cím: banhidine@vmk.hu Belinszki János informatikus Telefonszám: +36-22-385-241 E-mail cím: belinszki.janos@vmk.hu Bertalan Erika tájékoztató könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: bertalan.erika@vmk.hu Bertalan Orsolya könyvtárkezelő Telefonszám: +36-22-513-931 E-mail cím: bertalan.orsolya@vmk.hu Bocsor Eszter Réka üzemviteli alkalmazott - takarító Telefonszám: +36-22-313-045 E-mail cím: bocsor.eszter@vmk.hu Bódog András informatikus Telefonszám: +36-22-385-241 E-mail cím: bodog.andras@vmk.hu Bokros Judit könyvtárkezelő Telefonszám: +36-22-513-931 E-mail cím: bokros.judit@vmk.hu Bozsoki Ágnes könyvtárkezelő Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: bozsoki.agnes@vmk.hu Buriánné Tarró Edit Erzsébet olvasószolgálati könyvtáros Telefonszám: +36-22-329-436 E-mail cím: burianne@vmk.hu Czipó Tiborné olvasószolgálati könyvtáros Telefonszám: +36-22-315-603 E-mail cím: czipo.tiborne@vmk.hu Csehné Rákos Judit kommunikációs munkatárs Telefonszám: +36-22-513-933; +36-22-312-845*/222-es mellék; +36-70-412-1985 E-mail cím: csehne.judit@vmk.hu Darvas Veronika Judit Olvasószolgálati osztályvezető Telefonszám: +36-70-508-1420 E-mail cím: darvas.veronika@vmk.hu Fekete Rozália ügyviteli alkalmazott Telefonszám: +36-22-312-684; +36-22-513-933 E-mail cím: fekete.rozalia@vmk.hu Fekete Zsolt informatikus Telefonszám: +36-22-312-684; +36-22-513-933 E-mail cím: zsolt.fekete@vmk.hu Fenyvesi Lászlóné olvasószolgálati könyvtáros Telefonszám: +36-22-313-045 E-mail cím: fenyvesi.laszlone@vmk.hu Fülöp Andrea Ügyviteli és üzemeltetési csoportvezető Telefonszám: +36-22-312-684; +36-22-513-933 E-mail cím: fulop.andrea@vmk.hu Geda Judit könyvtáros asszisztens Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: geda.judit@vmk.hu Gombkötő Gina tájékoztató könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: gombkoto.gina@vmk.hu Gráczer László Tamás olvasószolgálati könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/ 18-as vagy 19-es mellék E-mail cím: graczer.laszlo@vmk.hu Gulyás József gépkocsivezető Telefonszám: +36-22-312-684*, +36-22-312-845*/222-es mellék E-mail cím: gulyas.jozsef@vmk.hu Hajdu Hajnalka könyvtárkezelő Telefonszám: +36-22-312-684*, +36-22-312-845*/226-os mellék E-mail cím: hajdu.hajnalka@vmk.hu Holczheim Gergő informatikus Telefonszám: +36-22-385-241 E-mail cím: holczheim.gergo@vmk.hu Horváth Adrienn igazgató Telefonszám: +36-22-312-684* és +36-22-312-845* /213-es mellék ; +36-22-340-700 E-mail cím: horvath.adrienn@vmk.hu Iszak Ferencné könyvtáros Telefonszám: +36-22-311-634 E-mail cím: iszak.ferencne@vmk.hu Kalincsákné Molnár Zsuzsanna olvasószolgálati könyvtáros Telefonszám: +36-22-329-437 E-mail cím: kalincsakne@vmk.hu Kálmánné Heim Ágnes igazgatóhelyettes Telefonszám: +36-20-290-7045 E-mail cím: kalmanne.agi@vmk.hu Kaltenecker Klára Állományalakító és feldolgozó csoportvezető Telefonszám: +36-22-340-698 E-mail cím: kaltenecker.klara@vmk.hu Kelemen Anna könyvtárkezelő Telefonszám: +36-22-385-241 E-mail cím: kelemen.anna@vmk.hu Kleer Ivett olvasószolgálati könyvtáros Telefonszám: +36-22-385-241 E-mail cím: kleer.ivett@vmk.hu Kovács Attila üzemviteli alkalmazott - karbantartó Telefonszám: +36-22-312-684*, +36-22-312-845*/222-es mellék E-mail cím: kovacs.attila@vmk.hu Kovácsné Mukrányi Ibolya gyűjteményszervező könyvtáros Telefonszám: +36-22-340-698 E-mail cím: kovacsne@vmk.hu Krupa Veronika könyvkötő Telefonszám: +36-22-312-684*, +36-22-312-845*/220-as mellék E-mail cím: krupa.veronika@vmk.hu Kurucz Edit üzemviteli alkalmazott - takarító Telefonszám: +36-22-312-684*, +36-22-312-845* E-mail cím: kurucz.edit@vmk.hu Laky Éva gyűjteményszervező könyvtáros Telefonszám: +36-22-340-698 E-mail cím: laky.eva@vmk.hu László Lívia könyvtárkezelő Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as mellék E-mail cím: laszlo.livia@vmk.hu Lendvai Judit gyermekkönyvtáros Telefonszám: +36-22-329-436 E-mail cím: lendvai.judit@vmk.hu Mácsár István Vendelné ügyviteli alkalmazott Telefonszám: +36-22-312-684; +36-22-513-933 E-mail cím: macsarne.gyongyi@vmk.hu Magony Imre olvasószolgálati könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/212-es mellék E-mail cím: magony.imre@vmk.hu Makkné Csurgai-Horváth Nóra gyűjteményszervező könyvtáros Telefonszám: +36-22-340-698 E-mail cím: csurgai.nora@vmk.hu Marton Gábor Márk könyvtárkezelő Telefonszám: +36-22-385-241 E-mail cím: marton.gabor@vmk.hu Mihalkóné Szűts Beatrix ruhatáros Telefonszám: +36-22-329-436 E-mail cím: Miklós Gabriella könyvtárkezelő Telefonszám: +36-22-329-436 E-mail cím: miklos.gabriella@vmk.hu Mong Ildikó üzemviteli alkalmazott - takarító Telefonszám: +36-22-329-436 E-mail cím: mong.ildiko@vmk.hu Nagy Mónika zenei könyvtáros Telefonszám: +36-22-513-932 E-mail cím: nagy.monika@vmk.hu Németh Réka olvasószolgálati könyvtáros Telefonszám: +36-22-329-438 E-mail cím: nemeth.reka@vmk.hu Nott Zsuzsa üzemviteli alkalmazott - takarító Telefonszám: +36-22-315-603 E-mail cím: nott.zsuzsa@vmk.hu Osgyán László olvasószolgálati könyvtáros Telefonszám: +36-22-329-437 E-mail cím: osgyan.laszlo@vmk.hu Pap Ivett könyvtárkezelő Telefonszám: +36-22-329-436 E-mail cím: pap.ivett@vmk.hu Papné Gál Gyöngyi olvasószolgálati könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/ 218-as vagy 219-es mellék E-mail cím: papne.gyongyi@vmk.hu Papp Zoltánné tájékoztató könyvtáros Telefonszám: +36-22-513-932 E-mail cím: papp.zoltanne@vmk.hu Peresztegi-Nagy Róbert könyvtárkezelő Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as mellék E-mail cím: peresztegi.robert@vmk.hu Pozsa Réka helyismereti könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/226-os mellék E-mail cím: pozsa.reka@vmk.hu Preszter Ágnes olvasószolgálati könyvtáros Telefonszám: +36-22-329-436 E-mail cím: preszter.agnes@vmk.hu Ruff Ilona olvasószolgálati könyvtáros Telefonszám: +36-22-329-437 E-mail cím: ruff.ilona@vmk.hu Somogyfoki Ottilia könyvtáros asszisztens Telefonszám: +36-22-313-045 E-mail cím: somogyfoki.ottilia@vmk.hu Somogyiné Dobai Szilvia könyvtárkezelő Telefonszám: +36-22-312-684*, +36-22-312-845*/226-os mellék E-mail cím: somogyine.szilvia@vmk.hu Strasszerné Mihályi Márta üzemviteli alkalmazott - takarító Telefonszám: +36-22-312-684*, +36-22-312-845* E-mail cím: strasszerne@vmk.hu Szabácsik Józsefné üzemviteli alkalmazott - takarító Telefonszám: +36-22-312-684*, +36-22-312-845* E-mail cím: szabacsikne@vmk.hu Szabó Eszter Kommunikációs és közönségkapcsolati referens Telefonszám: + 36-70-680-8809 E-mail cím: szabo.eszter@vmk.hu Szabó Éva könyvtárkezelő Telefonszám: +36-22-313-045 E-mail cím: szabo.eva@vmk.hu Szabóné Kazareczki Anett gyűjteményszervező könyvtáros Telefonszám: +36-22-340-698 E-mail cím: szabone.anett@vmk.hu Szabóné Köő Ildikó olvasószolgálati könyvtáros Telefonszám: +36-22-315-603 E-mail cím: szabone.ildiko@vmk.hu Szalai Tamás Központi könyvtár olvasószolgálati osztályvezető-helyettes Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: szalai.tamas@vmk.hu Szántai Julianna raktáros Telefonszám: +36-22-312-684*, +36-22-312-845*/212-es vagy 215-ös mellék E-mail cím: szantai.julianna@vmk.hu Szentkeresztiné Saáry Krisztina könyvtáros asszisztens Telefonszám: +36-22-340-698 E-mail cím: szentkeresztine@vmk.hu Szepesiné Gallai Virág könyvtárkezelő Telefonszám: +36-22-329-438 E-mail cím: gallai.virag@vmk.hu Tompainé Siba Renáta könyvkötő Telefonszám: +36-22-312-684*, +36-22-312-845*/220-as mellék E-mail cím: tompaine@vmk.hu Tóth Szilvia könyvtáros asszisztens Telefonszám: +36-22-513-931 E-mail cím: toth.szilvia@vmk.hu Török Gabriella olvasószolgálati könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: torok.gabriella@vmk.hu Tunyogi Tibor olvasószolgálati könyvtáros Telefonszám: +36-22-329-436 E-mail cím: tunyogi.tibor@vmk.hu Vadász Aranka ruhatáros Telefonszám: +36-22-312-684*, +36-22-312-845*/212-es mellék E-mail cím: vadasz.aranka@vmk.hu Vadász Krisztina ruhatáros Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as mellék E-mail cím: vadasz.krisztina@vmk.hu Vajda Georgina könyvtárkezelő Telefonszám: +36-22-313-045 E-mail cím: vajda.georgina@vmk.hu Vajnár Diána könyvtárkezelő Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: vajnar.diana@vmk.hu Varga Andrea könyvtárkezelő Telefonszám: +36-22-311-634 E-mail cím: varga.andrea@vmk.hu Varga Éva olvasószolgálati könyvtáros Telefonszám: +36-22-312-684*, +36-22-312-845*/218-as vagy 219-es mellék E-mail cím: varga.eva@vmk.hu Vitek Renáta könyvtárkezelő Telefonszám: +36-22-311-634 E-mail cím: vitek.renata@vmk.hu Vörösmarty-Horváth Zsófia könyvtárkezelő Telefonszám: +36-22-329-436 E-mail cím: vorosmarty-h.zsofia@vmk.hu Zahoretz Éva könyvtáros asszisztens Telefonszám: +36-22-312-684*, +36-22-312-845*/212-es vagy 215-ös mellék E-mail cím: zahoretz.eva@vmk.hu"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 0,
+        "cloneCount": 0,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PASS"
+      },
+      "links": {
+        "refInternalCount": 160,
+        "refExternalCount": 80,
+        "missingInternal": [
+          {
+            "href": "anyos-darinka",
+            "text": "Ányos Darinka"
+          },
+          {
+            "href": "anyos-darinka",
+            "text": ""
+          },
+          {
+            "href": "banhidi-csabane",
+            "text": "Bánhidi Csabáné"
+          },
+          {
+            "href": "banhidi-csabane",
+            "text": ""
+          },
+          {
+            "href": "belinszki-janos",
+            "text": "Belinszki János"
+          },
+          {
+            "href": "belinszki-janos",
+            "text": ""
+          },
+          {
+            "href": "bertalan-erika",
+            "text": "Bertalan Erika"
+          },
+          {
+            "href": "bertalan-erika",
+            "text": ""
+          },
+          {
+            "href": "bertalan-orsolya",
+            "text": "Bertalan Orsolya"
+          },
+          {
+            "href": "bertalan-orsolya",
+            "text": ""
+          },
+          {
+            "href": "bocsor-eszter",
+            "text": "Bocsor Eszter Réka"
+          },
+          {
+            "href": "bocsor-eszter",
+            "text": ""
+          },
+          {
+            "href": "bodog-andras",
+            "text": "Bódog András"
+          },
+          {
+            "href": "bodog-andras",
+            "text": ""
+          },
+          {
+            "href": "bokros-judit",
+            "text": "Bokros Judit"
+          },
+          {
+            "href": "bokros-judit",
+            "text": ""
+          },
+          {
+            "href": "bozsoki-agnes",
+            "text": "Bozsoki Ágnes"
+          },
+          {
+            "href": "bozsoki-agnes",
+            "text": ""
+          },
+          {
+            "href": "burianne-tarro-edit",
+            "text": "Buriánné Tarró Edit Erzsébet"
+          },
+          {
+            "href": "burianne-tarro-edit",
+            "text": ""
+          },
+          {
+            "href": "czipo-tiborne",
+            "text": "Czipó Tiborné"
+          },
+          {
+            "href": "czipo-tiborne",
+            "text": ""
+          },
+          {
+            "href": "csehne-rakos-judit",
+            "text": "Csehné Rákos Judit"
+          },
+          {
+            "href": "csehne-rakos-judit",
+            "text": ""
+          },
+          {
+            "href": "darvas-veronika-judit",
+            "text": "Darvas Veronika Judit"
+          },
+          {
+            "href": "darvas-veronika-judit",
+            "text": ""
+          },
+          {
+            "href": "fekete-rozalia",
+            "text": "Fekete Rozália"
+          },
+          {
+            "href": "fekete-rozalia",
+            "text": ""
+          },
+          {
+            "href": "fekete-zsolt",
+            "text": "Fekete Zsolt"
+          },
+          {
+            "href": "fekete-zsolt",
+            "text": ""
+          },
+          {
+            "href": "fenyvesi-laszlone",
+            "text": "Fenyvesi Lászlóné"
+          },
+          {
+            "href": "fenyvesi-laszlone",
+            "text": ""
+          },
+          {
+            "href": "fulop-andrea",
+            "text": "Fülöp Andrea"
+          },
+          {
+            "href": "fulop-andrea",
+            "text": ""
+          },
+          {
+            "href": "geda-judit",
+            "text": "Geda Judit"
+          },
+          {
+            "href": "geda-judit",
+            "text": ""
+          },
+          {
+            "href": "gombkoto-gina",
+            "text": "Gombkötő Gina"
+          },
+          {
+            "href": "gombkoto-gina",
+            "text": ""
+          },
+          {
+            "href": "graczer-laszlo-tamas",
+            "text": "Gráczer László Tamás"
+          },
+          {
+            "href": "graczer-laszlo-tamas",
+            "text": ""
+          },
+          {
+            "href": "gulyas-jozsef",
+            "text": "Gulyás József"
+          },
+          {
+            "href": "gulyas-jozsef",
+            "text": ""
+          },
+          {
+            "href": "hajdu-hajnalka",
+            "text": "Hajdu Hajnalka"
+          },
+          {
+            "href": "hajdu-hajnalka",
+            "text": ""
+          },
+          {
+            "href": "holczheim-gergo",
+            "text": "Holczheim Gergő"
+          },
+          {
+            "href": "holczheim-gergo",
+            "text": ""
+          },
+          {
+            "href": "horvath-adrienn",
+            "text": "Horváth Adrienn"
+          },
+          {
+            "href": "horvath-adrienn",
+            "text": ""
+          },
+          {
+            "href": "iszak-ferencne",
+            "text": "Iszak Ferencné"
+          },
+          {
+            "href": "iszak-ferencne",
+            "text": ""
+          },
+          {
+            "href": "kalincsakne-molnar-zsuzsa",
+            "text": "Kalincsákné Molnár Zsuzsanna"
+          },
+          {
+            "href": "kalincsakne-molnar-zsuzsa",
+            "text": ""
+          },
+          {
+            "href": "kalmanne-heim-agnes",
+            "text": "Kálmánné Heim Ágnes"
+          },
+          {
+            "href": "kalmanne-heim-agnes",
+            "text": ""
+          },
+          {
+            "href": "kaltenecker-klara",
+            "text": "Kaltenecker Klára"
+          },
+          {
+            "href": "kaltenecker-klara",
+            "text": ""
+          },
+          {
+            "href": "kelemen-anna",
+            "text": "Kelemen Anna"
+          },
+          {
+            "href": "kelemen-anna",
+            "text": ""
+          },
+          {
+            "href": "kleer-ivett",
+            "text": "Kleer Ivett"
+          },
+          {
+            "href": "kleer-ivett",
+            "text": ""
+          },
+          {
+            "href": "kovacs-attila",
+            "text": "Kovács Attila"
+          },
+          {
+            "href": "kovacs-attila",
+            "text": ""
+          },
+          {
+            "href": "kovacsne-mukranyi-ibolya",
+            "text": "Kovácsné Mukrányi Ibolya"
+          },
+          {
+            "href": "kovacsne-mukranyi-ibolya",
+            "text": ""
+          },
+          {
+            "href": "krupa-veronika",
+            "text": "Krupa Veronika"
+          },
+          {
+            "href": "krupa-veronika",
+            "text": ""
+          },
+          {
+            "href": "kurucz-edit",
+            "text": "Kurucz Edit"
+          },
+          {
+            "href": "kurucz-edit",
+            "text": ""
+          },
+          {
+            "href": "laky-eva",
+            "text": "Laky Éva"
+          },
+          {
+            "href": "laky-eva",
+            "text": ""
+          },
+          {
+            "href": "laszlo-livia",
+            "text": "László Lívia"
+          },
+          {
+            "href": "laszlo-livia",
+            "text": ""
+          },
+          {
+            "href": "lendvai-judit",
+            "text": "Lendvai Judit"
+          },
+          {
+            "href": "lendvai-judit",
+            "text": ""
+          },
+          {
+            "href": "macsar-istvan-vendelne",
+            "text": "Mácsár István Vendelné"
+          },
+          {
+            "href": "macsar-istvan-vendelne",
+            "text": ""
+          },
+          {
+            "href": "magony-imre",
+            "text": "Magony Imre"
+          },
+          {
+            "href": "magony-imre",
+            "text": ""
+          },
+          {
+            "href": "csurgaine-horvath-nora",
+            "text": "Makkné Csurgai-Horváth Nóra"
+          },
+          {
+            "href": "csurgaine-horvath-nora",
+            "text": ""
+          },
+          {
+            "href": "marton-gabor",
+            "text": "Marton Gábor Márk"
+          },
+          {
+            "href": "marton-gabor",
+            "text": ""
+          },
+          {
+            "href": "mihalkone-szuts-beatrix",
+            "text": "Mihalkóné Szűts Beatrix"
+          },
+          {
+            "href": "mihalkone-szuts-beatrix",
+            "text": ""
+          },
+          {
+            "href": "miklos-gabriella",
+            "text": "Miklós Gabriella"
+          },
+          {
+            "href": "miklos-gabriella",
+            "text": ""
+          },
+          {
+            "href": "mong-ildiko",
+            "text": "Mong Ildikó"
+          },
+          {
+            "href": "mong-ildiko",
+            "text": ""
+          },
+          {
+            "href": "kissne-nagy-monika",
+            "text": "Nagy Mónika"
+          },
+          {
+            "href": "kissne-nagy-monika",
+            "text": ""
+          },
+          {
+            "href": "nemeth-reka",
+            "text": "Németh Réka"
+          },
+          {
+            "href": "nemeth-reka",
+            "text": ""
+          },
+          {
+            "href": "nott-zsuzsa",
+            "text": "Nott Zsuzsa"
+          },
+          {
+            "href": "nott-zsuzsa",
+            "text": ""
+          },
+          {
+            "href": "osgyan-laszlo",
+            "text": "Osgyán László"
+          },
+          {
+            "href": "osgyan-laszlo",
+            "text": ""
+          },
+          {
+            "href": "pap-ivett",
+            "text": "Pap Ivett"
+          },
+          {
+            "href": "pap-ivett",
+            "text": ""
+          },
+          {
+            "href": "papne-gal-gyongyi",
+            "text": "Papné Gál Gyöngyi"
+          },
+          {
+            "href": "papne-gal-gyongyi",
+            "text": ""
+          },
+          {
+            "href": "papp-zoltanne",
+            "text": "Papp Zoltánné"
+          },
+          {
+            "href": "papp-zoltanne",
+            "text": ""
+          },
+          {
+            "href": "peresztegir-es-nagy-robert-copy",
+            "text": "Peresztegi-Nagy Róbert"
+          },
+          {
+            "href": "peresztegir-es-nagy-robert-copy",
+            "text": ""
+          },
+          {
+            "href": "pozsa-reka",
+            "text": "Pozsa Réka"
+          },
+          {
+            "href": "pozsa-reka",
+            "text": ""
+          },
+          {
+            "href": "preszter-agnes",
+            "text": "Preszter Ágnes"
+          },
+          {
+            "href": "preszter-agnes",
+            "text": ""
+          },
+          {
+            "href": "ruff-ilona",
+            "text": "Ruff Ilona"
+          },
+          {
+            "href": "ruff-ilona",
+            "text": ""
+          },
+          {
+            "href": "somogyfoki-ottilia",
+            "text": "Somogyfoki Ottilia"
+          },
+          {
+            "href": "somogyfoki-ottilia",
+            "text": ""
+          },
+          {
+            "href": "somogyine-dobai-szilvia",
+            "text": "Somogyiné Dobai Szilvia"
+          },
+          {
+            "href": "somogyine-dobai-szilvia",
+            "text": ""
+          },
+          {
+            "href": "strasszerne",
+            "text": "Strasszerné Mihályi Márta"
+          },
+          {
+            "href": "strasszerne",
+            "text": ""
+          },
+          {
+            "href": "szabacsik-jozsefne",
+            "text": "Szabácsik Józsefné"
+          },
+          {
+            "href": "szabacsik-jozsefne",
+            "text": ""
+          },
+          {
+            "href": "szabo-eszter",
+            "text": "Szabó Eszter"
+          },
+          {
+            "href": "szabo-eszter",
+            "text": ""
+          },
+          {
+            "href": "szabo-eva",
+            "text": "Szabó Éva"
+          },
+          {
+            "href": "szabo-eva",
+            "text": ""
+          },
+          {
+            "href": "szabone-anett",
+            "text": "Szabóné Kazareczki Anett"
+          },
+          {
+            "href": "szabone-anett",
+            "text": ""
+          },
+          {
+            "href": "szabone-koo-ildiko",
+            "text": "Szabóné Köő Ildikó"
+          },
+          {
+            "href": "szabone-koo-ildiko",
+            "text": ""
+          },
+          {
+            "href": "szalai-tamas",
+            "text": "Szalai Tamás"
+          },
+          {
+            "href": "szalai-tamas",
+            "text": ""
+          },
+          {
+            "href": "szantai-julianna",
+            "text": "Szántai Julianna"
+          },
+          {
+            "href": "szantai-julianna",
+            "text": ""
+          },
+          {
+            "href": "szentkeresztine-saary-krisztina",
+            "text": "Szentkeresztiné Saáry Krisztina"
+          },
+          {
+            "href": "szentkeresztine-saary-krisztina",
+            "text": ""
+          },
+          {
+            "href": "gallai-virag",
+            "text": "Szepesiné Gallai Virág"
+          },
+          {
+            "href": "gallai-virag",
+            "text": ""
+          },
+          {
+            "href": "tompaine-siba-renata",
+            "text": "Tompainé Siba Renáta"
+          },
+          {
+            "href": "tompaine-siba-renata",
+            "text": ""
+          },
+          {
+            "href": "toth-szilvia",
+            "text": "Tóth Szilvia"
+          },
+          {
+            "href": "toth-szilvia",
+            "text": ""
+          },
+          {
+            "href": "torok-gabriella",
+            "text": "Török Gabriella"
+          },
+          {
+            "href": "torok-gabriella",
+            "text": ""
+          },
+          {
+            "href": "tunyogi-tibor",
+            "text": "Tunyogi Tibor"
+          },
+          {
+            "href": "tunyogi-tibor",
+            "text": ""
+          },
+          {
+            "href": "vadasz-aranka",
+            "text": "Vadász Aranka"
+          },
+          {
+            "href": "vadasz-aranka",
+            "text": ""
+          },
+          {
+            "href": "vadasz-krisztina-copy",
+            "text": "Vadász Krisztina"
+          },
+          {
+            "href": "vadasz-krisztina-copy",
+            "text": ""
+          },
+          {
+            "href": "vajda-georgina",
+            "text": "Vajda Georgina"
+          },
+          {
+            "href": "vajda-georgina",
+            "text": ""
+          },
+          {
+            "href": "vajnar-diana",
+            "text": "Vajnár Diána"
+          },
+          {
+            "href": "vajnar-diana",
+            "text": ""
+          },
+          {
+            "href": "varga-andrea",
+            "text": "Varga Andrea"
+          },
+          {
+            "href": "varga-andrea",
+            "text": ""
+          },
+          {
+            "href": "varga-eva",
+            "text": "Varga Éva"
+          },
+          {
+            "href": "varga-eva",
+            "text": ""
+          },
+          {
+            "href": "vitek-renata",
+            "text": "Vitek Renáta"
+          },
+          {
+            "href": "vitek-renata",
+            "text": ""
+          },
+          {
+            "href": "vorosmarty-horvath-zsofia",
+            "text": "Vörösmarty-Horváth Zsófia"
+          },
+          {
+            "href": "vorosmarty-horvath-zsofia",
+            "text": ""
+          },
+          {
+            "href": "zahoretz-eva",
+            "text": "Zahoretz Éva"
+          },
+          {
+            "href": "zahoretz-eva",
+            "text": ""
+          }
+        ],
+        "missingExternal": [
+          "mailto:darinka@vmk.hu",
+          "mailto:banhidine@vmk.hu",
+          "mailto:belinszki.janos@vmk.hu",
+          "mailto:bertalan.erika@vmk.hu",
+          "mailto:bertalan.orsolya@vmk.hu",
+          "mailto:bocsor.eszter@vmk.hu",
+          "mailto:bodog.andras@vmk.hu",
+          "mailto:bokros.judit@vmk.hu",
+          "mailto:bozsoki.agnes@vmk.hu",
+          "mailto:burianne@vmk.hu",
+          "mailto:czipo.tiborne@vmk.hu",
+          "mailto:csehne.judit@vmk.hu",
+          "mailto:darvas.veronika@vmk.hu",
+          "mailto:fekete.rozalia@vmk.hu",
+          "mailto:zsolt.fekete@vmk.hu",
+          "mailto:fenyvesi.laszlone@vmk.hu",
+          "mailto:fulop.andrea@vmk.hu",
+          "mailto:geda.judit@vmk.hu",
+          "mailto:gombkoto.gina@vmk.hu",
+          "mailto:graczer.laszlo@vmk.hu",
+          "mailto:gulyas.jozsef@vmk.hu",
+          "mailto:hajdu.hajnalka@vmk.hu",
+          "mailto:holczheim.gergo@vmk.hu",
+          "mailto:horvath.adrienn@vmk.hu",
+          "mailto:iszak.ferencne@vmk.hu",
+          "mailto:kalincsakne@vmk.hu",
+          "mailto:kalmanne.agi@vmk.hu",
+          "mailto:kaltenecker.klara@vmk.hu",
+          "mailto:kelemen.anna@vmk.hu",
+          "mailto:kleer.ivett@vmk.hu",
+          "mailto:kovacs.attila@vmk.hu",
+          "mailto:kovacsne@vmk.hu",
+          "mailto:krupa.veronika@vmk.hu",
+          "mailto:kurucz.edit@vmk.hu",
+          "mailto:laky.eva@vmk.hu",
+          "mailto:laszlo.livia@vmk.hu",
+          "mailto:lendvai.judit@vmk.hu",
+          "mailto:macsarne.gyongyi@vmk.hu",
+          "mailto:magony.imre@vmk.hu",
+          "mailto:csurgai.nora@vmk.hu",
+          "mailto:marton.gabor@vmk.hu",
+          "mailto:",
+          "mailto:miklos.gabriella@vmk.hu",
+          "mailto:mong.ildiko@vmk.hu",
+          "mailto:nagy.monika@vmk.hu",
+          "mailto:nemeth.reka@vmk.hu",
+          "mailto:nott.zsuzsa@vmk.hu",
+          "mailto:osgyan.laszlo@vmk.hu",
+          "mailto:pap.ivett@vmk.hu",
+          "mailto:papne.gyongyi@vmk.hu",
+          "mailto:papp.zoltanne@vmk.hu",
+          "mailto:peresztegi.robert@vmk.hu",
+          "mailto:pozsa.reka@vmk.hu",
+          "mailto:preszter.agnes@vmk.hu",
+          "mailto:ruff.ilona@vmk.hu",
+          "mailto:somogyfoki.ottilia@vmk.hu",
+          "mailto:somogyine.szilvia@vmk.hu",
+          "mailto:strasszerne@vmk.hu",
+          "mailto:szabacsikne@vmk.hu",
+          "mailto:szabo.eszter@vmk.hu",
+          "mailto:szabo.eva@vmk.hu",
+          "mailto:szabone.anett@vmk.hu",
+          "mailto:szabone.ildiko@vmk.hu",
+          "mailto:szalai.tamas@vmk.hu",
+          "mailto:szantai.julianna@vmk.hu",
+          "mailto:szentkeresztine@vmk.hu",
+          "mailto:gallai.virag@vmk.hu",
+          "mailto:tompaine@vmk.hu",
+          "mailto:toth.szilvia@vmk.hu",
+          "mailto:torok.gabriella@vmk.hu",
+          "mailto:tunyogi.tibor@vmk.hu",
+          "mailto:vadasz.aranka@vmk.hu",
+          "mailto:vadasz.krisztina@vmk.hu",
+          "mailto:vajda.georgina@vmk.hu",
+          "mailto:vajnar.diana@vmk.hu",
+          "mailto:varga.andrea@vmk.hu",
+          "mailto:varga.eva@vmk.hu",
+          "mailto:vitek.renata@vmk.hu",
+          "mailto:vorosmarty-h.zsofia@vmk.hu",
+          "mailto:zahoretz.eva@vmk.hu"
+        ],
+        "internalCoverage": 0,
+        "externalCoverage": 0,
+        "brokenLinkCount": 15,
+        "brokenLinkSample": [
+          {
+            "href": "mailto:szabo.eszter@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:marton.gabor@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:kleer.ivett@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:kelemen.anna@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:horvath.adrienn@vmk.hu",
+            "status": "ERR"
+          }
+        ],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 1
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/nyitvatartas",
+      "refUrl": "https://www.vmk.hu/opening-hours",
+      "cloneUrl": "http://localhost:3011/nyitvatartas",
+      "family": "static-institutional",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/opening-hours",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/nyitvatartas",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 9,
+        "missingSample": [
+          "Opening hours Annual summer closure Central Library, Children’s Library; Music Collection 11/07/2022–21/08/2022 Central Library, Reading room open Budai úti Branch Library 04/07/2022–31/07/2022 Mészöly Géza utcai Branch Library 25/07/2022–21/08/2022 Széna téri Branch Library 01/08/2022–28/08/2022 Tolnai utcai Branch Library 01/08/2022–28/08/2022 Zsolt utcai Branch Library 18/07/2022–14/08/2022 Pedagogy Branch Library 11/07/2022–21/08/2022 Dear users!",
+          "Due to the energy crisis, the Central Library and three branch libraries of Vörösmarty Mihály Library are closed from November 1, 2022 until May 2, 2023.",
+          "Our remote services can be used as usual on the library website.",
+          "On the online catalogue man can choose books for lending.",
+          "Online, e-mail and telephone services are available."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 0,
+        "cloneCount": 0,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PASS"
+      },
+      "links": {
+        "refInternalCount": 0,
+        "refExternalCount": 0,
+        "missingInternal": [],
+        "missingExternal": [],
+        "internalCoverage": 1,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "PASS"
+      },
+      "structure": {
+        "ref": {
+          "headings": 1,
+          "paragraphs": 6,
+          "lists": 0,
+          "tables": 2,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 3,
+          "lists": 0,
+          "tables": 2,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/kapcsolat",
+      "refUrl": "https://www.vmk.hu/kapcsolat",
+      "cloneUrl": "http://localhost:3011/kapcsolat",
+      "family": "static-institutional",
+      "refStatus": 404,
+      "refFinalUrl": "https://www.vmk.hu/kapcsolat",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/kapcsolat",
+      "urlDimension": {
+        "status": "FAIL",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "status": "NOT_EVALUATED",
+        "reason": "page load failed"
+      },
+      "media": {
+        "status": "NOT_EVALUATED"
+      },
+      "links": {
+        "status": "NOT_EVALUATED"
+      },
+      "structure": {
+        "status": "NOT_EVALUATED"
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/reszlegek/felnott-kolcsonzo",
+      "refUrl": "https://www.vmk.hu/felnott-kolcsonzo-reszleg",
+      "cloneUrl": "http://localhost:3011/reszlegek/felnott-kolcsonzo",
+      "family": "department",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/felnott-kolcsonzo-reszleg",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/reszlegek/felnott-kolcsonzo",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 6.3,
+        "matched": 1,
+        "total": 16,
+        "missingSample": [
+          "emelet A részleg a főépület emeletén található.",
+          "A felnőtt részlegben a kortárs és klasszikus szerzők szépirodalmi művei mellett minden tudományág fontos, közérdeklődésre számot tartó szakirodalma megtalálható.",
+          "Kiemelések - mint például a szórakoztató irodalom, középiskolai kötelező olvasmányok, krimik, fantasztikus könyvek - segítik a válogatást.",
+          "A jeles napokhoz, évfordulókhoz kiállításokat, könyvajánlókat készítünk.",
+          "A Fejér megyére vonatkozó könyveket, anyagokat kiemelten kezeljük, és külön polcon tartjuk őket."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 1,
+        "cloneCount": 0,
+        "countDeficit": 1,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 3,
+        "refExternalCount": 1,
+        "missingInternal": [
+          {
+            "href": "/gateway-uk-m",
+            "text": "British Council"
+          },
+          {
+            "href": "http://www.vmk.hu/nemet-nyelvi-gyujtemeny",
+            "text": "Goethe Institut"
+          },
+          {
+            "href": "https://www.vmk.hu/konyvajanlo-2023",
+            "text": "könyvajánlás készül a szépirodalmi és szakirodalmi témából."
+          }
+        ],
+        "missingExternal": [
+          "https://docs.google.com/forms/d/e/1FAIpQLSdm7QtWAWoX1SdD1DGP6M6iOx9Out1gEYkARVqldtWcP3p4Sg/viewform"
+        ],
+        "internalCoverage": 0,
+        "externalCoverage": 0,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 1,
+          "paragraphs": 24,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/reszlegek/olvasoterem",
+      "refUrl": "https://www.vmk.hu/olvasoterem",
+      "cloneUrl": "http://localhost:3011/reszlegek/olvasoterem",
+      "family": "department",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/olvasoterem",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/reszlegek/olvasoterem",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 8,
+        "missingSample": [
+          "Olvasóterem Oskola u.",
+          "7., földszint Régi és új folyóiratok, újságok, hetilapok széles skálája áll a használók rendelkezésére.",
+          "Adatbázisok, kézikönyvek, régi időszaki kiadványok mikrofilmjei várják az olvasókat.",
+          "Ingyenes Internet-hozzáférés saját laptoppal regisztrált és beiratkozott olvasóink részére.",
+          "A vakok és gyengénlátók igényeit szolgálja a speciális szövegfelismerő programmal ellátott számítógép."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 1,
+        "cloneCount": 0,
+        "countDeficit": 1,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 0,
+        "refExternalCount": 0,
+        "missingInternal": [],
+        "missingExternal": [],
+        "internalCoverage": 1,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "PASS"
+      },
+      "structure": {
+        "ref": {
+          "headings": 1,
+          "paragraphs": 4,
+          "lists": 1,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/tagkonyvtarak/meszoly-geza",
+      "refUrl": "https://www.vmk.hu/meszoly-geza-utcai-tagkonyvtar",
+      "cloneUrl": "http://localhost:3011/tagkonyvtarak/meszoly-geza",
+      "family": "branch",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/meszoly-geza-utcai-tagkonyvtar",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/tagkonyvtarak/meszoly-geza",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 8,
+        "missingSample": [
+          "Mészöly Géza Utcai Tagkönyvtár A TAGKÖNYVTÁRAK A NYÁRI SZÜNETBEN SZOMBATONKÉNT ZÁRVA TARTANAK!",
+          "AZ ELSŐ SZOMBATI NYITVATARTÁSI NAP: 2026.",
+          "NYÁRI ZÁRVATARTÁS: ITT Rendezvények Korábbi rendezvények Képek a rendezvényekről Nyitvatartás: kedd: 9.00-12.00; 13.00-19.00 szerda-péntek: 13.00-19.00 szombat: 10.00-17.00 A tagkönyvtár a Rózsaliget Társasházként ismert épületben működik, a Városi Uszoda és a Kodolányi János Gimnázium és Szakgimnázium közelében.",
+          "Az épületbe kaputelefon használatával lehet bejutni, mozgáskorlátozottak számára is kényelmesen megközelíthető.",
+          "A viszonylag kis alapterületen működő könyvtár a hagyományos szolgáltatásokon kívül elektronikus szolgáltatások széles körét kínálja: Internet használat, Wifi lehetőség, színes másolat (szkennelés, nyomtatás, fénymásolás) készítése is kérhető."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 3,
+        "cloneCount": 0,
+        "countDeficit": 3,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 5,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "https://www.vmk.hu/_upload/editor/2026/hirek/nyari-nyitvatartas/Nyari_nyitvatartas_2026_plakat.png",
+            "text": "ITT"
+          },
+          {
+            "href": "https://www.vmk.hu/events?library=4&date=&category=",
+            "text": "Rendezvények"
+          },
+          {
+            "href": "https://www.vmk.hu/events/archive?library=4&date=&category=",
+            "text": "Korábbi rendezvények"
+          },
+          {
+            "href": "https://www.vmk.hu/gallery/folder/2290",
+            "text": "Képek a rendezvényekről"
+          },
+          {
+            "href": "http://www.vmk.hu/munkatarsak?library=4",
+            "text": ">>>"
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 1,
+        "brokenLinkSample": [
+          {
+            "href": "tel:(22) 315-603",
+            "status": "ERR"
+          }
+        ],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 1,
+          "paragraphs": 30,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/gallery",
+      "refUrl": "https://www.vmk.hu/gallery",
+      "cloneUrl": "http://localhost:3011/gallery",
+      "family": "gallery-hub",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/gallery",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/galeria",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": true,
+        "cloneRedirectTarget": "/galeria"
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 1,
+        "missingSample": [
+          "Galéria 2026 2025 2024 2023 2022 2021 2010-2020 Rendezvénysorozatok Központi Könyvtár Tagkönyvtárak Pályázatok"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 11,
+        "cloneCount": 46,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 46,
+        "brokenImageSample": [
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png"
+        ],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 11,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/gallery/folder/5446",
+            "text": "2026"
+          },
+          {
+            "href": "/gallery/folder/4961",
+            "text": "2025"
+          },
+          {
+            "href": "/gallery/folder/4320",
+            "text": "2024"
+          },
+          {
+            "href": "/gallery/folder/3936",
+            "text": "2023"
+          },
+          {
+            "href": "/gallery/folder/3538",
+            "text": "2022"
+          },
+          {
+            "href": "/gallery/folder/3280",
+            "text": "2021"
+          },
+          {
+            "href": "/gallery/folder/3301",
+            "text": "2010-2020"
+          },
+          {
+            "href": "/gallery/folder/3307",
+            "text": "Rendezvénysorozatok"
+          },
+          {
+            "href": "/gallery/folder/3303",
+            "text": "Központi Könyvtár"
+          },
+          {
+            "href": "/gallery/folder/3305",
+            "text": "Tagkönyvtárak"
+          },
+          {
+            "href": "/gallery/folder/3310",
+            "text": "Pályázatok"
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 12,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/galeria",
+      "refUrl": "https://www.vmk.hu/gallery",
+      "cloneUrl": "http://localhost:3011/galeria",
+      "family": "gallery",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/gallery",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/galeria",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 1,
+        "missingSample": [
+          "Galéria 2026 2025 2024 2023 2022 2021 2010-2020 Rendezvénysorozatok Központi Könyvtár Tagkönyvtárak Pályázatok"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 11,
+        "cloneCount": 46,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 46,
+        "brokenImageSample": [
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png"
+        ],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 11,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/gallery/folder/5446",
+            "text": "2026"
+          },
+          {
+            "href": "/gallery/folder/4961",
+            "text": "2025"
+          },
+          {
+            "href": "/gallery/folder/4320",
+            "text": "2024"
+          },
+          {
+            "href": "/gallery/folder/3936",
+            "text": "2023"
+          },
+          {
+            "href": "/gallery/folder/3538",
+            "text": "2022"
+          },
+          {
+            "href": "/gallery/folder/3280",
+            "text": "2021"
+          },
+          {
+            "href": "/gallery/folder/3301",
+            "text": "2010-2020"
+          },
+          {
+            "href": "/gallery/folder/3307",
+            "text": "Rendezvénysorozatok"
+          },
+          {
+            "href": "/gallery/folder/3303",
+            "text": "Központi Könyvtár"
+          },
+          {
+            "href": "/gallery/folder/3305",
+            "text": "Tagkönyvtárak"
+          },
+          {
+            "href": "/gallery/folder/3310",
+            "text": "Pályázatok"
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 12,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/galeria/vizcsepp-2026-03-09",
+      "refUrl": "https://www.vmk.hu/vizcsepp-2026-03-09",
+      "cloneUrl": "http://localhost:3011/galeria/vizcsepp-2026-03-09",
+      "family": "gallery-detail",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/vizcsepp-2026-03-09",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/galeria/vizcsepp-2026-03-09",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 50,
+        "matched": 1,
+        "total": 2,
+        "missingSample": [
+          "20260309-07.jpg 20260309_27.jpg 20260309_21.jpg 20260309_17.jpg 20260309_15.jpg 20260309_11.jpg 20260309_03.jpg"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 7,
+        "cloneCount": 0,
+        "countDeficit": 7,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 7,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/_upload/images/medialibrary/5590/20260309-07.jpg",
+            "text": "20260309-07.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/5590/20260309_27.jpg",
+            "text": "20260309_27.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/5590/20260309_21.jpg",
+            "text": "20260309_21.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/5590/20260309_17.jpg",
+            "text": "20260309_17.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/5590/20260309_15.jpg",
+            "text": "20260309_15.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/5590/20260309_11.jpg",
+            "text": "20260309_11.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/5590/20260309_03.jpg",
+            "text": "20260309_03.jpg"
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 8,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 1,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/gallery/folder/1023",
+      "refUrl": "https://www.vmk.hu/gallery/folder/1023",
+      "cloneUrl": "http://localhost:3011/gallery/folder/1023",
+      "family": "gallery-archive",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/gallery/folder/1023",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/galeria",
+      "urlDimension": {
+        "status": "FAIL_GENERIC_REDIRECT",
+        "cloneStatus": 200,
+        "cloneRedirected": true,
+        "cloneRedirectTarget": "/galeria"
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 16,
+        "missingSample": [
+          "Galéria Zengő dallamok: Interaktív ének-zenei foglalkozás - 2013.10.09.",
+          "Központi Könyvtár Gyermekrészleg - Zöld játszóház - 2013.10.13.",
+          "Zsolt utcai Tagkönyvtár - Erőszakmentes kommunikáció - Egey Tímea pszichológus előadása 2013.10.10..",
+          "\"Barátok vagyunk\" - Szatmári Adrienn pszichológus előadása a barátságról - 2013.10.09.",
+          "Játék stratégiai játékokkal; Széna téri Tagkönyvtár - 2013.10.10."
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 16,
+        "cloneCount": 46,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 46,
+        "brokenImageSample": [
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png"
+        ],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 16,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/zengo-dallamok-interaktiv-enek-zenei-foglalkozas-2013-10-09",
+            "text": "Zengő dallamok: Interaktív ének-zenei foglalkozás - 2013.10.09."
+          },
+          {
+            "href": "/kozponti-konyvtar-gyermekreszleg-zold-jatszohaz-20131013-1",
+            "text": "Központi Könyvtár Gyermekrészleg - Zöld játszóház - 2013.10.13."
+          },
+          {
+            "href": "/zsolt-utcai-tagkonyvtar-eroszakmentes-kommunikacio-egey-timea-pszichologus-eloadasa-20131010-1",
+            "text": "Zsolt utcai Tagkönyvtár - Erőszakmentes kommunikáció - Egey Tímea pszichológus előadása 2013.10.10.."
+          },
+          {
+            "href": "/baratok-vagyunk-szatmari-adrienn-pszichologus-eloadasa-a-baratsagrol-2013-10-09",
+            "text": "\"Barátok vagyunk\" - Szatmári Adrienn pszichológus előadása a barátságról - 2013.10.09."
+          },
+          {
+            "href": "/strategiai-jatekokkal-szena-teri-tagkonyvtar-2013-10-10",
+            "text": "Játék stratégiai játékokkal; Széna téri Tagkönyvtár - 2013.10.10."
+          },
+          {
+            "href": "/kozponti-konyvtar-gyermekreszleg-olvasasmania-eredmeynhirdetes-20131013-1",
+            "text": "Olvasásmánia eredméynhirdetés; Gyermekrészleg - 2013.10.13."
+          },
+          {
+            "href": "/budai-uti-tagkonyvtar-figyelek-rad-fischer-imre-20131010-1",
+            "text": "Budai úti Tagkönyvtár -Figyelek rád - Fischer Imre - 2013.10.10."
+          },
+          {
+            "href": "/kozponti-konyvtar-egeszsegnap-20131010",
+            "text": "Egészségnap: Szűrővizsgálatok, szépség-sziget; Központi Könyvtár - 2013.10.10."
+          },
+          {
+            "href": "/kozponti-konyvtar-bagdy-emoke-eloadasa-20131011",
+            "text": "\"Egészségben boldogan élni\" - Bagdy Emőke előadása; Olvasóterem - 2013.10.11."
+          },
+          {
+            "href": "/zsolt-utcai-tagkonyvtar-egyutt-kulturcsevej-lengyel-baratainkkal-20131012-1",
+            "text": "Zsolt utcai Tagkönyvtár - Együtt - kulturcsevej lengyel barátainkkal 2013.10.12."
+          },
+          {
+            "href": "/devay-jozsef-xix-szazadi-magankonyvtaranak-kincsei-20131009",
+            "text": "Dévay József XIX. századi magánkönyvtárának kincsei; Városháza - 2013.10.09."
+          },
+          {
+            "href": "/zsolt-utcai-tagkonyvtar-eroszakmentes-kommunikacio-egey-timea-pszichologus-eloadasa-20131010",
+            "text": "Zsolt utcai Tagkönyvtár - Erőszakmentes kommunikáció - Egey Tímea pszichológus előadása 2013.10.10.."
+          },
+          {
+            "href": "/sziget-utcai-tagkonyvtar-biztonsagos-szorakozas-1",
+            "text": "Biztonságos szórakozás; Sziget utcai Tagkönyvtár - 2013.10.10."
+          },
+          {
+            "href": "/kozponti-konyvtar-konyves-vasarnap-20131013-1",
+            "text": "Könyves vasárnap; Központi Könyvtár - 2013.10.13."
+          },
+          {
+            "href": "/sziget-utcai-tagkonyvtar-origami-foglalkozas-horvath-hella-vezetesevel-1",
+            "text": "Játék a papírral, origami foglalkozás Horváth Hella vezetésével - Sziget utcai Tagkönyvtár, 2013.10.07."
+          },
+          {
+            "href": "/legyel-te-is-konyvmoly-szena-teri-tagkonyvtar-2013-10-09",
+            "text": "Legyél Te is könyvmoly!; Széna téri Tagkönyvtár - 2013.10.09."
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 17,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/a-mi-vilagunk-kiallitas-megynito-2016-12-05",
+      "refUrl": "https://www.vmk.hu/a-mi-vilagunk-kiallitas-megynito-2016-12-05",
+      "cloneUrl": "http://localhost:3011/a-mi-vilagunk-kiallitas-megynito-2016-12-05",
+      "family": "gallery-archive",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/a-mi-vilagunk-kiallitas-megynito-2016-12-05",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/galeria",
+      "urlDimension": {
+        "status": "FAIL_GENERIC_REDIRECT",
+        "cloneStatus": 200,
+        "cloneRedirected": true,
+        "cloneRedirectTarget": "/galeria"
+      },
+      "text": {
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 2,
+        "missingSample": [
+          "A mi világunk - kiállítás megynitó - 2016.12.05.",
+          "Mi-vilagunk-20161205--13.jpg Mi-vilagunk-20161205--12.jpg Mi-vilagunk-20161205--11.jpg Mi-vilagunk-20161205--10.jpg Mi-vilagunk-20161205--09.jpg Mi-vilagunk-20161205--08.jpg Mi-vilagunk-20161205--07.jpg Mi-vilagunk-20161205--06.jpg Mi-vilagunk-20161205--05.jpg Mi-vilagunk-20161205--04.jpg Mi-vilagunk-20161205--03.jpg Mi-vilagunk-20161205--02.jpg Mi-vilagunk-20161205--01.jpg AMivilágunk-20161205--18.JPG AMivilágunk-20161205--17.JPG AMivilágunk-20161205--16.JPG AMivilágunk-20161205--15.JPG AMivilágunk-20161205--14.JPG"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 18,
+        "cloneCount": 46,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 46,
+        "brokenImageSample": [
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png",
+          "http://localhost:3011/brand/logos/vmk-logo.png"
+        ],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 18,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--13.jpg",
+            "text": "Mi-vilagunk-20161205--13.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--12.jpg",
+            "text": "Mi-vilagunk-20161205--12.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--11.jpg",
+            "text": "Mi-vilagunk-20161205--11.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--10.jpg",
+            "text": "Mi-vilagunk-20161205--10.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--09.jpg",
+            "text": "Mi-vilagunk-20161205--09.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--08.jpg",
+            "text": "Mi-vilagunk-20161205--08.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--07.jpg",
+            "text": "Mi-vilagunk-20161205--07.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--06.jpg",
+            "text": "Mi-vilagunk-20161205--06.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--05.jpg",
+            "text": "Mi-vilagunk-20161205--05.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--04.jpg",
+            "text": "Mi-vilagunk-20161205--04.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--03.jpg",
+            "text": "Mi-vilagunk-20161205--03.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--02.jpg",
+            "text": "Mi-vilagunk-20161205--02.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/Mi-vilagunk-20161205--01.jpg",
+            "text": "Mi-vilagunk-20161205--01.jpg"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/AMivilágunk-20161205--18.JPG",
+            "text": "AMivilágunk-20161205--18.JPG"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/AMivilágunk-20161205--17.JPG",
+            "text": "AMivilágunk-20161205--17.JPG"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/AMivilágunk-20161205--16.JPG",
+            "text": "AMivilágunk-20161205--16.JPG"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/AMivilágunk-20161205--15.JPG",
+            "text": "AMivilágunk-20161205--15.JPG"
+          },
+          {
+            "href": "/_upload/images/medialibrary/1748/AMivilágunk-20161205--14.JPG",
+            "text": "AMivilágunk-20161205--14.JPG"
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 19,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 1,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    },
+    {
+      "path": "/wishbasket",
+      "refUrl": "https://www.vmk.hu/wishbasket",
+      "cloneUrl": "http://localhost:3011/wishbasket",
+      "family": "wishbasket",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/wishbasket",
+      "cloneStatus": 200,
+      "cloneFinalUrl": "http://localhost:3011/wishbasket",
+      "urlDimension": {
+        "status": "PASS",
+        "cloneStatus": 200,
+        "cloneRedirected": false,
+        "cloneRedirectTarget": null
+      },
+      "text": {
+        "coveragePct": 44.4,
+        "matched": 4,
+        "total": 9,
+        "missingSample": [
+          "Kívánságkosár Kedves Olvasónk!",
+          "Júliusban az alábbi könyveket szereztük be: Várjuk javaslataikat augusztusi kosarunkba.",
+          "Név Megjelenített név E-mail Olvasójegy száma Nincs még olvasójegye?",
+          "Szerző Cím Megjegyzés Kívánság beküldése Eddig beküldött kívánságok Hozzászólások Kérjük, írja meg véleményét, tapasztalatát!",
+          "Név Megjelenített név E-mail Hozzászólás Hozzászólás beküldése (function () { var siteKey = window.RECAPTCHA_SITE_KEY; if (!siteKey) { return; } function protect(form) { if (!form) { return; } form.addEventListener('submit', function (e) { if (form.dataset.recaptchaVerified === '1') { return; } e.preventDefault(); grecaptcha.ready(function () { grecaptcha.execute(siteKey, {action: 'submit'}).then(function (token) { var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = 'g-recaptcha-response'; inp.value = token; form.appendChild(inp); form.dataset.recaptchaVerified = '1'; form.submit(); }); }); }); } protect(document.getElementById('wishForm')); protect(document.getElementById('commentForm')); })();"
+        ],
+        "status": "FAIL"
+      },
+      "media": {
+        "refCount": 4,
+        "cloneCount": 0,
+        "countDeficit": 4,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "FAIL"
+      },
+      "links": {
+        "refInternalCount": 2,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "http://www.vmk.hu/page/menu/317",
+            "text": "Nincs még olvasójegye? Itt tud igényelni."
+          },
+          {
+            "href": "/wishbasket/archive",
+            "text": "Eddig beküldött kívánságok"
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0,
+        "externalCoverage": 1,
+        "brokenLinkCount": 0,
+        "brokenLinkSample": [],
+        "status": "FAIL"
+      },
+      "structure": {
+        "ref": {
+          "headings": 2,
+          "paragraphs": 9,
+          "lists": 0,
+          "tables": 0,
+          "forms": 2
+        },
+        "clone": {
+          "headings": 3,
+          "paragraphs": 3,
+          "lists": 1,
+          "tables": 0,
+          "forms": 2
+        }
+      },
+      "function": {
+        "status": "NOT_EVALUATED",
+        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+      },
+      "visual": {
+        "status": "NOT_EVALUATED",
+        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+      },
+      "overall": "PARITY_FAIL"
+    }
+  ]
+}

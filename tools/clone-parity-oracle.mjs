@@ -57,14 +57,35 @@ const CHROME_SELECTORS = [
 // structure isn't in our control the way the clone's is.
 const REF_EXTRA_CHROME = ['.sidebar', '#sidebar', '.cookie-consent', '.cookie-bar', '.navbar']
 
-async function extractPageData(page, extraChromeSelectors = []) {
+// Verified against the live reference DOM (fetched /strandkonyvtar):
+// the actual per-page template puts the real article body in
+// `.col-content` and the ~90-link sitewide widget/menu sidebar in a
+// sibling `.col-box` -- neither is a semantic <nav>/<aside>, so a
+// generic chrome-strip alone (the first attempt at this tool) still
+// picked up the whole sidebar as "content" and produced a
+// near-uniform ~1% link-coverage / near-0% text-coverage result on
+// almost every route -- not a real content gap, a wrong selector. The
+// clone's shared layout.tsx wraps every page's real content in a
+// single <main>. Prefer selecting the real content root directly on
+// both sides; only fall back to whole-body chrome-stripping if the
+// preferred selector isn't present on that particular page template.
+const REF_CONTENT_SELECTOR = '.col-content'
+const CLONE_CONTENT_SELECTOR = 'main'
+
+async function extractPageData(page, { extraChromeSelectors = [], contentSelector = null } = {}) {
   return page.evaluate(
-    ({ chromeSelectors, extra }) => {
+    ({ chromeSelectors, extra, contentSelector }) => {
       const doc = document.cloneNode(true)
       for (const sel of [...chromeSelectors, ...extra]) {
         doc.querySelectorAll(sel).forEach((el) => el.remove())
       }
-      const root = doc.body
+      // Some clone page templates (PageWithSidebar) nest a second, more
+      // specific <main> inside the root layout's <main> -- take the last
+      // (innermost) match, not the first, or the outer one wins and pulls
+      // the sidebar widget menu in as "content".
+      const matches = contentSelector ? Array.from(doc.querySelectorAll(contentSelector)) : []
+      const preferred = matches.length ? matches[matches.length - 1] : null
+      const root = preferred || doc.body
 
       const text = (root?.innerText || '').replace(/\s+/g, ' ').trim()
 
@@ -92,9 +113,9 @@ async function extractPageData(page, extraChromeSelectors = []) {
       const tables = (root?.querySelectorAll('table') || []).length
       const forms = (root?.querySelectorAll('form') || []).length
 
-      return { text, headings, images, links, paragraphs, lists, tables, forms }
+      return { text, headings, images, links, paragraphs, lists, tables, forms, usedContentSelector: !!preferred }
     },
-    { chromeSelectors: CHROME_SELECTORS, extra: extraChromeSelectors },
+    { chromeSelectors: CHROME_SELECTORS, extra: extraChromeSelectors, contentSelector },
   )
 }
 
@@ -280,8 +301,8 @@ async function auditRoute(browser, route) {
   }
 
   if (result.refStatus && result.refStatus < 400 && result.cloneStatus && result.cloneStatus < 400) {
-    const refData = await extractPageData(refPage, REF_EXTRA_CHROME)
-    const cloneData = await extractPageData(clonePage, [])
+    const refData = await extractPageData(refPage, { extraChromeSelectors: REF_EXTRA_CHROME, contentSelector: REF_CONTENT_SELECTOR })
+    const cloneData = await extractPageData(clonePage, { contentSelector: CLONE_CONTENT_SELECTOR })
 
     const text = textCoverage(refData.text, cloneData.text)
     const media = compareMedia(refData.images, cloneData.images)

@@ -1,0 +1,187 @@
+# Clone Parity Gap Report (K1, COLLAB.md section 5)
+
+Generated from `tools/clone-parity-oracle.mjs` against `tools/parity-canary-routes.json`
+(22 routes) run against `https://www.vmk.hu` (reference) and `http://localhost:3011`
+(clone, current branch build). Raw data: `docs/parity-oracle-v2/results.json`,
+human-readable: `docs/parity-oracle-v2/report.html`.
+
+**Purpose**: prove the old `tools/visual-oracle.mjs` acceptance model (HTTP 200 +
+word-set Jaccard text similarity + raw image/link *counts*) let false positives
+through, and quantify the real gap. This is **not** meant to be a passing run —
+per COLLAB.md K1, the canary's job is to surface what the old model missed.
+
+## Headline result
+
+| Overall | Count |
+|---|---|
+| PARITY_PASS | 1 / 22 |
+| PARITY_PARTIAL | 0 / 22 |
+| PARITY_FAIL | 21 / 22 |
+
+Only `/konyvtarunkrol` fully passes all four evaluated dimensions (URL/TEXT/MEDIA/LINKS
+at 100%/PASS/PASS/PASS). Every other canary route fails on at least one real,
+evidenced dimension.
+
+## Methodology note: two real bugs found and fixed while building this tool
+
+Building the tool itself surfaced two false-positive-shaped problems in the
+**measurement approach**, not the site, which were root-caused and fixed before
+trusting the canary numbers above (see `tools/clone-parity-oracle.mjs` history /
+commit `5452a22` → current):
+
+1. **Wrong content selector, both sides.** First pass generically stripped
+   `header/nav/footer/aside` from the whole page and compared what remained. The
+   reference site's real per-page template puts the actual article body in
+   `.col-content` and a ~90-link sitewide promo/menu sidebar in a sibling
+   `.col-box` that isn't a semantic `<nav>`/`<aside>` — so the sidebar was being
+   compared as if it were page content, which produced a near-uniform ~1%
+   "link coverage" on almost every route (an artifact, not a real gap). Fixed by
+   selecting `.col-content` directly on the reference side.
+2. **Nested `<main>` on the clone.** The clone's root layout wraps every page in
+   `<main className="flex-1">`, and `PageWithSidebar` (used by most content pages)
+   nests a second, more specific `<main>` inside that for the real content, with
+   `<SiteSidebar>` as a sibling before it. Selecting the *first* `<main>` on the
+   clone side picked up the outer wrapper, i.e. the sidebar too, producing 0% text
+   coverage on pages that actually match well (confirmed manually: the clone's
+   `/hirek/strandkonyvtar` correctly shows the real article body once you look
+   past the sidebar noise). Fixed by selecting the *last* (innermost) `<main>`.
+
+Both fixes are narrow, mechanical, and verified by direct before/after inspection
+of the extracted text (see commit history) — not a threshold change or a way to
+make failures look smaller.
+
+## Dimension-by-dimension findings
+
+### URL
+
+- 20/22 routes: reference and clone both resolve (2xx), no redirect issue.
+- 2/22 (`/gallery/folder/1023`, `/a-mi-vilagunk-kiallitas-megynito-2016-12-05`):
+  `FAIL_GENERIC_REDIRECT`. These are exactly the gallery-archive family the H1-H4
+  round closed with a bulk `/galeria` fallback redirect. Per COLLAB.md's explicit
+  K1 rule ("generikus listaoldalra redirect nem helyettesíthet egy konkrét
+  referencia detail/gallery oldalt"), this is correctly **not** a pass — see
+  Gallery/Archive Family section below for the full quantification.
+- 1/22 (`/kapcsolat`): reference 404s. **This is a canary-list mapping bug, not
+  a site issue** — the reference's real contact page is almost certainly
+  `/elerhetosegeink` (matches the reference's own nav menu, scraped in an earlier
+  round). Needs a `refPath` correction in `tools/parity-canary-routes.json`
+  before the next run; flagged rather than silently left in the FAIL count as if
+  it were a real content gap.
+
+### TEXT (ordered main-content coverage, not word-set Jaccard)
+
+Only `/konyvtarunkrol` reaches 100%. Everything else ranges 0%-50%. Two distinct
+root causes found, not one blanket "text is missing":
+
+1. **Genuinely reference-side image-only content.** `/strandkonyvtar` (and
+   several other news items) checked directly against the raw reference HTML:
+   the reference's `.news-details` body for this article contains **only two
+   `<img>` tags with no alt text and no paragraph text at all** — a scanned
+   flyer image, not a text article. 0% text coverage here is *correct*, not a
+   bug: there is close to no reference text to cover. The clone independently
+   has a written summary ("Strandkönyvtárral várjuk kikapcsolódásra vágyó
+   olvasóinkat...") that isn't literally reference-text-derived — likely a
+   manual editorial transcription from the flyer image in an earlier round.
+   That's a legitimate content decision, but it means TEXT coverage alone
+   under-reports these pages; MEDIA (does the clone show the actual flyer
+   images?) is the more meaningful dimension for this sub-family, and is
+   tracked separately below.
+2. **Genuinely missing/short-form content on other pages** (`/munkatarsak` 0%,
+   `/nyitvatartas` 0%, `/dokumentumok` 14.3%, several department/branch pages
+   0-16%) — these need individual investigation in K2/K3 to determine whether
+   the underlying Pages/Staff/Libraries content is actually incomplete versus
+   another extraction-selector mismatch specific to that page template. Not
+   resolved in this K1 pass; each is listed with its coverage % and a sample of
+   missing reference lines in `docs/parity-oracle-v2/results.json`.
+
+### MEDIA
+
+- `/konyvtarunkrol`, `/hirek/20260824_...`, `/hirek/20260602_...`,
+  `/hirek/202608_spiro-80...`, `/munkatarsak`, `/nyitvatartas`: PASS or no
+  meaningful deficit.
+- Gallery-family routes (`/gallery`, `/galeria`, `/gallery/folder/1023`,
+  `/a-mi-vilagunk-...`): **FAIL with 46 broken images each** — all four
+  independently point at the same root cause, confirmed by direct `curl`:
+  `http://localhost:3011/brand/logos/vmk-logo.png` returns **404**. This is the
+  `/galeria` fallback page's own watermark placeholder image (used once per
+  gallery card as a stand-in when no real photo is set) — a genuine, real,
+  fixable bug, found by this tool, that the old count-only media check could
+  never have caught (it only ever compared counts, never checked whether images
+  actually load).
+- `/dokumentumok`, `/reszlegek/felnott-kolcsonzo`, `/reszlegek/olvasoterem`,
+  `/tagkonyvtarak/meszoly-geza`, `/esemenyek/a-jaki-templomok-...`,
+  `/esemenyek/2026_08_12_netrevalok`, `/galeria/vizcsepp-2026-03-09`: real
+  image-count deficits (clone shows fewer content images than the reference),
+  magnitude and specifics in the raw JSON per route.
+
+### LINKS
+
+Fails on nearly every route except `/konyvtarunkrol`, `/nyitvatartas`, and
+`/reszlegek/olvasoterem`. The dominant pattern (visible in `missingInternal` in
+the raw JSON): every reference article page ends with a **"További híreink"
+("More news") block linking to several other, unrelated news items** — the
+clone's equivalent pages don't replicate this specific related-content block.
+This is real, consistent, actionable signal (not leftover sidebar noise, since
+the sidebar-selector bug above is already fixed) — worth a root-cause fix (a
+"related news" component) rather than one-off patches, per COLLAB.md's explicit
+instruction not to hand-patch route by route.
+
+### STRUCTURE
+
+Recorded (heading/paragraph/list/table/form counts, both sides) for every route
+that loaded; not yet reduced to a PASS/FAIL threshold in this pass — raw counts
+are in the JSON for K2/K3 review.
+
+### FUNCTION / VISUAL
+
+**Not evaluated in this pass** — explicitly marked `NOT_EVALUATED` rather than
+faked. These are separate, heavier passes (real E2E per workflow; screenshot
+diff at 1440/390) planned for the next K1 checkpoint, not silently skipped.
+
+## Gallery/Archive family quantification (COLLAB.md K1 item 7)
+
+The H1-H4 round closed 1626 gallery-archive routes with a blanket
+`/galeria` fallback redirect, classified `ARCHIVED/LEGACY`. This K1 canary
+directly tested 2 representative members of that family
+(`/gallery/folder/1023`, a folder-index page, and
+`/a-mi-vilagunk-kiallitas-megynito-2016-12-05`, an individual dated album page)
+and both:
+
+- resolve to the generic `/galeria` listing on the clone (confirmed
+  `cloneRedirectTarget: /galeria` in the raw JSON);
+- have **0% measured text coverage** against their specific reference content
+  (a specific exhibition-opening announcement with named photos, not the
+  generic gallery listing);
+- the individual album page's reference `.col-content` genuinely lists **18
+  actual photo filenames** (`Mi-vilagunk-20161205--01.jpg` through `--13.jpg`,
+  `AMivilágunk-20161205--14.JPG` through `--18.JPG`) that are **not** present
+  anywhere on the clone (0 of them appear at `/galeria` or in the Galleries
+  collection).
+
+This is **direct, per-route confirmation** that the H1-H4 bulk classification
+was a real false positive for at least this sample: the reference has specific,
+nameable photo content per gallery-archive page that the clone does not import,
+and the generic `/galeria` fallback does not represent it. Full quantification
+of all 1626 routes (how many have real, distinct photo sets vs. how many are
+themselves empty/technical on the reference) is K2 scope (full reference
+inventory), not repeatable one-by-one in a 22-route canary — but this sample
+is sufficient to invalidate treating the whole family as accepted without
+further work.
+
+## Known canary-list issues to fix before the next run
+
+- `/kapcsolat` refPath is wrong (reference 404s) — needs correcting to the
+  reference's actual contact page path (likely `/elerhetosegeink`).
+- TEXT coverage needs a documented low-confidence flag when the reference's
+  extracted content is very short (e.g. image-only articles) rather than being
+  read at face value as "0% = totally missing."
+
+## Recommended next steps (K1 continuation / K2 handoff)
+
+1. Fix the `vmk-logo.png` 404 (quick, isolated, real bug this tool found).
+2. Build a "related news" component to close the LINKS gap's dominant pattern,
+   rather than patching per-route.
+3. Expand FUNCTION (real E2E) and VISUAL (screenshot diff) dimensions.
+4. K2: full reference saturation crawl + per-route TEXT/MEDIA/LINKS deficit
+   quantification, focused first on current first-hop, then depth-2, then the
+   gallery/media family at full scale (not just the 2-route sample above).
