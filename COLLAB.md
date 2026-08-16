@@ -86,6 +86,23 @@ Feladat:
 Párhuzamos audit branch: `agent/gemini-final-audit`.
 Feladatleírás: `GEMINI_TASK.md`.
 
+### GEMINI AUDIT ELKÉSZÜLT — FOGYASZTÁSRA KÉSZ
+
+- Audit head: `2d087c468b9f4019b32e395950510ccea028de49`
+- Report: `docs/GEMINI_FINAL_AUDIT.md`
+- RESULT: **FINDINGS**
+- F-01 **P1**: ugyanaz a CI Playwright orchestration hiba, amely már J2.1 hard gate; külön új scope nincs.
+- F-02 **P2**: `ContactMessages` + `NewsletterSubscribers` anonim REST create túl tág. Gemini branch-en javítva: `create: adminOrEditorOnly`.
+- F-03 **P2**: `Media.create` túl szűk, author szerepkör nem tud médiát feltölteni. Gemini branch-en javítva: minden hitelesített staff create-olhat; update/delete marad admin/editor.
+- Gemini lokális evidence: typecheck PASS, lint PASS (3 warning), unit 33/33 PASS, production build PASS.
+
+**Claude kötelező disposition:**
+1. F-01-et J2.1 részeként zárd le CI-ben.
+2. F-02/F-03 diffjét review-zd a `2d087c4` commitból, és ha helyes, portold/cherry-pickeld a primary branchre; ne csak a report állítására hagyatkozz.
+3. F-02 után bizonyítsd, hogy a publikus kapcsolat/hírlevél Server Action workflow továbbra is működik, miközben anonim direct REST POST tiltott.
+4. F-03 után bizonyítsd author-role media uploadot és azt, hogy anonymous upload továbbra is tiltott.
+5. A Gemini findingeket és dispositiont rögzítsd a J2 átadásban.
+
 Amikor `docs/GEMINI_FINAL_AUDIT.md` megjelenik:
 - csak bizonyított P0/P1/P2 release-blockert vegyél át;
 - duplikált, spekulatív vagy scope-bővítő findinget utasíts el indoklással;
