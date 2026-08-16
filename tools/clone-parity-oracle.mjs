@@ -535,6 +535,36 @@ async function auditRoute(browser, route) {
   return result
 }
 
+const jsonPath = path.join(OUT_DIR, 'results.json')
+
+// K2 (COLLAB.md commit 8fec18e, checkpoint discipline): a full-inventory
+// run covers ~270+ routes and can run for a long time. Writing results.json
+// only after the whole loop finished meant a crash (or a background run
+// that gets interrupted) on route 200/272 lost all progress on the first
+// 199 -- no partial evidence, nothing to checkpoint-commit. Flushing after
+// every route makes progress durable and inspectable mid-run, and is cheap
+// (this file stays well under a few MB even at full-site scale).
+function flushResults(currentBatchResults) {
+  // Merge with whatever is already on disk: VISUAL/FUNCTION data from the
+  // separate slower passes (by sub-field, as before), AND any route entries
+  // not present in this run's route list at all (e.g. a prior, different
+  // batch) -- so this never silently drops routes another invocation wrote.
+  const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null
+  const existingByPath = new Map((existing?.results || []).map((r) => [r.path, r]))
+  const currentPaths = new Set(currentBatchResults.map((r) => r.path))
+
+  for (const r of currentBatchResults) {
+    const prior = existingByPath.get(r.path)
+    if (prior?.visual) r.visual = prior.visual
+    if (prior?.function && ['PASS', 'FAIL', 'PARTIAL'].includes(prior.function.status)) r.function = prior.function
+  }
+  const carriedOver = (existing?.results || []).filter((r) => !currentPaths.has(r.path))
+  const merged = [...carriedOver, ...currentBatchResults]
+
+  fs.writeFileSync(jsonPath, JSON.stringify({ generatedAt: new Date().toISOString(), refBase: REF_BASE, cloneBase: CLONE_BASE, results: merged, visualGeneratedAt: existing?.visualGeneratedAt, functionChecks: existing?.functionChecks }, null, 2))
+  return merged
+}
+
 async function main() {
   const routes = JSON.parse(fs.readFileSync(ROUTES_FILE, 'utf8'))
   fs.mkdirSync(OUT_DIR, { recursive: true })
@@ -551,30 +581,20 @@ async function main() {
       results.push({ path: route.path, overall: 'ERROR', error: String(e.message || e) })
       process.stderr.write(`  -> ERROR: ${e.message}\n`)
     }
+    flushResults(results)
   }
   await browser.close()
 
-  const jsonPath = path.join(OUT_DIR, 'results.json')
-  // Merge with any existing VISUAL (clone-parity-visual.mjs) / FUNCTION
-  // (clone-parity-function.mjs) data already written for these routes,
-  // rather than overwrite it -- those are separate, slower passes that
-  // shouldn't need to re-run every time this script does.
-  const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null
-  const existingByPath = new Map((existing?.results || []).map((r) => [r.path, r]))
-  for (const r of results) {
-    const prior = existingByPath.get(r.path)
-    if (prior?.visual) r.visual = prior.visual
-    if (prior?.function && ['PASS', 'FAIL', 'PARTIAL'].includes(prior.function.status)) r.function = prior.function
-  }
-  fs.writeFileSync(jsonPath, JSON.stringify({ generatedAt: new Date().toISOString(), refBase: REF_BASE, cloneBase: CLONE_BASE, results, visualGeneratedAt: existing?.visualGeneratedAt, functionChecks: existing?.functionChecks }, null, 2))
+  const merged = flushResults(results)
+  const resultsForSummary = merged
 
   // K1 review (ChatGPT, commit a7b25db): canary-list mapping errors (a
   // wrong reference path) must not count toward parity totals -- they
   // measure a mistake in tools/parity-canary-routes.json, not the clone.
-  const canaryErrors = results.filter((r) => r.overall === 'CANARY_MAPPING_ERROR')
-  const scored = results.filter((r) => r.overall !== 'CANARY_MAPPING_ERROR')
+  const canaryErrors = resultsForSummary.filter((r) => r.overall === 'CANARY_MAPPING_ERROR')
+  const scored = resultsForSummary.filter((r) => r.overall !== 'CANARY_MAPPING_ERROR')
   const summary = {
-    total: results.length,
+    total: resultsForSummary.length,
     scoredTotal: scored.length,
     CANARY_MAPPING_ERROR: canaryErrors.length,
     canaryMappingErrorRoutes: canaryErrors.map((r) => r.path),

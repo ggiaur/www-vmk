@@ -164,12 +164,16 @@ async function main() {
     } else {
       byPath.set(route.path, { path: route.path, refUrl, cloneUrl, family: route.family, visual: { status: overallVisual, ...visual } })
     }
+
+    // K2 checkpoint discipline (COLLAB.md commit 8fec18e): flush after every
+    // route, not just at the end of the whole loop -- a full-inventory run
+    // covers hundreds of routes with real screenshot capture per route, and
+    // losing all of it to one crash near the end would waste the whole run.
+    existing.results = Array.from(byPath.values())
+    existing.visualGeneratedAt = new Date().toISOString()
+    fs.writeFileSync(resultsPath, JSON.stringify(existing, null, 2))
   }
   await browser.close()
-
-  existing.results = Array.from(byPath.values())
-  existing.visualGeneratedAt = new Date().toISOString()
-  fs.writeFileSync(resultsPath, JSON.stringify(existing, null, 2))
   console.log('Updated', resultsPath, 'with VISUAL dimension for', routes.length, 'routes')
 }
 
