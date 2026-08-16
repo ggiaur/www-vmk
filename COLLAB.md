@@ -67,11 +67,79 @@ A publikus clone jelenleg nem használható release-verifikációra. A Claude-ol
 
 ---
 
-# 4. AKTÍV FELADAT — J1 PR / RELEASE PACKAGE FINALIZATION
+# 4. CLAUDE HANDOFF — J1 PR / RELEASE PACKAGE FINALIZATION
 
-**STATUS:** `IN_PROGRESS`
+**STATUS:** `READY_FOR_REVIEW` (J1.1 részlegesen blokkolt, lásd lent)
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
+
+## EREDMÉNY (Claude, J1)
+
+### 1. PR body frissítés eredménye — BLOKKOLT (credential hiány)
+
+Ebben a futtatási környezetben **nincs `gh` CLI auth és nincs `GH_TOKEN`**
+(`gh pr view` `exit 4`, "please run: gh auth login"). Csak SSH git
+push/pull működik (`git.vmk.hu`-hoz van tárolt credential, GitHub-hoz csak
+SSH deploy-szintű hozzáférés, nem API). PR body szerkesztés a GitHub API-n
+megy, nem git commit-on -- ezt **nem tudtam ténylegesen végrehajtani**.
+
+Amit helyette tettem: a teljes, végleges PR body szöveget megírtam és a
+felhasználónak átadtam alkalmazásra (nem ebbe a fájlba, hanem a
+beszélgetésben/scratchpadben), tartalmazza mind a kért elemet (fő
+funkciók, first-hop/depth-2/full-site végállapot, admin hardening,
+`push:false`, security/build/E2E bizonyíték, ismert korlátok,
+`new.vmk.hu` DNS-hiány, kulcs-commitok). A PR marad draft -- ezt nem
+érintette, hogy a body-t nem tudtam feltölteni.
+
+**Ez a felhasználó felé explicit jelzett blocker, nem csendes
+kihagyás.**
+
+### 2. Release checklist helye
+
+`docs/RELEASE_CHECKLIST.md` (10 szakasz: env/secret, DB backup,
+migrációk, DNS/TLS, deploy, publikus smoke, admin smoke, first-hop
+minta, rollback, post-deploy ellenőrzés). Nincs kitalált credential/host/
+DNS target -- explicit `[KITÖLTENDŐ]` jelölve, ahol ismeretlen.
+
+### 3. Mergeability állapot
+
+GitHub API nélkül nem tudom lekérdezni a PR `mergeable` mezőjét
+közvetlenül, de **git-szinten** ellenőriztem: `git merge-tree
+$(git merge-base origin/main origin/agent/visual-clone-oracle)
+origin/main origin/agent/visual-clone-oracle` -- **0 CONFLICT, tiszta
+3-way merge**, `origin/main` friss (`3343043`) és
+`origin/agent/visual-clone-oracle` friss (`9bc2ae7` a J1 feladat-kiosztás
+pillanatában) között. Ez erős jel, hogy a PR API-szinten is mergeable,
+de a végleges megerősítést a GitHub API-hoz hozzáféréssel rendelkező fél
+adja.
+
+### 4. Maradék launch-only infra tételek
+
+Lásd `docs/RELEASE_CHECKLIST.md` teljes listáját. Kiemelt:
+- `new.vmk.hu` DNS rekord létrehozása (jelenleg NXDOMAIN);
+- production secret/env konfiguráció;
+- DB backup/migráció-futtatás a célkörnyezeten;
+- publikus smoke a valós domainen deploy után.
+
+### 5. Commit SHA
+
+`e0ab423` — `docs: add J1 release checklist for new.vmk.hu launch`
+(egyetlen repo-fájl-változás: `docs/RELEASE_CHECKLIST.md` létrehozása).
+A PR body-frissítés nem jár commit-tal (GitHub API-metaadat, nem
+fájltartalom), ezért arra nincs SHA.
+
+### Amit kérek
+
+A PR body tényleges feltöltéséhez vagy `gh auth login` futtatása
+szükséges ebben a környezetben (a felhasználó elindíthatja `!`
+előtaggal), vagy egy `GH_TOKEN` biztosítása, vagy a felhasználó saját
+maga másolja be a megírt szöveget a PR-be. Amíg ez nem történik meg,
+J1.1 a fenti bizonyítékkal együtt **részlegesen kész, nem teljes** --
+ezt a labdaátadás nem rejti el.
+
+---
+
+*(Az alábbi eredeti feladat-kiosztás változatlanul megmarad referenciaként.)*
 
 Cél: a VERIFIED release candidate-ből review-kész, áttekinthető release/merge csomag készítése. **Ne merge-elj önállóan.** Ne építs új feature-t.
 
