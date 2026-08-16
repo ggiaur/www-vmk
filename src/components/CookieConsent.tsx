@@ -47,7 +47,7 @@ export function CookieConsent() {
       aria-modal="true"
       aria-label="Sütikezelési beállítások"
       className="fixed inset-x-0 bottom-0 z-[10001] text-white"
-      style={{ backgroundColor: '#00909B', fontFamily: 'Roboto, sans-serif' }}
+      style={{ backgroundColor: 'var(--accent-fill-a11y)', fontFamily: 'Roboto, sans-serif' }}
     >
       <div className="max-w-[1170px] mx-auto px-[15px] py-4">
         {!showDetails ? (
@@ -59,7 +59,7 @@ export function CookieConsent() {
                 href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-[#e4b02c] hover:text-white"
+                className="underline text-white/90 hover:text-white"
               >
                 Adatkezelési tájékoztató
               </a>

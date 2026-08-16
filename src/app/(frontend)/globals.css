@@ -26,6 +26,19 @@
   --text-main: #333333;
   --text-muted: #777777;
   --border-light: #dddddd;
+  /* WCAG 2.2 AA fix (J2.1, docs/GEMINI_FINAL_AUDIT.md F-01 follow-up):
+     #00909b is the verified reference navbar border color (see above) and
+     stays exactly that wherever it's used as a border/accent only (no text
+     sits on it -- Header.tsx nav border, homepage section dividers). But
+     several components also use it as a SOLID FILL with white/near-white
+     text directly on top (cookie banner, footer, sidebar box headers, the
+     opening-hours table header, the event-calendar widget) -- that pairing
+     only reaches a 3.84:1 contrast ratio against the required 4.5:1 for
+     normal-size text, a real WCAG failure confirmed by axe-core against
+     both an empty and a fully content-populated build. This token is a
+     ~12%-darker variant (contrast ratio ~4.78:1 with white) used ONLY for
+     those text-bearing fills -- border/accent usage is untouched. */
+  --accent-fill-a11y: #007F88;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;

@@ -19,7 +19,7 @@ import { openConsentSettings } from '@/lib/cookieConsent'
 // valós oldalon, a láblécben nincsenek megismételve.
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#00909B] text-teal-50 pt-10 pb-0 mt-auto">
+    <footer className="text-teal-50 pt-10 pb-0 mt-auto" style={{ backgroundColor: 'var(--accent-fill-a11y)' }}>
       <div className={`${REAL_CONTAINER} grid grid-cols-1 md:grid-cols-3 gap-8 pb-10`}>
         {/* Column 1: Hírlevél - a valós oldalon a cím H2, 24px, félkövér
             (700), NEM nagybetűs, és a vonal a doboz TETEJÉN van (2px

@@ -29,6 +29,7 @@ export function BookingForm({ roomId, openFrom, openTo }: { roomId: string; open
           type="date"
           name="date"
           required
+          aria-label="Foglalás dátuma"
           className="px-3 py-2 rounded-lg border border-slate-200 text-sm"
         />
         <input
@@ -36,6 +37,7 @@ export function BookingForm({ roomId, openFrom, openTo }: { roomId: string; open
           name="startTime"
           required
           defaultValue={openFrom}
+          aria-label="Kezdő időpont"
           className="px-3 py-2 rounded-lg border border-slate-200 text-sm"
         />
         <input
@@ -43,6 +45,7 @@ export function BookingForm({ roomId, openFrom, openTo }: { roomId: string; open
           name="endTime"
           required
           defaultValue={openTo}
+          aria-label="Záró időpont"
           className="px-3 py-2 rounded-lg border border-slate-200 text-sm"
         />
       </div>
@@ -51,6 +54,7 @@ export function BookingForm({ roomId, openFrom, openTo }: { roomId: string; open
           name="requesterName"
           required
           placeholder="Neve"
+          aria-label="Neve"
           className="px-3 py-2 rounded-lg border border-slate-200 text-sm"
         />
         <input
@@ -58,12 +62,14 @@ export function BookingForm({ roomId, openFrom, openTo }: { roomId: string; open
           name="requesterEmail"
           required
           placeholder="E-mail címe"
+          aria-label="E-mail címe"
           className="px-3 py-2 rounded-lg border border-slate-200 text-sm"
         />
       </div>
       <textarea
         name="purpose"
         placeholder="A foglalás célja (opcionális)"
+        aria-label="A foglalás célja"
         rows={2}
         className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm"
       />

@@ -164,15 +164,15 @@ export function SiteSidebar() {
       <button
         type="button"
         onClick={() => setSidebarOpen((v) => !v)}
-        className="lg:hidden bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px] flex items-center justify-between"
-        style={{ padding: '8px 15px', marginBottom: sidebarOpen ? 0 : '15px' }}
+        className="lg:hidden w-full text-white font-bold text-[18px] uppercase leading-[19.8px] flex items-center justify-between"
+        style={{ backgroundColor: 'var(--accent-fill-a11y)', padding: '8px 15px', marginBottom: sidebarOpen ? 0 : '15px' }}
         aria-expanded={sidebarOpen}
         aria-label="Menü megnyitása"
       >
         <span style={{ fontFamily: 'Roboto, sans-serif' }}>MENÜ</span>
         {sidebarOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
       </button>
-      <div className="hidden lg:block bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px]" style={{ padding: '8px 15px', marginBottom: 0 }}>
+      <div className="hidden lg:block w-full text-white font-bold text-[18px] uppercase leading-[19.8px]" style={{ backgroundColor: 'var(--accent-fill-a11y)', padding: '8px 15px', marginBottom: 0 }}>
         <div
           style={{
             margin: 0,
@@ -252,7 +252,7 @@ export function SiteSidebar() {
             href={w.href}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: 'block', backgroundColor: '#00909b', padding: '8px 15px' }}
+            style={{ display: 'block', backgroundColor: 'var(--accent-fill-a11y)', padding: '8px 15px' }}
           >
             <div
               style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700, textTransform: 'uppercase' }}

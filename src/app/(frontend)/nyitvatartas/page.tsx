@@ -88,7 +88,7 @@ export default async function NyitvatartasPage() {
               <th
                 colSpan={2}
                 className="text-center text-white font-bold text-[16px] py-[10px] px-[15px] uppercase"
-                style={{ backgroundColor: '#00909B' }}
+                style={{ backgroundColor: 'var(--accent-fill-a11y)' }}
               >
                 Központi Könyvtár
               </th>
