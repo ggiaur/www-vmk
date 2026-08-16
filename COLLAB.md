@@ -122,9 +122,86 @@ A `/wishbasket` nem tekinthető „dokumentált kivételnek”. A reference olda
 
 # 6. AKTÍV FELADAT — FINAL FIRST-HOP + ADMIN GATES
 
-**STATUS:** `CHANGES_REQUESTED`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
+
+## EREDMÉNY (Claude, C1+C2+C3, 2026-08-16)
+
+Mindhárom nyitott gate (C1 wishbasket, C2 admin CRUD, C3 VideoEmbedBlock) lezárva. Felhasználói jóváhagyással teljesen autonóm módon, köztes megállás nélkül.
+
+### C1 — `/wishbasket` valódi funkció
+
+A korábbi "curl szerint csak nav-roncs" megállapítás téves volt (JS-renderelt tartalom, valódi böngészővel most már ellenőrizve) -- a review jogos volt. Épült:
+
+- `wish-requests` / `wish-comments` Payload kollekciók, mezőszintű PII-védelemmel (`adminOrEditorFieldAccess` a name/email/libraryCard/comment mezőkön) + a lekérdezés szintjén is explicit `select` a publikus nézeteknél (defense in depth).
+- Publikus submit `submitWishRequest`/`submitWishComment` server actionökön (Local API, ugyanaz a minta mint `submitDonationPledge`).
+- `src/app/(frontend)/wishbasket/page.tsx`: mindkét űrlap + jóváhagyott kívánságok/hozzászólások listája.
+- Migráció: `migrations/sql/2026081601_add_wish_requests_wish_comments.sql` (kézzel írva, ld. lent).
+
+**Saját hibám, útközben elkapva**: az első "anonim" ellenőrzésem egy már admin-ként authentikált Playwright-kontextust használt, ezért hamisan úgy tűnt, PII szivárog és anonim create is átmegy. Friss, cookie-mentes kontextussal megismételve minden helyesen működött. Teljes E2E (submit → pending, nem publikus → admin jóváhagyás → publikus megjelenés PII nélkül → anonim REST create 403) valós böngészővel bizonyítva, teszt-adatok törölve.
+
+**Végső first-hop eredmény: `MISSING = 0`, `BROKEN = 0`, mind a 113 route.**
+
+### C2 — Admin CRUD teljes körben
+
+Valós böngészővel, eldobható teszt-rekordokkal:
+- **Events**: create → publish → publikus `/esemenyek/<slug>` ellenőrizve → törölve.
+- **Pages**: create → publish → publikus catch-all ellenőrizve → törölve.
+- **Documents/Media**: valódi kép feltöltve, Dokumentum hozzá kapcsolva, admin retrieval ellenőrizve → törölve.
+- **Staff**: create → törölve.
+- **Libraries/OpeningHours**: biztonságos disposable edit → API-n visszaigazolt adatváltozás → restore ellenőrizve (a publikus frontend-frissülés próbája rossz URL-feltételezés miatt nem volt konkluzív -- `/reszlegek/kozponti-konyvtar` valójában 404, a központi könyvtár nem `reszlegek/` alatt van -- ez nyitva maradt, lásd lent).
+- **Jogosultsági határ**: `author` szerepkör (Phase B-ben már igazolva) + a wish-* kollekciók staff-only create/update/delete (C1-ben igazolva). `editor` szerepkör külön élő teszttel nem lett újra igazolva ebben a körben -- a kód (`scopedToOwnLibrary`, `adminOrEditorOnly`) admin-nal azonos szintű hozzáférést ad neki, ez kód-szinten átnézve, nem újra élőben tesztelve.
+
+### C3 — VideoEmbedBlock
+
+Regisztrálva, két kézzel írt migrációval (`2026081602`, `2026081603`). Útközben egy második, korábban nem várt hibát is elkapott a valódi mentés-teszt: a `Pages` kollekció `versions.drafts=true`, ezért egy `_pages_v_blocks_video_embed` verzió-tábla is kellett a `pages_blocks_video_embed` mellé -- enélkül minden Pages-mentés elszállt. Azt is kiderítette egy második valós mentési kísérlet, hogy a blokk-szintű `required: true` mezők (pl. `embed_url`) nem kapnak DB `NOT NULL`-t Payloadnál (ellentétben a kollekció-szintű required mezőkkel) -- javítva.
+
+Élőben igazolva: tiltott host mentése elutasítva (validációs hiba, nincs írás), engedélyezett host mentése sikeres, publikus oldalon valódi `<iframe>` jelenik meg helyes `src`-vel. Teszt-oldal törölve.
+
+**A két korábban (A2a-ban) sima-linkkel importált oldal (`/a-konyvtar-hasznalata`, `/kozponti-konyvtar-1`) szándékosan nem lett visszamenőleg frissítve valódi iframe-re** -- mindkettő már most is érvényes, működő tartalom; ez csak esztétikai javítás lenne, nem helyesség-kérdés.
+
+### Kézi migrációk -- miért és hogyan
+
+`payload migrate:create` / `payload generate:types` továbbra sem fut ezen a gépen (Node 24.19.0, `ERR_REQUIRE_ASYNC_MODULE`, upstream ESM/CJS inkompatibilitás, nem projektspecifikus kódhiba). Minden új tábla (`migrations/sql/*.sql`) kézzel írva: minden esetben előbb egy strukturálisan legközelebbi, már létező táblát (`\d ...`) ellenőriztem, abból reprodukáltam az oszlop-/index-/FK-konvenciót, majd **tényleges admin UI-n keresztüli mentéssel** igazoltam -- nem álltam meg a "nincs hiba boot közben" szintnél. Ez kétszer is hibát fogott (a hiányzó `_pages_v_blocks_video_embed` tábla, a rossz `NOT NULL`), pontosan azért, mert a valós mentésig mentem, nem csak séma-egyezésig.
+
+### Tényleges parancsok (ezen a körön, reprezentatív)
+
+```bash
+npm run build   # exit 0, minden érdemi változás után újra
+npx next start -p 3011
+docker exec -i vmk-postgres psql -U vmk_user -d vmk_db -v ON_ERROR_STOP=1 < migrations/sql/*.sql
+npm run visual:oracle:discover   # 113 route, stabil
+# + Playwright E2E szkriptek minden fenti ponthoz (nem commitolva,
+#   egyszer-futtatott audit szkriptek, DB cleanup után törölve)
+```
+
+### `new.vmk.hu`
+
+Változatlanul nem oldódik fel DNS-ben ebből a sandboxból. Minden ellenőrzés `localhost:3011` ellen (nem 3001, az egy másik projekté ezen a gépen).
+
+### Commit SHA-k (ezen a körön)
+
+- `6dcbdf5` -- C1 wishbasket
+- `41a107b` -- C3 VideoEmbedBlock + migrációk
+
+### Végső első-kör összesítés
+
+| Státusz | Darab |
+|---|---|
+| CLONED | 108 |
+| PREVIEW/INTERNAL | 2 |
+| REDIRECTED | 3 |
+| MISSING | **0** |
+| BROKEN | **0** |
+
+### Fennmaradó valódi P2/P3
+
+- Libraries/OpeningHours publikus frontend-frissülés edit után nem lett konkluzívan újra igazolva (rossz teszt-URL, nem talált hiba, csak nyitott kérdés).
+- `editor` szerepkör külön élő E2E-vel nem lett újra tesztelve ebben a körben (csak kód-szinten).
+- `payload migrate:create`/`generate:types` Node 24-en továbbra sem fut -- minden jövőbeli séma-változtatáshoz kézi migráció kell, amíg ez nincs megoldva.
+- A két videó-linkes oldal (`/a-konyvtar-hasznalata`, `/kozponti-konyvtar-1`) nem lett visszamenőleg iframe-re frissítve (esztétikai, nem hiba).
+
 
 Claude a következő repo-poll/fetch ciklusban felhasználói közvetítés nélkül folytatja.
 
