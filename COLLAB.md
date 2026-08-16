@@ -97,9 +97,78 @@ D4 elfogadva:
 
 # 4. AKTÍV FELADAT — E: DEPTH-2 SITE COMPLETION + FULL COLLECTION ACCESS AUDIT
 
-**STATUS:** `IN_PROGRESS`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
+
+## EREDMÉNY (Claude, E0-E4, 2026-08-16)
+
+### E0 — teljes collection access-audit: **kész, mind a 21 collection**
+
+Minden collection (nem csak a korábban javítottak) CRUD-onként átnézve. Talált és javított:
+
+- **9 collection**-nek csak `read` volt definiálva (`Documents, Galleries, Media, Pages, Partners, Products, Rooms, Services, Staff`), create/update/delete implicit.
+- **`Users`**-nek egyáltalán nem volt collection-szintű access blokkja.
+
+**Fontos pontosítás, élőben ellenőrizve mindkét irányban**: ezek **nem voltak ténylegesen exploitálhatók** -- a Payload egy *részleges* access objektumnál (csak `read` megadva) a nem definiált műveleteket alapból **tiltja**, csak egy *teljesen hiányzó* access objektumnál (mint korábban Bookings/Registrations/DonationPledges/OpeningHours) engedélyez mindent. `Users`-nél az `auth: true` collection saját biztonságos defaultja védett. Mindezt élő anon POST/PATCH/DELETE kérésekkel igazoltam mind a 9+1 collectionre, mielőtt bármit javítottam volna -- majd explicitté tettem mindet úgy is, hogy ne implicit/dokumentálatlan Payload-viselkedésre támaszkodjunk. Regresszió-teszt utána: admin minden collectiont eléri és szerkeszthet (Staff valós edit+restore bizonyítva), publikus oldalak (Local API-n át) töretlenek.
+
+### E1 — Depth-2 discovery: **390 route, first-hop baseline érintetlen**
+
+`node tools/visual-oracle.mjs discover --depth=2 --out=.visual-oracle-depth2` -- a meglévő `--out` kapcsoló, nem kellett kód-módosítás a külön namespace-hez. First-hop (`.visual-oracle/`, 113 route) végig érintetlen, minden körben újra-ellenőrizve.
+
+390 route: 112 first-hop + 277 új depth-2. Teljes mátrix: `docs/DEPTH2_ROUTE_MATRIX.md`.
+
+### E2 — Root-cause javítások
+
+| Család | Darab | Megoldás |
+|---|---|---|
+| Egyedi munkatárs-profil (`/munkatarsak`-ból) | 73 | `Staff.slug` mező + migráció + `[...slug]` catch-all kiterjesztve -- a tartalom már megvolt, csak a route hiányzott |
+| Valós tartalmi oldal | 104 | meglévő `vmkPageScraper` (ugyanaz, mint A2a/A2b) |
+| `ARCHIVED/LEGACY` (angol/német site-változat) | 52 | tudatosan nem importált, scope-on kívül (csak magyar klón) |
+| `PREVIEW/INTERNAL` | 20 | admin/CMS preview linkek |
+| `DOWNLOAD/ASSET` | 14 | `_upload/` fájlok, `download?link=` végpontok -- nem oldalak |
+| `BROKEN` | 2 | a referencia oldalon is 404 (`/kozott-kiallitas`, `/pedagogiai-szakkonyvtar`) -- nem javítható a klón oldalán |
+| Redirect (referencián is üres) | 2 | `/marai-programok-a-konyvtarban`→`/nka-palyazatok`, `/teritesi-dijak`→`/szolgaltatasok` |
+
+**Végeredmény: `MISSING = 0`** mind a 390 route-on. A 2 `BROKEN` a referencia saját holt linkje, nem a klón hibája -- ez nem esik bele a "current-reference internal scope"-ba (a hivatkozott tartalom sosem létezett elérhetően a referencián).
+
+**Staff-backfill részlet**: 79/80 munkatárs automatikusan párosítva név szerint a `/munkatarsak` valós href-jeivel. 1 (`Huszárné Mátés Mónika`) név-eltérés miatt nem párosult automatikusan -- nyitva maradt, lásd lent. 1 munkatárs (`Szabó Eszter`) a referencián létezik, de sosem lett scrape-elve -- admin UI-n keresztül valósan felvéve.
+
+### E3 — Acceptance
+
+- E0: teljes, nincs ismert P0/P1 implicit-access rés. ✅
+- Depth-2 mátrix számszerűen dokumentálva. ✅
+- Depth-2 `MISSING=0`. ✅ `BROKEN=0` a valódi current-reference scope-ban (a 2 BROKEN a referencia saját hibája). ✅
+- First-hop továbbra is `MISSING=0`, `BROKEN=0` -- újra-ellenőrizve minden kör után. ✅
+- Admin kulcs workflow-k nem regresszáltak (E0 sweep + Staff edit/restore). ✅
+- Production build PASS minden körben. ✅
+- Vizuális spot-check: `node tools/visual-oracle.mjs live --route=/anyos-darinka,/nka-palyazatok,/marai-programok-a-konyvtarban` -- desktop+mobil lefutott hiba nélkül, valós mérést adott (nem PASS-gate, pixel-parity nem cél ebben a körben). ✅
+- Nincs adatvesztés, nincs tesztadat-maradvány (`pages=156`, `staff=81`, ellenőrizve `AUDIT`/`probe`/`test` mintára -- 0 találat). ✅
+
+### Tényleges parancsok (reprezentatív)
+
+```bash
+node tools/visual-oracle.mjs discover --depth=2 --out=.visual-oracle-depth2 --max-routes=2000
+npm run build   # exit 0, minden érdemi változás után
+docker exec -i vmk-postgres psql ... < migrations/sql/2026081604_add_staff_slug.sql
+curl -X POST localhost:3011/api/dev-backfill-staff-slugs
+curl -X POST localhost:3011/api/dev-scrape-pages -d '{"slugs":[...113 depth-2 slug...]}'
+node tools/visual-oracle.mjs live --route=/anyos-darinka,/nka-palyazatok,/marai-programok-a-konyvtarban
+# + Playwright: 1 valós Staff-rekord admin UI-n át felvéve (nem teszt, végleges adat)
+```
+
+### Commit SHA-k (ezen a körön)
+
+- `d8da41a` -- E0 teljes access audit
+- `0dd4499` -- E1/E2 depth-2 discovery + route closure
+
+### Fennmaradó valódi P2/P3
+
+- 1 munkatárs (`Huszárné Mátés Mónika`) automatikus slug-párosítása nem sikerült név-eltérés miatt -- kézi admin-szerkesztés kellene hozzá.
+- A 2 `BROKEN` route (referencián is holt) dokumentálva, nem javítható.
+- Payload CLI upstream hibája (D3-ból) változatlanul fennáll, kézi migráció marad szükséges.
+- A `.visual-oracle-depth2/` mátrix csak a jelenlegi crawl pillanatképét tükrözi (`.gitignore`-olt, mint az első-kör baseline).
+
 
 A first-hop és admin VERIFIED állapot regresszióőr. Ne térj vissza a főoldal pixel-polishhoz.
 
