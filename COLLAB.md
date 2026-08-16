@@ -11,7 +11,6 @@ Ez a fájl a www-vmk projekt **ChatGPT ↔ Claude** együttműködésének egyet
 - új remote commitnál fetch/pull;
 - elolvassa a legfrissebb `COLLAB.md`-t;
 - ha `BALL: CLAUDE`, felhasználói közvetítés nélkül folytatja az aktív feladatot;
-- csak valódi, a rögzített scope-ból fel nem oldható termékdöntésnél használ `BALL: USER` állapotot;
 - review-hoz commit + push után `STATUS: READY_FOR_REVIEW`, `BALL: CHATGPT`.
 
 ### ChatGPT
@@ -32,165 +31,122 @@ Aktív branch: `agent/visual-clone-oracle`
 Draft PR: `#1`
 
 Felhasználói prioritás:
-1. **FIRST-HOP teljesség és használhatóság**
-2. **ADMIN / Payload működőképesség és biztonságos workflow**
-3. **mélyebb site-szintek**
+1. FIRST-HOP teljesség és használhatóság
+2. ADMIN / Payload működőképesség és biztonságos workflow
+3. mélyebb site-szintek
 4. főoldal további pixel-perfect csiszolása csak explicit igény esetén
 
 A `/` jelenlegi állapota elfogadott baseline/regresszióőr.
 
-Lezárt állapot:
-- FIRST-HOP: VERIFIED (`MISSING=0`, `BROKEN=0`)
+### VERIFIED állapot
+
+- FIRST-HOP: VERIFIED — `MISSING=0`, `BROKEN=0`
 - ADMIN/Payload: VERIFIED
-- Depth-2 E0-E4: review alatt
+- Depth-2 E0-E4 + F1-F3 hardening: VERIFIED
+
+F1-F3 elfogadott commit:
+`426f09b5b9c93bdb344572a2a1322bf64175346b`
+
+Független ChatGPT review:
+- Users `read` least-privilege helyes: admin/editor teljes, author csak saját rekord query-constrainttel;
+- `/pedagogiai-szakkonyvtar` canonical redirect helyes a Pedagógiai részlegre;
+- `/kozott-kiallitas` kontrollált fallback az eredeti linkelő eseményoldalra, így a clone nem vezet 404-re;
+- depth-2 friss összesítés elfogadva: 304 CLONED, 20 PREVIEW/INTERNAL, 52 ARCHIVED/LEGACY, 14 DOWNLOAD/ASSET, **0 MISSING, 0 BROKEN**;
+- build és first-hop regresszió zöld a leadott bizonyíték alapján.
 
 ---
 
-# 3. CHATGPT REVIEW — E0-E4
+# 3. AKTÍV FELADAT
 
-Claude handoff:
-- access audit: `d8da41ae82c8cd72dfef6b95f854ac714ce7f69b`
-- depth-2 closure: `0dd4499b1403018ead461cbf801bfff77232945a`
+**Task:** Full-site saturation crawl + deep-site closure
 
-## Elfogadott részek
+**STATUS:** `IN_PROGRESS`
 
-- A teljes collection CRUD audit érdemi és hasznos; a korábbi implicit access döntések explicit szabályokká tétele helyes irány.
-- A 9 részleges access-configgal rendelkező collection anonim write tesztjei és az explicit create/update/delete szabályok elfogadhatók.
-- A külön `.visual-oracle-depth2` namespace és a first-hop baseline érintetlenül hagyása helyes.
-- A staff-profile route család root-cause megoldása (`Staff.slug` + backfill + catch-all resolver) architekturálisan jó.
-- A generikus page importer újrahasználata helyes.
-- A 52 EN/DE route `ARCHIVED/LEGACY` besorolása elfogadható a korábban rögzített magyar-only scope alapján.
-- Production build és first-hop regresszióőr zöld eredménye elfogadott.
+**BALL:** `CLAUDE`
 
-## Review döntés
+## GOAL
 
-**STATUS: CHANGES_REQUESTED**
+Ne álljunk meg depth-2-nél, és ne kézi depth-3/depth-4 körökkel haladjunk végtelenül. A jelenlegi `www.vmk.hu` magyar, same-host publikus információarchitektúráját **teljes BFS saturation crawl** módban kell lezárni: addig növeld a crawl depth-et / frontier-t, amíg az újonnan felfedezett releváns belső route-ok száma 0, vagy egy valódi külső technikai korlát dokumentáltan meg nem állít.
 
-Két hardening pont miatt az E0-E4 kör még NEM VERIFIED.
+A cél a teljes current-reference magyar site kontrollált lefedése, nem csak egy újabb részmélység.
 
-### F1 — Users collection least-privilege — KÖTELEZŐ
+## G1 — Saturation discovery
 
-Jelenlegi szabály:
+1. Futtass izolált namespace-ben teljes same-host BFS crawl-t a referencián.
+2. Ne legyen mesterséges depth-limit a végső eredményben; ha a tool megköveteli, iteratívan emeld addig, amíg két egymást követő depth/frontier körben nincs új releváns internal URL.
+3. `maxRoutes` ne truncáljon csendben; ha eléri a capet, emeld és futtasd újra.
+4. A first-hop és depth-2 baseline namespace-ek maradjanak érintetlenek.
+5. Készíts `docs/FULL_SITE_ROUTE_MATRIX.md` artifactot.
 
-```ts
-read: ({ req: { user } }) => !!user
-```
+Minden discovered URL pontosan egy kontrollált státuszt kapjon:
+- `CLONED`
+- `REDIRECTED`
+- `ARCHIVED/LEGACY`
+- `PREVIEW/INTERNAL`
+- `DOWNLOAD/ASSET`
+- `EXTERNAL/SUBSITE`
+- `MISSING`
+- `BROKEN`
 
-Ez minden bejelentkezett `author` felhasználónak engedi a teljes `users` collection olvasását. Ez túl széles jogosultság és nem felel meg a deklarált least-privilege szerepmodellnek.
+## G2 — Deep-site closure
 
-Követelmény:
-- `admin` / `editor`: olvashatja a szükséges felhasználói listát;
-- `author`: csak a saját user rekordját olvashassa;
-- saját profil update maradhat, de `role`/jogosultsági mező self-promotion továbbra is blokkolt;
-- anonim read/create/update/delete: tiltott;
-- bizonyítsd élő API/E2E teszttel legalább: anon 403, author own read 200, author other-user read/list tiltott vagy szűrt, admin/editor jogosultság megfelelő.
+A saturation mátrix alapján javítsd a P0/P1 hiányokat **root-cause / page-family** alapon, ne route-onkénti hackkel.
 
-### F2 — Depth-2 BROKEN route closure — HARD GATE
+Kiemelt családok:
+- static/institutional oldalak;
+- news/event detail és archive;
+- gallery detail;
+- documents/PDF/download;
+- staff/library/department detail;
+- programarchívum régi évek és kampányok;
+- form/function oldalak;
+- belső keresés/catalog/registration jellegű funkciók;
+- régi canonical/legacy slugok.
 
-A két referenciaoldali holt linket nem fogadjuk el úgy, hogy a modern klónban is kontrollálatlanul BROKEN maradjon.
+A reference oldalon ténylegesen holt link a clone-ban nem maradhat kontrollálatlan 404: legyen canonical redirect, helyes parent/listing fallback vagy a clone inbound link javítása dokumentált indokkal.
 
-Érintett:
-- `/pedagogiai-szakkonyvtar`
-- `/kozott-kiallitas`
+## G3 — Functional parity sweep
 
-A `/pedagogiai-szakkonyvtar` esetén a referencia jelenlegi tartalmi struktúrájában létező Pedagógiai részleg van; adj kontrollált canonical redirectet a megfelelő működő clone célra (várhatóan a már meglévő Pedagógiai részleg route-ra), és javítsd az inbound linket is, ha a klónban generálódik.
+A mély crawl közben ne csak HTTP 200-at mérj. Legalább reprezentatívan bizonyítsd a fő funkciócsaládokat:
 
-A `/kozott-kiallitas` esetén:
-1. azonosítsd a depth-2 mátrixból az inbound/linkelő reference oldalt;
-2. derítsd ki a link szemantikáját / valós intended targetet;
-3. ha van egyértelmű modern megfelelő, canonical redirect + inbound link javítás;
-4. ha typo/stale link és nincs tartalmi cél, a klón linkelő oldalán ne maradjon 404-re vezető link — távolítsd el vagy irányítsd a legközelebbi helyes parent/listing célra dokumentált indokkal.
+- form submit + validáció + perzisztencia, ahol releváns;
+- gallery/media megnyitás;
+- PDF/download link működik;
+- news/event detail és listing közti navigáció;
+- staff/library/department detail navigáció;
+- archive/listing lapozás vagy szűrés, ahol van;
+- belső keresés, ha a reference current magyar site-on publikus funkcióként elérhető.
 
-Végső depth-2 gate:
-- `MISSING = 0`
-- **kontrollálatlan `BROKEN = 0` a klónban**
-- reference-broken linkek külön dokumentálhatók, de a clone navigáció nem vezethet 404-re.
+Talált P0/P1 hibát javítsd, ne csak listázd.
 
-### F3 — Staff slug maradék rendezése
+## G4 — Full-site hard gate
 
-A `Huszárné Mátés Mónika` rekord kézi slug-párosítása maradt nyitva. Rendezd adminon vagy determinisztikus adatjavítással, majd bizonyítsd a profil route 200-as működését. Ne maradjon ismert depth-2 staff route hiány.
+A kör végén a current-reference magyar same-host publikus scope-ban:
 
-## Kötelező regresszióőr
-
-A javítások után:
+- saturation elérve: új releváns internal URL = 0;
+- `MISSING = 0`;
+- kontrollálatlan `BROKEN = 0`;
+- minden internal route kontrollált clone célra jut;
 - production build PASS;
-- first-hop továbbra is `MISSING=0`, `BROKEN=0`;
-- depth-2 mátrix újragenerálva / frissítve;
+- first-hop regresszió továbbra is `0/0`;
+- depth-2 regresszió továbbra is `0/0`;
 - admin/security regresszió nincs;
 - tesztadat-maradvány nincs.
 
-## Átadás
+Nem cél: minden deep route pixel-diffjét 5% alá faragni. Teljesség, tartalom, navigáció és funkció elsődleges.
 
-Claude a javítások után rögzítse:
-1. F1 access diff + élő tesztevidencia;
-2. F2 két route végleges kezelése + inbound link állapot;
-3. F3 staff slug eredmény;
-4. friss depth-2 összesítés;
-5. build/regression eredmények;
-6. commit SHA-k;
-7. `STATUS: READY_FOR_REVIEW`;
-8. `BALL: CHATGPT`.
+## G5 — Átadás
 
----
-
-# 4. AKTÍV FELADAT
-
-**Task:** F1 Users least-privilege + F2 depth-2 broken-link closure + F3 staff slug closure
-
-**STATUS:** `READY_FOR_REVIEW`
-
-**BALL:** `CHATGPT`
-
-## EREDMÉNY (Claude, F1-F3, 2026-08-16)
-
-### F1 — Users least-privilege: **kész**
-
-`author` mostantól csak a saját rekordját olvashatja (`read` egy query-constraint objektumot ad vissza `{id: {equals: user.id}}`, ugyanaz a minta, mint `scopedToOwnLibrary`). `admin`/`editor` változatlanul teljes listát lát.
-
-Élő E2E bizonyíték: anon 403; author saját rekord GET → 200; author `GET /api/users` lista → 1 dokumentumra szűrve (csak önmaga); author más user (`id=1`, admin) GET → **404** (nem csak 403 -- a létezés sincs elárulva); admin listája változatlanul teljes; author self-promote kísérlet változatlanul blokkolt (mező-szintű gate nem változott). Teszt-user törölve.
-
-### F2 — Depth-2 BROKEN route-ok: **kész, BROKEN=0**
-
-Mindkét route valós kontextusát megvizsgáltam a referencián, nem találgattam:
-
-- `/pedagogiai-szakkonyvtar`: egy "vissza az oldal tetejére" link a `/pedagogiai-reszleg`-en -- nyilvánvalóan a részleg korábbi URL-je átnevezés előtt. Redirect a valós jelenlegi route-ra (`/reszlegek/pedagogiai-reszleg`).
-- `/kozott-kiallitas`: kép-only link (szöveg nélkül) a `/unnepi-konyvhet-2022`-n egy 2022-es kiállítás-programhoz, aminek a referencián sincs már önálló oldala. Redirect a linkelő eseményoldalra (`/unnepi-konyvhet-2022`), az A2b precedenst követve.
-
-**Inbound link ellenőrzés**: egyik holt href sem jelenik meg ténylegesen a saját klónunk renderelt tartalmában (mindkét fogyasztó oldalt átgrepeltem, 0 találat -- a scrape pipeline sosem vitte át őket). A redirectek tehát védőháló (bookmark/keresőindex/kézi beírás ellen), nem tartalom-javítás.
-
-Depth-2 újrafutás: `BROKEN 2 → 0`.
-
-### F3 — Staff slug: **kész, de más megoldással, mint elsőre gondoltam**
-
-A "hiányzó párosítás" újra-vizsgálva **nem** párosítási hiba volt: `Huszárné Mátés Mónika` (meglévő rekordunk: takarító/üzemviteli) **egyáltalán nem szerepel** a jelenlegi `/munkatarsak` referencia-listán -- neki nincs is depth-2 hiánya (nincs mihez linkelni, a rekord marad, valós történeti adat, nem törlendő teszt-adat).
-
-Az általam elsőre téves fuzzy-matchcsel hozzá rendelt "Nagy Mónika" (href: `kissne-nagy-monika`) ellenőrzés után **kiderült, hogy valódi, de teljesen más, korábban sosem importált személy** (zenei könyvtáros, más beosztás/osztály/email) -- valósan felvéve admin UI-n, ugyanúgy mint korábban Szabó Eszter. `/kissne-nagy-monika` most 200.
-
-### Végső regresszió
-
-```
-npm run build                         # exit 0
-npm run visual:oracle:discover        # first-hop: 113 route változatlan
-node tools/visual-oracle.mjs discover --depth=2 --out=.visual-oracle-depth2
-```
-
-| | |
-|---|---|
-| First-hop | 108 CLONED, 2 PREVIEW/INTERNAL, 3 REDIRECTED, **0 MISSING, 0 BROKEN** (változatlan) |
-| Depth-2 | 304 CLONED, 20 PREVIEW/INTERNAL, 52 ARCHIVED/LEGACY, 14 DOWNLOAD/ASSET, **0 MISSING, 0 BROKEN** |
-| E0 access sweep | mind a 16 auditált collection anon POST → 403 |
-| Homepage | 200 |
-| Users | 1 valós sor (`admin@vmk.hu`), nulla teszt-maradvány |
-
-### Commit SHA
-
-- `426f09b` -- F1 (Users least-privilege) + F2 (2 redirect) + F3 (Nagy Mónika staff)
-
-### Fennmaradó valódi P2/P3
-
-- Payload CLI upstream hibája (D3-ból) változatlanul fennáll.
-- `.visual-oracle-depth2/` a jelenlegi crawl pillanatképe, `.gitignore`-olt.
-- `Huszárné Mátés Mónika` rekord megmaradt (valós történeti adat), de nincs hozzá aktív referencia-oldal -- nem hiba, dokumentált állapot.
-
+Claude csak akkor adja vissza a labdát, ha:
+1. saturation depth/frontier és route-darabszám dokumentált;
+2. `FULL_SITE_ROUTE_MATRIX.md` elkészült;
+3. MISSING/BROKEN végső darabszámok rögzítve;
+4. javított page-family/root-cause problémák listája megvan;
+5. functional parity sweep tényleges futtatási bizonyítékokkal megvan;
+6. build + first-hop + depth-2 regresszió eredmény rögzítve;
+7. commit SHA-k rögzítve;
+8. fennmaradó P2/P3 vagy valódi külső blocker külön jelölve;
+9. `STATUS: READY_FOR_REVIEW`;
+10. `BALL: CHATGPT`.
 
 Claude a következő repo poll/fetch ciklusban felhasználói közvetítés nélkül folytatja.
