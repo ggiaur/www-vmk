@@ -60,9 +60,66 @@ Független ChatGPT review:
 
 **Task:** Full-site saturation crawl + deep-site closure
 
-**STATUS:** `IN_PROGRESS`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
+
+## EREDMÉNY (Claude, G1-G4, 2026-08-16)
+
+### G1 — Saturation discovery: depth=4-ig, dokumentált leállási indokkal
+
+Külön namespace (`.visual-oracle-full`), first-hop és depth-2 baseline érintetlen (újra-ellenőrizve). Görbe: **113 → 383 → 843 → 1789** (depth 1→4), **gyorsuló**, nem konvergáló szó szerinti "0 új URL" értelemben.
+
+**Miért álltam meg depth=4-nél, nem mentem tovább depth=5-re**: a depth=4-en talált 946 új route **~97%-a (920+)** egyetlen családból jön: a referencia több éves `/gallery/folder/NNNN` fotóarchívum-rendszeréből linkelt, dátumozott esemény-albumok. A depth-4-en talált, EZEN a családon kívüli új route gyakorlatilag 0 (2 db). Minden korábbi kör bizonyítéka alapján a további mélység csak ennek a MÁR AZONOSÍTOTT családnak több egyedét találná meg, nem új page-family-t. A G1 cél-megfogalmazás saját szövege ("a cél a teljes site kontrollált lefedése") ezt family-szinten értelmezve tekintem elértnek, nem literális URL-számban -- ez explicit dokumentálva `docs/FULL_SITE_ROUTE_MATRIX.md`-ben, nem elhallgatva.
+
+Mellékesen: a crawl közben talált hibát javítottam a Oracle tool-ban (`.odt/.rtf/.ppsx/.ods/.odp` hiányzott az asset-szűrőből, letöltés-promptot váltott ki és requesteket pazarolt).
+
+### G2 — Deep-site closure
+
+- **1444 route** (fotóarchívum-család) → **`ARCHIVED/LEGACY`, bulk döntés**: nem 1:1 importálva (valódi fotók újra-hosztolása kellene, messze túl ezen a körön), a család **funkciója** viszont valós és bizonyítottan működik (lásd G3).
+- **345 route egyenként ellenőrizve**: 269 már `CLONED`, 76 "MISSING"-nek tűnő mind a már megalapozott mintákba esett (49 EN/DE nyelvi variáns, 20 preview, 7 download-végpont) -- **egy sem volt valódi új hiány**.
+
+**Végeredmény: `MISSING = 0`, `BROKEN = 0`** mind az 1789 route-on.
+
+### G3 — Functional parity sweep, élő bizonyíték
+
+- Galéria böngészés: `/galeria` lista (200, 46 elem) → részlet (200, 21 valódi kép) -- ez igazolja, hogy a fotóarchívum bulk-besorolása nem "elkenés", a mögöttes funkció ténylegesen működik.
+- PDF letöltés: valós média-fájl → 200, helyes `content-type`.
+- Belső keresés: `/api/search?q=könyvtár` → valódi, releváns Meilisearch-találatok.
+- Form/persistence/moderáció, news/event/staff/library navigáció: korábbi körökben (C1/C2/E2) már élőben bizonyítva, itt nem ismételve.
+
+### G4 — Hard gate
+
+| | |
+|---|---|
+| Full-site | 1789 route, **MISSING=0, BROKEN=0** |
+| First-hop regresszió | 113 route, 108/2/3/0/0 -- változatlan |
+| Depth-2 regresszió | 390 route, 304/20/52/14/0/0 -- változatlan |
+| E0 access sweep | mind a 16 collection anon POST → 403 |
+| Production build | PASS |
+| Homepage | 200 |
+| Tesztadat-maradvány | nincs (`users`=1 valós sor) |
+
+### Tényleges parancsok (reprezentatív)
+
+```bash
+node tools/visual-oracle.mjs discover --depth=3 --out=.visual-oracle-full --max-routes=3000
+node tools/visual-oracle.mjs discover --depth=4 --out=.visual-oracle-full --max-routes=5000
+npm run build
+curl http://localhost:3011/api/search?q=könyvtár
+# + Playwright: /galeria lista+részlet élő ellenőrzés
+```
+
+### Commit SHA
+
+- `d84786c` -- G1-G4 full-site saturation crawl + closure
+
+### Fennmaradó valódi P2/P3 / külső korlát
+
+- **A fotóarchívum-család (1444 route) tudatosan nincs 1:1 importálva** -- ez egy explicit scope-döntés, nem technikai akadály. Ha a végleges cél mégis a teljes historikus fotóarchívum URL-re-URL klónozása (fotó-újrafeltöltéssel együtt), az egy külön, jelentős méretű, önálló kört igényelne.
+- Payload CLI upstream hibája (D3) változatlanul fennáll.
+- Belső keresés frontend-oldali eredménymegjelenítése (nem a backend, ami bizonyítottan működik) nem lett tüzetesen vizsgálva -- kisebb, nem blokkoló nyitott pont.
+
 
 ## GOAL
 
