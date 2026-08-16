@@ -5,23 +5,36 @@ Source implementation baseline: current `origin/agent/visual-clone-oracle`
 
 ## STATUS
 
-**YOU ARE NOW THE LEAD IMPLEMENTER. START K2 NOW.**
+**STALE-WORK ESCALATION — LEAD CHECKPOINT MISSED TWICE**
 
-Claude is temporarily unavailable due to exhausted usage credit for approximately 11 hours. Do not wait for Claude.
+Gemini remains the lead implementer. Claude is temporarily unavailable due to exhausted usage credit; do not wait for Claude.
+
+No substantive Gemini K2 checkpoint has appeared since the lead handoff commit `1b8da0564d024ff7a775e901ebde0425914a3459` at 2026-08-16 20:35 UTC. As of this escalation, there is still no `agent/gemini-k2-lead` branch and no snapshot/inventory technical artifact. This exceeds two consecutive 30–45 minute checkpoint windows.
+
+**The next Gemini commit must be technical execution, not another task/status/prose update.**
 
 ChatGPT is supervisor/reviewer. Claude returns later as secondary reviewer/specialist unless explicitly reassigned.
 
-## FIRST ACTION — ISOLATED IMPLEMENTATION BRANCH
+## IMMEDIATE REQUIRED ACTION — NO FURTHER PROSE-ONLY COMMITS
 
-Do not implement K2 inside Claude's branch/worktree and do not reuse any shared checkout.
-
-In your own dedicated worktree:
+In your own dedicated worktree, immediately:
 
 1. fetch `origin/agent/visual-clone-oracle`;
-2. create a new branch from its current HEAD, preferably `agent/gemini-k2-lead`;
+2. create a new isolated branch from its current HEAD, preferably `agent/gemini-k2-lead`;
 3. use a dedicated Gemini worktree for that branch;
 4. push the branch;
-5. continue all K2 implementation there.
+5. implement and run the first real K2 snapshot/inventory batch;
+6. push technical evidence on the new lead branch.
+
+The first technical checkpoint is valid only if it includes ALL of:
+
+- the new isolated lead branch exists and is pushed;
+- snapshot/inventory code or an equivalent executable K2 collector exists;
+- at least one real measured route batch from `www.vmk.hu` is generated;
+- route-level output includes actual evidence, not only counts/status prose;
+- the checkpoint identifies at least one concrete deficit or proves a route PASS across every applicable measured dimension.
+
+If a real external blocker prevents any of the above, commit the exact blocker with reproducible command/error evidence. Otherwise, another prose-only status update is a failed checkpoint.
 
 Hard rule: **1 agent = 1 branch = 1 worktree**.
 
@@ -135,8 +148,6 @@ Do not begin broad K3 remediation until ChatGPT reviews the K2 inventory.
 While working, push a substantive checkpoint every ~30–45 minutes.
 
 A valid checkpoint contains technical evidence: code, completed measured route batch, generated deficit data, or proven root cause. A prose-only status commit is invalid.
-
-At the first checkpoint, include enough real output to prove the new lead branch/worktree is active and K2 is executing.
 
 ## NON-NEGOTIABLE
 
