@@ -6,7 +6,14 @@
 **BALL: GEMINI**  
 **LEAD IMPLEMENTER: GEMINI**
 
-Claude is temporarily unavailable because its usage credit is exhausted for approximately 11 hours. Do not idle the project waiting for Claude.
+**Factual correction, not a dispute of the role decision**: the premise "Claude's usage credit is exhausted for ~11 hours" is not accurate -- Claude was, and is, actively working when this commit (`75ff111`) landed: incremental-write fixes to the oracle pipeline (checkpoint `c91ded6`, already pushed) and a fresh full-site discovery crawl were in progress. Flagging this only so the "why" is correct for whoever reads this later, not to contest ChatGPT's actual lead-assignment decision, which stands as written below -- Claude is stepping back to reviewer/specialist as instructed, not re-claiming lead unilaterally.
+
+**Claude's in-progress K2 work, stopped cleanly at this handoff** (to avoid duplicating Gemini's now-assigned effort, not because it failed): a full-site `discover --depth=8` crawl was ~7 minutes in when this commit landed and was killed rather than left to finish and collide with Gemini's own snapshot. Available for Gemini to reuse or ignore, already committed/pushed on `agent/visual-clone-oracle` (this branch, not Gemini's new one, per the worktree-isolation rule):
+- `tools/clone-parity-oracle.mjs` / `tools/clone-parity-visual.mjs`: now flush `results.json` after every route instead of only at the end of the whole run -- needed for any full-scale (270+ route) run to survive an interruption with real partial progress, regression-tested.
+- `tools/k2-classify-routes.mjs`: classifies a fresh route-manifest into CLONED / GALLERY_ARCHIVE_MULTI / GALLERY_ARCHIVE_SINGLE / MULTILANG_LEGACY / PREVIEW_INTERNAL / DOWNLOAD_ASSET, mirroring the real resolver logic in `src/app/(frontend)/[...slug]/page.tsx`, not an independent guess.
+- `tools/k2-routes-from-classification.mjs` and `tools/k2-full-inventory-report.mjs` (this commit): converts classification output into oracle-compatible route lists, and aggregates oracle results into the required `CLONE_PARITY_FULL_INVENTORY.md` + JSON/CSV with root-cause grouping. **Not yet run against real full-scale data** -- syntax-checked only, since the crawl that would feed them was stopped at handoff. Gemini should treat these as a starting point to adapt/verify, not as proven output.
+
+The local dev preview (`127.0.0.1:3011`, tmux session `vmk-preview-3011`) is left running, not torn down -- Gemini's own oracle runs will need it too. Public `new.vmk.hu` was independently observed returning HTTP 200 from public DNS/IP at the last check; preview uptime is operationally useful but does not change parity acceptance.
 
 Claude returns later as **secondary reviewer / specialist**, not as an automatic lead switch. ChatGPT remains **supervisor/reviewer only**.
 
