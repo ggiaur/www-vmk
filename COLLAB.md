@@ -1,205 +1,209 @@
-# COLLAB.md — www-vmk FINALIZATION protocol
+# COLLAB.md — www-vmk CLONE PARITY RECOVERY
 
-Ez a fájl a www-vmk projekt **egyetlen operatív koordinációs forrása**.
+Ez a fájl a www-vmk projekt egyetlen operatív koordinációs forrása.
 
-> **Alapszabály:** a felhasználó NEM közvetítő az AI-k között. GitHub commit/branch + ez a fájl jelenti az átadást.
+> Alapszabály: a felhasználó NEM közvetítő az AI-k között. GitHub commit/branch + ez a fájl jelenti az átadást.
 
 # 1. Üzemmód
 
-**FINALIZATION MODE: ON**
+**CLONE PARITY RECOVERY: ON**
 
-Cél: a jelenlegi release candidate készre vitele és lezárása. Nincs új feature, redesign, kozmetikai homepage-polírozás vagy végtelen új auditkör. Csak bizonyított release-blocker, regresszió vagy félrevezető teszt javítható.
+A cél nem pusztán működő modern VMK-oldal, hanem a jelenlegi `https://www.vmk.hu/` nyilvános magyar oldalának tartalmilag, médiában, linkekben, funkcióban és megjelenésben veszteségmentes modern klónja.
 
-# 2. Kötelező agent-izoláció — HARD RULE
+A korábbi „FINALIZATION / merge-readiness” prioritás FELFÜGGESZTVE addig, amíg a valódi clone-parity nincs bizonyítva.
 
-## 2.1 Egy agent = egy branch = egy worktree
+# 2. Korábbi parity baseline — VISSZAVONVA
 
-**TILOS** két aktív agentnek ugyanazt a Git working tree-t használni.
+A korábbi állítások:
+- FIRST-HOP VERIFIED / MISSING=0 / BROKEN=0;
+- Depth-2 VERIFIED;
+- Full-site H1-H4 VERIFIED;
 
-Kötelező szabály:
-- Claude saját worktree-ben dolgozik a `agent/visual-clone-oracle` branchhez kötve.
-- Gemini saját worktree-ben dolgozik a `agent/gemini-final-audit` branchhez kötve.
-- A közös `/srv/projects/www-vmk` checkoutban aktív párhuzamos munka alatt **TILOS** `git checkout`, `git switch`, szerkesztés vagy olyan művelet, amely más agent working tree-jét megváltoztatja.
-- Egy agent soha nem szerkesztheti, resetelheti, stash-elheti vagy branch-válthatja a másik agent worktree-jét.
-- Ha egy agent azt érzékeli, hogy shared checkoutban van vagy más agent branchváltása érinti a fájljait, **nem kér felhasználói döntést**: saját worktree-t hoz létre/használ és ott folytatja.
-- ChatGPT kizárólag GitHub API/connectoron keresztül dolgozik; nem vált branchet egyik lokális agent-worktree-ben sem.
+**NEM használhatók többé clone-parity acceptance evidence-ként.**
 
-### Ajánlott elrendezés
+Indok:
 
-```text
-/srv/projects/www-vmk                 # bootstrap/shared repo; no parallel editing
-/srv/projects/www-vmk-claude          # Claude worktree -> agent/visual-clone-oracle
-/srv/projects/www-vmk-gemini          # Gemini worktree -> agent/gemini-final-audit
-```
+1. `docs/FIRST_HOP_ROUTE_MATRIX.md` sok `CLONED` minősítést csak ilyen evidence alapján adott: HTTP 200 + hozzávetőleges szószám + van H1. Ez nem bizonyít azonos tartalmat, képeket, linkeket, dokumentumokat vagy layoutot.
+2. `docs/FULL_SITE_ROUTE_MATRIX.md` 1626 gallery/archive route jelentős részét ARCHIVED/LEGACY kategóriával `/galeria` fallbackre irányította, és explicit leírja, hogy a tényleges fotók 1:1 migrációja nem történt meg. Ez ellentétes a teljes klón céljával.
+3. A jelenlegi `tools/visual-oracle.mjs` contentSimilarity egyedi szavak halmazának Jaccard-indexe. Nem érzékeli megbízhatóan a sorrendet, ismétlődést, hiányzó bekezdéseket/szekciókat; a sitewide chrome szavai torzíthatják az eredményt.
+4. A jelenlegi snapshot képeknél/linkeknél csak darabszámot tárol (`imageCount`, `linkCount`), nem ellenőrzi, hogy ugyanazok a képek/linkek vannak-e jelen, működnek-e, illetve ugyanarra a tartalomra mutatnak-e.
+5. A Visual Oracle pixel/content gate nem volt kötelezően összekötve a route-mátrix `CLONED` klasszifikációval. Emiatt route-parity PASS és visual/content FAIL egyszerre is létezhetett.
 
-Más path megengedett, ha a worktree fizikailag és Git-szinten izolált. Claude jelenlegi `.claude/worktrees/j2-ci-fix` worktree-je elfogadható.
+Következmény: a jelenlegi branch **NEM release candidate** clone-parity szempontból, amíg az alábbi v2 audit nem fut le és a feltárt eltérések nincsenek lezárva.
 
-# 3. Szerepek
+# 3. Kötelező agent-izoláció
 
-## Claude — PRIMARY IMPLEMENTER / critical path
-- figyeli az `agent/visual-clone-oracle` branchet;
-- `BALL: CLAUDE` esetén felhasználói közvetítés nélkül dolgozik;
-- release-blockert implementál és bizonyít;
-- saját munkáját nem minősíti végleg VERIFIED-nek;
-- kész állapotnál commit + push + `STATUS: READY_FOR_REVIEW`, `BALL: CHATGPT`.
+**1 agent = 1 branch = 1 worktree.**
 
-## Gemini — INDEPENDENT AUDITOR
-- branch: `agent/gemini-final-audit`;
-- eredménye: `docs/GEMINI_FINAL_AUDIT.md`;
-- nem szerkeszti a primary branchet és nem váltja Claude worktree-jének branchét;
-- P0/P1/P2 release-blockert keres, új scope nélkül.
+- Claude: saját worktree, primary branch `agent/visual-clone-oracle`.
+- Gemini: saját worktree, audit branch `agent/gemini-final-audit` vagy külön új audit branch.
+- Shared `/srv/projects/www-vmk` checkoutban párhuzamos munka alatt tilos branch-váltás/szerkesztés.
+- ChatGPT csak GitHub API/connectoron keresztül koordinál/review-zik.
 
-Gemini audit `2d087c4`: **FINDINGS**, feldolgozva Claude J2 körében:
-- F-01 P1 CI orchestration;
-- F-02 P2 ContactMessages/NewsletterSubscribers direct REST create;
-- F-03 P2 author Media.create.
+# 4. Szerepek
 
-F-02/F-03 primary branchre portolva `4fdbcda` commitban, célzott élő ellenőrzéssel.
+## Claude — PRIMARY IMPLEMENTER
+- építi a parity mérőt és javítja a valódi eltéréseket;
+- nem minősíti saját munkáját végleg VERIFIED-nek;
+- csak evidence-del ad vissza.
 
-## ChatGPT — ACCEPTANCE / orchestration
-- `BALL: CHATGPT` esetén azonnal függetlenül ellenőrzi a GitHub diffet **és a tényleges GitHub Actions eredményt**;
-- lokális PASS állítás nem helyettesíti a remote CI evidence-et;
-- hard gate-et nem lazít;
-- review után GitHubon adja tovább a labdát;
+## Gemini — INDEPENDENT PARITY AUDITOR
+- Claude implementációjától független mintavételes/reference audit;
+- kifejezetten hamis pozitív PASS-okat, hiányzó média/link/tartalom hibákat keres;
+- nem lazítja a gate-eket.
+
+## ChatGPT — ORCHESTRATION / ACCEPTANCE
+- módszertant és gate-et definiál;
+- remote evidence-et ellenőriz;
+- hamis pozitív acceptance-et visszautasít;
 - `BALL: USER` csak valódi végső merge/launch döntéshez.
 
-# 4. VERIFIED baseline
+# 5. Clone Parity Oracle v2 — KÖTELEZŐ HARD GATE
 
-- FIRST-HOP: **VERIFIED** — `MISSING=0`, `BROKEN=0`
-- ADMIN/Payload: **VERIFIED**
-- Depth-2: **VERIFIED** — `MISSING=0`, `BROKEN=0`
-- Full-site H1-H4: **VERIFIED** — `09d3445c7a4e967b2c386061479d7396bde5a950`
-- I1 RC hardening: **VERIFIED** — `e5b3fef23289ab88350a9744546376e3a102a9e3`
-- `push:false`: kötelező és változatlan
-- PR #1: Draft; végső merge külön döntés.
+A v2-nek referencia és klón oldalpárt kell összehasonlítania. Egy oldal csak akkor lehet `PARITY_PASS`, ha az alábbi dimenziók mind megfelelőek.
 
-# 5. J2 REVIEW — CHATGPT DECISION
+## 5.1 URL / route
+- referencia HTTP/final URL rögzítve;
+- klón HTTP/final URL rögzítve;
+- kontrollálatlan 404/5xx = FAIL;
+- redirect csak akkor PASS, ha:
+  - a referencia is azonos/canonical módon redirectel, VAGY
+  - a céloldal bizonyítottan ugyanazt a tartalmat/funkciót reprezentálja;
+- generikus listaoldalra redirect nem helyettesíthet egy konkrét referencia detail/gallery oldalt.
 
-Claude J2 handoff head: `0f30affb64648397a6aa1d29fdc8ee6a70bf543c`.
+## 5.2 Szöveg / tartalom
+A globális site chrome (header/nav/sidebar/footer/cookie) és az oldal fő tartalma külön kezelendő.
 
-**REVIEW RESULT: CHANGES_REQUESTED**
+Kötelező:
+- `main`/tartalmi blokk normalizált, sorrendtartó szövegének összevetése;
+- reference-text coverage mérés: a referencia érdemi szövegének legalább 99%-a legyen jelen vagy explicit, review-zott transzformációval megfeleltetve;
+- címek/h1-h3 sorrend és szöveg összevetése;
+- bekezdések, listák, táblák és fontos metaadatok (dátum, helyszín, kontakt, szerző stb.) jelenléte;
+- puszta word-set/Jaccard nem használható acceptance gate-ként.
+
+## 5.3 Képek / média
+Nem elég a darabszám.
+
+Kötelező oldalanként:
+- tartalmi `img`, `picture/srcset`, releváns CSS background image és galériaelem inventory;
+- reference és clone médiák megfeleltetése vizuális hash/perceptuális hash vagy más tartalom-alapú összevetéssel, mert a clone rehostolhatja a fájlokat;
+- broken image (`naturalWidth=0`, 4xx/5xx asset) = FAIL;
+- referencia tartalmi képfedettség cél: 100%, kivéve explicit bizonyított sitewide/dekoratív kivétel;
+- galéria detailnél az album képeinek 1:1 tartalmi lefedése kötelező; `/galeria` fallback önmagában nem PASS.
+
+## 5.4 Linkek / dokumentumok
+Nem elég a linkCount.
+
+Kötelező:
+- `main` tartalmi linkek listája anchor text + href + típus szerint;
+- belső linkek canonical/routeOverride normalizálása után semantic set összevetés;
+- külső linkek, mailto, tel, PDF/download linkek jelenlétének összevetése;
+- minden clone belső/download link tényleges HTTP ellenőrzése;
+- broken link = FAIL;
+- referencia érdemi link coverage cél: 100%, kivéve explicit review-zott legacy/invalid reference link.
+
+## 5.5 Struktúra
+Kötelező összevetni:
+- headings;
+- paragraph/list/table count és kulcstartalom;
+- formok és mezők;
+- gallery/card/list elemek;
+- dokumentum/download blokkok;
+- kapcsolati/nyitvatartási adatok.
+
+## 5.6 Funkció
+Funkcionális oldalt nem lehet statikus 200/H1 alapján PASS-nak minősíteni.
+
+Valódi E2E szükséges ahol releváns:
+- search;
+- kapcsolat;
+- hírlevél;
+- teremfoglalás;
+- esemény/registration;
+- wishbasket;
+- galéria böngészés/detail;
+- admin create/edit/publish -> public frontend;
+- dokumentum/PDF letöltés.
+
+## 5.7 Vizuális parity
+Desktop 1440 és mobile 390 kötelező reprezentatív oldalakra/page-family-kre.
+
+- screenshot reference vs clone ugyanabban a browser/runtime-ban;
+- pixel/coarse diff report kötelező;
+- eltérő magasságot tilos úgy normalizálni, hogy a tartalmi hiány vizuálisan elrejtődjön;
+- a reportnak explicit meg kell mutatnia reference/local képet és top diff régiókat;
+- magas vizuális diff nem söpörhető félre azért, mert route/content smoke zöld.
+
+# 6. K1 — Oracle v2 megépítése és FALSE-POSITIVE canary audit
 
 **STATUS: IN_PROGRESS**
 
 **BALL: CLAUDE**
 
-## 5.1 J2 CI orchestration: részben jó, de remote gate NEM zárt
+Claude következő feladata:
 
-ChatGPT a GitHub API-n ellenőrizte a tényleges PR workflow-t:
+1. Ne folytassa a merge-readiness/final CI lezárást fő prioritásként. A CI-fix megőrzendő, de jelenleg másodlagos.
+2. Implementálja a Clone Parity Oracle v2-t a fenti dimenziókkal. Lehet a jelenlegi Oracle evolúciója vagy külön tool, de a régi route-mátrix klasszifikáció nem maradhat acceptance source.
+3. Készítsen gépi JSON + emberileg olvasható HTML reportot, route-onként külön dimenzió-státuszokkal: URL, TEXT, MEDIA, LINKS, STRUCTURE, FUNCTION, VISUAL.
+4. Első canary futás legalább 20, tudatosan vegyes referencia oldalon:
+   - `/`;
+   - legalább 5 aktuális news/event detail;
+   - legalább 5 statikus/intézményi oldal;
+   - legalább 3 branch/department oldal;
+   - `/gallery` + legalább 3 konkrét referencia galéria/detail/archive route;
+   - `/wishbasket`;
+   - legalább 1 dokumentum/PDF-heavy oldal.
+5. A canary célja NEM az, hogy PASS legyen, hanem hogy feltárja a hamis pozitív korábbi `CLONED` minősítéseket.
+6. Készítsen `docs/CLONE_PARITY_GAP_REPORT.md` összesítést:
+   - hiányzó/eltérő szöveg;
+   - hiányzó/eltérő képek;
+   - hibás/hiányzó linkek és dokumentumok;
+   - strukturális/funkcionális eltérés;
+   - vizuális eltérés;
+   - page-family/root-cause szerinti csoportosítás.
+7. A 1626 korábbi gallery/archive family-t ne tekintse automatikusan elfogadott ARCHIVED/LEGACY-nak. Kvantifikálja, melyiknek van tényleges, 1:1 importálandó tartalma/médiája és melyik referencia-oldal valóban üres/technikai/érvénytelen.
+8. Ne gyártson route-onként kézi hackeket: page-family import/resolver/media migration root-cause megoldás kell.
 
-- Workflow: `VMK CI/CD Pipeline`
-- Run: **#103**, id `31953105492`
-- Head: `0f30affb...`
-- Lint & Type Check: **PASS**
-- Vitest Unit & RSC: **PASS**
-- Playwright E2E & WCAG job: **FAIL**
+## K1 acceptance
 
-A korábbi `ERR_CONNECTION_REFUSED` orchestration hiba valóban megszűnt addig a pontig, hogy Postgres/MinIO/Meilisearch feláll és a séma bootstrap lefut. Viszont a job a **Build application** lépésben bukik, Playwrightig el sem jut.
+K1 akkor adható review-ra, ha:
+- Oracle v2 konkrétan képes kimutatni olyan eltéréseket, amelyeket a régi `CLONED` logika átengedett;
+- legalább 20-route canary riport elkészült;
+- minden dimenzió külön mérhető;
+- hiányzó képek és hibás linkek ténylegesen megjelennek a riportban;
+- nincs gate-lazítás azért, hogy több PASS legyen.
 
-### Bizonyított remote root cause
-
-GitHub Actions log:
-
-```text
-npm run build
-Error: Cannot find module 'tailwindcss'
-Build failed because of webpack errors
-```
-
-A `package.json` szerint `tailwindcss` **devDependency**. A workflow ugyanakkor globálisan `NODE_ENV=production` mellett telepít/buildel, ezért a CI telepítésből hiányzik a build-time dependency.
-
-### J3.1 feladat — CI dependency/build javítás
-
-1. A buildhez szükséges dev dependency-k kerüljenek fel determinisztikusan CI-ben.
-2. Preferált irány: lockfile esetén `npm ci --include=dev`, és `NODE_ENV=production` csak ott legyen alkalmazva, ahol runtime/build szemantikailag indokolt; ne okozza a build toolchain kihagyását.
-3. Ne mozgasd önkényesen a build toolchaint production dependencies közé csak azért, hogy a workflow zöld legyen, ha tisztább CI-install megoldás van.
-4. Push után **várd meg a tényleges GitHub Actions run-t**.
-5. Lokális PASS nem elég. A remote `Playwright E2E & WCAG` jobnak ténylegesen el kell jutnia a tesztekig.
-
-# 6. WCAG döntés — nem user blocker
-
-Claude helyesen bizonyította, hogy a referencia `#159097` teal fehér háttéren body/link szövegként kb. **3.84:1**, ezért WCAG AA normál szövegre nem megfelelő.
-
-ChatGPT döntés a finalization scope-on belül:
-
-- **NEM hagyjuk dokumentált kivételként.**
-- A referencia teal megmarad brand/accent/border/non-text használatban.
-- Body/link szöveghez külön, vizuálisan közeli, **AA-kontrasztos text-link token** használható.
-- Ez hozzáférhetőségi javítás, nem redesign.
-
-### J3.2 gate
-
-A meglévő Playwright + axe WCAG 2.2 AA suite a lefedett publikus route-okon **0 nem-waivelt axe violationnel** fusson. Nem szabad skip/disable/threshold-lazítással zöldíteni.
-
-# 7. Tesztminőség — HARD ACCEPTANCE RULE
-
-A projekt korábbi történetében sok zöld ellenőrzés nem bizonyított felhasználói értéket. Ezért a tesztek száma és a `PASS` önmagában **nem acceptance evidence**.
-
-## 7.1 Evidence osztályok
-
-### A — USER-VALUE E2E / acceptance evidence
-Csak akkor számít hard gate bizonyítéknak, ha valódi felhasználói vagy admin workflow-t hajt végre és a tényleges üzleti mellékhatást is ellenőrzi.
-
-Példák:
-- kapcsolat űrlap → siker → rekord ténylegesen létrejön / adminból kezelhető;
-- hírlevél → tényleges perzisztencia;
-- teremfoglalás / RSVP / wishbasket → valódi validáció + perzisztencia;
-- admin create/edit/publish → publikus frontend ténylegesen változik;
-- author médiafeltöltés → valódi upload/doc létrejön;
-- anonim/tiltott szerepkör → valóban 403/deny és nincs adatváltozás;
-- route parity → nem csak HTTP 200, hanem megfelelő cél/tartalom/funkció.
-
-### B — SUPPORTING TEST
-Typecheck, lint, unit, render smoke, HTTP 200 stb. hasznos, de önmagában **nem bizonyítja, hogy a termék működik**.
-
-### C — MISLEADING / INVALID
-Olyan teszt, amely zöld lehet úgy, hogy a felhasználói funkció halott, vagy csak implementációs részletet/saját mockot ellenőriz. Ilyen tesztet nem szabad acceptance evidence-ként idézni; javítani, átminősíteni vagy eltávolítani kell.
-
-## 7.2 J3.3 — Final test-effectiveness audit
-
-Claude a végső átadás előtt:
-1. listázza a jelenlegi e2e/acceptance teszteket;
-2. A/B/C osztályba sorolja őket rövid indoklással;
-3. minden C tesztet javít/eltávolít, vagy egyértelműen supporting kategóriára minősít;
-4. legalább a release-kritikus workflow-khoz legyen A-osztályú evidence;
-5. ne növelje mesterségesen a tesztszámot; **kevesebb, valódi E2E jobb, mint sok látszatteszt**.
-
-# 8. FINAL MERGE-READINESS GATE
-
-Csak akkor adható `BALL: USER`, ha mind igaz:
-
-1. GitHub Actions remote:
-   - Lint/Type Check GREEN
-   - Unit/RSC GREEN
-   - Playwright E2E/WCAG GREEN
-2. Playwright ténylegesen elindítja az appot és futtatja a teszteket; nincs infra-skip.
-3. WCAG 2.2 AA covered routes: 0 nem-waivelt axe violation.
-4. Production build PASS ugyanabban a CI útvonalban.
-5. first-hop: `MISSING=0`, `BROKEN=0`.
-6. depth-2: `MISSING=0`, `BROKEN=0`.
-7. full-site resolver regresszió nincs.
-8. security regresszió nincs; Gemini F-01/F-02/F-03 disposition bizonyított.
-9. `push:false` változatlan.
-10. nincs új P0/P1.
-11. A-osztályú user-value E2E evidence lefedi a release-kritikus workflow-kat.
-12. PR #1 mergeable és Draft.
-
-# 9. CLAUDE KÖVETKEZŐ ÁTADÁSA
-
-Claude csak akkor adja vissza:
+Átadás:
 
 ```text
 STATUS: READY_FOR_REVIEW
 BALL: CHATGPT
 ```
 
-és rögzítse:
-- fix commit SHA-k;
-- tényleges GitHub Actions run id + minden releváns job eredménye;
-- WCAG végső eredmény;
-- A/B/C test-effectiveness audit;
-- release-kritikus A-osztályú E2E bizonyítékok;
-- build/parity/security regresszió eredmények;
-- PR mergeability.
+# 7. K2–K4 — utána következő lezárási terv
 
-Ha a remote CI piros, a labda marad Claude-nál; nem kell felhasználói közvetítés.
+## K2 — teljes referencia inventory
+- saturation crawl + page-family inventory;
+- text/media/link/document/function deficit kvantifikálása;
+- nincs több „MISSING=0” csak HTTP státusz alapján.
+
+## K3 — root-cause parity closure
+Prioritás:
+1. current first-hop;
+2. current depth-2;
+3. aktuális news/events/static pages;
+4. gallery/media/document családok;
+5. legacy/archive, ahol a referencián tényleges tartalom van.
+
+## K4 — final acceptance
+Csak akkor:
+- content parity bizonyított;
+- media parity bizonyított;
+- link/document parity bizonyított;
+- funkciók E2E zöldek;
+- vizuális parity page-family szinten elfogadott;
+- GitHub CI zöld;
+- security/WCAG gate zöld;
+- PR mergeable.
+
+Ekkor és csak ekkor lehet `BALL: USER` a merge/launch döntéshez.
