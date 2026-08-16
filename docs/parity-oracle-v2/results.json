@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T18:15:36.008Z",
+  "generatedAt": "2026-08-16T18:27:45.833Z",
   "refBase": "https://www.vmk.hu",
   "cloneBase": "http://localhost:3011",
   "results": [
@@ -197,15 +197,40 @@
           "lists": 0,
           "tables": 1,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs",
+          "lists"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "FAIL",
+          "diffPct": 51.9,
+          "refHeight": 5344,
+          "cloneHeight": 5133,
+          "heightDeltaPct": 3.95,
+          "refImage": "screenshots/home-desktop-ref.png",
+          "cloneImage": "screenshots/home-desktop-clone.png",
+          "diffImage": "screenshots/home-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 60,
+          "refHeight": 14481,
+          "cloneHeight": 12840,
+          "heightDeltaPct": 11.33,
+          "refImage": "screenshots/home-mobile-ref.png",
+          "cloneImage": "screenshots/home-mobile-clone.png",
+          "diffImage": "screenshots/home-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -312,15 +337,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "FAIL",
+          "diffPct": 44.9,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/hirek_strandkonyvtar-desktop-ref.png",
+          "cloneImage": "screenshots/hirek_strandkonyvtar-desktop-clone.png",
+          "diffImage": "screenshots/hirek_strandkonyvtar-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 58.27,
+          "refHeight": 8450,
+          "cloneHeight": 6344,
+          "heightDeltaPct": 24.92,
+          "refImage": "screenshots/hirek_strandkonyvtar-mobile-ref.png",
+          "cloneImage": "screenshots/hirek_strandkonyvtar-mobile-clone.png",
+          "diffImage": "screenshots/hirek_strandkonyvtar-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -427,15 +476,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 36.22,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/hirek_20260824_megvaltozott_nyitvatartas_zene_ped-desktop-ref.png",
+          "cloneImage": "screenshots/hirek_20260824_megvaltozott_nyitvatartas_zene_ped-desktop-clone.png",
+          "diffImage": "screenshots/hirek_20260824_megvaltozott_nyitvatartas_zene_ped-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 58.01,
+          "refHeight": 7931,
+          "cloneHeight": 6396,
+          "heightDeltaPct": 19.35,
+          "refImage": "screenshots/hirek_20260824_megvaltozott_nyitvatartas_zene_ped-mobile-ref.png",
+          "cloneImage": "screenshots/hirek_20260824_megvaltozott_nyitvatartas_zene_ped-mobile-clone.png",
+          "diffImage": "screenshots/hirek_20260824_megvaltozott_nyitvatartas_zene_ped-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -618,15 +691,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "FAIL",
+          "diffPct": 41.04,
+          "refHeight": 9952,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 52.34,
+          "refImage": "screenshots/hirek_csaladi-olvasasmania-2026-desktop-ref.png",
+          "cloneImage": "screenshots/hirek_csaladi-olvasasmania-2026-desktop-clone.png",
+          "diffImage": "screenshots/hirek_csaladi-olvasasmania-2026-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 53.56,
+          "refHeight": 12053,
+          "cloneHeight": 6656,
+          "heightDeltaPct": 44.78,
+          "refImage": "screenshots/hirek_csaladi-olvasasmania-2026-mobile-ref.png",
+          "cloneImage": "screenshots/hirek_csaladi-olvasasmania-2026-mobile-clone.png",
+          "diffImage": "screenshots/hirek_csaladi-olvasasmania-2026-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -738,15 +835,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 33.01,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/hirek_20260602_tarsasjatek_kolcsonzes-desktop-ref.png",
+          "cloneImage": "screenshots/hirek_20260602_tarsasjatek_kolcsonzes-desktop-clone.png",
+          "diffImage": "screenshots/hirek_20260602_tarsasjatek_kolcsonzes-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 56.21,
+          "refHeight": 7984,
+          "cloneHeight": 6318,
+          "heightDeltaPct": 20.87,
+          "refImage": "screenshots/hirek_20260602_tarsasjatek_kolcsonzes-mobile-ref.png",
+          "cloneImage": "screenshots/hirek_20260602_tarsasjatek_kolcsonzes-mobile-clone.png",
+          "diffImage": "screenshots/hirek_20260602_tarsasjatek_kolcsonzes-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -853,15 +974,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 27.6,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/hirek_202608_spiro-80-kiallitas-szena-desktop-ref.png",
+          "cloneImage": "screenshots/hirek_202608_spiro-80-kiallitas-szena-desktop-clone.png",
+          "diffImage": "screenshots/hirek_202608_spiro-80-kiallitas-szena-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 54.62,
+          "refHeight": 7855,
+          "cloneHeight": 6651,
+          "heightDeltaPct": 15.33,
+          "refImage": "screenshots/hirek_202608_spiro-80-kiallitas-szena-mobile-ref.png",
+          "cloneImage": "screenshots/hirek_202608_spiro-80-kiallitas-szena-mobile-clone.png",
+          "diffImage": "screenshots/hirek_202608_spiro-80-kiallitas-szena-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -968,15 +1113,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 32.56,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/esemenyek_a-jaki-templomok-es-temetoik-2026-08-19-desktop-ref.png",
+          "cloneImage": "screenshots/esemenyek_a-jaki-templomok-es-temetoik-2026-08-19-desktop-clone.png",
+          "diffImage": "screenshots/esemenyek_a-jaki-templomok-es-temetoik-2026-08-19-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 56.4,
+          "refHeight": 7951,
+          "cloneHeight": 6109,
+          "heightDeltaPct": 23.17,
+          "refImage": "screenshots/esemenyek_a-jaki-templomok-es-temetoik-2026-08-19-mobile-ref.png",
+          "cloneImage": "screenshots/esemenyek_a-jaki-templomok-es-temetoik-2026-08-19-mobile-clone.png",
+          "diffImage": "screenshots/esemenyek_a-jaki-templomok-es-temetoik-2026-08-19-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -1083,15 +1252,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings",
+          "paragraphs"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 30.66,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/esemenyek_2026_08_12_netrevalok-desktop-ref.png",
+          "cloneImage": "screenshots/esemenyek_2026_08_12_netrevalok-desktop-clone.png",
+          "diffImage": "screenshots/esemenyek_2026_08_12_netrevalok-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 56.25,
+          "refHeight": 7855,
+          "cloneHeight": 6014,
+          "heightDeltaPct": 23.44,
+          "refImage": "screenshots/esemenyek_2026_08_12_netrevalok-mobile-ref.png",
+          "cloneImage": "screenshots/esemenyek_2026_08_12_netrevalok-mobile-clone.png",
+          "diffImage": "screenshots/esemenyek_2026_08_12_netrevalok-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -1151,15 +1344,36 @@
           "lists": 1,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [],
+        "status": "PASS"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 22.34,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/konyvtarunkrol-desktop-ref.png",
+          "cloneImage": "screenshots/konyvtarunkrol-desktop-clone.png",
+          "diffImage": "screenshots/konyvtarunkrol-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 47.65,
+          "refHeight": 5875,
+          "cloneHeight": 6059,
+          "heightDeltaPct": 3.04,
+          "refImage": "screenshots/konyvtarunkrol-mobile-ref.png",
+          "cloneImage": "screenshots/konyvtarunkrol-mobile-clone.png",
+          "diffImage": "screenshots/konyvtarunkrol-mobile-diff.png"
+        }
       },
       "overall": "PARITY_PASS"
     },
@@ -1456,15 +1670,36 @@
           "lists": 0,
           "tables": 1,
           "forms": 0
-        }
+        },
+        "deficits": [],
+        "status": "PASS"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 23.36,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/dokumentumok-desktop-ref.png",
+          "cloneImage": "screenshots/dokumentumok-desktop-clone.png",
+          "diffImage": "screenshots/dokumentumok-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 43.08,
+          "refHeight": 7126,
+          "cloneHeight": 8584,
+          "heightDeltaPct": 16.99,
+          "refImage": "screenshots/dokumentumok-mobile-ref.png",
+          "cloneImage": "screenshots/dokumentumok-mobile-clone.png",
+          "diffImage": "screenshots/dokumentumok-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2269,15 +2504,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "forms"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 26.76,
+          "refHeight": 13227,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 64.14,
+          "refImage": "screenshots/munkatarsak-desktop-ref.png",
+          "cloneImage": "screenshots/munkatarsak-desktop-clone.png",
+          "diffImage": "screenshots/munkatarsak-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 41.05,
+          "refHeight": 19387,
+          "cloneHeight": 13805,
+          "heightDeltaPct": 28.79,
+          "refImage": "screenshots/munkatarsak-mobile-ref.png",
+          "cloneImage": "screenshots/munkatarsak-mobile-clone.png",
+          "diffImage": "screenshots/munkatarsak-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2343,53 +2601,187 @@
           "lists": 0,
           "tables": 2,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "paragraphs"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 23.72,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/nyitvatartas-desktop-ref.png",
+          "cloneImage": "screenshots/nyitvatartas-desktop-clone.png",
+          "diffImage": "screenshots/nyitvatartas-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 55.34,
+          "refHeight": 7117,
+          "cloneHeight": 6412,
+          "heightDeltaPct": 9.91,
+          "refImage": "screenshots/nyitvatartas-mobile-ref.png",
+          "cloneImage": "screenshots/nyitvatartas-mobile-clone.png",
+          "diffImage": "screenshots/nyitvatartas-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
     {
       "path": "/kapcsolat",
-      "refUrl": "https://www.vmk.hu/kapcsolat",
+      "refUrl": "https://www.vmk.hu/elerhetosegeink",
       "cloneUrl": "http://localhost:3011/kapcsolat",
       "family": "static-institutional",
-      "refStatus": 404,
-      "refFinalUrl": "https://www.vmk.hu/kapcsolat",
+      "refStatus": 200,
+      "refFinalUrl": "https://www.vmk.hu/elerhetosegeink",
       "cloneStatus": 200,
       "cloneFinalUrl": "http://localhost:3011/kapcsolat",
       "urlDimension": {
-        "status": "FAIL",
+        "status": "PASS",
         "cloneStatus": 200,
         "cloneRedirected": false,
         "cloneRedirectTarget": null
       },
       "text": {
-        "status": "NOT_EVALUATED",
-        "reason": "page load failed"
+        "coveragePct": 0,
+        "matched": 0,
+        "total": 8,
+        "missingSample": [
+          "Elérhetőségeink Kiemelt elérhetőségeink Igazgató Horváth Adrienn igazgato@vmk.hu Szakmai igazgatóhelyettes Kálmánné Heim Ágnes kalmanne.agi@vmk.hu Titkársági és üzemeltetési osztályvezető Fülöp Andrea fulop.andrea@vmk.hu Olvasószolgálati osztályvezető Darvas Veronika Judit darvas.veronika@vmk.hu Gyűjteményszervezési osztályvezető Kaltenecker Klára kaltenecker.klara@vmk.hu Módszertani és településellátási osztályvezető Iszak Ferencné iszak.ferencne@vmk.hu Informatikai és tartalomszolgáltató osztályvezető Belinszki János belinszki.janos@vmk.hu Központi Könyvtár elérhetőségei Központi telefonszámok (22) 312-684 (22) 312-845 Igazgató (22) 513-933 horvath.adrienn@vmk.hu Szakmai igazgatóhelyettes (22) 340-698 kalmanne.agi@vmk.hu Állományalakító, feldolgozó és metaadatoló csoport (22) 340-698 kaltenecker.klara@vmk.hu Helyismereti, digitalizálási és webarchiválási csoport (22) 312-684 helyismeret@vmk.hu Informatikai és tartalomszolgáltató osztály (22) 385-241 tartalom@vmk.hu Módszertani és településellátási osztály (22) 311-634 modszertan@vmk.hu Központi olvasószolgálat (70) 412-1984 (22) 340-699 kolcsonzo@vmk.hu Gyermek és kamasz tér (22) 513-931 gyerek@vmk.hu Pedagógiai Szakkönyvtár (22) 310-589 ped@vmk.hu Olvasóterem (22) 312-845 ot@vmk.hu Zenei és okostermi részleg (22) 513-932; (70) 732-8960 zene@vmk.hu Kötészet (22) 312-684 koteszet@vmk.hu Titkársági és üzemeltetési osztály (22) 513-933 titkarsag@vmk.hu Könyvtárközi kölcsönzés könyvtáraknak (22) 340-699 kkozi@vmk.hu Könyvtárközi kölcsönzés olvasóknak -Papné Gál Gyöngyi,Török Gabriella (22) 340-699 kkozi@vmk.hu Tagkönyvtárak elérhetőségei Budai Úti Tagkönyvtár (22) 329-436 budai@vmk.hu Mészöly Géza Utcai Tagkönyvtár (22) 315-603 meszoly@vmk.hu Széna Téri Tagkönyvtár (22) 313-045 szena@vmk.hu Tolnai Utcai Tagkönyvtár (22) 329-437 tolnai@vmk.hu Zsolt Utcai Tagkönyvtár (22) 329-438 zsolt@vmk.hu Postacímek Postafiók 8000 Székesfehérvár, Pf.: 65.",
+          "Központi Könyvtár 8000 Székesfehérvár, Bartók Béla tér 1.",
+          "Állományalakító, feldolgozó és metaadatoló csoport 8000 Székesfehérvár, Tolnai utca 41.",
+          "Budai Úti Tagkönyvtár 8000 Székesfehérvár, Budai út 44-46.",
+          "Mészöly Géza Utcai Tagkönyvtár 8000 Székesfehérvár, Mészöly Géza utca 1."
+        ],
+        "status": "FAIL"
       },
       "media": {
-        "status": "NOT_EVALUATED"
+        "refCount": 0,
+        "cloneCount": 0,
+        "countDeficit": 0,
+        "altOverlap": 1,
+        "brokenImageCount": 0,
+        "brokenImageSample": [],
+        "status": "PASS"
       },
       "links": {
-        "status": "NOT_EVALUATED"
+        "refInternalCount": 8,
+        "refExternalCount": 0,
+        "missingInternal": [
+          {
+            "href": "https://www.vmk.hu/horvath-adrienn",
+            "text": "Horváth Adrienn"
+          },
+          {
+            "href": "https://www.vmk.hu/kalmanne-heim-agnes",
+            "text": "Kálmánné Heim Ágnes"
+          },
+          {
+            "href": "https://www.vmk.hu/fulop-andrea",
+            "text": "Fülöp Andrea"
+          },
+          {
+            "href": "https://www.vmk.hu/darvas-veronika-judit",
+            "text": "Darvas Veronika Judit"
+          },
+          {
+            "href": "https://www.vmk.hu/kaltenecker-klara",
+            "text": "Kaltenecker Klára"
+          },
+          {
+            "href": "https://www.vmk.hu/iszak-ferencne",
+            "text": "Iszak Ferencné"
+          },
+          {
+            "href": "https://www.vmk.hu/belinszki-janos",
+            "text": "Belinszki János"
+          }
+        ],
+        "missingExternal": [],
+        "internalCoverage": 0.125,
+        "externalCoverage": 1,
+        "brokenLinkCount": 15,
+        "brokenLinkSample": [
+          {
+            "href": "mailto:igazgato@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:kalmanne.agi@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:kaltenecker.klara@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:izsak.ferencne@vmk.hu",
+            "status": "ERR"
+          },
+          {
+            "href": "mailto:bebreczki.janos@vmk.hu",
+            "status": "ERR"
+          }
+        ],
+        "status": "FAIL"
       },
       "structure": {
-        "status": "NOT_EVALUATED"
+        "ref": {
+          "headings": 1,
+          "paragraphs": 104,
+          "lists": 0,
+          "tables": 0,
+          "forms": 0
+        },
+        "clone": {
+          "headings": 6,
+          "paragraphs": 0,
+          "lists": 0,
+          "tables": 4,
+          "forms": 1
+        },
+        "deficits": [
+          "paragraphs"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "PASS",
+        "evidence": {
+          "marker": "K1-FUNC-TEST-1786904708287"
+        }
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "PARTIAL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 23.53,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/kapcsolat-desktop-ref.png",
+          "cloneImage": "screenshots/kapcsolat-desktop-clone.png",
+          "diffImage": "screenshots/kapcsolat-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "PARTIAL",
+          "diffPct": 31.37,
+          "refHeight": 10756,
+          "cloneHeight": 9194,
+          "heightDeltaPct": 14.52,
+          "refImage": "screenshots/kapcsolat-mobile-ref.png",
+          "cloneImage": "screenshots/kapcsolat-mobile-clone.png",
+          "diffImage": "screenshots/kapcsolat-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2470,15 +2862,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "paragraphs"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 25.14,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/reszlegek_felnott-kolcsonzo-desktop-ref.png",
+          "cloneImage": "screenshots/reszlegek_felnott-kolcsonzo-desktop-clone.png",
+          "diffImage": "screenshots/reszlegek_felnott-kolcsonzo-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 56.31,
+          "refHeight": 7373,
+          "cloneHeight": 5656,
+          "heightDeltaPct": 23.29,
+          "refImage": "screenshots/reszlegek_felnott-kolcsonzo-mobile-ref.png",
+          "cloneImage": "screenshots/reszlegek_felnott-kolcsonzo-mobile-clone.png",
+          "diffImage": "screenshots/reszlegek_felnott-kolcsonzo-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2544,15 +2959,39 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "paragraphs",
+          "lists"
+        ],
+        "status": "FAIL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 24.81,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/reszlegek_olvasoterem-desktop-ref.png",
+          "cloneImage": "screenshots/reszlegek_olvasoterem-desktop-clone.png",
+          "diffImage": "screenshots/reszlegek_olvasoterem-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 58.93,
+          "refHeight": 6497,
+          "cloneHeight": 5656,
+          "heightDeltaPct": 12.94,
+          "refImage": "screenshots/reszlegek_olvasoterem-mobile-ref.png",
+          "cloneImage": "screenshots/reszlegek_olvasoterem-mobile-clone.png",
+          "diffImage": "screenshots/reszlegek_olvasoterem-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2644,15 +3083,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "paragraphs"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 27.38,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/tagkonyvtarak_meszoly-geza-desktop-ref.png",
+          "cloneImage": "screenshots/tagkonyvtarak_meszoly-geza-desktop-clone.png",
+          "diffImage": "screenshots/tagkonyvtarak_meszoly-geza-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 60.37,
+          "refHeight": 7477,
+          "cloneHeight": 5741,
+          "heightDeltaPct": 23.22,
+          "refImage": "screenshots/tagkonyvtarak_meszoly-geza-mobile-ref.png",
+          "cloneImage": "screenshots/tagkonyvtarak_meszoly-geza-mobile-clone.png",
+          "diffImage": "screenshots/tagkonyvtarak_meszoly-geza-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2765,15 +3227,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "FAIL",
+          "diffPct": 49.19,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/gallery-desktop-ref.png",
+          "cloneImage": "screenshots/gallery-desktop-clone.png",
+          "diffImage": "screenshots/gallery-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 51.26,
+          "refHeight": 8763,
+          "cloneHeight": 14875,
+          "heightDeltaPct": 41.09,
+          "refImage": "screenshots/gallery-mobile-ref.png",
+          "cloneImage": "screenshots/gallery-mobile-clone.png",
+          "diffImage": "screenshots/gallery-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2886,15 +3371,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "FAIL",
+          "diffPct": 49.19,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/galeria-desktop-ref.png",
+          "cloneImage": "screenshots/galeria-desktop-clone.png",
+          "diffImage": "screenshots/galeria-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 51.26,
+          "refHeight": 8763,
+          "cloneHeight": 14875,
+          "heightDeltaPct": 41.09,
+          "refImage": "screenshots/galeria-mobile-ref.png",
+          "cloneImage": "screenshots/galeria-mobile-clone.png",
+          "diffImage": "screenshots/galeria-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -2985,15 +3493,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 26.4,
+          "refHeight": 4986,
+          "cloneHeight": 900,
+          "heightDeltaPct": 81.95,
+          "refImage": "screenshots/galeria_vizcsepp-2026-03-09-desktop-ref.png",
+          "cloneImage": "screenshots/galeria_vizcsepp-2026-03-09-desktop-clone.png",
+          "diffImage": "screenshots/galeria_vizcsepp-2026-03-09-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 54.65,
+          "refHeight": 7733,
+          "cloneHeight": 1575,
+          "heightDeltaPct": 79.63,
+          "refImage": "screenshots/galeria_vizcsepp-2026-03-09-mobile-ref.png",
+          "cloneImage": "screenshots/galeria_vizcsepp-2026-03-09-mobile-clone.png",
+          "diffImage": "screenshots/galeria_vizcsepp-2026-03-09-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -3130,15 +3661,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "FAIL",
+          "diffPct": 53.04,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/gallery_folder_1023-desktop-ref.png",
+          "cloneImage": "screenshots/gallery_folder_1023-desktop-clone.png",
+          "diffImage": "screenshots/gallery_folder_1023-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 63.87,
+          "refHeight": 10115,
+          "cloneHeight": 14875,
+          "heightDeltaPct": 32,
+          "refImage": "screenshots/gallery_folder_1023-mobile-ref.png",
+          "cloneImage": "screenshots/gallery_folder_1023-mobile-clone.png",
+          "diffImage": "screenshots/gallery_folder_1023-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -3280,15 +3834,38 @@
           "lists": 0,
           "tables": 0,
           "forms": 0
-        }
+        },
+        "deficits": [
+          "headings"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
         "status": "NOT_EVALUATED",
         "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "FAIL",
+          "diffPct": 54.94,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/a-mi-vilagunk-kiallitas-megynito-2016-12-05-desktop-ref.png",
+          "cloneImage": "screenshots/a-mi-vilagunk-kiallitas-megynito-2016-12-05-desktop-clone.png",
+          "diffImage": "screenshots/a-mi-vilagunk-kiallitas-megynito-2016-12-05-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 71.38,
+          "refHeight": 10686,
+          "cloneHeight": 14875,
+          "heightDeltaPct": 28.16,
+          "refImage": "screenshots/a-mi-vilagunk-kiallitas-megynito-2016-12-05-mobile-ref.png",
+          "cloneImage": "screenshots/a-mi-vilagunk-kiallitas-megynito-2016-12-05-mobile-clone.png",
+          "diffImage": "screenshots/a-mi-vilagunk-kiallitas-megynito-2016-12-05-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     },
@@ -3360,20 +3937,73 @@
         "clone": {
           "headings": 3,
           "paragraphs": 3,
-          "lists": 1,
+          "lists": 0,
           "tables": 0,
           "forms": 2
-        }
+        },
+        "deficits": [
+          "paragraphs"
+        ],
+        "status": "PARTIAL"
       },
       "function": {
-        "status": "NOT_EVALUATED",
-        "note": "separate E2E pass, see CLONE_PARITY_GAP_REPORT.md"
+        "status": "PASS",
+        "evidence": {
+          "marker": "K1-FUNC-TEST-1786904710962",
+          "note": "submitted successfully; DB row left for manual cleanup verification, see gap report"
+        }
       },
       "visual": {
-        "status": "NOT_EVALUATED",
-        "note": "separate screenshot-diff pass, see clone-parity-visual.mjs"
+        "status": "FAIL",
+        "desktop": {
+          "status": "PARTIAL",
+          "diffPct": 37.55,
+          "refHeight": 4986,
+          "cloneHeight": 4743,
+          "heightDeltaPct": 4.87,
+          "refImage": "screenshots/wishbasket-desktop-ref.png",
+          "cloneImage": "screenshots/wishbasket-desktop-clone.png",
+          "diffImage": "screenshots/wishbasket-desktop-diff.png"
+        },
+        "mobile": {
+          "status": "FAIL",
+          "diffPct": 60.33,
+          "refHeight": 8703,
+          "cloneHeight": 6880,
+          "heightDeltaPct": 20.95,
+          "refImage": "screenshots/wishbasket-mobile-ref.png",
+          "cloneImage": "screenshots/wishbasket-mobile-clone.png",
+          "diffImage": "screenshots/wishbasket-mobile-diff.png"
+        }
       },
       "overall": "PARITY_FAIL"
     }
-  ]
+  ],
+  "visualGeneratedAt": "2026-08-16T18:24:47.562Z",
+  "functionChecks": {
+    "generatedAt": "2026-08-16T18:25:12.169Z",
+    "checks": {
+      "search": {
+        "status": "PASS",
+        "evidence": {
+          "resultCount": 10,
+          "navigatedTo": "http://localhost:3011/hirek/konyvtar-a-gyermekreszlegen-tul",
+          "destinationH1": "Könyvtár a Gyermekrészlegen túl"
+        }
+      },
+      "contactForm": {
+        "status": "PASS",
+        "evidence": {
+          "marker": "K1-FUNC-TEST-1786904708287"
+        }
+      },
+      "wishbasket": {
+        "status": "PASS",
+        "evidence": {
+          "marker": "K1-FUNC-TEST-1786904710962",
+          "note": "submitted successfully; DB row left for manual cleanup verification, see gap report"
+        }
+      }
+    }
+  }
 }

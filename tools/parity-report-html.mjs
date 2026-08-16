@@ -20,6 +20,18 @@ const rows = data.results
     const cells = dims
       .map((d) => {
         const dim = r[d] || {}
+        if (d === 'visual' && dim.desktop) {
+          const shots = ['desktop', 'mobile']
+            .map((vp) => {
+              const v = dim[vp]
+              if (!v) return ''
+              const pct = v.diffPct !== undefined ? `${v.diffPct}%` : v.status
+              const link = v.diffImage ? `<a href="${esc(v.diffImage)}" target="_blank">diff</a> / <a href="${esc(v.refImage)}" target="_blank">ref</a> / <a href="${esc(v.cloneImage)}" target="_blank">clone</a>` : ''
+              return `<div>${vp}: ${badge(v.status)} ${esc(pct)} ${link}</div>`
+            })
+            .join('')
+          return `<td>${badge(dim.status)}${shots}</td>`
+        }
         return `<td>${badge(dim.status)}</td>`
       })
       .join('')

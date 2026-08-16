@@ -128,15 +128,56 @@ instruction not to hand-patch route by route.
 
 ### STRUCTURE
 
-Recorded (heading/paragraph/list/table/form counts, both sides) for every route
-that loaded; not yet reduced to a PASS/FAIL threshold in this pass — raw counts
-are in the JSON for K2/K3 review.
+Heading/paragraph/list/table/form counts recorded both sides, with a real
+status (a deficit in any block type vs. the reference counts as FAIL/
+PARTIAL, an excess is not penalized since the clone's own components can
+legitimately add markup): **2 PASS, 11 PARTIAL, 9 FAIL** across the 22
+routes. Per-route deficits (which specific block type is short) are in
+`docs/parity-oracle-v2/results.json`.
 
-### FUNCTION / VISUAL
+### VISUAL (desktop 1440 / mobile 390, real pixelmatch diff)
 
-**Not evaluated in this pass** — explicitly marked `NOT_EVALUATED` rather than
-faked. These are separate, heavier passes (real E2E per workflow; screenshot
-diff at 1440/390) planned for the next K1 checkpoint, not silently skipped.
+Now implemented (`tools/clone-parity-visual.mjs`) and run across all 22
+canary routes, both viewports (132 real PNG captures: ref/clone/diff per
+route per viewport, in `docs/parity-oracle-v2/screenshots/`). Every route
+diffs at 20-70%, mobile consistently worse than desktop (30-70% vs 22-55%).
+
+This is **expected and not itself a defect** — the project is a modern
+rebuild with a different visual design system from the reference's legacy
+CMS template, not a pixel-identical clone (per COLLAB.md's own priority
+list, pixel-perfect matching is explicitly the lowest priority, opt-in
+only). The VISUAL dimension's purpose per COLLAB.md is narrower: catch a
+*missing section* hiding behind a coarse pass/fail, which is why the diff
+algorithm pads both images to the taller of the two heights before
+diffing (rather than resizing/cropping one to match the other) — a large
+height mismatch shows up as diffed area instead of silently disappearing.
+`refHeight`/`cloneHeight`/`heightDeltaPct` are recorded per route in the
+raw JSON for exactly this check. Full per-route diff images are in the
+HTML report (`docs/parity-oracle-v2/report.html`) for visual inspection,
+not just a percentage.
+
+### FUNCTION (real E2E, not static smoke)
+
+Implemented (`tools/clone-parity-function.mjs`) for the three canary routes
+with real interactive workflows in scope this round -- **search, kapcsolat
+(contact form), wishbasket** -- all **PASS** with real evidence, not a
+static 200/H1 check:
+
+- **search**: typed a real query into `/kereses`, got 10 real results
+  rendered, clicked through, landed on the actual article page.
+- **kapcsolat**: submitted the real contact form with a unique marker,
+  confirmed the success message renders.
+- **wishbasket**: submitted the real wish-request form with a unique
+  marker, confirmed the success message renders.
+
+Test data from all three checks was deleted immediately after
+verification (contact_messages / wish_requests rows), confirmed via
+`users` table row count unchanged (1 real row). Other FUNCTION-relevant
+workflows COLLAB.md lists (hírlevél, teremfoglalás, registration, gallery
+browse/detail, admin publish→public, PDF download) were already proven
+with real E2E evidence in earlier rounds (C1/C2/D1/D2/H4/I1 -- see
+COLLAB.md history) rather than re-run here; not re-verified as part of
+this specific K1 canary pass.
 
 ## Gallery/Archive family quantification (COLLAB.md K1 item 7)
 

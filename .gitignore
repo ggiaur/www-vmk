@@ -34,6 +34,11 @@ node_modules
 /.visual-oracle-depth2/
 /.visual-oracle-full/
 
+# Clone Parity Oracle v2 screenshot captures (K1) -- large binary PNGs,
+# regenerable via tools/clone-parity-visual.mjs; results.json/report.html
+# (the actual acceptance evidence: diff percentages, PASS/FAIL) stay committed.
+/docs/parity-oracle-v2/screenshots/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

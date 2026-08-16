@@ -329,9 +329,21 @@ async function auditRoute(browser, route) {
       brokenLinkSample: brokenLinks.slice(0, 5),
       status: brokenLinks.length > 0 ? 'FAIL' : links.internalCoverage >= 0.99 && links.externalCoverage >= 0.99 ? 'PASS' : links.internalCoverage >= 0.7 ? 'PARTIAL' : 'FAIL',
     }
-    result.structure = {
-      ref: { headings: refData.headings.length, paragraphs: refData.paragraphs, lists: refData.lists, tables: refData.tables, forms: refData.forms },
-      clone: { headings: cloneData.headings.length, paragraphs: cloneData.paragraphs, lists: cloneData.lists, tables: cloneData.tables, forms: cloneData.forms },
+    {
+      // Structural parity: the clone should have at least as much
+      // structural richness as the reference's real content (a deficit in
+      // any block type is a real signal; an excess is not penalized, since
+      // the clone's own chrome/components can legitimately add markup the
+      // reference didn't have).
+      const refS = { headings: refData.headings.length, paragraphs: refData.paragraphs, lists: refData.lists, tables: refData.tables, forms: refData.forms }
+      const cloneS = { headings: cloneData.headings.length, paragraphs: cloneData.paragraphs, lists: cloneData.lists, tables: cloneData.tables, forms: cloneData.forms }
+      const deficits = Object.keys(refS).filter((k) => cloneS[k] < refS[k])
+      result.structure = {
+        ref: refS,
+        clone: cloneS,
+        deficits,
+        status: deficits.length === 0 ? 'PASS' : deficits.length <= 1 ? 'PARTIAL' : 'FAIL',
+      }
     }
     result.urlDimension.status = cloneRedirected && (route.family === 'gallery-archive' || route.family === 'gallery') && text.coverage < 0.3
       ? 'FAIL_GENERIC_REDIRECT'
@@ -375,7 +387,18 @@ async function main() {
   await browser.close()
 
   const jsonPath = path.join(OUT_DIR, 'results.json')
-  fs.writeFileSync(jsonPath, JSON.stringify({ generatedAt: new Date().toISOString(), refBase: REF_BASE, cloneBase: CLONE_BASE, results }, null, 2))
+  // Merge with any existing VISUAL (clone-parity-visual.mjs) / FUNCTION
+  // (clone-parity-function.mjs) data already written for these routes,
+  // rather than overwrite it -- those are separate, slower passes that
+  // shouldn't need to re-run every time this script does.
+  const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null
+  const existingByPath = new Map((existing?.results || []).map((r) => [r.path, r]))
+  for (const r of results) {
+    const prior = existingByPath.get(r.path)
+    if (prior?.visual) r.visual = prior.visual
+    if (prior?.function && prior.function.status !== 'NOT_EVALUATED') r.function = prior.function
+  }
+  fs.writeFileSync(jsonPath, JSON.stringify({ generatedAt: new Date().toISOString(), refBase: REF_BASE, cloneBase: CLONE_BASE, results, visualGeneratedAt: existing?.visualGeneratedAt, functionChecks: existing?.functionChecks }, null, 2))
 
   const summary = {
     total: results.length,
