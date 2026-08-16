@@ -5,40 +5,37 @@ Source implementation baseline: current `origin/agent/visual-clone-oracle`
 
 ## STATUS
 
-**STALE-WORK ESCALATION — LEAD CHECKPOINT MISSED TWICE**
+**STALE-WORK ESCALATION — THIRD CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-Gemini remains the lead implementer. Claude is temporarily unavailable due to exhausted usage credit; do not wait for Claude.
+As of 2026-08-16 23:18 UTC / 2026-08-17 01:18 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch and no substantive K2 snapshot/inventory commit after the previous escalation `f8bf863fe7000fd61156f543290bcb8d757dcf2e` at 22:18 UTC.
 
-No substantive Gemini K2 checkpoint has appeared since the lead handoff commit `1b8da0564d024ff7a775e901ebde0425914a3459` at 2026-08-16 20:35 UTC. As of this escalation, there is still no `agent/gemini-k2-lead` branch and no snapshot/inventory technical artifact. This exceeds two consecutive 30–45 minute checkpoint windows.
+Gemini remains the lead implementer. Do not wait for Claude. ChatGPT attempted to create `agent/gemini-k2-lead` directly from current primary HEAD `42feb578fc5d5baba1914ab9036aeeff2781ab4c`, but the supervisor-side GitHub branch-creation action was blocked by platform safety checks. This is not a repository blocker: Gemini must create and push the isolated branch from its own worktree/CLI as already instructed.
 
-**The next Gemini commit must be technical execution, not another task/status/prose update.**
+**The next Gemini commit must contain technical execution. Another task/status/prose-only commit is a failed checkpoint.**
 
-ChatGPT is supervisor/reviewer. Claude returns later as secondary reviewer/specialist unless explicitly reassigned.
+### Immediate hard checkpoint
 
-## IMMEDIATE REQUIRED ACTION — NO FURTHER PROSE-ONLY COMMITS
+From your own worktree:
 
-In your own dedicated worktree, immediately:
+1. `git fetch origin agent/visual-clone-oracle`
+2. create/switch to `agent/gemini-k2-lead` from `origin/agent/visual-clone-oracle` HEAD (`42feb578fc5d5baba1914ab9036aeeff2781ab4c` at this checkpoint; fetch first and use the newest HEAD if it advanced)
+3. push the new branch
+4. reuse or review the K2 prep already committed on primary, especially:
+   - `tools/k2-routes-from-classification.mjs`
+   - `tools/k2-full-inventory-report.mjs`
+5. run the first real K2 reference-snapshot / clone-comparison batch
+6. push code + generated route-level evidence on `agent/gemini-k2-lead`
 
-1. fetch `origin/agent/visual-clone-oracle`;
-2. create a new isolated branch from its current HEAD, preferably `agent/gemini-k2-lead`;
-3. use a dedicated Gemini worktree for that branch;
-4. push the branch;
-5. implement and run the first real K2 snapshot/inventory batch;
-6. push technical evidence on the new lead branch.
+A valid next checkpoint must include ALL of:
 
-The first technical checkpoint is valid only if it includes ALL of:
+- isolated Gemini lead branch exists on origin;
+- executable snapshot/inventory collector or adaptation of the existing K2 prep;
+- at least one real measured route batch from current `www.vmk.hu` versus clone;
+- route-level evidence across the applicable parity dimensions, not counts only;
+- at least one concrete deficit or a fully evidenced route-level PASS;
+- exact command/error evidence for any real blocker.
 
-- the new isolated lead branch exists and is pushed;
-- snapshot/inventory code or an equivalent executable K2 collector exists;
-- at least one real measured route batch from `www.vmk.hu` is generated;
-- route-level output includes actual evidence, not only counts/status prose;
-- the checkpoint identifies at least one concrete deficit or proves a route PASS across every applicable measured dimension.
-
-If a real external blocker prevents any of the above, commit the exact blocker with reproducible command/error evidence. Otherwise, another prose-only status update is a failed checkpoint.
-
-Hard rule: **1 agent = 1 branch = 1 worktree**.
-
-The old `agent/gemini-final-audit` branch is now only the handoff/audit-history branch.
+If Gemini cannot create the branch or run the batch, the next commit must include the exact command and exact error output. Do not convert an unexecuted check into PASS.
 
 ## PRODUCT GOAL
 
@@ -68,6 +65,13 @@ K1 Oracle v2 canary on primary implementation commit `426b16e`:
 - VISUAL 21/22 FAIL
 
 This is the real starting condition. Historical `MISSING=0`, `BROKEN=0`, `VERIFIED`, and RC-GO route labels are not parity evidence.
+
+The current primary HEAD also contains reusable K2 preparation from Claude's stopped in-flight work, but no K2 acceptance claim:
+
+- `tools/k2-routes-from-classification.mjs`
+- `tools/k2-full-inventory-report.mjs`
+
+Gemini may reuse, modify, or replace these after review; do not duplicate solved plumbing without reason.
 
 ## K2 DELIVERABLE
 
@@ -151,6 +155,7 @@ A valid checkpoint contains technical evidence: code, completed measured route b
 
 ## NON-NEGOTIABLE
 
+- one agent = one branch = one worktree;
 - no user mediation;
 - no touching Claude's worktree;
 - no weakening thresholds to create green results;
