@@ -1,6 +1,6 @@
 # Depth-2 route-parity mátrix
 
-Generálva: 2026-08-16T03:49:33.079Z (E1/E2, a first-hop VERIFIED baseline mellett, azt nem érintve)
+Generálva: 2026-08-16T04:37:44.146Z (E1/E2, a first-hop VERIFIED baseline mellett, azt nem érintve)
 
 Forrás: `.visual-oracle-depth2/route-manifest.json` (`node tools/visual-oracle.mjs discover --depth=2 --out=.visual-oracle-depth2`, 390 same-host route, dedup, admin/api/_next/sitemap kizárva). A first-hop baseline (`.visual-oracle/route-manifest.json`, 113 route) külön namespace-ben, érintetlen -- lásd `docs/FIRST_HOP_ROUTE_MATRIX.md`.
 
@@ -8,11 +8,10 @@ Forrás: `.visual-oracle-depth2/route-manifest.json` (`node tools/visual-oracle.
 
 | Státusz | Darab |
 |---|---|
-| CLONED | 302 |
+| CLONED | 304 |
 | ARCHIVED/LEGACY | 52 |
 | PREVIEW/INTERNAL | 20 |
 | DOWNLOAD/ASSET | 14 |
-| BROKEN | 2 |
 
 **MISSING = 0** a kontrollált, current-reference internal scope-ban.
 
@@ -301,7 +300,7 @@ Forrás: `.visual-oracle-depth2/route-manifest.json` (`node tools/visual-oracle.
 | `/konyvkiallitas` | 2 | `/page/menu/336` | CLONED | egyéb / azonosítandó | local 200 |
 | `/kovacs-attila` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
 | `/kovacsne-mukranyi-ibolya` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kozott-kiallitas` | 2 | `/unnepi-konyvhet-2022` | BROKEN | egyéb / azonosítandó | a hivatkozás magán a referencia oldalon is 404 |
+| `/kozott-kiallitas` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
 | `/krupa-veronika` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
 | `/kszr-2` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | a régi többnyelvű (angol/német) site-változat, jelenlegi scope csak magyar |
 | `/kurucz-edit` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
@@ -368,7 +367,7 @@ Forrás: `.visual-oracle-depth2/route-manifest.json` (`node tools/visual-oracle.
 | `/papp-zoltanne` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
 | `/partner-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | a régi többnyelvű (angol/német) site-változat, jelenlegi scope csak magyar |
 | `/partnerbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | a régi többnyelvű (angol/német) site-változat, jelenlegi scope csak magyar |
-| `/pedagogiai-szakkonyvtar` | 2 | `/pedagogiai-reszleg` | BROKEN | egyéb / azonosítandó | a hivatkozás magán a referencia oldalon is 404 |
+| `/pedagogiai-szakkonyvtar` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
 | `/peresztegir-es-nagy-robert-copy` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
 | `/pozsa-reka` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
 | `/preszter-agnes` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |

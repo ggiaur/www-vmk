@@ -114,6 +114,29 @@ const nextConfig: NextConfig = {
       // instead of fabricating content for pages the source no longer has.
       { source: '/marai-programok-a-konyvtarban', destination: '/nka-palyazatok', permanent: true },
       { source: '/teritesi-dijak', destination: '/szolgaltatasok', permanent: true },
+      // F2 (ChatGPT review): the reference site's own two dead depth-2
+      // links, closed with controlled canonical redirects instead of
+      // staying BROKEN, even though neither link actually appears
+      // anywhere in our own cloned content (verified: grepped the
+      // rendered /unnepi-konyvhet-2022 and /reszlegek/pedagogiai-reszleg
+      // pages for both hrefs, zero matches -- the scrape/template
+      // pipeline never carried them over) -- these redirects only guard
+      // against someone hitting the old URL directly (bookmarks, search
+      // engine index, a hand-typed link).
+      //
+      // /pedagogiai-szakkonyvtar: on the reference, this is a "back to
+      // top of page" link on /pedagogiai-reszleg pointing at what was
+      // evidently this department's URL before a rename -- not a
+      // distinct page, so redirected to the department's real current
+      // route.
+      { source: '/pedagogiai-szakkonyvtar', destination: '/reszlegek/pedagogiai-reszleg', permanent: true },
+      // /kozott-kiallitas: an image-only link (no anchor text) on
+      // /unnepi-konyvhet-2022 for a named 2022 exhibition program
+      // ("Között - kiállítás") that no longer has its own page on the
+      // reference at all -- no modern equivalent exists, so redirected
+      // to the event page that actually listed it (matches the
+      // A2b precedent for reference-side content that's genuinely gone).
+      { source: '/kozott-kiallitas', destination: '/unnepi-konyvhet-2022', permanent: true },
     ]
   },
 }
