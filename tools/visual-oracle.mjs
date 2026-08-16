@@ -73,7 +73,14 @@ const BASELINE_MANIFEST_FILE = path.join(BASELINE_DIR, 'manifest.json')
 const selectedRoutes = parseRouteSelection(args.route)
 const viewports = parseViewports(args.viewports ?? config.viewports ?? ['1440x1000', '390x844'])
 
-const assetExtension = /\.(?:avif|bmp|css|csv|docx?|eot|gif|ico|jpe?g|js|json|map|mp3|mp4|ogg|otf|pdf|png|pptx?|rar|rss|svg|tar|tiff?|ttf|txt|wav|webm|webp|woff2?|xlsx?|xml|zip)$/i
+// odt/ods/odp/rtf/ppsx added after a real crawl hit them: page.goto()
+// on a direct link to one of these triggers a browser download prompt
+// instead of navigating, which Playwright surfaces as a `WARN discover
+// ... page.goto: Download is starting` and aborts that single request
+// (caught, doesn't stop the crawl, but wastes a request and a route
+// slot on something that was never a page). Found during the G1
+// full-site saturation crawl, 2026-08-16.
+const assetExtension = /\.(?:avif|bmp|css|csv|docx?|eot|gif|ico|jpe?g|js|json|map|mp3|mp4|odp|ods|odt|ogg|otf|pdf|png|ppsx|pptx?|rar|rss|rtf|svg|tar|tiff?|ttf|txt|wav|webm|webp|woff2?|xlsx?|xml|zip)$/i
 const excludePatterns = (config.excludePatterns ?? []).map((pattern) => new RegExp(pattern))
 const volatileSelectors = Array.from(new Set([
   ...(config.volatileSelectors ?? []),
