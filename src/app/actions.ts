@@ -121,6 +121,70 @@ export async function submitDonationPledge(formData: FormData): Promise<ActionRe
   }
 }
 
+export async function submitWishRequest(formData: FormData): Promise<ActionResult> {
+  const name = String(formData.get('name') ?? '').trim()
+  const shownName = String(formData.get('shownName') ?? '').trim()
+  const email = String(formData.get('email') ?? '').trim()
+  const libraryCard = String(formData.get('libraryCard') ?? '').trim()
+  const writer = String(formData.get('writer') ?? '').trim()
+  const title = String(formData.get('title') ?? '').trim()
+  const comment = String(formData.get('comment') ?? '').trim()
+
+  if (!name || !email || !libraryCard || !writer || !title) {
+    return { ok: false, error: 'Kérjük, töltse ki a kötelező mezőket (Név, E-mail, Olvasójegy száma, Szerző, Cím).' }
+  }
+
+  const payload = await getPayloadClient()
+  if (!payload) return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
+
+  try {
+    await payload.create({
+      collection: 'wish-requests',
+      data: {
+        name,
+        shownName: shownName || undefined,
+        email,
+        libraryCard,
+        writer,
+        title,
+        comment: comment || undefined,
+        status: 'pending',
+      },
+    })
+    revalidatePath('/wishbasket')
+    return { ok: true }
+  } catch (error) {
+    console.error('[submitWishRequest] Failed to save wish request:', error)
+    return { ok: false, error: 'Hiba történt a kívánság rögzítésekor.' }
+  }
+}
+
+export async function submitWishComment(formData: FormData): Promise<ActionResult> {
+  const name = String(formData.get('name') ?? '').trim()
+  const shownName = String(formData.get('shownName') ?? '').trim()
+  const email = String(formData.get('email') ?? '').trim()
+  const comment = String(formData.get('comment') ?? '').trim()
+
+  if (!name || !email || !comment) {
+    return { ok: false, error: 'Kérjük, töltse ki a nevet, az e-mail címet és a hozzászólást.' }
+  }
+
+  const payload = await getPayloadClient()
+  if (!payload) return { ok: false, error: 'A rendszer jelenleg nem elérhető, próbálja később.' }
+
+  try {
+    await payload.create({
+      collection: 'wish-comments',
+      data: { name, shownName: shownName || undefined, email, comment, status: 'pending' },
+    })
+    revalidatePath('/wishbasket')
+    return { ok: true }
+  } catch (error) {
+    console.error('[submitWishComment] Failed to save wish comment:', error)
+    return { ok: false, error: 'Hiba történt a hozzászólás rögzítésekor.' }
+  }
+}
+
 export async function submitNewsletterSignup(formData: FormData): Promise<ActionResult> {
   const email = String(formData.get('email') ?? '').trim()
   const name = String(formData.get('name') ?? '').trim()

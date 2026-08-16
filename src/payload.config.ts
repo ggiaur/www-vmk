@@ -26,6 +26,8 @@ import { Rooms } from './collections/Rooms'
 import { Services } from './collections/Services'
 import { Staff } from './collections/Staff'
 import { Users } from './collections/Users'
+import { WishRequests } from './collections/WishRequests'
+import { WishComments } from './collections/WishComments'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -106,6 +108,8 @@ export default buildConfig({
     Rooms,
     Bookings,
     DonationPledges,
+    WishRequests,
+    WishComments,
     ContactMessages,
     NewsletterSubscribers,
     Products,
