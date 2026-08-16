@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { PageBlocks } from '../blocks/PageBlocks'
+import { adminOrEditorOnly } from '../lib/access'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -9,6 +10,14 @@ export const Pages: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }) => (user ? true : { _status: { equals: 'published' } }),
+    // create/update/delete were previously undefined -- see Documents.ts
+    // for why that was empirically still safe, made explicit here too per
+    // the E0 audit. Pages now holds 52 real migrated content records
+    // (A2a/A2b), so explicit write protection matters in practice, not
+    // just in principle.
+    create: adminOrEditorOnly,
+    update: adminOrEditorOnly,
+    delete: adminOrEditorOnly,
   },
   admin: {
     group: 'Tartalom',

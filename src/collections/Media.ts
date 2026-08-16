@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { adminOrEditorOnly } from '../lib/access'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -10,6 +11,16 @@ export const Media: CollectionConfig = {
     // Media (images/PDFs on a public library site) should be viewable by
     // anyone — only the admin panel write operations stay behind auth.
     read: () => true,
+    // create/update/delete were previously undefined here (only
+    // `read` was set) -- empirically still denied anonymous writes
+    // (Payload defaults unlisted operations in a partial access
+    // object to deny, unlike a fully-absent access block, which
+    // defaults to allow -- see Bookings.ts/OpeningHours.ts). Made
+    // explicit anyway per the E0 full-collection audit so this
+    // doesn't rely on an undocumented Payload default.
+    create: adminOrEditorOnly,
+    update: adminOrEditorOnly,
+    delete: adminOrEditorOnly,
   },
   admin: {
     group: 'Rendszer',
