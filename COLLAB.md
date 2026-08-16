@@ -115,29 +115,87 @@ Ha a current reference magyar site-on nincs tényleges frontend search UX, dokum
 
 ---
 
-# 4. AKTÍV FELADAT
+# 4. CLAUDE HANDOFF — H1-H4 lezárva
 
-**Task:** H1 true saturation + H2 gallery legacy resolver + H3 evidence matrix + H4 search frontend verification
+Claude handoff commit:
+`09d3445` (agent/visual-clone-oracle)
 
-**STATUS:** `CHANGES_REQUESTED`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
 
-Claude ne kérjen köztes irányválasztást. A fenti követelmények root-cause alapon végrehajthatók.
+## EREDMÉNY (Claude, H1-H4)
 
-## Kötelező átadás
+### 1. depth/frontier görbe a tényleges saturationig / technikai blockerig
 
-Claude csak akkor adja vissza a labdát, ha rögzíti:
-1. depth/frontier görbe a tényleges saturationig vagy reprodukálható technikai blockerig;
-2. maxRoutes/cap állapot minden releváns körben;
-3. gallery archive family resolver/redirect diff;
-4. teljes gallery URL sweep: 404=0;
-5. friss `docs/FULL_SITE_ROUTE_MATRIX.md`;
-6. frontend search flow bizonyíték vagy referencia-oldali hiányának bizonyítéka;
-7. production build PASS;
-8. first-hop `0/0`, depth-2 `0/0`, admin/security regresszió zöld;
-9. commit SHA-k;
-10. `STATUS: READY_FOR_REVIEW`;
-11. `BALL: CHATGPT`.
+`113 → 383 → 843 → 1789 → 1971 → 1972 → 1973 → 1974` (depth 0-8).
+Depth 6, 7, 8 fejenként pontosan **+1** route, mindhárom a `/wishbasket/archive?page=N`
+lapozási lánc egy-egy tagja. Reprodukálható technikai blocker, nem scope-döntés:
+a referencia `?page=N` végpontja N=1000-ig mindig HTTP 200-at ad, tehát BFS
+státusz-alapon soha nem konvergálna magától; a valódi tartalmi határt
+(`page=92`, "2018. Március") direkt tartalom-vizsgálattal (nem crawloással)
+azonosítottuk. Teljes bizonyíték: `docs/FULL_SITE_ROUTE_MATRIX.md` 1-2. pont.
 
-A felhasználó közvetítése nem szükséges; a GitHub commit maga az átadás.
+### 2. maxRoutes/cap állapot
+
+`--max-routes=5000` minden körben (0-8), legmagasabb kumulált érték 1974 —
+nincs truncálás egyetlen körben sem.
+
+### 3. gallery archive family resolver/redirect diff
+
+`src/app/(frontend)/[...slug]/page.tsx`: két-lépcsős determinisztikus
+resolver (nem kézi lista) — (a) bármely `/gallery/*` path → `/galeria`;
+(b) single-segment dated slug: pontos `Gallery` egyezés esetén a valódi
+galéria-részletre, egyébként `src/data/legacyGalleryArchiveSlugs.ts`
+(1385 elem, a depth-8 crawlból generálva) tagsága esetén `/galeria`
+fallback. Részletek: `docs/FULL_SITE_ROUTE_MATRIX.md` 4. pont.
+
+### 4. teljes gallery URL sweep: 404=0
+
+- 1385/1385 single-segment slug: `{"ok":1385,"notFound":0,"other":0}`
+- 241/241 multi-segment `/gallery/*` route: `{"ok":241,"notFound":0,"other":0}`
+- teljes 1974-route manifest: `{"ok":1898,"notFound":76,"other":0}`,
+  mind a 76 programozottan azonosítva a már dokumentált kivétel-kategóriák
+  egyikébe (20 PREVIEW/INTERNAL + 49 multi-lang + 7 DOWNLOAD/ASSET = 76,
+  0 besorolatlan).
+
+### 5. friss `docs/FULL_SITE_ROUTE_MATRIX.md`
+
+Újraírva: teljes depth 0-8 görbe, wishbasket blocker bizonyíték, resolver
+mechanika + family-match szabály, teljes sweep eredmény, kategória-
+összesítés (272 CLONED + 1626 gallery-archive + 49 multi-lang + 20
+PREVIEW/INTERNAL + 7 DOWNLOAD/ASSET = 1974), reprezentatív minták
+2013-2026-ig, G1-G4-hez képesti változás-táblázat.
+
+### 6. frontend search flow bizonyíték
+
+Valódi Playwright-flow az újraépített production szerveren:
+`goto /kereses → fill "könyvtár" → 800ms debounce-várakozás →
+RESULT_COUNT 10 → click első találat → NAVIGATED_URL
+/hirek/konyvtar-a-gyermekreszlegen-tul → DEST_H1 "Könyvtár a
+Gyermekrészlegen túl"`. A referencia magyar site-on van valódi frontend
+search UX, tehát ez a teljes H4 követelmény (nem az "ha nincs" ág).
+
+### 7. production build PASS
+
+`npx tsc --noEmit`: clean. `npm run build`: exit 0.
+
+### 8. regresszió
+
+- first-hop (113 route): változatlan, 0 nem várt 404 (111 ok + 2 előzőleg
+  is dokumentált PREVIEW/INTERNAL).
+- depth-2 (390 route): változatlan, 0 nem várt 404 (307 ok + 83 előzőleg
+  is dokumentált kivétel-kategória).
+- admin/security: anon POST `pages/staff/libraries/opening-hours/
+  wish-requests/wish-comments/users/galleries/news/events` mind 403
+  (wish-requests publikus submit tudatosan a Local API server action-en
+  megy, nem a REST create-en).
+- DB: `users` tábla pontosan 1 valódi sor (`admin@vmk.hu`), nincs
+  teszt-adat maradvány.
+
+### 9. commit SHA
+
+`09d3445` — "H1-H4: true full-site saturation, deterministic gallery
+resolver, evidence matrix, frontend search proof"
+
+A felhasználó közvetítése nem volt szükséges; ez a commit maga az átadás.
