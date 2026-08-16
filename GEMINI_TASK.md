@@ -1,63 +1,77 @@
 # GEMINI CLONE PARITY CANARY AUDIT — www-vmk
 
-Branch: `agent/gemini-final-audit`
-Primary implementation branch: `agent/visual-clone-oracle`
+Branch: `agent/gemini-final-audit`  
+Primary implementation branch under audit: `agent/visual-clone-oracle`  
 Mode: **CLONE PARITY RECOVERY — independent audit**
 
-## MANDATORY WORKTREE ISOLATION
+## 1. WORKTREE ISOLATION — HARD RULE
 
-**One agent = one branch = one worktree.**
+**1 agent = 1 branch = 1 worktree.**
 
-Gemini must NOT run `git checkout`, `git switch`, edit, reset or stash inside the shared `/srv/projects/www-vmk` working tree while Claude is active. Use a dedicated Gemini worktree, preferably:
+Gemini nem használhatja aktív szerkesztésre a shared `/srv/projects/www-vmk` working tree-t, és nem válthatja Claude branchét.
+
+Ajánlott:
 
 ```text
-/srv/projects/www-vmk-gemini -> agent/gemini-final-audit
+/srv/projects/www-vmk-gemini        -> agent/gemini-final-audit  # report/helper work
+/srv/projects/www-vmk-gemini-target -> detached origin/agent/visual-clone-oracle  # read/run only
 ```
 
-Do not ask the user to arbitrate branch/worktree handling.
+A target worktree legyen read-only audit cél: fetcheld a jelenlegi primary HEAD-et, ne módosítsd Claude branchét. Ne kérj felhasználói segítséget worktree/branch kezeléshez.
 
-## Current governing goal
+## 2. CÉL
 
-The previous route-parity claims (`MISSING=0`, `BROKEN=0`, FIRST-HOP/Depth-2/Full-site VERIFIED) are **not valid clone-parity evidence**. The prior checks could pass pages with missing text, media, links, documents or major visual differences.
+A korábbi `MISSING=0`, `BROKEN=0`, FIRST-HOP/Depth-2/Full-site `VERIFIED` állítások **nem érvényes clone-parity evidence-ek**.
 
-Your task is to perform an **independent reference-vs-clone false-positive audit** while Claude builds Clone Parity Oracle v2 on the primary branch.
+Feladatod: Claude Oracle implementációjától függetlenül bizonyítsd a jelenlegi referencia (`https://www.vmk.hu`) és a current primary clone közti tényleges eltéréseket.
 
-Use the current `agent/visual-clone-oracle` branch as the clone implementation under audit, but do not modify it.
+Kifejezetten keresd azokat a route-okat, amelyeket a régi rendszer `CLONED`/covered állapotúnak nevezett, de valójában hiányosak.
 
-## Required canary sample
+## 3. KÖTELEZŐ MINTA — >=20 ROUTE
 
-Audit at least 20 deliberately mixed reference routes from `https://www.vmk.hu/`, including:
 - `/`;
-- at least 5 current news/event detail pages;
-- at least 5 static/institutional pages;
-- at least 3 branch/department pages;
-- `/gallery` plus at least 3 concrete gallery/detail/archive routes;
+- >=5 aktuális news/event detail;
+- >=5 static/institutional oldal;
+- >=3 branch/department oldal;
+- `/gallery` + >=3 konkrét gallery/detail/archive route;
 - `/wishbasket`;
-- at least 1 PDF/document-heavy page.
+- >=1 PDF/document-heavy oldal.
 
-Prefer routes previously labelled `CLONED`/covered by the old route matrices so the audit can expose false positives.
+## 4. MINDEN ROUTE-NÁL ELLENŐRIZD
 
-## Compare every route on these dimensions
+1. **URL** — status/final URL/redirect; detail→generic lista nem parity.
+2. **TEXT** — meaningful `main` text sorrendben; missing headings/paragraphs/lists/dates/contacts/location/meta.
+3. **MEDIA** — konkrét tartalmi képek/galériaelemek/background images; identitás, broken state; ne csak count.
+4. **LINKS/DOCS** — anchor+target+típus: internal/external/mailto/tel/PDF/download; target health.
+5. **STRUCTURE** — headings/list/table/form/gallery/card/document blokkok.
+6. **FUNCTION** — ahol releváns, tényleges funkcióparitás; HTTP 200 nem PASS.
+7. **VISUAL** — desktop 1440 + mobile 390, obvious layout/media/component eltérések.
 
-1. **URL** — reference/local status, final URL, redirects. Generic list redirect is NOT parity for a concrete detail/gallery page.
-2. **TEXT** — compare the meaningful main-content text in order. Identify missing/changed headings, paragraphs, lists, dates, contacts, locations and metadata. Do not use word-count or word-set/Jaccard alone.
-3. **MEDIA** — inventory actual content images/gallery items/background images. Verify identity/content, not only image count. Record missing and broken images explicitly.
-4. **LINKS/DOCUMENTS** — inventory meaningful main-content links by anchor + target + type (internal/external/mailto/tel/PDF/download). Verify clone targets actually work. Record missing/wrong/broken links and PDFs.
-5. **STRUCTURE** — headings, lists, tables, forms, gallery/card/list elements and document blocks.
-6. **FUNCTION** — where relevant, identify whether the reference function exists and whether the clone has equivalent real behavior. Do not mark a functional page PASS from HTTP 200 alone.
-7. **VISUAL** — desktop 1440 and mobile 390 screenshots where feasible; report obvious layout/component/media differences. High visual divergence must be reported even if route/text partially match.
+## 5. OUTPUT
 
-## Output
+A `docs/GEMINI_FINAL_AUDIT.md` fájlt cseréld le **GEMINI CLONE PARITY CANARY REPORT** riporttal.
 
-Replace/update `docs/GEMINI_FINAL_AUDIT.md` with a new report titled **GEMINI CLONE PARITY CANARY REPORT** containing:
-- `RESULT: FINDINGS` unless every sampled route genuinely matches on all applicable dimensions;
-- a route-by-route table with URL/TEXT/MEDIA/LINKS/STRUCTURE/FUNCTION/VISUAL status;
-- exact missing images, wrong links/PDFs, missing text blocks and obvious visual differences;
-- summary counts of false positives among routes previously treated as cloned/covered;
-- page-family/root-cause grouping where patterns repeat;
-- screenshots or reproducible evidence paths/commands where available;
-- no claims for checks not actually executed.
+Kötelező:
 
-Do NOT fix the primary branch. Narrow isolated diagnostic helper code may be committed only on the Gemini audit branch if needed for evidence.
+- `RESULT: FINDINGS`, kivéve ha minden vizsgált route valóban minden alkalmazható dimenzióban egyezik;
+- route-onként `URL/TEXT/MEDIA/LINKS/STRUCTURE/FUNCTION/VISUAL` státusz;
+- konkrét missing image, wrong/broken link/PDF, missing text blokk és visual eltérés;
+- false-positive count: a korábban jónak hitt route-ok közül mennyi bukott;
+- page-family/root-cause grouping;
+- reproducible commands/evidence paths;
+- nem futtatott ellenőrzésre nincs PASS állítás.
 
-When complete, commit and push this branch. Claude/ChatGPT will consume the result directly from GitHub. The user is not a courier.
+A primary branchet ne javítsd. Diagnostic helper kód csak a Gemini branchre mehet.
+
+## 6. EXECUTION CADENCE — START NOW
+
+- **AZONNAL kezdd az auditot.**
+- Legfeljebb **30 percen belül** pusholj első technikai checkpointot: legalább **5 ténylegesen összehasonlított route** eredményét a reportba vagy reprodukálható helper outputot. Puszta státusz/prose commit nem elég.
+- Utána minden kb. **30–45 perc aktív munka** után pusholj új evidence checkpointot, amíg >=20 route kész nincs.
+- Ne várj Claude Oracle v2-jére; az auditnak szándékosan függetlennek kell lennie.
+- Ha egy technikai blocker miatt egy dimenzió nem mérhető, rögzítsd pontosan és folytasd a többi dimenziót/route-ot.
+- Ne kérj a felhasználótól közvetítést.
+
+## 7. BEFEJEZÉS
+
+Amikor >=20 route teljes auditja kész, commit + push. ChatGPT/Claude közvetlenül GitHubról fogyasztja az eredményt.
