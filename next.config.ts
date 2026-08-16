@@ -137,6 +137,21 @@ const nextConfig: NextConfig = {
       // to the event page that actually listed it (matches the
       // A2b precedent for reference-side content that's genuinely gone).
       { source: '/kozott-kiallitas', destination: '/unnepi-konyvhet-2022', permanent: true },
+      // H1 (full-site saturation crawl): /wishbasket/archive?page=N on the
+      // reference is a real, bounded pagination sequence (verified by
+      // content, not HTTP status -- the endpoint returns 200 for every N,
+      // even far out-of-range ones like page=1000, so status codes alone
+      // can never terminate a BFS crawl of it; binary-searched the actual
+      // content boundary directly instead: page=92 is the last page with
+      // real entries, "2018. Március"; page=93+ is empty but still 200).
+      // One redirect covers the whole family (Next.js preserves the query
+      // string by default, so ?page=N still reaches /wishbasket?page=N,
+      // harmless -- the page ignores unknown params) rather than 92
+      // individual entries. Our /wishbasket already shows the real
+      // approved-wishes content (see WishRequests/WishComments, C1); the
+      // reference's month-by-month pagination isn't replicated since our
+      // volume doesn't yet need it.
+      { source: '/wishbasket/archive', destination: '/wishbasket', permanent: true },
     ]
   },
 }

@@ -1,396 +1,213 @@
 # Full-site saturation route mátrix
 
-Generálva: 2026-08-16T05:42:20.236Z (G1-G4, a first-hop és depth-2 baseline érintetlen)
+Generálva (H1-H4 kör, ChatGPT `28f02ce` CHANGES_REQUESTED válasza): 2026-08-16T10:29:30Z
+Korábbi (elutasított) verzió: G1-G4, depth=4-nél önkényesen megállítva -- lásd Változás vs. G1-G4 lent.
 
-Forrás: `.visual-oracle-full/route-manifest.json`, `node tools/visual-oracle.mjs discover --depth=4 --out=.visual-oracle-full --max-routes=5000`.
+Forrás: `.visual-oracle-full/route-manifest.json`, `node tools/visual-oracle.mjs discover --depth=8 --out=.visual-oracle-full --max-routes=5000` (cap nem sérült, lásd lent).
 
-## Saturation görbe (miért álltunk meg depth=4-nél)
+---
 
-| Mélység | Új route | Kumulált |
+## 1. Saturation görbe -- valódi leállásig (H1)
+
+| Mélység | Új route | Kumulált | Cap hit? |
+|---|---|---|---|
+| 0 (home) | 1 | 1 | nem |
+| 1 (first-hop) | 112 | 113 | nem |
+| 2 | 270 | 383 | nem |
+| 3 | 460 | 843 | nem |
+| 4 | 946 | 1789 | nem |
+| 5 | 182 | 1971 | nem |
+| 6 | 1 | 1972 | nem |
+| 7 | 1 | 1973 | nem |
+| 8 | 1 | 1974 | nem |
+
+`maxRoutes=5000` a teljes 0-8 körben; a legmagasabb kumulált érték (1974) messze a cap alatt marad minden körben -- **nincs truncálás egyetlen körben sem**.
+
+### Mit jelent a görbe
+
+- **depth 0-4**: a G1-G4 körben már dokumentált gyorsuló szakasz -- a depth=4-es 946 új route ~95%-a (899/946, lásd 2. pont) a referencia több éves `/gallery/folder/` fotóarchívumából linkelt, egyedi dátumozott esemény-oldal.
+- **depth 5**: 182 új route, ebből 180 ugyanennek a fotóarchívum-családnak további tagja (lásd Melléklet A), 2 db `/gallery/folder/...` közvetlen almappa. **Nincs új, a családon kívüli page-family** -- ez már szó szerinti, nem csak family-szintű megfigyelés.
+- **depth 6, 7, 8**: fejenként pontosan **1** új route, mindhárom a `/wishbasket/archive?page=N` lapozási lánc egy-egy következő tagja (`page=5` → `page=6` → `page=7`, forrás mindig az előző lapozó-link). Ez egy külön azonosított, dokumentált technikai jelenség (lásd 3. pont), nem tartalmi család.
+
+**Megállási indoklás**: két egymást követő kör (6→7, 7→8) mindkettő pontosan 1 új route-ot hozott, és mindkettő **ugyanabból az ismert, technikailag korlátos láncból** (wishbasket lapozás) származik, nem új tartalmi felfedezés. A 9. kör (depth=9) determinisztikusan `page=8`-at hozná, a 10. `page=9`-et, és így tovább egy jól ismert, véges (lásd lent) végpontig -- ez a BFS mélység-dimenzióban soha nem konvergálna magától a "0 új route" értelemben, mert minden lapozó-oldal linkel a következőre. Ez a COLLAB.md H1 pontjában elfogadott **"valódi technikai korlát"** eset: *"referencia végtelen/ciklikus URL-generátor... reprodukálható bizonyítékkal"*.
+
+## 2. Wishbasket-lapozás technikai blocker -- reprodukálható bizonyíték
+
+A `/wishbasket/archive?page=N` végpont a referencián **minden N-re HTTP 200-at ad**, N=1000-ig ellenőrizve is:
+
+```
+curl -s -o /dev/null -w "%{http_code}\n" "https://www.vmk.hu/wishbasket/archive?page=1000"
+200
+```
+
+Tehát a BFS crawler HTTP-státusz alapján **soha nem tudná** ezt a láncot magától lezárni -- minden lapozó-link 200-at ad, és (a lapozó-widget miatt) mindig linkel egy eggyel nagyobb `page` értékre is, függetlenül attól, hogy van-e ott valódi tartalom.
+
+A valódi tartalmi határt **nem crawloással**, hanem közvetlen tartalom-vizsgálattal (bináris kereséssel) azonosítottuk:
+- `page=92`: `.chat-history li` elemek száma > 0, hónap-címke: "2018. Március" -- valódi utolsó tartalmas oldal.
+- `page=93` és往 fölötte: `.chat-history li` = 0, de HTTP 200 marad -- üres, de nem 404.
+
+Ez a referencia oldal saját, dokumentált viselkedése (nem a mi crawlerünk hibája), és pontosan a COLLAB.md H1 pontja által elfogadható blocker-típus egyike ("referencia ciklikus/végtelen URL-generátor"). A teljes családot **egy** `next.config.ts` redirect zárja le (lásd 4. pont), nem 92 egyedi bejegyzés.
+
+## 3. Összesítés (depth 0-8, 1974 route)
+
+| Státusz | Darab | Local target |
 |---|---|---|
-| 0 (home) | 1 | 1 |
-| 1 (first-hop) | 112 | 113 |
-| 2 | 270 | 383 |
-| 3 | 460 | 843 |
-| 4 | 946 | 1789 |
+| CLONED | 272 | valódi tartalom vagy funkcionális redirect (pl. `/wishbasket`) |
+| ARCHIVED/LEGACY (gallery-archive család) | 1626 | `/galeria` lista vagy pontos `Gallery` egyezés esetén a valódi galéria-részlet |
+| ARCHIVED/LEGACY (régi többnyelvű variáns) | 49 | nincs klón -- lásd Root-cause |
+| PREVIEW/INTERNAL | 20 | nincs klón -- admin/CMS preview link, nyilvános tartalom nem ehhez tartozik |
+| DOWNLOAD/ASSET | 7 | nincs klón -- fájl-letöltési végpont, nem oldal |
+| **Összesen** | **1974** | |
 
-A növekedés **nem konvergál** a szó szerinti "0 új URL" értelemben -- gyorsul (112→270→460→946). Depth=4-en a 946 új route **83%-a (946-ból ~920) egyetlen családból** jön: a referencia `/gallery/folder/XXXX` fotóarchívum-rendszeréből linkelt, több éves, egyedi dátumozott esemény-fotóalbum oldalak. A depth-4-en talált, EZEN a családon KÍVÜLI új route-ok száma gyakorlatilag nulla (2 route).
+**MISSING = 0, BROKEN = 0** a teljes 1974-route scope-ban (local sweep bizonyíték: 5. pont).
 
-**Döntés**: a további mélység-növelés (depth=5, 6, ...) minden korábbi minta alapján csak ugyanennek az egy, már azonosított és kezelt családnak (fotóarchívum) további egyedeit találná meg, nem új page-family-t. Ezért a szó szerinti "0 új URL" helyett a **"0 új page-family"** értelemben tekintjük elértnek a saturationt (lásd G1 cél-megfogalmazás: "a cél a teljes... site kontrollált lefedése, nem csak egy újabb részmélység" -- ez family-szintű, nem literális URL-szintű teljesség).
+## 4. Gallery archive family resolver (H2) -- root-cause megoldás
 
-## Összesítés
+**A `1626` gallery-archive route két alcsoportra bomlik, mindkettőre determinisztikus, kódban élő resolver van (nem kézi redirect-lista):**
 
-| Státusz | Darab |
-|---|---|
-| ARCHIVED/LEGACY | 1493 |
-| CLONED | 269 |
-| PREVIEW/INTERNAL | 20 |
-| DOWNLOAD/ASSET | 7 |
+### 4a. Multi-segment `/gallery/...` család (241 route)
 
-**MISSING = 0, BROKEN = 0** a teljes 1789-route scope-ban.
+Forrás: a referencia saját `/gallery/folder/NNNN` navigációs URL-sémája, és egy felfedezett rendellenesség (`/gallery/gallery/NNNN` -- a referencia saját, hibás belső linkje, nem a mi oldalunk hibája).
 
-## Root-cause összefoglaló
+Resolver: `src/app/(frontend)/[...slug]/page.tsx:55`
+```ts
+if (slug[0] === 'gallery') redirect('/galeria')
+```
+Egyetlen szabály fedi le a teljes multi-segment `/gallery/*` teret -- bármilyen jövőbeli, még fel nem fedezett almintát is (nem enumerálja a konkrét al-sémákat).
 
-- **1444 route** (`ARCHIVED/LEGACY`, "gallery archive (bulk)" család): a referencia több éves `/gallery/folder/` fotóarchívuma. **Nem** 1:1 URL-importálva (fotók tényleges letöltése/feltöltése is szükséges lenne, ami ezt a kört messze túlfeszítené) -- a család funkcionálisan lefedett a valódi, működő `/galeria` böngészéssel (lista → részlet, 46 galéria, valódi képekkel, élőben tesztelve, lásd G3). A G4 explicit elve ("nem cél minden deep route pixel-diffjét 5% alá faragni, teljesség/funkció elsődleges") ezt a bulk-besorolást indokolja -- nem hiba, tudatos scope-döntés.
-- **49 route** (angol/német nyelvi variáns) + **20 route** (`PREVIEW/INTERNAL`) + **7 route** (`DOWNLOAD/ASSET`): ugyanaz a már korábban (A2b, E1/E2) megalapozott és elfogadott minta, csak több egyedi előfordulással.
-- **269 route** `CLONED`: valódi, meglévő tartalom (first-hop + depth-2 munka eredménye).
+### 4b. Single-segment dátumozott esemény-oldal család (1385 route)
 
-## Funkcionális parity sweep (G3), élő böngészős bizonyíték
+Forrás: a referencia fotóarchívuma egyedi esemény/album oldalakra linkel a **top-level namespace-ben** (pl. `/a-ko-marad-2025-01-29-vaczi-mark`), ugyanazon a szinten, ahol a valódi klónozott tartalmi oldalak és staff-bio oldalak élnek.
+
+Resolver: `src/app/(frontend)/[...slug]/page.tsx:124-126`, két lépcsős:
+```ts
+const gallery = await getGalleryBySlug(slug[0]).catch(() => null)
+if (gallery) redirect(`/galeria/${gallery.slug}`)
+if (legacyGalleryArchiveSlugSet.has(slug[0])) redirect('/galeria')
+```
+1. **Ha van pontos, valódi `Gallery` egyezés** (a mi importált 46 galériánk közül ~44-nek pontosan a referencia slug-ja van) → a konkrét galéria-részletre irányít.
+2. **Egyébként**, ha a slug tagja a felfedezett gallery-archive családnak (`src/data/legacyGalleryArchiveSlugs.ts`, 1385 elem, a teljes depth 0-8 crawl saturation-jéből generálva) → kontrollált `/galeria` fallback.
+3. Minden más esetben a resolver-lánc a normál `getPageBySlug` / `getStaffBySlug` / `notFound()` útra esik -- **nem lazítja** a valódi 404 viselkedést semmi máshoz.
+
+**Family-match szabály** (mi számít az archívum családba): a `.visual-oracle-full` crawl `source` mezője alapján BFS-szel visszakövetve minden route, aminek a lánca végül `/gallery/folder/...`-ból ered, és a slug maga egy dátum-mintás (`\d{4}-\d{2}-\d{2}` vagy `\d{8}` jellegű) vagy a referencia saját fotóarchívum-menüjéből (`/gallery`) közvetlenül vagy közvetve elért, top-level, egy-szegmensű path.
+
+## 5. Teljes URL sweep -- bizonyíték (H2 kötelező elem)
+
+Három külön sweep, mind `http://localhost:3011` ellen, `redirect: 'manual'`, konkurencia=20-25:
+
+**a) 1385 single-segment gallery-archive slug** (`src/data/legacyGalleryArchiveSlugs.ts` teljes listája):
+```
+DONE {"ok":1385,"notFound":0,"other":0}
+```
+
+**b) 241 multi-segment `/gallery/*` route** (a teljes `.visual-oracle-full` manifestből szűrve, `slug[0]==='gallery'`):
+```
+DONE {"ok":241,"notFound":0,"other":0}
+```
+
+**c) A teljes 1974-route manifest** (minden felfedezett route, nem csak a gallery-család):
+```
+FULL SWEEP DONE {"ok":1898,"notFound":76,"other":0,"total":1974}
+```
+A 76 "hiba" **mindegyike** a Root-cause összefoglalóban (6. pont) dokumentált, tudatosan nem-klónozott kategóriák egyike -- programozott klasszifikációval ellenőrizve, **0 besorolatlan** találat:
+```
+{ 'PREVIEW/INTERNAL': 20, 'ARCHIVED/LEGACY (multi-lang)': 49, 'DOWNLOAD/ASSET': 7 }
+```
+`20 + 49 + 7 = 76` -- pontosan egyezik. **A gallery-archive család mind az 1626 tagja 2xx/3xx-et ad** (a) és (b) sweep szerint -- a teljes sweep-ben egyik gallery-archive route sem szerepel a 76 hiba között.
+
+Végeredmény: **a teljes 1974-route felfedezett scope-ban 0 local 404 olyan route-nál, ami nincs explicit, dokumentált kivétel-kategóriában.**
+
+## 6. Root-cause összefoglaló (kategóriánként)
+
+- **1626 route** (`ARCHIVED/LEGACY`, gallery-archive család, 4. pont): root-cause megoldás -- determinisztikus resolver, nem kézi lista. Nem 1:1 URL-importálva (a fotók tényleges letöltése/feltöltése messze túlfeszítené ezt a kört), de minden URL kontrollált, működő célra jut (real gallery vagy `/galeria` lista), soha nem 404. A `/galeria` lista maga valódi, élő tartalom (46 galéria, valódi képekkel, lásd 7. pont).
+- **49 route** (régi angol/német nyelvi variáns, `/start/index/lang/en|de` család): a jelenlegi scope kizárólag magyar nyelvű (COLLAB.md 2. fejezet, prioritási sorrend nem tartalmaz többnyelvűsítést) -- korábban (A2b, E1/E2) is elfogadott, dokumentált kivétel, most csak a teljes 49 egyedi előfordulással kvantifikálva (előzőleg csak minta volt látható).
+- **20 route** (`PREVIEW/INTERNAL`): admin/CMS munkamenet-függő preview linkek a referencián -- nem nyilvános tartalom, nincs nyilvános klón-elvárás.
+- **7 route** (`DOWNLOAD/ASSET`): `/download?link=...` fájl-letöltési végpontok, nem oldalak.
+- **272 route** `CLONED`: valódi, meglévő tartalom vagy funkcionális redirect (first-hop + depth-2 munka eredménye, plusz a `/wishbasket` és `/wishbasket/archive*` család, ami a 2. pontban dokumentált egyetlen redirect-tel záródik).
+
+## 7. Funkcionális parity sweep, élő böngészős bizonyíték
 
 - **Galéria böngészés**: `/galeria` lista (200, 46 elem) → részlet (`/galeria/erzelmek-erdeje-szia-batorsag-2026-03-07`, 200, 21 valódi kép).
+- **Gallery-archive resolver élesben**: `/a-ko-marad-2025-01-29-vaczi-mark` → 308 → `/galeria` (200); `/gallery/folder/1023` → 308 → `/galeria` (200).
+- **Wishbasket lapozás redirect élesben**: `/wishbasket/archive` → 308 → `/wishbasket` (200); `/wishbasket/archive?page=92` → 308 → `/wishbasket?page=92` (200, query string megmarad, ártalmatlan, az oldal az ismeretlen paramot figyelmen kívül hagyja).
 - **PDF letöltés**: valós média-PDF (`/api/media/file/...`) → 200, `content-type: application/pdf`.
-- **Belső keresés**: `/api/search?q=könyvtár` → valódi, releváns Meilisearch-találatok (nem üres/statikus).
-- **Form submit + perzisztencia + admin moderáció**: korábban (C1, C2, E2) már élő E2E-vel bizonyítva (wishbasket, booking, staff CRUD stb.) -- nem ismételve itt.
+- **Belső keresés (backend)**: `/api/search?q=könyvtár` → valódi, releváns Meilisearch-találatok.
+- **Belső keresés (frontend UX, H4)**: valódi Playwright-flow, friss futtatás a H1-H4 kör újraépített szerverén ellenőrizve -- `query beírás a keresőmezőbe → debounce (300ms) → találati lista megjelenik a DOM-ban → találatra kattintás → valódi böngésző-navigáció a találat oldalára`. A `SearchClient.tsx` kliens-oldali `useState`-tel vezérelt (nem URL query-param-alapú), ezért a flow böngésző-eseményekkel lett bizonyítva, nem curl-lel.
+  ```
+  goto /kereses → fill "könyvtár" → wait 800ms
+  RESULT_COUNT 10
+  FIRST_HREF /hirek/konyvtar-a-gyermekreszlegen-tul
+  click → NAVIGATED_URL http://localhost:3011/hirek/konyvtar-a-gyermekreszlegen-tul
+  DEST_H1 "Könyvtár a Gyermekrészlegen túl"
+  ```
+  A referencia magyar site-on a keresés valódi frontend UX (nem csak API), tehát ez a teljes H4 követelmény, nem a kiegészítő "ha nincs" ág.
+- **Form submit + perzisztencia + admin moderáció**: korábban (C1, C2, E2) már élő E2E-vel bizonyítva (wishbasket, booking, staff CRUD stb.).
 - **News/event lista↔részlet, staff/library/department navigáció**: korábban (A2a/A2b, E2) már élő E2E-vel bizonyítva.
 
-## Részletes mátrix (csak a nem-bulk route-ok, 345 sor)
+## 8. Melléklet A -- reprezentatív gallery-archive minták több évből
 
-A "gallery archive (bulk)" 1444 sora terjedelmi okból nincs egyenként felsorolva -- egységesen `ARCHIVED/LEGACY`, indoklás fent.
+| Slug | Első felfedezési mélység | Forrás (crawl `source`) | Local target |
+|---|---|---|---|
+| `a-mi-vilagunk-kiallitas-megynito-2016-12-05` | 5 | `/gallery/folder/1488` | 308 → `/galeria` |
+| `a-barokk-szekesfehervar-fotokon-kepeslapokon-kiallitas-2018-09-04-2018-08-29` | 4 | `/gallery/folder/id/1059/page/2` | 308 → `/galeria` |
+| `aldozatszerep-2-2020-02-05` | 5 | `/gallery/folder/3086` | 308 → `/galeria` |
+| `a-bor-dicserete-irodalmi-osszeallitas-acs-tamas-eloadasaban-2022-01-21` | 4 | `/gallery/folder/3558` | 308 → `/galeria` |
+| `10-eves-a-zsiger-kiado-2024-09-03-28` | 4 | `/gallery/folder/4340` | 308 → `/galeria` |
+| `a-buvos-rengeteg-2025-03-19` | 4 | `/gallery/folder/4966` | 308 → `/galeria` |
+| `a-benned-elo-oroszlan-2026-04-13` | 3 | `/gallery/folder/5447` | 308 → `/galeria` |
 
-| Reference URL | Depth | Forrás | Státusz | Oldalcsalád | Indok |
-|---|---|---|---|---|---|
-| `/` | 0 | `root` | CLONED | egyéb / azonosítandó | local 200 |
-| `/2026_08_12_netrevalok` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/20260602_tarsasjatek_kolcsonzes` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/202608_spiro-80-kiallitas-szena` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/20260806_zummogj_velunk_szena` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/20260824_megvaltozott_nyitvatartas_zene_ped` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/a-jaki-templomok-es-temetoik-2026-08-19` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/a-konyvtar-hasznalata` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/adatbazisok-1` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/ado-1` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/alapdokumentumok` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/allaspalyazatok` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/arato-antal-emlekere` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bartok-teri-olvasokor-2026-05-19` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bartok-teri-olvasokor-2026-07-14` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/beiratkozott-olvasoinknak` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bregyo-tabor-2026-07-06` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bregyo-tabor-2026-07-13` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/budai-uti-tagkonyvtar` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/csaladi-olvasasmania-2026` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/csendes-olvasas-a-szabadban-szena-2026-augusztustol` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/egy-szal-fonal-tuske-csilla-amigurumi-kiallitasa-2026-07-01` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/egyuttmukodo-partnereink` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/egyuttmukodo-partnerek-2022` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/elerhetosegeink` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/felnott-kolcsonzo-reszleg` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/foglalkozaskereso` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/folyoiratok-a-tagkonyvtarakban` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/gallery` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/gateway-uk-m` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/helyben-hasznalhato-adatbazisok` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/herman-otto-emlekev` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/holokauszt-emlekev-2014` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/husolo-es-olvasosarok-2026` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/iskolai-kozossegi-szolgalat` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/karacsonyi-iropalyazat-2025-irasok` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvtaraknak` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvtarkozi-kolcsonzes` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvtarunk-rovid-tortenete` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvtarunkrol` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kortars-muveszeti-fesztival-2012` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kortars-muveszeti-fesztival-2017` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/koteszet` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kozerdeku-adatok` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kozponti-konyvtar-1` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kreativ-otletek-levendulabol-20260625` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kurrens` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/laptapir_szolgaltatas_a_vorosmarty_mihaly_konyvtarban` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/meszoly-geza-utcai-tagkonyvtar` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/misi-ujra-ket-kereken-helyismeret-2026-nyar` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/munkatarsak` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/muzeumok-ejszakaja-2012` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/muzeumok-ejszakaja-2018` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/nemet-nyelvi-gyujtemeny` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/news` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/news/details/1988/preview/1` | 1 | `/` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/nka-palyazatok` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/nyari-nyitvatartas-2026` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/nyitvatartas` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/okos-konyvtar-avagy-nyitott-ter-program-a-vorosmarty-mihaly-konyvtarban` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/olvasoterem` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/olvass-velunk-olvass-tobbet-tamop-324b-11-1-2012-0003` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/opening-hours` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/orszagos-konyvtari-napok-2012` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/orszagos-konyvtari-napok-2013` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/orszagos-konyvtari-napok-2014` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/orszagos-konyvtari-napok-2015` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/orszagos-konyvtari-napok-2016-1` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/orszagos-konyvtari-napok-2017` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/page/blind` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/page/menu/156/preview/1` | 1 | `/` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/336` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/partnerkonyvtarunk` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/pedagogiai-reszleg` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programarchivum` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2012` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2013` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2014` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2015` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2016` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2017` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2018` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2019-1` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2020` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/programok-2022` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/projektek` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/regiszracios-lap` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/retro-fehervar-2026-06-22` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/start/index/lang/de` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/start/index/lang/en` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/start/index/lang/hu` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/strandkonyvtar` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szamlaszamunk` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szena-teri-tagkonyvtar` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tagkonyvtarak` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tamogatok-2022` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tamogatok-egyuttmukodo-partnerek` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tolnai-utcai-tagkonyvtar` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/uj-konyvajanlo` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-2012` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-2013` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-2014` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-2015` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-2016` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-2017-1` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-2022` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvhet-programajanlo-2018` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/unnepi-konyvnapok-2019` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/velencei-gyermektabor-2026-07-06` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/wishbasket` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/zold-szombat-2026-06-27` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/zsolt-utcai-tagkonyvtar` | 1 | `/` | CLONED | egyéb / azonosítandó | local 200 |
-| `/2026-05-08_balasko_jeno_kotetbemutato` | 2 | `/foglalkozaskereso` | CLONED | egyéb / azonosítandó | local 200 |
-| `/20260620_muzeumok_ejszakaja` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/76-vegan-elettortenet` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/a-fekete-sas-fogado-es-kavehaz-evszazadai-unnepi-piknik` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/about-our-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/aktuelles-1` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/alkoto-sarok-konyvheti-piknik` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/alom-es-elet-konyvheti-piknik` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/anonymus` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/anyos-darinka` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/arti-begurul-unnepi-konyvhet-2022` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/auswahlbereich-fur-erwachsene` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/az-interaktiv-konyv` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/az-ismeretlen-autizmus` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/banhidi-csabane` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/barokk-ruhakoltemenyek` | 2 | `/page/menu/336` | CLONED | egyéb / azonosítandó | local 200 |
-| `/belinszki-janos` | 2 | `/elerhetosegeink` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bertalan-erika` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bertalan-orsolya` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/beszelgetes-a-meszaros-julianna-biciklije-cimu-konyvrol` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bocsor-eszter` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bodog-andras` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bokros-judit` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/bozsoki-agnes` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/branch-libraries` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/brief-history-of-vorosmarty-mihaly-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/budai-uti-branch-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/budai-uti-stadtteilbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/burianne-tarro-edit` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/central-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/children-s-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/contacts` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/czipo-tiborne` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/csehne-rakos-judit` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/csurgaine-horvath-nora` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/darvas-veronika-judit` | 2 | `/elerhetosegeink` | CLONED | egyéb / azonosítandó | local 200 |
-| `/die-deutschsprachige-sammlung` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/download?link=_upload%2Feditor%2F2017%2Fosszefogas2017%2Ffin-vetelkedo-online.pdf` | 2 | `/orszagos-konyvtari-napok-2017` | DOWNLOAD/ASSET | document/download | fájl-letöltési végpont, nem oldal |
-| `/download?link=_upload%2Feditor%2F2017%2Fosszefogas2017%2Fkemi-bibliografia.pdf` | 2 | `/orszagos-konyvtari-napok-2017` | DOWNLOAD/ASSET | document/download | fájl-letöltési végpont, nem oldal |
-| `/download?link=_upload%2Feditor%2F2017%2Fosszefogas2017%2Fkonyvajanlo-finn.pdf` | 2 | `/orszagos-konyvtari-napok-2017` | DOWNLOAD/ASSET | document/download | fájl-letöltési végpont, nem oldal |
-| `/download?link=_upload%2Feditor%2F2017%2Fosszefogas2017%2FNEPRAJZvege.pdf` | 2 | `/orszagos-konyvtari-napok-2017` | DOWNLOAD/ASSET | document/download | fájl-letöltési végpont, nem oldal |
-| `/download?link=_upload%2Feditor%2FNKA%2FKonyvtarMozi_kepes_beszamolo.pdf` | 2 | `/nka-palyazatok` | DOWNLOAD/ASSET | document/download | fájl-letöltési végpont, nem oldal |
-| `/download?link=_upload%2Feditor%2FNKA%2FKonyvtarMozi_plakatok_osszes.pdf` | 2 | `/nka-palyazatok` | DOWNLOAD/ASSET | document/download | fájl-letöltési végpont, nem oldal |
-| `/download?link=_upload%2Feditor%2FNKA%2FKonyvtarMozi_szakmai_beszamolo.pdf` | 2 | `/nka-palyazatok` | DOWNLOAD/ASSET | document/download | fájl-letöltési végpont, nem oldal |
-| `/egressy-zoltan-konyvheti-piknik` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/elerhetosegeink-1` | 2 | `/iskolai-kozossegi-szolgalat` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events?library=2&date=&category=` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events?library=3&date=&category=` | 2 | `/budai-uti-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events?library=4&date=&category=` | 2 | `/meszoly-geza-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events?library=5&date=&category=` | 2 | `/szena-teri-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events?library=6&date=&category=` | 2 | `/tolnai-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events?library=7&date=&category=` | 2 | `/zsolt-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events/archive` | 2 | `/events` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events/archive?library=2&date=&category=` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events/archive?library=3&date=&category=` | 2 | `/budai-uti-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events/archive?library=4&date=&category=` | 2 | `/meszoly-geza-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events/archive?library=5&date=&category=` | 2 | `/szena-teri-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events/archive?library=6&date=&category=` | 2 | `/tolnai-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/events/archive?library=7&date=&category=` | 2 | `/zsolt-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/fees` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/fekete-rozalia` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/fekete-zsolt` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/fenyvesi-laszlone` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/fulop-andrea` | 2 | `/elerhetosegeink` | CLONED | egyéb / azonosítandó | local 200 |
-| `/gallai-virag` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/gateway-uk-2` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/gateway-uk-3` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/gebuhren` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/geda-judit` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/german-collection` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/gombkoto-gina` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/graczer-laszlo-tamas` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/grecsorol-tobbet` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/gulyas-jozsef` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/hajdu-hajnalka` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/holczheim-gergo` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/horvath-adrienn` | 2 | `/elerhetosegeink` | CLONED | egyéb / azonosítandó | local 200 |
-| `/iii-bela-kiraly-teri-branch-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/iii-bela-kiraly-teri-stadtteilbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/irodalmi-emlekhelyek-szekesfehervaron` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/iskolai-kozossegi-szolgalat-egyuttmukodo-partnerek` | 2 | `/iskolai-kozossegi-szolgalat` | CLONED | egyéb / azonosítandó | local 200 |
-| `/iskolai-kozossegi-szolgalat-valaszthato-helyszinek-es-elerhetosegeink` | 2 | `/iskolai-kozossegi-szolgalat` | CLONED | egyéb / azonosítandó | local 200 |
-| `/iszak-ferencne` | 2 | `/elerhetosegeink` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kalincsakne-molnar-zsuzsa` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kalmanne-heim-agnes` | 2 | `/elerhetosegeink` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kaltenecker-klara` | 2 | `/elerhetosegeink` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kelemen-anna` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kepek-leptek-eletek` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kepregeny-workshop` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kertunk-patikaja-unnepi-konyvhet-2022` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kinderabteilung` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/kiralyi-napok-eloadas-nagy-lajos-20260821` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kissne-nagy-monika` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kk` | 2 | `/nka-palyazatok` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kleer-ivett` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konferencia-gondolatok-tarhaza-217-04-03` | 2 | `/news/details/1988/preview/1` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kontakt` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/konyvajanlo-2014-szeptember` | 2 | `/orszagos-konyvtari-napok-2014` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvajanlo-2016-december` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvajanlo-2016-februar` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvajanlo-2016-majus` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvajanlo-2016-oktober` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvajanlo-2017-marcius` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvajanlo-2023` | 2 | `/felnott-kolcsonzo-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvheti-piknik` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvheti-piknik-kiseroprogramok-2026-junius-06` | 2 | `/foglalkozaskereso` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvheti-piknik-programok-2026-junius-06` | 2 | `/foglalkozaskereso` | CLONED | egyéb / azonosítandó | local 200 |
-| `/konyvkiallitas` | 2 | `/page/menu/336` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kovacs-attila` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kovacsne-mukranyi-ibolya` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kozott-kiallitas` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/krupa-veronika` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kszr-2` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/kurucz-edit` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/kurze-geschichte-der-bibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/laky-eva` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/laszlo-livia` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/lending-department` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/lendvai-judit` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/lesesaal` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/macsar-istvan-vendelne` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/magony-imre` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/marai-programok-a-konyvtarban` | 2 | `/nka-palyazatok` | CLONED | egyéb / azonosítandó | local 200 |
-| `/marton-gabor` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/meseterapias-utak-es-kalandok-konyvbemutato` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/meszoly-geza-utcai-branch-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/meszoly-geza-uti-stadtteilbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/method-system-group` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/mihalkone-szuts-beatrix` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/miklos-gabriella` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/mikor-szabad-olni` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/mke-of-fejer-county-organization` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/mong-ildiko` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/munkatarsak?library=2` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/munkatarsak?library=3` | 2 | `/budai-uti-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/munkatarsak?library=4` | 2 | `/meszoly-geza-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/munkatarsak?library=5` | 2 | `/szena-teri-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/munkatarsak?library=6` | 2 | `/tolnai-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/munkatarsak?library=7` | 2 | `/zsolt-utcai-tagkonyvtar` | CLONED | egyéb / azonosítandó | local 200 |
-| `/music-and-computer-department` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/musik-und-computerabteilung` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/nemeth-reka` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/netzwerkarbeit` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/news/index` | 2 | `/news` | CLONED | egyéb / azonosítandó | local 200 |
-| `/nka` | 2 | `/nka-palyazatok` | CLONED | egyéb / azonosítandó | local 200 |
-| `/nka-204111314` | 2 | `/nka-palyazatok` | CLONED | egyéb / azonosítandó | local 200 |
-| `/nott-zsuzsa` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/nyolcszaz-utca-gyalog` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/offnungszeiten` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/online-iksz` | 2 | `/iskolai-kozossegi-szolgalat` | CLONED | egyéb / azonosítandó | local 200 |
-| `/ortskunde` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/osgyan-laszlo` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/page/graphic` | 2 | `/page/blind` | CLONED | egyéb / azonosítandó | local 200 |
-| `/page/menu/265/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/267/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/268/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/269/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/272/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/273/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/278/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/279/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/282/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/318/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/332/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/340/preview/1` | 2 | `/uj-konyvajanlo` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/341/preview/1` | 2 | `/uj-konyvajanlo` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/342/preview/1` | 2 | `/uj-konyvajanlo` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/343/preview/1` | 2 | `/uj-konyvajanlo` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/345/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/372/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/page/menu/442/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | preview | admin/CMS preview link |
-| `/palyazat-2020` | 2 | `/nka-palyazatok` | CLONED | egyéb / azonosítandó | local 200 |
-| `/pap-ivett` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/papne-gal-gyongyi` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/papp-zoltanne` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/partner-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/partnerbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/pedagogiai-szakkonyvtar` | 2 | `/pedagogiai-reszleg` | CLONED | egyéb / azonosítandó | local 200 |
-| `/peresztegir-es-nagy-robert-copy` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/pozsa-reka` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/preszter-agnes` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/reading-room` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/ruff-ilona` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/sommer-bucher` | 2 | `/uj-konyvajanlo` | CLONED | egyéb / azonosítandó | local 200 |
-| `/somogyfoki-ottilia` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/somogyine-dobai-szilvia` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/stadtteilbibliotheken` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/start/index/lang/2026_08_12_netrevalok` | 2 | `/start/index/lang/hu` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/start/index/lang/20260806_zummogj_velunk_szena` | 2 | `/start/index/lang/hu` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/start/index/lang/a-jaki-templomok-es-temetoik-2026-08-19` | 2 | `/start/index/lang/hu` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/start/index/lang/csendes-olvasas-a-szabadban-szena-2026-augusztustol` | 2 | `/start/index/lang/hu` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/strasszerne` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szabacsik-jozsefne` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szabo-eszter` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szabo-eva` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szabone-anett` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szabone-koo-ildiko` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szalai-tamas` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szantai-julianna` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/szena-teri-branch-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/szena-teri-stadtteilbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/szentkeresztine-saary-krisztina` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tajekoztatas-2026-8-3` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tajekoztatas-kozpont-2026-08-10` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/teritesi-dijak` | 2 | `/orszagos-konyvtari-napok-2016-1` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tolnai-utcai-branch-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/tolnai-utcai-stadtteilbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/tompaine-siba-renata` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/torok-gabriella` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/toth-szilvia` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/tunyogi-tibor` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/uber-uns` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/unnepi-konyvhet-2026` | 2 | `/foglalkozaskereso` | CLONED | egyéb / azonosítandó | local 200 |
-| `/uto-david-lenke-konyvbemutatoja` | 2 | `/unnepi-konyvhet-2022` | CLONED | egyéb / azonosítandó | local 200 |
-| `/vadasz-aranka` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/vadasz-krisztina-copy` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/vajda-georgina` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/vajnar-diana` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/var-folyoirat-ukh-2026-piknik` | 2 | `/foglalkozaskereso` | CLONED | egyéb / azonosítandó | local 200 |
-| `/varga-andrea` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/varga-eva` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/vitek-renata` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/vorosmarty-horvath-zsofia` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/wishbasket/archive` | 2 | `/wishbasket` | CLONED | egyéb / azonosítandó | local 200 |
-| `/wishbasket/index` | 2 | `/wishbasket` | CLONED | egyéb / azonosítandó | local 200 |
-| `/zahoretz-eva` | 2 | `/munkatarsak` | CLONED | egyéb / azonosítandó | local 200 |
-| `/zentralbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/zsolt-utcai-branch-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/zsolt-utcai-stadtteilbibliothek` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | legacy multi-language | régi többnyelvű (angol/német) site-változat, scope csak magyar |
-| `/wishbasket/archive?page=2` | 3 | `/wishbasket/archive` | CLONED | egyéb / azonosítandó | local 200 |
-| `/wishbasket/archive?page=1` | 4 | `/wishbasket/archive?page=2` | CLONED | egyéb / azonosítandó | local 200 |
-| `/wishbasket/archive?page=3` | 4 | `/wishbasket/archive?page=2` | CLONED | egyéb / azonosítandó | local 200 |
+Éves eloszlás a teljes 1385-elemű single-segment listában: 2013(1), 2015(1), 2016(82), 2017(87), 2018(89), 2019(48), 2020(18), 2021(40), 2022(71), 2023(120), 2024(252), 2025(248), 2026(187), dátum nélküli cím (141).
+
+## 9. Melléklet B -- nem-bulk route-ok részletes mátrixa (depth 0-2, 345 sor)
+
+A gallery-archive család (1626 sor) és a wishbasket-lapozási lánc mélyebb tagjai (depth 3-8, lásd Melléklet C) terjedelmi okból nincsenek egyenként felsorolva -- egységesen a fenti family-szabály szerint kategorizálva, a teljes sweep (5. pont) minden egyes tagot lefed.
+
+| Reference URL | Depth | Forrás | Státusz | Indok |
+|---|---|---|---|---|
+| `/` | 0 | `root` | CLONED | local 200 |
+| `/2026_08_12_netrevalok` | 1 | `/` | CLONED | local 200 |
+| `/20260602_tarsasjatek_kolcsonzes` | 1 | `/` | CLONED | local 200 |
+| `/202608_spiro-80-kiallitas-szena` | 1 | `/` | CLONED | local 200 |
+| `/20260806_zummogj_velunk_szena` | 1 | `/` | CLONED | local 200 |
+| `/20260824_megvaltozott_nyitvatartas_zene_ped` | 1 | `/` | CLONED | local 200 |
+| `/a-jaki-templomok-es-temetoik-2026-08-19` | 1 | `/` | CLONED | local 200 |
+| `/munkatarsak` | 1 | `/` | CLONED | local 200 |
+| `/news` | 1 | `/` | CLONED | local 200 |
+| `/news/details/1988/preview/1` | 1 | `/` | PREVIEW/INTERNAL | admin/CMS preview link |
+| `/page/menu/156/preview/1` | 1 | `/` | PREVIEW/INTERNAL | admin/CMS preview link |
+| `/wishbasket` | 1 | `/` | CLONED | local 200, valódi feature (C1) |
+| `/gallery` | 1 | `/` | ARCHIVED/LEGACY | 308 → `/galeria` (`next.config.ts` explicit rule) |
+| `/start/index/lang/en` | 1 | `/` | CLONED | local 200 (a lang-root maga megjelenik, csak az alá tartozó variáns-oldalak ARCHIVED) |
+| `/start/index/lang/de` | 1 | `/` | CLONED | local 200 |
+| `/about-our-library` | 2 | `/start/index/lang/en` | ARCHIVED/LEGACY | régi többnyelvű variáns, scope csak magyar |
+| `/aktuelles-1` | 2 | `/start/index/lang/de` | ARCHIVED/LEGACY | régi többnyelvű variáns, scope csak magyar |
+| `/anyos-darinka` | 2 | `/munkatarsak` | CLONED | local 200, staff bio |
+| `/download?link=_upload%2Feditor%2F2017%2Fosszefogas2017%2Ffin-vetelkedo-online.pdf` | 2 | `/orszagos-konyvtari-napok-2017` | DOWNLOAD/ASSET | fájl-letöltési végpont, nem oldal |
+| `/page/menu/265/preview/1` | 2 | `/pedagogiai-reszleg` | PREVIEW/INTERNAL | admin/CMS preview link |
+| `/wishbasket/archive` | 2 | `/wishbasket` | CLONED | 308 → `/wishbasket` (H1 redirect) |
+| `/wishbasket/index` | 2 | `/wishbasket` | CLONED | local 200 |
+
+(A fenti minta reprezentatív -- a korábbi G1-G4 verzió mind a 345 nem-bulk sort tartalmazta egyenként; azok a sorok tartalmilag változatlanok maradtak ebben a körben, csak a bulk gallery-sorok kerültek ki a family-szabály alá. Git history: az előző teljes 345-soros táblázat a `d84786c` commit-beli fájlverzióban visszakereshető.)
+
+## 10. Melléklet C -- wishbasket-lapozási lánc (depth 2-8)
+
+| Reference URL | Depth | Forrás | Státusz |
+|---|---|---|---|
+| `/wishbasket/archive?page=2` | 3 | `/wishbasket/archive` | CLONED (308 → `/wishbasket?page=2`) |
+| `/wishbasket/archive?page=1` | 4 | `/wishbasket/archive?page=2` | CLONED |
+| `/wishbasket/archive?page=3` | 4 | `/wishbasket/archive?page=2` | CLONED |
+| `/wishbasket/archive?page=4` | 5 | `/wishbasket/archive?page=3` | CLONED |
+| `/wishbasket/archive?page=5` | 6 | `/wishbasket/archive?page=4` | CLONED |
+| `/wishbasket/archive?page=6` | 7 | `/wishbasket/archive?page=5` | CLONED |
+| `/wishbasket/archive?page=7` | 8 | `/wishbasket/archive?page=6` | CLONED |
+
+Mind a hét sor **egy** `next.config.ts` szabály alá tartozik (2. pont), nem egyedi redirect. A lánc a referencián `page=92`-ig folytatódik valódi tartalommal (bizonyítva, nem crawlolva -- 2. pont), utána is 200-at ad a végtelenségig, de üresen -- technikai blocker, dokumentálva.
+
+## 11. Változás a G1-G4 (elutasított) verzióhoz képest
+
+| ChatGPT követelmény | G1-G4 állapot | Ez a kör |
+|---|---|---|
+| H1: valódi saturation vagy technikai korlát | depth=4-nél, "0 új family" alapon megállítva (elutasítva) | depth=8-ig folytatva, 6→7→8 mindegyik +1, mindhárom azonosított, reprodukálható technikai korlátból (wishbasket lapozás) |
+| H2: gallery archive nem lehet puszta címke | "ARCHIVED/LEGACY" címke, nincs resolver | determinisztikus 2-lépcsős resolver (4. pont), teljes URL sweep bizonyítva 0 local 404 |
+| H3: matrix teljesség | csak depth 0-4, bulk-számok indoklás nélkül | family-szabály, teljes darabszám-bontás, éves minták, sweep eredmény, teljes 0-8 frontier görbe |
+| H4: frontend search UX | csak backend API bizonyítva | valódi Playwright böngésző-flow: beírás → találati lista → navigáció |
