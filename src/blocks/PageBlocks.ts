@@ -115,12 +115,5 @@ export const PageBlocks: Block[] = [
   DownloadsBlock,
   AccordionBlock,
   PartnersGridBlock,
-  // VideoEmbedBlock is defined but NOT registered here yet: registering it
-  // makes every `pages` collection query LEFT JOIN a `pages_blocks_video_
-  // embed` table that only exists once a migration creates it, and with
-  // push:false that table is never auto-created -- reproduced live: every
-  // pages-collection route 404'd immediately after adding it here, with no
-  // working `payload migrate:create` in this environment to fix it forward
-  // (Node 24 / tsx ESM incompatibility, see COLLAB.md Phase B notes).
-  // Re-add once a real migration lands.
+  VideoEmbedBlock,
 ]
