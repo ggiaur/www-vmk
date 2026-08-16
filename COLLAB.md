@@ -3,7 +3,12 @@
 ## CURRENT STATE
 
 **STATUS: IN_PROGRESS**  
-**BALL: CLAUDE**
+**BALL: GEMINI**  
+**LEAD IMPLEMENTER: GEMINI**
+
+Claude is temporarily unavailable because its usage credit is exhausted for approximately 11 hours. Do not idle the project waiting for Claude.
+
+Claude returns later as **secondary reviewer / specialist**, not as an automatic lead switch. ChatGPT remains **supervisor/reviewer only**.
 
 ## PRIMARY PRODUCT GOAL
 
@@ -11,7 +16,7 @@ Build a faithful modern clone of the current `https://www.vmk.hu/`.
 
 A route is NOT complete because it returns 200, has an H1, has similar word count, or redirects somewhere non-broken.
 
-For every reference page the clone must preserve, as applicable:
+For every reference page, as applicable, preserve:
 
 - correct URL/canonical mapping;
 - same meaningful page content and ordering;
@@ -24,11 +29,11 @@ For every reference page the clone must preserve, as applicable:
 
 Generic redirects to list pages do NOT satisfy detail/gallery parity unless the reference itself behaves that way.
 
-## CURRENT VERIFIED REALITY
+## VERIFIED BASELINE
 
-K1 Oracle v2 is now sufficiently falsifying to proceed with inventory work.
+K1 Oracle v2 is sufficient to expose the real problem.
 
-Fresh 22-route canary result from implementation commit `426b16e`:
+Fresh 22-route canary from `426b16e`:
 
 - overall: `PARITY_PASS 0/22`, `PARITY_FAIL 22/22`
 - URL: 20 PASS / 2 generic-redirect FAIL
@@ -39,72 +44,51 @@ Fresh 22-route canary result from implementation commit `426b16e`:
 - FUNCTION: 2 PASS / 20 NOT_APPLICABLE
 - VISUAL: 1 PARTIAL / 21 FAIL
 
-This confirms the clone is far from parity. Historical FIRST-HOP/DEPTH-2/FULL-SITE `MISSING=0`, `BROKEN=0`, `VERIFIED`, or RC-GO labels are NOT clone-parity acceptance evidence.
+Historical FIRST-HOP/DEPTH-2/FULL-SITE `MISSING=0`, `BROKEN=0`, `VERIFIED`, or RC-GO labels are NOT clone-parity acceptance evidence.
 
-Local preview `127.0.0.1:3011` has been restored in a detached tmux session. Public `new.vmk.hu` was independently observed returning HTTP 200 from public DNS/IP at the last check. Preview uptime is operationally useful but does not change parity acceptance.
+## GEMINI LEAD — IMMEDIATE EXECUTION
 
-## ORCHESTRATION CHANGE — EFFECTIVE NOW
+Gemini must NOT implement inside Claude's worktree or branch.
 
-Gemini independent audit remains required before FINAL acceptance, but it is NO LONGER a blocker for the full deficit inventory.
+First action:
 
-Do not wait for Gemini before K2.
+1. In Gemini's own dedicated worktree, fetch `origin/agent/visual-clone-oracle`.
+2. Create a new implementation branch from the current primary head, preferably `agent/gemini-k2-lead`.
+3. Push that branch before substantive work if possible.
+4. Continue K2 there. The old `agent/gemini-final-audit` branch remains audit/history and may carry the handoff instructions, but must not become a shared worktree with Claude.
 
-Phase order:
+Hard rule: **1 agent = 1 branch = 1 worktree**.
 
-```text
-K1 Oracle v2 falsification canary      DONE ENOUGH TO INVENTORY
-          |
-          +---- Gemini independent audit continues in parallel (non-blocking for K2)
-          |
-          v
-K2 FULL reference snapshot + COMPLETE deficit inventory   <-- DO THIS NOW
-          |
-          v
-ChatGPT inventory review
-          |
-          v
-K3 page-family/root-cause remediation
-          |
-          v
-FULL parity rerun + Gemini independent verification
-          |
-          v
-K4 final CI/security/WCAG/mergeability
-```
+## K2 — GEMINI REQUIRED DELIVERABLE NOW
 
-## K2 — CLAUDE REQUIRED DELIVERABLE NOW
+Do NOT start broad random remediation yet. First establish the complete measurable gap.
 
-Do NOT start broad product remediation yet. First establish the complete measurable gap.
+### A. Full timestamped reference snapshot
 
-### 1. Freeze the current reference
+For the full relevant Hungarian `www.vmk.hu` scope, store per URL:
 
-Create a timestamped machine-readable reference snapshot for the full relevant Hungarian `www.vmk.hu` scope.
-
-For every discovered reference URL store, as applicable:
-
-- reference URL;
-- final URL/status/redirect chain;
+- reference URL, final URL/status/redirect chain;
 - page family;
 - title/H1/headings;
 - ordered meaningful main-content blocks;
-- actual content media URLs and identity fingerprints;
+- actual content media URLs + identity fingerprints;
 - gallery media including CSS `background-image`, `srcset`, lazy-load/lightbox sources;
 - internal links;
 - external links;
-- PDFs/downloads and target health;
+- PDFs/downloads + target health;
 - tables/lists/contact/date structures;
 - form/function presence;
-- desktop/mobile reference screenshots or deterministic screenshot references.
+- deterministic desktop/mobile screenshot references.
 
-Do not use only counts as evidence.
+Counts alone are not evidence.
 
-### 2. Compare the complete clone scope
+### B. Complete clone comparison
 
-Produce one row/result per reference URL with these dimensions:
+Produce one result per reference URL:
 
 `URL | TEXT | MEDIA | LINKS_DOCS | STRUCTURE | FUNCTION | VISUAL | OVERALL`
 
-Only these terminal states are allowed:
+Allowed terminal states:
 
 - `PASS`
 - `FAIL`
@@ -114,71 +98,65 @@ Only these terminal states are allowed:
 
 No `PARITY_PASS` if any applicable dimension is not PASS.
 
-### 3. Produce COMPLETE deficit inventory
+### C. Full deficit inventory
 
-Create/update `docs/CLONE_PARITY_FULL_INVENTORY.md` plus machine-readable JSON/CSV source.
+Create:
 
-Must include at minimum:
+- `docs/CLONE_PARITY_FULL_INVENTORY.md`
+- machine-readable JSON and/or CSV source
+
+Must include:
 
 - total reference URLs discovered;
 - total scored clone URLs;
 - PASS/FAIL totals;
-- routes with wrong/missing content;
-- routes with missing/wrong media;
-- total missing/broken image assets;
-- routes with missing/wrong internal links;
-- routes with missing/wrong external links;
+- wrong/missing content routes;
+- missing/wrong media routes and exact assets;
+- missing/broken image totals;
+- wrong/missing internal links;
+- wrong/missing external links;
 - missing/broken PDFs/downloads;
-- generic redirects incorrectly used as substitutes;
+- generic redirects used incorrectly as substitutes;
 - structural mismatches;
 - functional mismatches;
 - major desktop/mobile visual mismatches;
 - methodology-blocked routes;
 - root-cause grouping by page family.
 
-For every deficit include the exact route and enough concrete evidence to reproduce it.
+Every deficit must include exact route + reproducible evidence.
 
-### 4. Group by root cause, not by random page
+### D. Root-cause grouping
 
-The inventory must identify reusable defect families, e.g.:
+Group defects into reusable repair batches, e.g.:
 
 - gallery/detail routes collapsed to `/galeria`;
 - imported pages missing media;
-- wrong content extractor/importer behavior;
-- internal-link rewriting errors;
+- wrong content importer/extractor;
+- internal-link rewrite errors;
 - document/download migration gaps;
 - page-family template/layout mismatch;
 - legacy route mapping error;
 - missing Payload data vs frontend rendering defect.
 
-This grouping will define K3 remediation batches.
+This grouping defines K3.
 
 ## CHECKPOINT DISCIPLINE
 
-Push substantive technical checkpoints at least every ~30–45 minutes while actively working.
+Push substantive technical checkpoints every ~30–45 minutes while actively working.
 
-A valid checkpoint contains at least one of:
+Valid checkpoint:
 
-- new snapshot/inventory code;
-- a measurable route batch completed;
+- snapshot/inventory code;
+- measurable route batch;
 - generated real deficit data;
-- a root cause proven with exact examples.
+- proven root cause with exact examples.
 
-Prose-only `working on it` commits do not count.
+Prose-only status does not count.
 
-## GEMINI TRACK — PARALLEL, NON-BLOCKING FOR K2
+## ROLE MODEL UNTIL CLAUDE RETURNS
 
-Gemini remains on `agent/gemini-final-audit` and must independently audit overlapping routes and try to falsify Claude's Oracle/inventory.
+- **Gemini:** lead implementer, K2 execution and later K3 after review.
+- **ChatGPT:** supervisor/reviewer; accepts/rejects evidence and controls gates.
+- **Claude:** paused for credit; when available again, reviewer/specialist unless explicitly reassigned.
 
-Gemini does not authorize or block K2 execution. Gemini evidence becomes a hard gate again before K3 inventory acceptance is converted into final parity acceptance and certainly before K4/release.
-
-## HARD RULES
-
-- 1 agent = 1 branch = 1 worktree.
-- Claude owns `agent/visual-clone-oracle` dedicated worktree.
-- Gemini owns `agent/gemini-final-audit` dedicated worktree.
-- No agent may switch/reset another agent's worktree.
-- ChatGPT coordinates through GitHub/COLLAB.
-- User is not a courier.
-- Do not optimize for green counts; optimize for exact reference parity.
-- Do not weaken thresholds or mark redirects/placeholders as PASS to make reports look better.
+Do not wait for Claude. Do not ask the user to relay prompts or manage branches/worktrees.
