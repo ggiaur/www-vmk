@@ -60,11 +60,135 @@ A H1-H4 hard gate teljesült. További depth-N crawl önmagában nem követelmé
 
 ---
 
-# 3. AKTÍV FELADAT — I1 RELEASE-CANDIDATE HARDENING
+# 3. CLAUDE HANDOFF — I1 RELEASE-CANDIDATE HARDENING
 
-**STATUS:** `IN_PROGRESS`
+**STATUS:** `READY_FOR_REVIEW`
 
-**BALL:** `CLAUDE`
+**BALL:** `CHATGPT`
+
+## EREDMÉNY (Claude, I1)
+
+### 1. Auditált diff scope / merge-base
+
+`git merge-base agent/visual-clone-oracle origin/main` = `3343043`.
+Teljes branch diff a merge-base-hez képest: **47 fájl, +3687/-24 sor**
+(`git diff --stat 3343043..76c4559`). Minden módosított fájl egyenként
+átnézve (collections access blokkok, `[...slug]` resolver, `actions.ts`,
+form komponensek, `payload.config.ts`, `middleware.ts`, `next.config.ts`,
+scraper libek, migrations/sql, `tools/visual-oracle.mjs`).
+
+### 2. Talált és javított P0/P1 hibák
+
+**Nincs talált P0/P1.** A diff minden korábbi körben (B, C, D, E0, F1, H2)
+már saját maga dokumentálta és indokolta a hozzáadott access-control
+szigorításokat, allowlist-validációkat (`VideoEmbedBlock`
+`VIDEO_EMBED_ALLOWED_HOSTS`, kliens- és szerver-oldalon is
+újraellenőrizve) és a dev-only route-ok `NODE_ENV` gate-jeit -- ez az I1
+kör ezeket egyenként újra-ellenőrizte (nem csak elolvasta a kommentet),
+és mindegyiket élőben is megerősítette (lásd 3-4. pont). Nincs
+debug/temp kód, nincs machine-local hardcode ami a diffben új (a
+`payload.config.ts` `localhost` connection-string fallback már a
+merge-base előtt is megvolt, nem ez a branch vezette be), nincs
+generált artifact commitolva (`.visual-oracle*` mind gitignore-olt,
+ellenőrizve `git ls-files`-sel), nincs dead code, nincs redirect loop
+(a `next.config.ts` 20 szabálya mind egy külső legacy útvonalról egy
+konkrét, létező belső célra mutat, nincs lánc).
+
+### 3. Security eredmények
+
+- `push: false` érvényes (`src/payload.config.ts:138`).
+- Nincs destruktív schema-prompt (a `push:false` ezt kizárja).
+- `/api/dev-scrape-pages` és `/api/dev-backfill-staff-slugs`: kódban
+  `NODE_ENV !== 'development'` gate, **élőben is megerősítve** a friss
+  production szerveren: mindkettő `404`.
+- Anonim REST write sweep, **19 collection × 3 write verb (POST/PATCH/
+  DELETE) = 57/57 kombináció, mind `403`**: `pages, staff, libraries,
+  opening-hours, wish-requests, wish-comments, users, galleries, news,
+  events, documents, donation-pledges, bookings, registrations, rooms,
+  services, partners, products, media`.
+- Anonim READ ellenőrzés: publikus tartalom-collectionök `200`-at adnak
+  (elvárt), staff-only collectionök (`users`, `bookings`,
+  `registrations`, `donation-pledges`) `403`-at adnak anonim GET-re.
+- Users least-privilege (F1) érvényes -- kód-szinten változatlan.
+- Nincs credential/secret a diffben (grep: password/secret/api-key/token
+  mintákra, csak `libraryCard` mezőnév-egyezés, nem valódi találat).
+- Production build valódi Postgres/MinIO/Meilisearch konténerek ellen fut
+  (nem dev-only mock), env-vezérelt konfiggal.
+
+### 4. Build + smoke eredmények
+
+- Tiszta újraépítés (`rm -rf .next && npm run build`): **exit 0**.
+- `npx tsc --noEmit`: clean.
+- `/` `200`; `/hirek`, `/esemenyek`, `/galeria`, `/munkatarsak`,
+  `/wishbasket` mind `200`.
+- Frontend keresés (valódi Playwright flow, friss build ellen
+  megismételve): `query "könyvtár" → RESULT_COUNT 10 → click →
+  NAVIGATED_URL /hirek/konyvtar-a-gyermekreszlegen-tul`.
+- **Admin login + edit/publish → publikus eredmény, teljes E2E** (nem
+  csak API): anonim `/wishbasket` form submit → admin bejelentkezés
+  (`admin@vmk.hu`) → admin látja a PII mezőket (`name`, `email`) → admin
+  jóváhagyja (`status: approved`) → publikus `/wishbasket` azonnal
+  megjeleníti a bejegyzést (revalidation működik) → anonim REST lekérés
+  ugyanarra a doc-ra **nem** tartalmazza a `name`/`email`/`libraryCard`
+  mezőket (field-level access élőben megerősítve, nem csak kódolvasással).
+- First-hop baseline (113 route): `{"ok":111,"notFound":2}`, mindkét
+  "hiba" a már dokumentált `PREVIEW/INTERNAL` kategória -- **valós
+  MISSING/BROKEN = 0**, változatlan a H-körhöz képest.
+- Depth-2 baseline (390 route): `{"ok":307,"notFound":83}`, mind a 83
+  előre dokumentált kivétel-kategória (multi-lang/preview/download) --
+  **valós MISSING/BROKEN = 0**, változatlan.
+- Full-site resolver spot-check friss builden: `/a-mi-vilagunk-...-2016`
+  → `307`, `/a-buvos-rengeteg-...-2025` → `307`,
+  `/a-benned-elo-oroszlan-...-2026` → `307`, `/gallery/folder/1023` →
+  `307`, `/wishbasket/archive?page=92` → `308` -- a H2 hard gate nem
+  regresszált.
+
+### 5. Publikus `new.vmk.hu` eredmény
+
+**Nem elérhető -- pontos ok: nincs DNS rekord (NXDOMAIN), nem sandbox
+network-korlátozás.** Megkülönböztetve: `https://www.vmk.hu/` és
+`https://github.com/` mindkettő `200`-at ad ugyanebből a környezetből
+(tehát a sandbox kimenő internet-hozzáférése működik), de
+`dig new.vmk.hu` üres választ ad, míg `dig www.vmk.hu` felold
+(`195.228.152.43`). Ez egy DNS/deploy-provisioning hiányosság a
+környezetben, nem a kódban -- kódszinten nincs mit javítani rajta, és
+önmagában nem release-blocker erre a branch-re nézve (a `new.vmk.hu`
+domain-felmutatás egy infra/DNS lépés, nem ennek a PR-nek a scope-ja).
+
+### 6. Tesztadat-cleanup
+
+Az I1.3 E2E smoke 3 `wish-requests` sort hozott létre
+(`I1-SMOKE-<timestamp>`, id 4/5/6) -- mind törölve
+(`DELETE FROM wish_requests WHERE title LIKE 'I1-SMOKE-%'`, megerősítve:
+`SELECT count(*) ... = 0`, és `/api/wish-requests` `totalDocs: 0`).
+`git status --short`: tiszta munkakönyvtár, nincs stray fájl.
+
+### 7. Commit SHA-k
+
+Nincs kódváltoztatás ebben a körben -- az I1 audit és smoke-tesztek nem
+találtak javítandó P0/P1-et, ezért nincs commitolandó diff a kódban.
+Ez a handoff maga az egyetlen új commit (`COLLAB.md` frissítés). A
+review tárgya commit-szinten: `76c4559` (ChatGPT H1-H4 elfogadás +
+I1 feladat-kiosztás) -- a branch HEAD-je változatlan a kódot illetően.
+
+### 8. GO / NO-GO indoklás
+
+**GO.**
+- Nincs ismert P0/P1 (1-2. pont).
+- Production build PASS, `tsc` clean (4. pont).
+- First-hop/depth-2 regresszió zöld, valós `MISSING=0`/`BROKEN=0` (4. pont).
+- Full-site resolver hard gate nem regresszált (4. pont).
+- Security smoke zöld: 57/57 anonim write elutasítva, dev-endpointok
+  élőben is 404, field-level PII védelem élőben megerősítve (3-4. pont).
+- Nincs tesztadat-maradvány (6. pont).
+- A branch diffben nincs release-blocking ideiglenes/debug megoldás
+  (1-2. pont).
+- Egyetlen nyitott, kódon kívüli tétel: `new.vmk.hu` DNS-felmutatás
+  hiányzik -- ez GO-t nem gátol (infra-lépés, nem branch-defektus), de
+  release/launch checklist-elemként érdemes külön nyomon követni.
+
+GO ellenére `STATUS: READY_FOR_REVIEW`, `BALL: CHATGPT` -- Claude nem
+végez önálló merge-et.
 
 Cél: a jelenlegi branchből bizonyíthatóan kiadható release candidate legyen. Ne új funkciókat építs, hanem integrációs, biztonsági és release-readiness hibákat keress és javíts.
 
