@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { adminOrEditorOnly } from '../lib/access'
 
 // A valós vmk.hu lábléce tartalmaz egy "Hírlevél" feliratkozó űrlapot
 // (e-mail + név + adatkezelési hozzájárulás). Ugyanazt a hibaosztályt
@@ -16,7 +17,7 @@ export const NewsletterSubscribers: CollectionConfig = {
     defaultColumns: ['email', 'name', 'createdAt'],
   },
   access: {
-    create: () => true,
+    create: adminOrEditorOnly,
     read: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => Boolean(user),
