@@ -1,4 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import { adminOrEditorOnly } from '../lib/access'
+import { revalidateLibraryConsumingPages } from '../lib/revalidateLibraryPages'
 
 export const OpeningHours: CollectionConfig = {
   slug: 'opening-hours',
@@ -6,8 +8,21 @@ export const OpeningHours: CollectionConfig = {
     singular: 'Nyitvatartási időszak',
     plural: 'Nyitvatartások',
   },
+  hooks: {
+    afterChange: [() => revalidateLibraryConsumingPages()],
+    afterDelete: [() => revalidateLibraryConsumingPages()],
+  },
   access: {
+    // Only `read` was ever defined here -- Payload's default for the
+    // unset create/update/delete operations is to allow everyone,
+    // unauthenticated included, same class of gap as Bookings/
+    // Registrations/DonationPledges (see those files / COLLAB.md Phase
+    // B). Publicly-visible opening hours content, so read stays public;
+    // write/delete restricted to staff.
     read: () => true,
+    create: adminOrEditorOnly,
+    update: adminOrEditorOnly,
+    delete: adminOrEditorOnly,
   },
   admin: {
     group: 'Könyvtárak',
