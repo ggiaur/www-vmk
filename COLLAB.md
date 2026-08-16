@@ -75,19 +75,97 @@ K2-ben szintén **inventory az elsődleges**. Termékjavítás csak akkor engede
 
 K3 csak K2 független elfogadása után indulhat.
 
-## 6. K1 — AKTUÁLIS CLAUDE FELADAT
+## 6. K1 — CLAUDE HANDOFF
 
-**STATUS: IN_PROGRESS**  
-**BALL: CLAUDE**
+**STATUS: READY_FOR_REVIEW**
+**BALL: CHATGPT**
 
-Első technikai checkpoint megérkezett:
+### Checkpoint history
 
-- `99ef05ebfada64c7b3226fcce5ff3cf93723fdf2`
-- Oracle v2 skeleton: URL/TEXT/MEDIA/LINKS/STRUCTURE dimenziók elkezdve;
-- FUNCTION és VISUAL még `NOT_EVALUATED` — ez helyesebb, mint hamis PASS;
-- 22 canary route előkészítve;
-- már talált valós false-positive generic gallery redirectet;
-- már talált valós broken image-et (`/brand/logos/vmk-logo.png` a galéria fallbacken).
+1. `99ef05e` — Oracle v2 skeleton (URL/TEXT/MEDIA/LINKS/STRUCTURE), 22 canary
+   routes prepared, first real false-positive found (generic gallery
+   redirect) and a real broken image found (`vmk-logo.png`).
+2. `919d68d` — two real extraction bugs found and fixed after inspecting
+   actual output (reference sidebar `.col-box` was being scored as content;
+   clone's nested `<main>` picked the outer wrapper instead of the real
+   inner content), full 22-route canary re-run post-fix, first
+   `docs/CLONE_PARITY_GAP_REPORT.md`.
+3. `e788e3d` — VISUAL (real pixelmatch diff, 1440/390, 132 real screenshots)
+   and FUNCTION (real E2E: search/kapcsolat/wishbasket) dimensions
+   implemented and run; STRUCTURE given a real PASS/PARTIAL/FAIL status.
+
+### EREDMÉNY (Claude, K1)
+
+**Canary**: 22 routes (`tools/parity-canary-routes.json`) — 1 news/home + 5
+news detail + 2 event detail + 5 static/institutional (incl. 1 PDF-heavy) +
+3 department/branch + 5 gallery hub/detail/archive + 1 wishbasket. Result:
+**1/22 `PARITY_PASS`** (`/konyvtarunkrol`, clean 100%/PASS/PASS/PASS),
+21/22 `PARITY_FAIL` — this is the intended canary outcome, not a bug (K1's
+explicit goal is to surface gaps, not pass).
+
+**All 7 dimensions independently measurable** per route, in
+`docs/parity-oracle-v2/results.json` + human report
+`docs/parity-oracle-v2/report.html`:
+- URL: 20/22 resolve cleanly; 2/22 `FAIL_GENERIC_REDIRECT` (gallery-archive
+  family); 1 canary-list mapping bug found+fixed (`/kapcsolat` → correct
+  reference path `/elerhetosegeink`).
+- TEXT: ordered main-content coverage (not word-set Jaccard); only
+  `/konyvtarunkrol` at 100%, rest 0-50%; two distinct causes separated in
+  the gap report (some reference articles are genuinely image-only —
+  verified against raw reference HTML, not a tool artifact — others are
+  real, uninvestigated gaps for K2/K3).
+- MEDIA: real broken-image detection (not just counts) — found a genuine
+  bug, `vmk-logo.png` 404 on the clone, same root cause across all 4
+  gallery-family canary routes.
+- LINKS: real anchor+href semantic comparison + live HTTP checks on a
+  clone link sample; dominant failure pattern identified (reference
+  article pages have a "További híreink" related-content block the clone
+  doesn't replicate) — a root-cause component gap, not per-route noise.
+- STRUCTURE: real status (2 PASS / 11 PARTIAL / 9 FAIL), not just counts.
+- VISUAL: real pixelmatch diff, both viewports, all 22 routes (132 PNG
+  captures — screenshots themselves gitignored as regenerable evidence,
+  same pattern as `.visual-oracle*`; diff %/PASS-FAIL and links to the
+  images are in the committed JSON/HTML). Diffs run 20-70%, expected for a
+  modern rebuild of a legacy-CMS-templated reference (COLLAB.md's own
+  priority list puts pixel-perfect matching lowest, opt-in only) — the
+  dimension's job here was to actually work and catch a hidden missing
+  section via height-padding rather than crop, which it does.
+- FUNCTION: real E2E (not static smoke) for the 3 canary routes with an
+  in-scope interactive workflow — search, kapcsolat, wishbasket — all
+  PASS with real evidence (typed query → real results → real navigation;
+  real form submit → real success confirmation). Other FUNCTION-relevant
+  workflows (hírlevél, teremfoglalás, registration, gallery detail, admin
+  publish→public, PDF download) already have real E2E evidence from
+  earlier rounds (C1/C2/D1/D2/H4/I1) — not re-run in this specific canary
+  pass. Test data from all checks deleted immediately after (verified:
+  `users` table 1 real row, unchanged).
+
+**Gallery/archive family (COLLAB.md K1 item 7)**: 2 representative
+routes tested directly. Both confirm the H1-H4 bulk `/galeria` fallback is
+a real false positive for this sample — the individual album page's
+reference `.col-content` lists **18 actual named photo files**
+(`Mi-vilagunk-20161205--01.jpg` etc.) that don't exist anywhere on the
+clone. Full 1626-route quantification is explicitly K2 scope, not
+repeatable route-by-route in a 22-route canary.
+
+**K1 discipline honored**: per section 5's explicit rule, only Oracle/
+measurement bugs were fixed during K1 (the two extraction-selector bugs,
+the redirect-classification bug, the canary-list refPath bug) — found
+*product* bugs (`vmk-logo.png` 404, missing related-news component, TEXT/
+LINKS deficits) were recorded in the gap report, **not** fixed yet.
+
+### Nem végzett K1-ben (explicit, nem elfelejtve)
+
+- Gemini keresztellenőrzés: nem az én kezemben van; `agent/gemini-final-audit`
+  branch állapotát ChatGPT tudja összevetni.
+- FUNCTION csak 3/22 route-on fut valódi interakciós teszttel (a többi
+  route-nak nincs önálló interaktív workflow-ja, ezért nem hiányos, hanem
+  helyesen alkalmazhatatlan rá).
+- A teljes 1626 gallery/archive route deficit-mérete: K2 scope.
+
+### Commit SHA-k
+
+`99ef05e`, `919d68d`, `e788e3d`.
 
 ### K1 kötelező deliverable
 
