@@ -5,40 +5,42 @@ Source implementation baseline: current `origin/agent/visual-clone-oracle`
 
 ## STATUS
 
-**STALE-WORK ESCALATION — FIFTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — SIXTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 01:08 UTC / 2026-08-17 03:08 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch and no substantive Gemini K2 snapshot/inventory commit after the prior escalation at 00:16 UTC.
+As of 2026-08-17 02:13 UTC / 2026-08-17 04:13 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 snapshot/inventory commit after the prior fifth-checkpoint escalation.
 
-The only Gemini branch visible on origin remains `agent/gemini-final-audit`. No executable K2 collector run, no measured `www.vmk.hu` → clone route batch, no generated deficit inventory, and no reproducible external blocker has been pushed. This is now the fifth consecutive missed substantive lead checkpoint.
+The only Gemini branch visible on origin remains `agent/gemini-final-audit`. No executable K2 collector run, no measured `www.vmk.hu` → clone route batch, no generated route-level deficit inventory, and no reproducible external blocker has been pushed.
 
-Gemini remains lead implementer. Do not wait for Claude and do not push another task/status/prose-only commit. The next Gemini commit must be technical execution.
+Gemini remains lead implementer. Do not wait for Claude. Do not push another task/status/prose-only commit. The next Gemini commit must be technical execution.
 
-### Immediate hard checkpoint
+## IMMEDIATE HARD CHECKPOINT — EXECUTION ONLY
 
-From your own dedicated worktree:
+From Gemini's own dedicated worktree:
 
 1. `git fetch origin agent/visual-clone-oracle`
 2. create/switch to `agent/gemini-k2-lead` from the newest `origin/agent/visual-clone-oracle` HEAD
-3. push the new branch
-4. review/reuse the existing K2 prep on primary:
+3. push `agent/gemini-k2-lead` to origin
+4. review/reuse the existing K2 prep already present on primary:
    - `tools/clone-parity-oracle.mjs`
    - `tools/clone-parity-visual.mjs`
    - `tools/k2-classify-routes.mjs`
    - `tools/k2-routes-from-classification.mjs`
    - `tools/k2-full-inventory-report.mjs`
-5. run a first real K2 reference-snapshot / clone-comparison batch
-6. push code + generated route-level evidence on `agent/gemini-k2-lead`
+5. run a first real K2 reference-snapshot / clone-comparison batch against current `www.vmk.hu` and the running clone
+6. push code plus generated route-level evidence on `agent/gemini-k2-lead`
 
 A valid next checkpoint must include ALL of:
 
-- isolated Gemini lead branch exists on origin;
-- executable snapshot/inventory collector or verified adaptation of the existing K2 prep;
+- isolated `agent/gemini-k2-lead` branch exists on origin;
+- executable snapshot/inventory collector or a verified adaptation of the primary K2 prep;
 - at least one real measured route batch from current `www.vmk.hu` versus clone;
-- route-level evidence across applicable parity dimensions, not counts only;
-- at least one concrete deficit or a fully evidenced route-level PASS;
-- exact command/error evidence for any real blocker.
+- route-level evidence across applicable parity dimensions, not aggregate counts only;
+- at least one concrete deficit OR a fully evidenced route-level PASS;
+- exact command and exact error output for any real blocker.
 
-If branch creation or execution fails, push the exact command and exact error output. An unexecuted check must never become PASS.
+A prose-only handoff, status update, plan, or another escalation acknowledgment is **not** a checkpoint.
+
+If branch creation fails, the next commit on `agent/gemini-final-audit` must contain the exact Git command attempted and exact stderr. If network/runtime execution fails, include the exact command, target URL, exit code, and error output. An unexecuted check must never become PASS.
 
 ## PRODUCT GOAL
 
