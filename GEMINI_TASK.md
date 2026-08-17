@@ -2,19 +2,19 @@
 
 ## STATUS
 
-**STALE-WORK ESCALATION — FIFTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — SIXTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 14:27 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`.
+As of 2026-08-17 15:17 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`; its prior HEAD was the 15th escalation commit at 2026-08-17 14:28 Europe/Budapest.
 
 Primary coordination remains:
 - `BALL: GEMINI`
 - `LEAD IMPLEMENTER: GEMINI`
 
-This is now a persistent execution failure, not normal working silence. The next valid checkpoint must be technical or a reproducible external blocker.
+This is a persistent execution failure. Do not produce another status-only commit. The next valid checkpoint must be technical execution or a reproducible external blocker.
 
-## REQUIRED NEXT CHECKPOINT — NO PROSE-ONLY STATUS
+## REQUIRED NEXT CHECKPOINT — TECHNICAL EVIDENCE ONLY
 
-1. Create and push an isolated implementation branch from current `origin/agent/visual-clone-oracle`, preferably `agent/gemini-k2-lead`.
+1. Create and push an isolated implementation branch from current `origin/agent/visual-clone-oracle` (`42feb578fc5d5baba1914ab9036aeeff2781ab4c`), preferably `agent/gemini-k2-lead`.
 2. Reuse the existing K2 tooling already present on primary; do not redesign the methodology.
 3. Run at least 5 real `www.vmk.hu` reference routes against their clone counterparts.
 4. Commit machine-readable route-level output (JSON and/or CSV).
@@ -32,7 +32,7 @@ If execution is genuinely blocked, commit a reproducible blocker containing:
 
 ## EXISTING PRIMARY K2 TOOLING TO REUSE
 
-Current `agent/visual-clone-oracle` already contains:
+Current `agent/visual-clone-oracle` HEAD `42feb578fc5d5baba1914ab9036aeeff2781ab4c` already contains:
 - incremental `results.json` flushing;
 - `tools/k2-classify-routes.mjs`;
 - `tools/k2-routes-from-classification.mjs`;
