@@ -5,11 +5,11 @@ Source implementation baseline: current `origin/agent/visual-clone-oracle`
 
 ## STATUS
 
-**STALE-WORK ESCALATION — SIXTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — SEVENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 02:13 UTC / 2026-08-17 04:13 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 snapshot/inventory commit after the prior fifth-checkpoint escalation.
+As of 2026-08-17 03:20 UTC / 2026-08-17 05:20 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 snapshot/inventory commit after the prior sixth-checkpoint escalation.
 
-The only Gemini branch visible on origin remains `agent/gemini-final-audit`. No executable K2 collector run, no measured `www.vmk.hu` → clone route batch, no generated route-level deficit inventory, and no reproducible external blocker has been pushed.
+The only Gemini branch visible on origin remains `agent/gemini-final-audit`, whose previous HEAD was the sixth orchestration escalation (`40b1810f`). No executable K2 collector run, no measured `www.vmk.hu` → clone route batch, no generated route-level deficit inventory, and no reproducible external blocker has been pushed.
 
 Gemini remains lead implementer. Do not wait for Claude. Do not push another task/status/prose-only commit. The next Gemini commit must be technical execution.
 
@@ -38,9 +38,7 @@ A valid next checkpoint must include ALL of:
 - at least one concrete deficit OR a fully evidenced route-level PASS;
 - exact command and exact error output for any real blocker.
 
-A prose-only handoff, status update, plan, or another escalation acknowledgment is **not** a checkpoint.
-
-If branch creation fails, the next commit on `agent/gemini-final-audit` must contain the exact Git command attempted and exact stderr. If network/runtime execution fails, include the exact command, target URL, exit code, and error output. An unexecuted check must never become PASS.
+If branch creation fails, commit the exact Git command attempted and exact stderr on `agent/gemini-final-audit`. If runtime/network execution fails, include exact command, target URL, exit code, and error output. An unexecuted check must never become PASS.
 
 ## PRODUCT GOAL
 
@@ -69,9 +67,9 @@ K1 Oracle v2 canary on primary implementation commit `426b16e`:
 - LINKS 19/22 FAIL
 - VISUAL 21/22 FAIL
 
-This is the real starting condition. Historical `MISSING=0`, `BROKEN=0`, `VERIFIED`, and RC-GO route labels are not parity evidence.
+Historical `MISSING=0`, `BROKEN=0`, `VERIFIED`, and RC-GO route labels are not parity evidence.
 
-The current primary HEAD contains reusable K2 preparation from Claude's stopped in-flight work, but no K2 acceptance claim:
+Current primary HEAD `42feb578` contains reusable K2 preparation from Claude's stopped in-flight work, with no K2 acceptance claim:
 
 - incremental result flushing in `tools/clone-parity-oracle.mjs` / `tools/clone-parity-visual.mjs`;
 - `tools/k2-classify-routes.mjs`;
@@ -82,27 +80,7 @@ Gemini may reuse, modify, or replace these after review; do not duplicate solved
 
 ## K2 DELIVERABLE
 
-### 1. Freeze the complete reference
-
-Create a timestamped machine-readable snapshot of the full relevant Hungarian `www.vmk.hu` scope. Per route capture:
-
-- reference URL + final URL/status/redirect chain;
-- family;
-- title/H1/headings;
-- ordered meaningful main-content blocks;
-- actual content media + identity fingerprints;
-- gallery CSS/background/srcset/lazy/lightbox media;
-- internal/external links;
-- PDFs/downloads + health;
-- lists/tables/contacts/dates;
-- forms/function presence;
-- deterministic desktop/mobile screenshot references.
-
-Do not rely on counts alone.
-
-### 2. Compare every reference route to clone
-
-Per route output:
+Create a timestamped full reference snapshot and complete clone deficit inventory. Per route output:
 
 `URL | TEXT | MEDIA | LINKS_DOCS | STRUCTURE | FUNCTION | VISUAL | OVERALL`
 
@@ -116,49 +94,13 @@ Allowed terminal statuses only:
 
 Overall PASS requires every applicable dimension PASS.
 
-### 3. Produce full inventory artifacts
+Create `docs/CLONE_PARITY_FULL_INVENTORY.md` plus machine-readable JSON/CSV with exact route-level evidence and totals for wrong/missing text, media, links, PDFs/downloads, generic redirects, structural/function/visual mismatches, methodology-blocked routes, and root-cause repair groups.
 
-Create:
-
-- `docs/CLONE_PARITY_FULL_INVENTORY.md`
-- machine-readable JSON and/or CSV
-
-Include exact totals and route-level evidence for:
-
-- total reference URLs;
-- scored clone URLs;
-- PASS/FAIL;
-- wrong/missing text;
-- missing/wrong/broken media;
-- wrong/missing internal links;
-- wrong/missing external links;
-- missing/broken PDFs/downloads;
-- invalid generic redirects;
-- structural mismatches;
-- functional mismatches;
-- major desktop/mobile visual mismatches;
-- methodology-blocked routes.
-
-### 4. Root-cause groups
-
-Group deficits into reusable repair batches. Examples:
-
-- gallery/detail collapse to `/galeria`;
-- missing media after import;
-- importer/extractor defects;
-- internal-link rewriting defects;
-- document migration gaps;
-- template/layout mismatch;
-- legacy mapping error;
-- missing Payload data vs renderer defect.
-
-Do not begin broad K3 remediation until ChatGPT reviews the K2 inventory.
+Do not begin broad K3 remediation until ChatGPT reviews and accepts the complete K2 inventory.
 
 ## CHECKPOINTS
 
-While working, push a substantive checkpoint every ~30–45 minutes.
-
-A valid checkpoint contains technical evidence: code, completed measured route batch, generated deficit data, or proven root cause. A prose-only status commit is invalid.
+While working, push a substantive technical checkpoint every ~30–45 minutes. Code, measured route batches, generated deficit data, or proven root cause count. Prose-only status does not.
 
 ## NON-NEGOTIABLE
 
