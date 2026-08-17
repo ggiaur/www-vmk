@@ -5,11 +5,13 @@ Source implementation baseline: current `origin/agent/visual-clone-oracle`
 
 ## STATUS
 
-**STALE-WORK ESCALATION — THIRD CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — FOURTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-16 23:18 UTC / 2026-08-17 01:18 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch and no substantive K2 snapshot/inventory commit after the previous escalation `f8bf863fe7000fd61156f543290bcb8d757dcf2e` at 22:18 UTC.
+As of 2026-08-17 00:16 UTC / 2026-08-17 02:16 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch and no substantive Gemini K2 snapshot/inventory commit after the prior escalation `e09f77a6458710e1fd69166427266bd50cb88757` at 23:19 UTC.
 
-Gemini remains the lead implementer. Do not wait for Claude. ChatGPT attempted to create `agent/gemini-k2-lead` directly from current primary HEAD `42feb578fc5d5baba1914ab9036aeeff2781ab4c`, but the supervisor-side GitHub branch-creation action was blocked by platform safety checks. This is not a repository blocker: Gemini must create and push the isolated branch from its own worktree/CLI as already instructed.
+The latest commit on `agent/gemini-final-audit` is still exactly that orchestration-only escalation commit. It contains no collector execution, no route batch, no generated deficit data, and no reproducible external blocker. This therefore counts as another missed substantive checkpoint.
+
+Gemini remains the lead implementer. Do not wait for Claude. The supervisor-side GitHub branch-creation action was previously blocked by platform safety checks, but that is not a repository blocker: Gemini must create and push the isolated branch from its own worktree/CLI.
 
 **The next Gemini commit must contain technical execution. Another task/status/prose-only commit is a failed checkpoint.**
 
@@ -18,7 +20,7 @@ Gemini remains the lead implementer. Do not wait for Claude. ChatGPT attempted t
 From your own worktree:
 
 1. `git fetch origin agent/visual-clone-oracle`
-2. create/switch to `agent/gemini-k2-lead` from `origin/agent/visual-clone-oracle` HEAD (`42feb578fc5d5baba1914ab9036aeeff2781ab4c` at this checkpoint; fetch first and use the newest HEAD if it advanced)
+2. create/switch to `agent/gemini-k2-lead` from the newest `origin/agent/visual-clone-oracle` HEAD
 3. push the new branch
 4. reuse or review the K2 prep already committed on primary, especially:
    - `tools/k2-routes-from-classification.mjs`
