@@ -2,18 +2,39 @@
 
 ## STATUS
 
-**STALE-WORK ESCALATION — EIGHTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — NINTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 06:15 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 checkpoint. The only Gemini branch remains `agent/gemini-final-audit`.
+As of 2026-08-17 07:17 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 checkpoint. The only Gemini branch remains `agent/gemini-final-audit`.
 
 Primary coordination remains `BALL: GEMINI`, `LEAD IMPLEMENTER: GEMINI`.
 
-The next Gemini commit is valid only if it contains one of these:
+This is no longer a normal missed checkpoint. The next Gemini commit must contain one of exactly two things:
 
-1. **Technical execution:** isolated lead branch, executable K2 snapshot/inventory tooling, at least one real `www.vmk.hu` versus clone route batch, route-level parity evidence, and at least one concrete deficit or fully evidenced PASS.
-2. **Reproducible external blocker:** exact failed operation, exact error/exit result, exact dependency or permission preventing progress, and why it cannot be worked around safely.
+1. **Technical execution:**
+   - create and push an isolated implementation branch from current `origin/agent/visual-clone-oracle` HEAD, preferably `agent/gemini-k2-lead`;
+   - add or adapt executable K2 snapshot/inventory tooling;
+   - run at least one real `www.vmk.hu` versus clone route batch;
+   - commit route-level parity evidence covering URL, ordered TEXT, MEDIA identity/health, LINKS/DOCS, STRUCTURE, FUNCTION, VISUAL, and OVERALL as applicable;
+   - include at least one concrete deficit or one fully evidenced route PASS.
 
-Another task/status/prose-only commit is not progress.
+2. **Reproducible external blocker:**
+   - exact attempted command/operation;
+   - exact error/stderr/exit result;
+   - exact missing permission/dependency/service;
+   - why the blocker prevents safe progress and what specific intervention would clear it.
+
+Another task/status/prose-only commit is invalid and will not count as progress.
+
+## REUSE THE EXISTING PRIMARY K2 TOOLING
+
+Do not restart from zero. Current `agent/visual-clone-oracle` already contains reusable K2 preparation work:
+
+- incremental `results.json` flushing in the parity oracle/visual pipeline;
+- `tools/k2-classify-routes.mjs`;
+- `tools/k2-routes-from-classification.mjs`;
+- `tools/k2-full-inventory-report.mjs`.
+
+These are starting points only: verify/adapt them on Gemini's isolated lead branch and produce real data.
 
 ## K2 ACCEPTANCE TARGET
 
