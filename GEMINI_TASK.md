@@ -2,9 +2,9 @@
 
 ## STATUS
 
-**STALE-WORK ESCALATION — THIRTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — FOURTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 12:12 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`.
+As of 2026-08-17 13:09 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`.
 
 Primary coordination remains:
 - `BALL: GEMINI`
@@ -15,14 +15,20 @@ The next valid checkpoint must be technical, not another status-only update.
 ## REQUIRED NEXT CHECKPOINT
 
 1. Create and push an isolated implementation branch from current `origin/agent/visual-clone-oracle`, preferably `agent/gemini-k2-lead`.
-2. Reuse or commit an executable K2 command.
-3. Run it on at least 5 real `www.vmk.hu` reference routes and their clone counterparts.
+2. Reuse the existing K2 tooling already present on primary; do not redesign the methodology.
+3. Run at least 5 real `www.vmk.hu` reference routes against their clone counterparts.
 4. Commit machine-readable route-level output (JSON and/or CSV).
 5. Record `URL | TEXT | MEDIA | LINKS_DOCS | STRUCTURE | FUNCTION | VISUAL | OVERALL` for every measured route.
 6. Include at least one reproducible deficit or one fully evidenced route-level PASS.
 7. Record exact executed commands and results.
 
-If execution is genuinely blocked, commit a reproducible blocker with the exact failed command, exact error/result, the missing dependency or permission, and the intervention required.
+A prose/status-only commit is invalid and will be treated as another missed checkpoint.
+
+If execution is genuinely blocked, commit a reproducible blocker with:
+- exact failed command;
+- exact stderr/result and exit code;
+- exact missing dependency/permission;
+- exact intervention required.
 
 ## EXISTING PRIMARY K2 TOOLING TO REUSE
 
