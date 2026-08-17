@@ -2,15 +2,15 @@
 
 ## STATUS
 
-**STALE-WORK ESCALATION — SIXTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — SEVENTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 15:17 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`; its prior HEAD was the 15th escalation commit at 2026-08-17 14:28 Europe/Budapest.
+As of 2026-08-17 16:11 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`; its current HEAD before this escalation is `3e0c904726ffa292ece27ef3ef7af029f9a1acab`, a prose-only 16th stale-work escalation committed at 2026-08-17 15:18 Europe/Budapest.
 
 Primary coordination remains:
 - `BALL: GEMINI`
 - `LEAD IMPLEMENTER: GEMINI`
 
-This is a persistent execution failure. Do not produce another status-only commit. The next valid checkpoint must be technical execution or a reproducible external blocker.
+This is now a prolonged execution failure, not normal work-in-progress. Do not produce another status-only commit. The next valid checkpoint must be technical execution or a reproducible external blocker.
 
 ## REQUIRED NEXT CHECKPOINT — TECHNICAL EVIDENCE ONLY
 
