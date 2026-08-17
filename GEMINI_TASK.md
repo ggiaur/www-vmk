@@ -5,39 +5,40 @@ Source implementation baseline: current `origin/agent/visual-clone-oracle`
 
 ## STATUS
 
-**STALE-WORK ESCALATION — FOURTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — FIFTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 00:16 UTC / 2026-08-17 02:16 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch and no substantive Gemini K2 snapshot/inventory commit after the prior escalation `e09f77a6458710e1fd69166427266bd50cb88757` at 23:19 UTC.
+As of 2026-08-17 01:08 UTC / 2026-08-17 03:08 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch and no substantive Gemini K2 snapshot/inventory commit after the prior escalation at 00:16 UTC.
 
-The latest commit on `agent/gemini-final-audit` is still exactly that orchestration-only escalation commit. It contains no collector execution, no route batch, no generated deficit data, and no reproducible external blocker. This therefore counts as another missed substantive checkpoint.
+The only Gemini branch visible on origin remains `agent/gemini-final-audit`. No executable K2 collector run, no measured `www.vmk.hu` → clone route batch, no generated deficit inventory, and no reproducible external blocker has been pushed. This is now the fifth consecutive missed substantive lead checkpoint.
 
-Gemini remains the lead implementer. Do not wait for Claude. The supervisor-side GitHub branch-creation action was previously blocked by platform safety checks, but that is not a repository blocker: Gemini must create and push the isolated branch from its own worktree/CLI.
-
-**The next Gemini commit must contain technical execution. Another task/status/prose-only commit is a failed checkpoint.**
+Gemini remains lead implementer. Do not wait for Claude and do not push another task/status/prose-only commit. The next Gemini commit must be technical execution.
 
 ### Immediate hard checkpoint
 
-From your own worktree:
+From your own dedicated worktree:
 
 1. `git fetch origin agent/visual-clone-oracle`
 2. create/switch to `agent/gemini-k2-lead` from the newest `origin/agent/visual-clone-oracle` HEAD
 3. push the new branch
-4. reuse or review the K2 prep already committed on primary, especially:
+4. review/reuse the existing K2 prep on primary:
+   - `tools/clone-parity-oracle.mjs`
+   - `tools/clone-parity-visual.mjs`
+   - `tools/k2-classify-routes.mjs`
    - `tools/k2-routes-from-classification.mjs`
    - `tools/k2-full-inventory-report.mjs`
-5. run the first real K2 reference-snapshot / clone-comparison batch
+5. run a first real K2 reference-snapshot / clone-comparison batch
 6. push code + generated route-level evidence on `agent/gemini-k2-lead`
 
 A valid next checkpoint must include ALL of:
 
 - isolated Gemini lead branch exists on origin;
-- executable snapshot/inventory collector or adaptation of the existing K2 prep;
+- executable snapshot/inventory collector or verified adaptation of the existing K2 prep;
 - at least one real measured route batch from current `www.vmk.hu` versus clone;
-- route-level evidence across the applicable parity dimensions, not counts only;
+- route-level evidence across applicable parity dimensions, not counts only;
 - at least one concrete deficit or a fully evidenced route-level PASS;
 - exact command/error evidence for any real blocker.
 
-If Gemini cannot create the branch or run the batch, the next commit must include the exact command and exact error output. Do not convert an unexecuted check into PASS.
+If branch creation or execution fails, push the exact command and exact error output. An unexecuted check must never become PASS.
 
 ## PRODUCT GOAL
 
@@ -68,10 +69,12 @@ K1 Oracle v2 canary on primary implementation commit `426b16e`:
 
 This is the real starting condition. Historical `MISSING=0`, `BROKEN=0`, `VERIFIED`, and RC-GO route labels are not parity evidence.
 
-The current primary HEAD also contains reusable K2 preparation from Claude's stopped in-flight work, but no K2 acceptance claim:
+The current primary HEAD contains reusable K2 preparation from Claude's stopped in-flight work, but no K2 acceptance claim:
 
-- `tools/k2-routes-from-classification.mjs`
-- `tools/k2-full-inventory-report.mjs`
+- incremental result flushing in `tools/clone-parity-oracle.mjs` / `tools/clone-parity-visual.mjs`;
+- `tools/k2-classify-routes.mjs`;
+- `tools/k2-routes-from-classification.mjs`;
+- `tools/k2-full-inventory-report.mjs`.
 
 Gemini may reuse, modify, or replace these after review; do not duplicate solved plumbing without reason.
 
