@@ -2,17 +2,17 @@
 
 ## STATUS
 
-**STALE-WORK ESCALATION — FOURTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
+**STALE-WORK ESCALATION — FIFTEENTH CONSECUTIVE LEAD CHECKPOINT MISSED**
 
-As of 2026-08-17 13:09 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`.
+As of 2026-08-17 14:27 Europe/Budapest, there is still no `agent/gemini-k2-lead` branch on origin and no substantive Gemini K2 technical checkpoint. The only Gemini branch remains `agent/gemini-final-audit`.
 
 Primary coordination remains:
 - `BALL: GEMINI`
 - `LEAD IMPLEMENTER: GEMINI`
 
-The next valid checkpoint must be technical, not another status-only update.
+This is now a persistent execution failure, not normal working silence. The next valid checkpoint must be technical or a reproducible external blocker.
 
-## REQUIRED NEXT CHECKPOINT
+## REQUIRED NEXT CHECKPOINT — NO PROSE-ONLY STATUS
 
 1. Create and push an isolated implementation branch from current `origin/agent/visual-clone-oracle`, preferably `agent/gemini-k2-lead`.
 2. Reuse the existing K2 tooling already present on primary; do not redesign the methodology.
@@ -22,9 +22,9 @@ The next valid checkpoint must be technical, not another status-only update.
 6. Include at least one reproducible deficit or one fully evidenced route-level PASS.
 7. Record exact executed commands and results.
 
-A prose/status-only commit is invalid and will be treated as another missed checkpoint.
+A `GEMINI_TASK.md`/status-only commit is invalid and counts as another missed checkpoint.
 
-If execution is genuinely blocked, commit a reproducible blocker with:
+If execution is genuinely blocked, commit a reproducible blocker containing:
 - exact failed command;
 - exact stderr/result and exit code;
 - exact missing dependency/permission;
