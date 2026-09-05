@@ -1,11 +1,16 @@
 import type { CollectionConfig } from 'payload'
 import { scopedToOwnLibraryRecord, adminOrEditorOnly } from '../lib/access'
+import { revalidateLibraryConsumingPages } from '../lib/revalidateLibraryPages'
 
 export const Libraries: CollectionConfig = {
   slug: 'libraries',
   labels: {
     singular: 'Könyvtár',
     plural: 'Könyvtárak',
+  },
+  hooks: {
+    afterChange: [() => revalidateLibraryConsumingPages()],
+    afterDelete: [() => revalidateLibraryConsumingPages()],
   },
   access: {
     read: () => true,

@@ -26,13 +26,13 @@ export default async function ProgramarchivumPage() {
 
       <div className="pb-4">
         <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px] flex items-center gap-3">
-          <Archive className="w-8 h-8 text-[#159097]" />
+          <Archive className="w-8 h-8 text-[#137F85]" />
           <span>Programarchívum</span>
         </h1>
         <p className="text-slate-600 mt-2 max-w-3xl">
           Korábbi évek lezárult programjai, rendezvényei és híranyagai — történeti gyűjtemény, nem
           aktuális esemény. Aktuális, közelgő programokért lásd az{' '}
-          <Link href="/esemenyek" className="text-[#159097] font-semibold hover:underline">
+          <Link href="/esemenyek" className="text-[#137F85] font-semibold hover:underline">
             Eseménykalendáriumot
           </Link>
           .
@@ -40,7 +40,7 @@ export default async function ProgramarchivumPage() {
       </div>
 
       {archivedNews.length === 0 ? (
-        <p className="text-sm text-slate-400 italic text-center py-12">
+        <p className="text-sm text-slate-500 italic text-center py-12">
           Jelenleg nincs archivált tartalom a rendszerben.
         </p>
       ) : (

@@ -127,7 +127,7 @@ export const Header: React.FC = () => {
               <a
                 href="mailto:kolcsonzo@vmk.hu"
                 aria-label="E-mail"
-                className="flex items-center justify-center shrink-0 text-[#159097] hover:opacity-70 transition-opacity"
+                className="flex items-center justify-center shrink-0 text-[#137F85] hover:opacity-70 transition-opacity"
               >
                 <Mail className="w-[30px] h-[30px]" strokeWidth={1.75} />
               </a>
@@ -174,7 +174,7 @@ export const Header: React.FC = () => {
                 type="button"
                 onClick={() => setCatalogOpen((v) => !v)}
                 onBlur={() => setTimeout(() => setCatalogOpen(false), 150)}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded bg-[#159097] hover:bg-[#0f656a] text-white text-[14px] font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded bg-[#137F85] hover:bg-[#0f656a] text-white text-[14px] font-bold uppercase tracking-wide transition-colors whitespace-nowrap"
                 aria-haspopup="true"
                 aria-expanded={catalogOpen}
               >
@@ -189,7 +189,7 @@ export const Header: React.FC = () => {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#159097]"
+                      className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#137F85]"
                     >
                       {item.label}
                     </a>
@@ -214,7 +214,7 @@ export const Header: React.FC = () => {
           <a
             href="mailto:kolcsonzo@vmk.hu"
             aria-label="E-mail"
-            className="flex items-center justify-center text-[#159097]"
+            className="flex items-center justify-center text-[#137F85]"
           >
             <Mail className="w-[26px] h-[26px]" strokeWidth={1.75} />
           </a>
@@ -271,7 +271,7 @@ export const Header: React.FC = () => {
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
+                    className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#137F85] transition-colors whitespace-nowrap"
                     aria-expanded={openDropdown === item.label}
                     aria-haspopup="true"
                   >
@@ -288,7 +288,7 @@ export const Header: React.FC = () => {
                               href={child.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#159097]"
+                              className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#137F85]"
                             >
                               {child.label}
                             </a>
@@ -296,7 +296,7 @@ export const Header: React.FC = () => {
                             <Link
                               key={child.href}
                               href={child.href}
-                              className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#159097]"
+                              className="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#137F85]"
                             >
                               {child.label}
                             </Link>
@@ -312,7 +312,7 @@ export const Header: React.FC = () => {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
+                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#137F85] transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </a>
@@ -320,7 +320,7 @@ export const Header: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#159097] transition-colors whitespace-nowrap"
+                  className="flex items-center gap-0.5 px-2.5 py-2 rounded hover:bg-slate-50 hover:text-[#137F85] transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </Link>
@@ -331,7 +331,7 @@ export const Header: React.FC = () => {
               href="/kereses"
               aria-label="Keresés a honlapon"
               title="Keresés a honlapon"
-              className="ml-auto p-2 rounded text-slate-600 hover:text-[#159097] hover:bg-slate-50 transition-colors"
+              className="ml-auto p-2 rounded text-slate-600 hover:text-[#137F85] hover:bg-slate-50 transition-colors"
             >
               <Search className="w-[18px] h-[18px]" strokeWidth={2.75} />
             </Link>

@@ -26,6 +26,8 @@ import { Rooms } from './collections/Rooms'
 import { Services } from './collections/Services'
 import { Staff } from './collections/Staff'
 import { Users } from './collections/Users'
+import { WishRequests } from './collections/WishRequests'
+import { WishComments } from './collections/WishComments'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -106,6 +108,8 @@ export default buildConfig({
     Rooms,
     Bookings,
     DonationPledges,
+    WishRequests,
+    WishComments,
     ContactMessages,
     NewsletterSubscribers,
     Products,
@@ -119,6 +123,19 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || 'postgres://vmk_user:vmk_password@localhost:5432/vmk_db',
     },
+    // Payload's dev-mode default (push: true) diffs the DB against the
+    // current collection schema on every `next dev` boot and offers an
+    // interactive prompt to apply the diff -- including DROPs -- with no
+    // way to preview them outside the TTY prompt itself. On this DB that
+    // prompt currently offers to drop `header_settings` and the
+    // `color`/`folder_id` columns (884+46+15+2 live rows) because the
+    // collection config no longer declares them; that's stale schema debt,
+    // not something a dev server boot should ever be able to apply
+    // unattended. Disabling push makes dev mode read/write against the
+    // schema exactly as it exists today (safe: the app doesn't need those
+    // extra columns to run) and pushes the actual cleanup to an explicit,
+    // reviewable migration instead. See COLLAB.md Phase B1.
+    push: false,
   }),
   plugins: [
     s3Storage({

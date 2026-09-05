@@ -59,7 +59,7 @@ export default async function NewsDetailPage({
       <div className="space-y-4">
         <Link
           href="/hirek"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#159097] hover:underline"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#137F85] hover:underline"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Vissza a hírekhez</span>

@@ -266,6 +266,22 @@ export async function getAllStaff() {
   }
 }
 
+export async function getStaffBySlug(slug: string) {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return null
+    const result = await payload.find({
+      collection: 'staff',
+      where: { slug: { equals: slug } },
+      depth: 1,
+      limit: 1,
+    })
+    return result.docs[0] ?? null
+  } catch {
+    return null
+  }
+}
+
 // ─── Documents ────────────────────────────────────────────────────────────────
 
 export async function getAllDocuments(category?: string) {
@@ -661,4 +677,76 @@ export function formatOpeningHours(docs: OpeningHoursDoc[]) {
       hours: doc.isClosed ? 'Zárva' : `${doc.openTime ?? '?'} - ${doc.closeTime ?? '?'}`,
       isToday: DAY_ORDER[doc.dayOfWeek] === (new Date().getDay() + 6) % 7,
     }))
+}
+
+// ─── Wishbasket (/wishbasket) ───────────────────────────────────────────────
+
+export type PublicWish = {
+  id: string | number
+  shownName: string | null
+  writer: string
+  title: string
+  adminNote: string | null
+  createdAt: string
+}
+
+/**
+ * Only ever selects public-safe fields (shownName/writer/title/adminNote),
+ * never name/email/libraryCard/comment -- defense in depth on top of the
+ * collection's own field-level access control (WishRequests.ts), so a bug
+ * in that access config can't leak PII through this call site.
+ */
+export async function getApprovedWishes(limit = 30): Promise<PublicWish[]> {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'wish-requests',
+      where: { status: { equals: 'approved' } },
+      select: { shownName: true, writer: true, title: true, adminNote: true, createdAt: true },
+      sort: '-createdAt',
+      limit,
+      depth: 0,
+    })
+    return result.docs.map((doc) => ({
+      id: doc.id,
+      shownName: (doc as Record<string, unknown>).shownName as string | null,
+      writer: (doc as Record<string, unknown>).writer as string,
+      title: (doc as Record<string, unknown>).title as string,
+      adminNote: (doc as Record<string, unknown>).adminNote as string | null,
+      createdAt: (doc as Record<string, unknown>).createdAt as string,
+    }))
+  } catch {
+    return []
+  }
+}
+
+export type PublicWishComment = {
+  id: string | number
+  shownName: string | null
+  comment: string
+  createdAt: string
+}
+
+export async function getApprovedWishComments(limit = 30): Promise<PublicWishComment[]> {
+  try {
+    const payload = await getPayloadClient()
+    if (!payload) return []
+    const result = await payload.find({
+      collection: 'wish-comments',
+      where: { status: { equals: 'approved' } },
+      select: { shownName: true, comment: true, createdAt: true },
+      sort: '-createdAt',
+      limit,
+      depth: 0,
+    })
+    return result.docs.map((doc) => ({
+      id: doc.id,
+      shownName: (doc as Record<string, unknown>).shownName as string | null,
+      comment: (doc as Record<string, unknown>).comment as string,
+      createdAt: (doc as Record<string, unknown>).createdAt as string,
+    }))
+  } catch {
+    return []
+  }
 }

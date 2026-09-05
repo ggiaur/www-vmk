@@ -31,6 +31,7 @@ const RESERVED_FIRST_SEGMENTS = new Set([
   'tamogatas',
   'bolt',
   'elerhetosegeink',
+  'wishbasket',
   'rolunk',
   'hasznalat',
   'admin',

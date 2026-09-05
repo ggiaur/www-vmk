@@ -38,7 +38,7 @@ export default async function GaleriaDetailPage({ params }: Args) {
       <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase pt-[10px] pb-[15px] leading-[26.4px]">{gallery.title}</h1>
 
       {images.length === 0 ? (
-        <p className="text-sm text-slate-400 italic flex items-center gap-2">
+        <p className="text-sm text-slate-500 italic flex items-center gap-2">
           <ImageIcon className="w-5 h-5" />
           Ehhez a galériához még nincsenek feltöltött képek.
         </p>

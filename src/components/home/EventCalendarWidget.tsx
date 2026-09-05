@@ -38,7 +38,7 @@ export function EventCalendarWidget({ highlightedDays, year, month }: EventCalen
 
   return (
     <div>
-      <div className="flex items-center" style={{ backgroundColor: '#00909b' }}>
+      <div className="flex items-center" style={{ backgroundColor: 'var(--accent-fill-a11y)' }}>
         <button aria-label="Előző hónap" disabled className="px-[10px] py-[5px] text-white">
           <ChevronLeft className="w-[26px] h-[26px]" />
         </button>
@@ -71,8 +71,13 @@ export function EventCalendarWidget({ highlightedDays, year, month }: EventCalen
                     className="text-center text-[20px] py-[10px]"
                     style={{
                       fontWeight: isHighlighted || isToday ? 700 : 400,
-                      backgroundColor: isHighlighted ? '#e4b02c' : isToday ? '#00909b' : 'transparent',
-                      color: !cell.current ? '#ccc' : isHighlighted || isToday ? '#fff' : '#555',
+                      backgroundColor: isHighlighted ? '#e4b02c' : isToday ? 'var(--accent-fill-a11y)' : 'transparent',
+                      // #ccc on white was 1.6:1 (WCAG needs 4.5:1) -- #767676 is a
+                      // standard "just passes" AA gray, keeps the intended faded look.
+                      // White text on #e4b02c (highlighted days) was 1.99:1 -- #1B1B1B
+                      // is the same dark shade already used for gold-background text
+                      // elsewhere (CookieConsent's "Elfogadom" button).
+                      color: !cell.current ? '#767676' : isHighlighted ? '#1B1B1B' : isToday ? '#fff' : '#555',
                     }}
                   >
                     {cell.day}

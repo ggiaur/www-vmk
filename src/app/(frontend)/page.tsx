@@ -125,7 +125,7 @@ export default async function HomePage() {
               href="https://www.vmk.hu/_upload/editor/Alapdokumentumok/Adatkezelesi_tajekoztato_honlapra_VMK.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#159097] hover:underline"
+              className="text-[#137F85] hover:underline"
             >
               Adatkezelési tájékoztató 3.9 pontja
             </a>
@@ -161,7 +161,7 @@ export default async function HomePage() {
           <div className="flex justify-end mb-6">
             <Link
               href="/hirek"
-              className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+              className="text-sm font-semibold text-[#137F85] hover:underline flex items-center gap-1"
             >
               <span>További híreink</span>
               <ArrowRight className="w-4 h-4" />
@@ -184,7 +184,7 @@ export default async function HomePage() {
           <div className="flex justify-end mb-10">
             <Link
               href="/esemenyek"
-              className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+              className="text-sm font-semibold text-[#137F85] hover:underline flex items-center gap-1"
             >
               <span>További eseményeink</span>
               <ArrowRight className="w-4 h-4" />
@@ -265,7 +265,7 @@ export default async function HomePage() {
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-[#159097] text-white/50 text-xs font-bold">
+                        <div className="w-full h-full flex items-center justify-center bg-[#137F85] text-white/50 text-xs font-bold">
                           VMK
                         </div>
                       )}
@@ -280,7 +280,7 @@ export default async function HomePage() {
               <div className="flex justify-end mt-4">
                 <Link
                   href="/galeria"
-                  className="text-sm font-semibold text-[#159097] hover:underline flex items-center gap-1"
+                  className="text-sm font-semibold text-[#137F85] hover:underline flex items-center gap-1"
                 >
                   <span>További Galériák</span>
                   <ArrowRight className="w-4 h-4" />

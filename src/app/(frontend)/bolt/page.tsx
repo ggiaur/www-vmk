@@ -34,7 +34,7 @@ export default async function BoltPage() {
       </div>
 
       {products.length === 0 ? (
-        <p className="text-sm text-slate-400 italic text-center py-12">
+        <p className="text-sm text-slate-500 italic text-center py-12">
           Jelenleg nincs elérhető termék.
         </p>
       ) : (
@@ -56,7 +56,7 @@ export default async function BoltPage() {
                   )}
                 </div>
                 <div className="p-4">
-                  <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-[#159097] font-semibold">
+                  <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-[#137F85] font-semibold">
                     {categoryLabels[product.category] ?? product.category}
                   </span>
                   <h3 className="font-bold text-slate-900 mt-1.5">{product.title}</h3>

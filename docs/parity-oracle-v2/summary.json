@@ -1,0 +1,11 @@
+{
+  "total": 22,
+  "scoredTotal": 22,
+  "CANARY_MAPPING_ERROR": 0,
+  "canaryMappingErrorRoutes": [],
+  "PARITY_PASS": 0,
+  "PARITY_PARTIAL": 0,
+  "PARITY_FAIL": 22,
+  "ERROR": 0,
+  "generatedAt": "2026-08-16T19:28:07.009Z"
+}

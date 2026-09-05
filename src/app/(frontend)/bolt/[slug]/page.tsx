@@ -43,7 +43,7 @@ export default async function ProductDetailPage({ params }: Args) {
         </div>
         <div className="space-y-4">
           <h1 className="font-serif text-[24px] font-bold text-[#333333] uppercase leading-[26.4px]">{product.title}</h1>
-          <p className="text-xl font-bold text-[#159097]">{product.price.toLocaleString('hu-HU')} Ft</p>
+          <p className="text-xl font-bold text-[#137F85]">{product.price.toLocaleString('hu-HU')} Ft</p>
           {product.description && <p className="text-sm text-slate-600 leading-relaxed">{product.description}</p>}
           <Link
             href="/kapcsolat"
@@ -52,7 +52,7 @@ export default async function ProductDetailPage({ params }: Args) {
             <Mail className="w-4 h-4" />
             <span>Érdeklődöm ezen a terméken</span>
           </Link>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[11px] text-slate-500">
             A vásárláshoz keresse fel személyesen a Központi Könyvtárat, vagy vegye fel velünk a
             kapcsolatot.
           </p>

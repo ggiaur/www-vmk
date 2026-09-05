@@ -42,13 +42,13 @@ export default async function TagkonyvtarakPage() {
         <table className="w-full border-collapse text-[14px]" style={{ fontFamily: 'Roboto, sans-serif' }}>
           <thead>
             <tr>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-[#1B1B1B] font-bold">
                 Tagkönyvtár neve
               </th>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-[#1B1B1B] font-bold">
                 Cím
               </th>
-              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-white font-bold w-[120px]">
+              <th className="text-left py-[8px] px-[15px] border border-[#ddd] bg-[#e4b02c] text-[#1B1B1B] font-bold w-[120px]">
                 Telefon
               </th>
             </tr>
@@ -62,7 +62,7 @@ export default async function TagkonyvtarakPage() {
                 >
                   <Link
                     href={`/tagkonyvtarak/${branch.slug}`}
-                    className="text-[#159097] hover:underline"
+                    className="text-[#137F85] hover:underline"
                   >
                     {branch.name}
                   </Link>

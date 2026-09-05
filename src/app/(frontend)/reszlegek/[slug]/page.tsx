@@ -60,7 +60,7 @@ export default async function ReszlegDetailPage({ params }: Args) {
       {schedule.length > 0 && (
         <div className="bg-white rounded border border-slate-200 p-6 space-y-3">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-[#159097]" />
+            <Clock className="w-5 h-5 text-[#137F85]" />
             Nyitvatartás
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center text-xs">

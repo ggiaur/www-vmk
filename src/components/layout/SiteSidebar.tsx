@@ -164,15 +164,15 @@ export function SiteSidebar() {
       <button
         type="button"
         onClick={() => setSidebarOpen((v) => !v)}
-        className="lg:hidden bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px] flex items-center justify-between"
-        style={{ padding: '8px 15px', marginBottom: sidebarOpen ? 0 : '15px' }}
+        className="lg:hidden w-full text-white font-bold text-[18px] uppercase leading-[19.8px] flex items-center justify-between"
+        style={{ backgroundColor: 'var(--accent-fill-a11y)', padding: '8px 15px', marginBottom: sidebarOpen ? 0 : '15px' }}
         aria-expanded={sidebarOpen}
         aria-label="Menü megnyitása"
       >
         <span style={{ fontFamily: 'Roboto, sans-serif' }}>MENÜ</span>
         {sidebarOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
       </button>
-      <div className="hidden lg:block bg-[#00909B] w-full text-white font-bold text-[18px] uppercase leading-[19.8px]" style={{ padding: '8px 15px', marginBottom: 0 }}>
+      <div className="hidden lg:block w-full text-white font-bold text-[18px] uppercase leading-[19.8px]" style={{ backgroundColor: 'var(--accent-fill-a11y)', padding: '8px 15px', marginBottom: 0 }}>
         <div
           style={{
             margin: 0,
@@ -195,7 +195,7 @@ export function SiteSidebar() {
                 <button
                   type="button"
                   onClick={() => setOpenItem(openItem === item.label ? null : item.label)}
-                  className="w-full flex items-center justify-between gap-2 py-[8px] text-left text-[#161616] hover:text-[#159097] transition-colors"
+                  className="w-full flex items-center justify-between gap-2 py-[8px] text-left text-[#161616] hover:text-[#137F85] transition-colors"
                   aria-expanded={openItem === item.label}
                 >
                   <span>{item.label}</span>
@@ -209,7 +209,7 @@ export function SiteSidebar() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block py-1.5 text-sm text-slate-600 hover:text-[#159097]"
+                        className="block py-1.5 text-sm text-slate-600 hover:text-[#137F85]"
                       >
                         {child.label}
                       </Link>
@@ -222,12 +222,12 @@ export function SiteSidebar() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block py-[8px] text-[#161616] hover:text-[#159097] transition-colors"
+                className="block py-[8px] text-[#161616] hover:text-[#137F85] transition-colors"
               >
                 {item.label}
               </a>
             ) : (
-              <Link href={item.href} className="block py-[8px] text-[#161616] hover:text-[#159097] transition-colors">
+              <Link href={item.href} className="block py-[8px] text-[#161616] hover:text-[#137F85] transition-colors">
                 {item.label}
               </Link>
             )}
@@ -252,7 +252,7 @@ export function SiteSidebar() {
             href={w.href}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: 'block', backgroundColor: '#00909b', padding: '8px 15px' }}
+            style={{ display: 'block', backgroundColor: 'var(--accent-fill-a11y)', padding: '8px 15px' }}
           >
             <div
               style={{ margin: 0, color: '#FFF', fontSize: '18px', fontWeight: 700, textTransform: 'uppercase' }}
@@ -285,7 +285,11 @@ export function SiteSidebar() {
                 href={w.textLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ fontSize: '11px', color: '#159097' }}
+                // #137F85 passes on white (~4.77:1) but this sits on the
+                // widget box's #cce9eb background instead, only 3.73:1 --
+                // #555 matches the sibling "forrás:" caption line above,
+                // already confirmed passing on this same background.
+                style={{ fontSize: '11px', color: '#555' }}
               >
                 {w.textLinkLabel}
               </a>
@@ -315,7 +319,10 @@ export function SiteSidebar() {
                     width: '100%',
                     marginBottom: '10px',
                     padding: '6px 12px',
-                    backgroundColor: '#5bc0de',
+                    // #5bc0de (Bootstrap btn-info default) only reaches 2.09:1
+                    // with white text; #3B7D90 is a ~4.65:1-passing darker
+                    // variant that keeps the same blue hue.
+                    backgroundColor: '#3B7D90',
                     color: '#fff',
                     textAlign: 'center',
                     fontSize: '14px',
