@@ -1,0 +1,10 @@
+/	violations=0	nodes=0	pageErrors=2
+  footer: {"color":"rgb(240, 253, 250)","backgroundColor":"rgb(0, 127, 136)","borderBottomColor":"rgb(229, 231, 235)"}
+  header nav: {"color":"rgb(51, 51, 51)","backgroundColor":"rgba(0, 0, 0, 0)","borderBottomColor":"rgb(0, 144, 155)"}
+/nyitvatartas	violations=0	nodes=0	pageErrors=2
+  footer: {"color":"rgb(240, 253, 250)","backgroundColor":"rgb(0, 127, 136)","borderBottomColor":"rgb(229, 231, 235)"}
+  table thead th: {"color":"rgb(255, 255, 255)","backgroundColor":"rgb(0, 127, 136)","borderBottomColor":"rgb(229, 231, 235)"}
+/tagkonyvtarak	violations=0	nodes=0	pageErrors=2
+  footer: {"color":"rgb(240, 253, 250)","backgroundColor":"rgb(0, 127, 136)","borderBottomColor":"rgb(229, 231, 235)"}
+  table thead th: {"color":"rgb(27, 27, 27)","backgroundColor":"rgb(228, 176, 44)","borderBottomColor":"rgb(221, 221, 221)"}
+TOTAL_NODES=0

@@ -22,7 +22,7 @@ export default function AllaspalyazatokPage() {
           <p className="text-center py-8 text-[#666]">
             Jelenleg nincs aktív álláspályázat.
           </p>
-          <p className="text-center text-[13px] text-[#999]">
+          <p className="text-center text-[13px] text-[#666]">
             Az aktuális álláspályázatokat ezen az oldalon tesszük közzé.
           </p>
         </div>

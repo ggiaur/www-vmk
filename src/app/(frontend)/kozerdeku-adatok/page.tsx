@@ -70,7 +70,7 @@ export default function KozerdekulAdatokPage() {
               href="https://kozadat.hu/kereso/kozfeladatot-ellato-szervek/adatlap/8159"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#137F85] hover:underline"
+              className="text-[#137F85] underline decoration-1 underline-offset-2 hover:decoration-2"
             >
               Közadatkereső
             </a>{' '}

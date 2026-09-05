@@ -1,0 +1,29 @@
+
+Running 16 tests using 4 workers
+
+(node:3326233) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3326235) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3326234) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3326232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Nyitvatartás (/nyitvatartas) — WCAG 2.2 AA (6.3s)
+  ✓   3 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Rendezvények (/esemenyek) — WCAG 2.2 AA (6.4s)
+  ✓   4 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Hírek (/hirek) — WCAG 2.2 AA (6.5s)
+  ✓   2 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Főoldal (/) — WCAG 2.2 AA (6.8s)
+  ✓   5 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Szolgáltatások (/szolgaltatasok) — WCAG 2.2 AA (5.2s)
+  ✓   8 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Kapcsolat (/kapcsolat) — WCAG 2.2 AA (5.3s)
+  ✓   6 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Dokumentumok (/dokumentumok) — WCAG 2.2 AA (6.1s)
+  ✓   7 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Munkatársak (/munkatarsak) — WCAG 2.2 AA (6.2s)
+  ✓   9 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Részlegek (/reszlegek) — WCAG 2.2 AA (4.4s)
+  ✓  10 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Tagkönyvtárak (/tagkonyvtarak) — WCAG 2.2 AA (4.9s)
+  ✓  12 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Programarchívum (/programarchivum) — WCAG 2.2 AA (4.6s)
+  ✓  11 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Galéria (/galeria) — WCAG 2.2 AA (5.1s)
+  ✓  13 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Teremfoglalás (/teremfoglalas) — WCAG 2.2 AA (3.9s)
+  ✓  16 [chromium] › tests/e2e/accessibility.spec.ts:43:5 › Skip link is present and focusable (2.5s)
+  ✓  14 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Támogatás (/tamogatas) — WCAG 2.2 AA (4.2s)
+  ✓  15 [chromium] › tests/e2e/accessibility.spec.ts:26:7 › Bolt (/bolt) — WCAG 2.2 AA (4.0s)
+
+  16 passed (22.9s)
