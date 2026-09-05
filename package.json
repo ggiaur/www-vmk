@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
+    "test:editorial-regression": "playwright test tests/e2e/editorial-news-roundtrip.spec.ts tests/e2e/editorial-events-roundtrip.spec.ts tests/e2e/editorial-openinghours-roundtrip.spec.ts tests/e2e/editorial-pages-roundtrip.spec.ts tests/e2e/editorial-galleries-roundtrip.spec.ts tests/e2e/editorial-media-replacement-roundtrip.spec.ts --workers=1",
     "visual:oracle": "node tools/visual-oracle.mjs live",
     "visual:oracle:discover": "node tools/visual-oracle.mjs discover",
     "visual:oracle:capture": "node tools/visual-oracle.mjs capture",
